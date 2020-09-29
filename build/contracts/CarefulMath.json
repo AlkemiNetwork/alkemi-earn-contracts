@@ -24,15 +24,15 @@
       "type": "event"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{},\"title\":\"Careful Math\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/CarefulMath.sol\":\"CarefulMath\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/CarefulMath.sol\":{\"keccak256\":\"0x18dcf3304115a8a2a879ca17fd06bd76d892b2ce0f73a8f36063bab5f58ade19\",\"urls\":[\"bzzr://d25adc6d945a658707d573cf1b7506d9ab282f1c8173901fbf8ca42e67b1469e\"]},\"/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x33763dc757e6e30bce487f670fa8fb7134afd8accc81d6647fda420f7d84692b\",\"urls\":[\"bzzr://fb6ee276639d8fea3297e2df27e8a866b272ca26eb5f68a236d70416b2354f92\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820abc340669b85b0cbe50436b85ef9daa66d44b5e817b46ec1c9ad5f9a84c235860029",
-  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820abc340669b85b0cbe50436b85ef9daa66d44b5e817b46ec1c9ad5f9a84c235860029",
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{},\"title\":\"Careful Math\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":\"CarefulMath\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x18dcf3304115a8a2a879ca17fd06bd76d892b2ce0f73a8f36063bab5f58ade19\",\"urls\":[\"bzzr://d25adc6d945a658707d573cf1b7506d9ab282f1c8173901fbf8ca42e67b1469e\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x4ffd454007e38669f0fc1d116ba5b92f65b410f08491a6a3ba1d5cce71ccc42e\",\"urls\":[\"bzzr://0dfc131be085d99fac2189af8204d256600de2d70d2286ba101236a58c89b947\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820fdae664698d0695c319669e635b8237ce52fcdd8864e92969ac0501c6bb889a40029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820fdae664698d0695c319669e635b8237ce52fcdd8864e92969ac0501c6bb889a40029",
   "sourceMap": "249:1691:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;249:1691:0;;;;;;;",
   "deployedSourceMap": "249:1691:0:-;;;;;",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./ErrorReporter.sol\";\n\n/**\n * @title Careful Math\n * @notice Derived from OpenZeppelin's SafeMath library\n *         https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol\n */\ncontract CarefulMath is ErrorReporter {\n    /**\n     * @dev Multiplies two numbers, returns an error on overflow.\n     */\n    function mul(uint a, uint b) internal pure returns (Error, uint) {\n        if (a == 0) {\n            return (Error.NO_ERROR, 0);\n        }\n\n        uint c = a * b;\n\n        if (c / a != b) {\n            return (Error.INTEGER_OVERFLOW, 0);\n        } else {\n            return (Error.NO_ERROR, c);\n        }\n    }\n\n    /**\n     * @dev Integer division of two numbers, truncating the quotient.\n     */\n    function div(uint a, uint b) internal pure returns (Error, uint) {\n        if (b == 0) {\n            return (Error.DIVISION_BY_ZERO, 0);\n        }\n\n        return (Error.NO_ERROR, a / b);\n    }\n\n    /**\n     * @dev Subtracts two numbers, returns an error on overflow (i.e. if subtrahend is greater than minuend).\n     */\n    function sub(uint a, uint b) internal pure returns (Error, uint) {\n        if (b <= a) {\n            return (Error.NO_ERROR, a - b);\n        } else {\n            return (Error.INTEGER_UNDERFLOW, 0);\n        }\n    }\n\n    /**\n     * @dev Adds two numbers, returns an error on overflow.\n     */\n    function add(uint a, uint b) internal pure returns (Error, uint) {\n        uint c = a + b;\n\n        if (c >= a) {\n            return (Error.NO_ERROR, c);\n        } else {\n            return (Error.INTEGER_OVERFLOW, 0);\n        }\n    }\n\n    /**\n     * @dev add a and b and then subtract c\n     */\n    function addThenSub(uint a, uint b, uint c) internal pure returns (Error, uint) {\n        (Error err0, uint sum) = add(a, b);\n\n        if (err0 != Error.NO_ERROR) {\n            return (err0, 0);\n        }\n\n        return sub(sum, c);\n    }\n}\n",
-  "sourcePath": "/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/CarefulMath.sol",
+  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol",
   "ast": {
-    "absolutePath": "/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/CarefulMath.sol",
+    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol",
     "exportedSymbols": {
       "CarefulMath": [
         182
@@ -53,12 +53,12 @@
         "src": "0:24:0"
       },
       {
-        "absolutePath": "/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/ErrorReporter.sol",
+        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
         "file": "./ErrorReporter.sol",
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 183,
-        "sourceUnit": 490,
+        "sourceUnit": 493,
         "src": "26:29:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -72,10 +72,10 @@
               "id": 3,
               "name": "ErrorReporter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 489,
+              "referencedDeclaration": 492,
               "src": "273:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ErrorReporter_$489",
+                "typeIdentifier": "t_contract$_ErrorReporter_$492",
                 "typeString": "contract ErrorReporter"
               }
             },
@@ -85,7 +85,7 @@
           }
         ],
         "contractDependencies": [
-          489
+          492
         ],
         "contractKind": "contract",
         "documentation": "@title Careful Math\n@notice Derived from OpenZeppelin's SafeMath library\n        https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol",
@@ -93,7 +93,7 @@
         "id": 182,
         "linearizedBaseContracts": [
           182,
-          489
+          492
         ],
         "name": "CarefulMath",
         "nodeType": "ContractDefinition",
@@ -2364,7 +2364,7 @@
     "src": "0:1941:0"
   },
   "legacyAST": {
-    "absolutePath": "/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/CarefulMath.sol",
+    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol",
     "exportedSymbols": {
       "CarefulMath": [
         182
@@ -2385,12 +2385,12 @@
         "src": "0:24:0"
       },
       {
-        "absolutePath": "/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/ErrorReporter.sol",
+        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
         "file": "./ErrorReporter.sol",
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 183,
-        "sourceUnit": 490,
+        "sourceUnit": 493,
         "src": "26:29:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2404,10 +2404,10 @@
               "id": 3,
               "name": "ErrorReporter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 489,
+              "referencedDeclaration": 492,
               "src": "273:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ErrorReporter_$489",
+                "typeIdentifier": "t_contract$_ErrorReporter_$492",
                 "typeString": "contract ErrorReporter"
               }
             },
@@ -2417,7 +2417,7 @@
           }
         ],
         "contractDependencies": [
-          489
+          492
         ],
         "contractKind": "contract",
         "documentation": "@title Careful Math\n@notice Derived from OpenZeppelin's SafeMath library\n        https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol",
@@ -2425,7 +2425,7 @@
         "id": 182,
         "linearizedBaseContracts": [
           182,
-          489
+          492
         ],
         "name": "CarefulMath",
         "nodeType": "ContractDefinition",
@@ -4700,8 +4700,8 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.23",
-  "updatedAt": "2020-06-01T18:26:28.548Z",
+  "schemaVersion": "3.2.3",
+  "updatedAt": "2020-09-29T16:08:44.536Z",
   "devdoc": {
     "methods": {},
     "title": "Careful Math"

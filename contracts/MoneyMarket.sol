@@ -243,53 +243,96 @@ contract MoneyMarket is Exponential, SafeToken {
     /**
      * @dev KYC Integration
      */
-    //need kyc admins, kyc custoemrs, modifier for kyc admin and kyc customers, function to add kyc admin and remove them by admin
+
+    /**
+     * @dev Mapping to identify the list of KYC Admins
+     */
     mapping(address=>bool) private KYCAdmins;
+    /**
+     * @dev Mapping to identify the list of customers with verified KYC
+     */
     mapping(address=>bool) private customersWithKYC;
 
+    /**
+     * @dev Events to notify the frontend of all the functions below
+     */
+    event KYCAdminAdded(address KYCAdmin);
+    event KYCAdminRemoved(address KYCAdmin);
+    event KYCCustomerAdded(address KYCCustomer);
+    event KYCCustomerRemoved(address KYCCustomer);
+
+    /**
+     * @dev Function to emit fail event to frontend
+     */
+    function emitError(Error error, FailureInfo failure) private returns(uint) {
+        return fail(error, failure);
+    }
+
+    /**
+     * @dev Modifier to check if the caller of the function is a KYC Admin
+     */
     modifier isKYCAdmin {
         // Check caller = KYCadmin
         if (!KYCAdmins[msg.sender]) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_CHECK_FAILED);
+            emitError(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_CHECK_FAILED);
         }
         // require(KYCAdmins[msg.sender],"Operation can only be performed by a KYC Admin");
         _;
     }
 
+    /**
+     * @dev Modifier to check if the caller of the function is KYC verified
+     */
     modifier isKYCVerifiedCustomer {
         // Check caller = KYCVerifiedCustomer
         if (!customersWithKYC[msg.sender]) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED);
+            emitError(Error.UNAUTHORIZED, FailureInfo.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED);
         }
         // require(customersWithKYC[msg.sender],"Customer is not KYC Verified");
         _;
     }
 
-    function addCustomerKYC(address customer) public isKYCAdmin returns(uint) {
-        customersWithKYC[customer] = true;
-        return uint(Error.NO_ERROR);
-    }
-
-    function removeCustomerKYC(address customer) public isKYCAdmin returns(uint) {
-        customersWithKYC[customer] = false;
-        return uint(Error.NO_ERROR);
-    }
-
+    /**
+     * @dev Function for use by the admin of the contract to add KYC Admins
+     */
     function addKYCAdmin(address KYCAdmin) public returns(uint) {
         // Check caller = admin
         if (msg.sender != admin) {
             return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
         }
         KYCAdmins[KYCAdmin] = true;
+        emit KYCAdminAdded(KYCAdmin);
         return uint(Error.NO_ERROR);
     }
 
+    /**
+     * @dev Function for use by the admin of the contract to remove KYC Admins
+     */
     function removeKYCAdmin(address KYCAdmin) public returns(uint) {
         // Check caller = admin
         if (msg.sender != admin) {
             return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
         }
         KYCAdmins[KYCAdmin] = false;
+        emit KYCAdminRemoved(KYCAdmin);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function for use by the KYC admins to add KYC Customers
+     */
+    function addCustomerKYC(address customer) public isKYCAdmin returns(uint) {
+        customersWithKYC[customer] = true;
+        emit KYCCustomerAdded(customer);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function for use by the KYC admins to remove KYC Customers
+     */
+    function removeCustomerKYC(address customer) public isKYCAdmin returns(uint) {
+        customersWithKYC[customer] = false;
+        emit KYCCustomerRemoved(customer);
         return uint(Error.NO_ERROR);
     }
 
@@ -515,7 +558,7 @@ contract MoneyMarket is Exponential, SafeToken {
     }
 
     /**
-     * @notice Begins transfer of admin rights. The newPending must call `_acceptAdmin` to finalize the transfer.
+     * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
      * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
      * @param newPendingAdmin New pending admin.
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
