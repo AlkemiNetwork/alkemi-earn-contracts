@@ -1,4 +1,4 @@
-## Kovan Address
+## Kovan Deployments
 
 <table>
 	<tr>
@@ -56,7 +56,7 @@
 
 </table>
 
-## Rinkeby Contract Address
+## Rinkeby Deployments
 
 <table>
 	<tr>
