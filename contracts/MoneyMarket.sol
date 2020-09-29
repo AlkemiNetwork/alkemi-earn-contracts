@@ -241,6 +241,59 @@ contract MoneyMarket is Exponential, SafeToken {
     event SetPaused(bool newState);
 
     /**
+     * @dev KYC Integration
+     */
+    //need kyc admins, kyc custoemrs, modifier for kyc admin and kyc customers, function to add kyc admin and remove them by admin
+    mapping(address=>bool) private KYCAdmins;
+    mapping(address=>bool) private customersWithKYC;
+
+    modifier isKYCAdmin {
+        // Check caller = KYCadmin
+        if (!KYCAdmins[msg.sender]) {
+            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_CHECK_FAILED);
+        }
+        // require(KYCAdmins[msg.sender],"Operation can only be performed by a KYC Admin");
+        _;
+    }
+
+    modifier isKYCVerifiedCustomer {
+        // Check caller = KYCVerifiedCustomer
+        if (!customersWithKYC[msg.sender]) {
+            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED);
+        }
+        // require(customersWithKYC[msg.sender],"Customer is not KYC Verified");
+        _;
+    }
+
+    function addCustomerKYC(address customer) public isKYCAdmin returns(uint) {
+        customersWithKYC[customer] = true;
+        return uint(Error.NO_ERROR);
+    }
+
+    function removeCustomerKYC(address customer) public isKYCAdmin returns(uint) {
+        customersWithKYC[customer] = false;
+        return uint(Error.NO_ERROR);
+    }
+
+    function addKYCAdmin(address KYCAdmin) public returns(uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+        }
+        KYCAdmins[KYCAdmin] = true;
+        return uint(Error.NO_ERROR);
+    }
+
+    function removeKYCAdmin(address KYCAdmin) public returns(uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+        }
+        KYCAdmins[KYCAdmin] = false;
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
      * @dev Simple function to calculate min between two numbers.
      */
     function min(uint a, uint b) pure internal returns (uint) {
@@ -462,7 +515,7 @@ contract MoneyMarket is Exponential, SafeToken {
     }
 
     /**
-     * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
+     * @notice Begins transfer of admin rights. The newPending must call `_acceptAdmin` to finalize the transfer.
      * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
      * @param newPendingAdmin New pending admin.
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
@@ -869,7 +922,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param amount The amount to supply
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function supply(address asset, uint amount) public returns (uint) {
+    function supply(address asset, uint amount) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
@@ -995,7 +1048,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param requestedAmount The amount to withdraw (or -1 for max)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function withdraw(address asset, uint requestedAmount) public returns (uint) {
+    function withdraw(address asset, uint requestedAmount) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.WITHDRAW_CONTRACT_PAUSED);
         }
@@ -1310,7 +1363,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param amount The amount to repay (or -1 for max)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function repayBorrow(address asset, uint amount) public returns (uint) {
+    function repayBorrow(address asset, uint amount) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.REPAY_BORROW_CONTRACT_PAUSED);
         }
@@ -1504,7 +1557,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param requestedAmountClose The amount to repay (or -1 for max)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public returns (uint) {
+    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.LIQUIDATE_CONTRACT_PAUSED);
         }
@@ -1913,7 +1966,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param amount The amount to borrow
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function borrow(address asset, uint amount) public returns (uint) {
+    function borrow(address asset, uint amount) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
         }
