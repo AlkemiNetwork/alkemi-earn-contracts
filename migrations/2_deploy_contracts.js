@@ -21,7 +21,7 @@ module.exports = async (deployer, network, accounts) => {
 			deploymentConfig.RINKEBY.PriceOracle
 		);
 		await deployer.deploy(MoneyMarket);
-		await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MoneyMarket);
+		await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
 		await deployer.deploy(
 			LiquidationChecker,
 			deploymentConfig.RINKEBY.MoneyMarket,

@@ -9986,6 +9986,35 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {
+    "4": {
+      "events": {
+        "0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "error",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "info",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "detail",
+              "type": "uint256"
+            }
+          ],
+          "name": "Failure",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x119a9C4e748593f88b0af19a5C2167aeDb4aD884",
+      "transactionHash": "0x2382d5b22e7ebf7284153f27415b346884bf324e4523e75730107f6867fa95e6"
+    },
     "42": {
       "events": {
         "0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0": {
@@ -10017,7 +10046,7 @@
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-09-29T19:27:54.194Z",
+  "updatedAt": "2020-10-01T17:43:27.038Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Compound",

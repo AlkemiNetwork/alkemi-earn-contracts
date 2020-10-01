@@ -44792,12 +44792,12 @@
         }
       },
       "links": {},
-      "address": "0xF0126dfa287078F12e4f12e537EE0E13E87ac8dF",
-      "transactionHash": "0xbfdc93c94ace0bc8853b999948f14f229f599e22ad472998a9302454835e7af5"
+      "address": "0x3A530F943F32f9924f950E77e43F592907bD4B02",
+      "transactionHash": "0x354ad52a1bb341f6cce78496eef63fcff6b818f3fb7fedd24b7535706208235d"
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-09-29T19:27:53.533Z",
+  "updatedAt": "2020-10-01T17:42:56.362Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {

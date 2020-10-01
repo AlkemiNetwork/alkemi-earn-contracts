@@ -274,10 +274,11 @@ contract MoneyMarket is Exponential, SafeToken {
     modifier isKYCAdmin {
         // Check caller = KYCadmin
         if (!KYCAdmins[msg.sender]) {
-            emitError(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_CHECK_FAILED);
+            emitError(Error.KYC_ADMIN_CHECK_FAILED, FailureInfo.KYC_ADMIN_CHECK_FAILED);
+        } else {
+            require(KYCAdmins[msg.sender],"Operation can only be performed by a KYC Admin");
+            _;
         }
-        // require(KYCAdmins[msg.sender],"Operation can only be performed by a KYC Admin");
-        _;
     }
 
     /**
@@ -286,10 +287,11 @@ contract MoneyMarket is Exponential, SafeToken {
     modifier isKYCVerifiedCustomer {
         // Check caller = KYCVerifiedCustomer
         if (!customersWithKYC[msg.sender]) {
-            emitError(Error.UNAUTHORIZED, FailureInfo.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED);
+            emitError(Error.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED, FailureInfo.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED);
+        } else {
+            require(customersWithKYC[msg.sender],"Customer is not KYC Verified");
+            _;
         }
-        // require(customersWithKYC[msg.sender],"Customer is not KYC Verified");
-        _;
     }
 
     /**
@@ -298,7 +300,7 @@ contract MoneyMarket is Exponential, SafeToken {
     function addKYCAdmin(address KYCAdmin) public returns(uint) {
         // Check caller = admin
         if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+            return fail(Error.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
         }
         KYCAdmins[KYCAdmin] = true;
         emit KYCAdminAdded(KYCAdmin);
@@ -311,7 +313,7 @@ contract MoneyMarket is Exponential, SafeToken {
     function removeKYCAdmin(address KYCAdmin) public returns(uint) {
         // Check caller = admin
         if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+            return fail(Error.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
         }
         KYCAdmins[KYCAdmin] = false;
         emit KYCAdminRemoved(KYCAdmin);
@@ -334,6 +336,13 @@ contract MoneyMarket is Exponential, SafeToken {
         customersWithKYC[customer] = false;
         emit KYCCustomerRemoved(customer);
         return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function to fetch KYC verification status of a customer
+     */
+    function verifyKYC(address customer) public view returns(bool) {
+        return customersWithKYC[customer];
     }
 
     /**
