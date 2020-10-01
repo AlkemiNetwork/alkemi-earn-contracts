@@ -346,6 +346,67 @@ contract MoneyMarket is Exponential, SafeToken {
     }
 
     /**
+     * @dev Liquidator Integration
+     */
+
+    /**
+     * @dev Mapping to identify the list of customers with Liquidator roles
+     */
+    mapping(address=>bool) private liquidators;
+
+    /**
+     * @dev Events to notify the frontend of all the functions below
+     */
+    event LiquidatorAdded(address Liquidator);
+    event LiquidatorRemoved(address Liquidator);
+
+    /**
+     * @dev Modifier to check if the caller of the function is a Liquidator
+     */
+    modifier isLiquidator {
+        // Check caller = Liquidator
+        if (!liquidators[msg.sender]) {
+            emitError(Error.LIQUIDATOR_CHECK_FAILED, FailureInfo.LIQUIDATOR_CHECK_FAILED);
+        } else {
+            require(liquidators[msg.sender],"Customer is not a Liquidator");
+            _;
+        }
+    }
+
+    /**
+     * @dev Function for use by the admin of the contract to add Liquidators
+     */
+    function addLiquidator(address liquidator) public returns(uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+        }
+        liquidators[liquidator] = true;
+        emit LiquidatorAdded(liquidator);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function for use by the admin of the contract to remove Liquidators
+     */
+    function removeLiquidator(address liquidator) public returns(uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+        }
+        liquidators[liquidator] = false;
+        emit LiquidatorRemoved(liquidator);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function to fetch Liquidator status of a customer
+     */
+    function verifyLiquidator(address liquidator) public view returns(bool) {
+        return liquidators[liquidator];
+    }
+
+    /**
      * @dev Simple function to calculate min between two numbers.
      */
     function min(uint a, uint b) pure internal returns (uint) {
@@ -1609,7 +1670,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param requestedAmountClose The amount to repay (or -1 for max)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public isKYCVerifiedCustomer returns (uint) {
+    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public isKYCVerifiedCustomer isLiquidator returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.LIQUIDATE_CONTRACT_PAUSED);
         }
