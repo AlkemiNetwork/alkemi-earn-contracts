@@ -22,7 +22,7 @@
 	"homepage": "https://github.com/Lendfme/contracts#readme",
 	"dependencies": {
 		"solidoc": "^1.0.5",
-		"truffle": "^5.1.18",
+		"truffle": "^5.1.46",
 		"truffle-hdwallet-provider": "^1.0.17"
 	}
 }

@@ -145,25 +145,29 @@ contract("MoneyMarket", (accounts) => {
 					from: accounts[2],
 				});
 				assert.notEqual(
-					result1.logs[0].args.info,
-					23,
+					result1.logs[0].args.error,
+					28,
 					"Unverified customer is able to access supply"
 				);
 				assert.notEqual(
-					result2.logs[0].args.info,
-					23,
+					result2.logs[0].args.error,
+					28,
 					"Unverified customer is able to access repayBorrow"
 				);
 				assert.notEqual(
-					result3.logs[0].args.info,
-					23,
+					result3.logs[0].args.error,
+					28,
 					"Unverified customer is able to access liquidateBorrow"
 				);
 				assert.notEqual(
-					result4.logs[0].args.info,
-					23,
+					result4.logs[0].args.error,
+					28,
 					"Unverified customer is able to access borrow"
 				);
+			});
+			it("KYC Verification status true for verified customers", async () => {
+				const result1 = await MoneyMarketInstance.verifyKYC(accounts[2]);
+				assert.equal(result1, true, "Customer KYC status verification failed");
 			});
 		});
 		describe("Failure", () => {
@@ -191,25 +195,105 @@ contract("MoneyMarket", (accounts) => {
 					from: accounts[3],
 				});
 				assert.equal(
-					result1.logs[0].args.info,
-					23,
+					result1.logs[0].args.error,
+					28,
 					"Unverified customer is able to access supply"
 				);
 				assert.equal(
-					result2.logs[0].args.info,
-					23,
+					result2.logs[0].args.error,
+					28,
 					"Unverified customer is able to access repayBorrow"
 				);
 				assert.equal(
-					result3.logs[0].args.info,
-					23,
+					result3.logs[0].args.error,
+					28,
 					"Unverified customer is able to access liquidateBorrow"
 				);
 				assert.equal(
-					result4.logs[0].args.info,
-					23,
+					result4.logs[0].args.error,
+					28,
 					"Unverified customer is able to access borrow"
 				);
+			});
+			it("KYC Verification status false for unverified customers", async () => {
+				const result1 = await MoneyMarketInstance.verifyKYC(accounts[1]);
+				assert.equal(result1, false, "Customer KYC status verification failed");
+			});
+		});
+	});
+	// Liquidator Tests
+	describe("Add and remove Liquidator", () => {
+		describe("Success", () => {
+			it("Admin can add Liquidator", async () => {
+				const result = await MoneyMarketInstance.addLiquidator(accounts[2], {
+					from: accounts[0],
+				});
+				assert.equal(
+					result.logs[0].event,
+					"LiquidatorAdded",
+					"Unable to add Liquidator being Admin"
+				);
+			});
+			it("Admin can remove Liquidator", async () => {
+				const result = await MoneyMarketInstance.removeLiquidator(accounts[2], {
+					from: accounts[0],
+				});
+				assert.equal(
+					result.logs[0].event,
+					"LiquidatorRemoved",
+					"Unable to remove Liquidator being Admin"
+				);
+			});
+		});
+		describe("Failure", () => {
+			it("Cannot add Liquidator if not Admin", async () => {
+				const result = await MoneyMarketInstance.addLiquidator(accounts[2], {
+					from: accounts[2],
+				});
+				assert.equal(
+					result.logs[0].event,
+					"Failure",
+					"Able to add Liquidator even if not Admin"
+				);
+			});
+			it("Cannot remove Liquidator if not Admin", async () => {
+				const result = await MoneyMarketInstance.removeLiquidator(accounts[2], {
+					from: accounts[2],
+				});
+				assert.equal(
+					result.logs[0].event,
+					"Failure",
+					"Able to remove Liquidator even if not Admin"
+				);
+			});
+		});
+	});
+	describe("Liquidator Verification", () => {
+		beforeEach(async () => {
+			await MoneyMarketInstance.addLiquidator(accounts[2], {
+				from: accounts[0],
+			});
+		});
+		describe("Success", () => {
+			it("Liquidator can access liquidateBorrow Function", async () => {
+				const result1 = await MoneyMarketInstance.liquidateBorrow(
+					accounts[3],
+					accounts[3],
+					accounts[3],
+					100,
+					{
+						from: accounts[2],
+					}
+				);
+				assert.notEqual(
+					result1.logs[0].args.error,
+					29,
+					"Unverified customer is able to access liquidateBorrow"
+				);
+			});
+			it("Liquidator status true for Liquidators", async () => {
+				const result1 = await MoneyMarketInstance.verifyLiquidator(accounts[2]);
+				assert.equal(result1, true, "Liquidator status verification failed");
 			});
 		});
 	});
