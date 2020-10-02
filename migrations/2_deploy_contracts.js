@@ -28,6 +28,19 @@ module.exports = async (deployer, network, accounts) => {
 			deploymentConfig.RINKEBY.Liquidator,
 			true
 		);
+	} else if (network == "ropsten") {
+		await deployer.deploy(PriceOracle, deploymentConfig.ROPSTEN.POSTER);
+		await deployer.deploy(
+			PriceOracleProxy,
+			deploymentConfig.ROPSTEN.PRICE_ORACLE
+		);
+		await deployer.deploy(MoneyMarket);
+		await deployer.deploy(Liquidator, MoneyMarket.address);
+		// await deployer.deploy(
+		// 	LiquidationChecker,
+		// 	MoneyMarket.address,
+		// 	Liquidator.address
+		// );
 	} else if (network == "kovan") {
 		// await deployer.deploy(PriceOracle, deploymentConfig.KOVAN.POSTER);
 		// await deployer.deploy(PriceOracleProxy, PriceOracle.address);

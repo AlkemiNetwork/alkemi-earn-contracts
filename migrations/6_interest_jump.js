@@ -10,4 +10,8 @@ module.exports = async (deployer, network, accounts) => {
 		await deployer.deploy(JumpRateModel);
 		await deployer.deploy(JumpRateModelV2);
 	}
+	if (network == "ropsten") {
+		await deployer.deploy(JumpRateModel);
+		await deployer.deploy(JumpRateModelV2);
+	}
 };

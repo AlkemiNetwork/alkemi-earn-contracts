@@ -43,6 +43,15 @@ module.exports = {
 			network_id: 42,
 			skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
 		},
+		ropsten: {
+			provider: () =>
+				new HDWalletProvider(
+					mnemonic,
+					`https://ropsten.infura.io/v3/${infuraKey}`
+				),
+			network_id: 3,
+			skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+		},
 		mainnet: {
 			provider: () =>
 				new HDWalletProvider(

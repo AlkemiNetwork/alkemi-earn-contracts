@@ -24,9 +24,9 @@
       "type": "event"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{},\"title\":\"Careful Math\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":\"CarefulMath\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x18dcf3304115a8a2a879ca17fd06bd76d892b2ce0f73a8f36063bab5f58ade19\",\"urls\":[\"bzzr://d25adc6d945a658707d573cf1b7506d9ab282f1c8173901fbf8ca42e67b1469e\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x4ffd454007e38669f0fc1d116ba5b92f65b410f08491a6a3ba1d5cce71ccc42e\",\"urls\":[\"bzzr://0dfc131be085d99fac2189af8204d256600de2d70d2286ba101236a58c89b947\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820fdae664698d0695c319669e635b8237ce52fcdd8864e92969ac0501c6bb889a40029",
-  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820fdae664698d0695c319669e635b8237ce52fcdd8864e92969ac0501c6bb889a40029",
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{},\"title\":\"Careful Math\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":\"CarefulMath\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x18dcf3304115a8a2a879ca17fd06bd76d892b2ce0f73a8f36063bab5f58ade19\",\"urls\":[\"bzzr://d25adc6d945a658707d573cf1b7506d9ab282f1c8173901fbf8ca42e67b1469e\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x1e406b3babf983b29210956d1193034b88cc9b13cc347c34e6df3b629d2c19b5\",\"urls\":[\"bzzr://69c971fe8b31519e79ffc1e91af8c21dd5e55552459a0747b928bc05ea6c89d6\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820267dce89f7775660a7a3d16b85d5df3ee7d793e3e0a0ed00365cacdbe6e84aaa0029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820267dce89f7775660a7a3d16b85d5df3ee7d793e3e0a0ed00365cacdbe6e84aaa0029",
   "sourceMap": "249:1691:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;249:1691:0;;;;;;;",
   "deployedSourceMap": "249:1691:0:-;;;;;",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./ErrorReporter.sol\";\n\n/**\n * @title Careful Math\n * @notice Derived from OpenZeppelin's SafeMath library\n *         https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol\n */\ncontract CarefulMath is ErrorReporter {\n    /**\n     * @dev Multiplies two numbers, returns an error on overflow.\n     */\n    function mul(uint a, uint b) internal pure returns (Error, uint) {\n        if (a == 0) {\n            return (Error.NO_ERROR, 0);\n        }\n\n        uint c = a * b;\n\n        if (c / a != b) {\n            return (Error.INTEGER_OVERFLOW, 0);\n        } else {\n            return (Error.NO_ERROR, c);\n        }\n    }\n\n    /**\n     * @dev Integer division of two numbers, truncating the quotient.\n     */\n    function div(uint a, uint b) internal pure returns (Error, uint) {\n        if (b == 0) {\n            return (Error.DIVISION_BY_ZERO, 0);\n        }\n\n        return (Error.NO_ERROR, a / b);\n    }\n\n    /**\n     * @dev Subtracts two numbers, returns an error on overflow (i.e. if subtrahend is greater than minuend).\n     */\n    function sub(uint a, uint b) internal pure returns (Error, uint) {\n        if (b <= a) {\n            return (Error.NO_ERROR, a - b);\n        } else {\n            return (Error.INTEGER_UNDERFLOW, 0);\n        }\n    }\n\n    /**\n     * @dev Adds two numbers, returns an error on overflow.\n     */\n    function add(uint a, uint b) internal pure returns (Error, uint) {\n        uint c = a + b;\n\n        if (c >= a) {\n            return (Error.NO_ERROR, c);\n        } else {\n            return (Error.INTEGER_OVERFLOW, 0);\n        }\n    }\n\n    /**\n     * @dev add a and b and then subtract c\n     */\n    function addThenSub(uint a, uint b, uint c) internal pure returns (Error, uint) {\n        (Error err0, uint sum) = add(a, b);\n\n        if (err0 != Error.NO_ERROR) {\n            return (err0, 0);\n        }\n\n        return sub(sum, c);\n    }\n}\n",
@@ -58,7 +58,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 183,
-        "sourceUnit": 493,
+        "sourceUnit": 500,
         "src": "26:29:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -72,10 +72,10 @@
               "id": 3,
               "name": "ErrorReporter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 492,
+              "referencedDeclaration": 499,
               "src": "273:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ErrorReporter_$492",
+                "typeIdentifier": "t_contract$_ErrorReporter_$499",
                 "typeString": "contract ErrorReporter"
               }
             },
@@ -85,7 +85,7 @@
           }
         ],
         "contractDependencies": [
-          492
+          499
         ],
         "contractKind": "contract",
         "documentation": "@title Careful Math\n@notice Derived from OpenZeppelin's SafeMath library\n        https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol",
@@ -93,7 +93,7 @@
         "id": 182,
         "linearizedBaseContracts": [
           182,
-          492
+          499
         ],
         "name": "CarefulMath",
         "nodeType": "ContractDefinition",
@@ -176,10 +176,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "484:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -193,7 +193,7 @@
                               "referencedDeclaration": null,
                               "src": "484:14:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -225,7 +225,7 @@
                           "nodeType": "TupleExpression",
                           "src": "483:19:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -413,10 +413,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "651:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -430,7 +430,7 @@
                               "referencedDeclaration": null,
                               "src": "651:14:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -457,7 +457,7 @@
                           "nodeType": "TupleExpression",
                           "src": "650:19:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                             "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                           }
                         },
@@ -488,10 +488,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "586:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -505,7 +505,7 @@
                               "referencedDeclaration": null,
                               "src": "586:22:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -537,7 +537,7 @@
                           "nodeType": "TupleExpression",
                           "src": "585:27:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -633,7 +633,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -641,10 +641,10 @@
                     "id": 10,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "427:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -764,10 +764,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "887:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -781,7 +781,7 @@
                               "referencedDeclaration": null,
                               "src": "887:22:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -813,7 +813,7 @@
                           "nodeType": "TupleExpression",
                           "src": "886:27:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -837,10 +837,10 @@
                           "name": "Error",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 345,
+                          "referencedDeclaration": 350,
                           "src": "942:5:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                            "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                             "typeString": "type(enum ErrorReporter.Error)"
                           }
                         },
@@ -854,7 +854,7 @@
                         "referencedDeclaration": null,
                         "src": "942:14:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_enum$_Error_$345",
+                          "typeIdentifier": "t_enum$_Error_$350",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       },
@@ -913,7 +913,7 @@
                     "nodeType": "TupleExpression",
                     "src": "941:23:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                      "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                       "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                     }
                   },
@@ -1006,7 +1006,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -1014,10 +1014,10 @@
                     "id": 56,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "830:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -1128,10 +1128,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "1273:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -1145,7 +1145,7 @@
                               "referencedDeclaration": null,
                               "src": "1273:23:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -1177,7 +1177,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1272:28:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -1208,10 +1208,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "1212:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -1225,7 +1225,7 @@
                               "referencedDeclaration": null,
                               "src": "1212:14:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -1284,7 +1284,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1211:23:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                             "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                           }
                         },
@@ -1380,7 +1380,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -1388,10 +1388,10 @@
                     "id": 85,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "1155:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -1583,10 +1583,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "1590:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -1600,7 +1600,7 @@
                               "referencedDeclaration": null,
                               "src": "1590:22:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -1632,7 +1632,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1589:27:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -1663,10 +1663,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "1533:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -1680,7 +1680,7 @@
                               "referencedDeclaration": null,
                               "src": "1533:14:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -1707,7 +1707,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1532:19:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                             "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                           }
                         },
@@ -1803,7 +1803,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -1811,10 +1811,10 @@
                     "id": 115,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "1451:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -1878,7 +1878,7 @@
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_Error_$345",
+                        "typeIdentifier": "t_enum$_Error_$350",
                         "typeString": "enum ErrorReporter.Error"
                       },
                       "typeName": {
@@ -1886,10 +1886,10 @@
                         "id": 156,
                         "name": "Error",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 345,
+                        "referencedDeclaration": 350,
                         "src": "1790:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_enum$_Error_$345",
+                          "typeIdentifier": "t_enum$_Error_$350",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       },
@@ -1972,7 +1972,7 @@
                       "referencedDeclaration": 143,
                       "src": "1814:3:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_enum$_Error_$345_$_t_uint256_$",
+                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_enum$_Error_$350_$_t_uint256_$",
                         "typeString": "function (uint256,uint256) pure returns (enum ErrorReporter.Error,uint256)"
                       }
                     },
@@ -1986,7 +1986,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1814:9:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                      "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                       "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                     }
                   },
@@ -1997,7 +1997,7 @@
                   "condition": {
                     "argumentTypes": null,
                     "commonType": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     },
                     "id": 168,
@@ -2014,7 +2014,7 @@
                       "referencedDeclaration": 157,
                       "src": "1838:4:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_Error_$345",
+                        "typeIdentifier": "t_enum$_Error_$350",
                         "typeString": "enum ErrorReporter.Error"
                       }
                     },
@@ -2028,10 +2028,10 @@
                         "name": "Error",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 345,
+                        "referencedDeclaration": 350,
                         "src": "1846:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                          "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                           "typeString": "type(enum ErrorReporter.Error)"
                         }
                       },
@@ -2045,7 +2045,7 @@
                       "referencedDeclaration": null,
                       "src": "1846:14:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_Error_$345",
+                        "typeIdentifier": "t_enum$_Error_$350",
                         "typeString": "enum ErrorReporter.Error"
                       }
                     },
@@ -2077,7 +2077,7 @@
                               "referencedDeclaration": 157,
                               "src": "1884:4:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -2109,7 +2109,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1883:9:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -2170,7 +2170,7 @@
                       "referencedDeclaration": 109,
                       "src": "1920:3:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_enum$_Error_$345_$_t_uint256_$",
+                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_enum$_Error_$350_$_t_uint256_$",
                         "typeString": "function (uint256,uint256) pure returns (enum ErrorReporter.Error,uint256)"
                       }
                     },
@@ -2184,7 +2184,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1920:11:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                      "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                       "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                     }
                   },
@@ -2303,7 +2303,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -2311,10 +2311,10 @@
                     "id": 151,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "1766:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -2390,7 +2390,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 183,
-        "sourceUnit": 493,
+        "sourceUnit": 500,
         "src": "26:29:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2404,10 +2404,10 @@
               "id": 3,
               "name": "ErrorReporter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 492,
+              "referencedDeclaration": 499,
               "src": "273:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ErrorReporter_$492",
+                "typeIdentifier": "t_contract$_ErrorReporter_$499",
                 "typeString": "contract ErrorReporter"
               }
             },
@@ -2417,7 +2417,7 @@
           }
         ],
         "contractDependencies": [
-          492
+          499
         ],
         "contractKind": "contract",
         "documentation": "@title Careful Math\n@notice Derived from OpenZeppelin's SafeMath library\n        https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol",
@@ -2425,7 +2425,7 @@
         "id": 182,
         "linearizedBaseContracts": [
           182,
-          492
+          499
         ],
         "name": "CarefulMath",
         "nodeType": "ContractDefinition",
@@ -2508,10 +2508,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "484:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -2525,7 +2525,7 @@
                               "referencedDeclaration": null,
                               "src": "484:14:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -2557,7 +2557,7 @@
                           "nodeType": "TupleExpression",
                           "src": "483:19:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -2745,10 +2745,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "651:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -2762,7 +2762,7 @@
                               "referencedDeclaration": null,
                               "src": "651:14:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -2789,7 +2789,7 @@
                           "nodeType": "TupleExpression",
                           "src": "650:19:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                             "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                           }
                         },
@@ -2820,10 +2820,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "586:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -2837,7 +2837,7 @@
                               "referencedDeclaration": null,
                               "src": "586:22:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -2869,7 +2869,7 @@
                           "nodeType": "TupleExpression",
                           "src": "585:27:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -2965,7 +2965,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -2973,10 +2973,10 @@
                     "id": 10,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "427:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -3096,10 +3096,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "887:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -3113,7 +3113,7 @@
                               "referencedDeclaration": null,
                               "src": "887:22:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -3145,7 +3145,7 @@
                           "nodeType": "TupleExpression",
                           "src": "886:27:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -3169,10 +3169,10 @@
                           "name": "Error",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 345,
+                          "referencedDeclaration": 350,
                           "src": "942:5:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                            "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                             "typeString": "type(enum ErrorReporter.Error)"
                           }
                         },
@@ -3186,7 +3186,7 @@
                         "referencedDeclaration": null,
                         "src": "942:14:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_enum$_Error_$345",
+                          "typeIdentifier": "t_enum$_Error_$350",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       },
@@ -3245,7 +3245,7 @@
                     "nodeType": "TupleExpression",
                     "src": "941:23:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                      "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                       "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                     }
                   },
@@ -3338,7 +3338,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -3346,10 +3346,10 @@
                     "id": 56,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "830:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -3460,10 +3460,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "1273:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -3477,7 +3477,7 @@
                               "referencedDeclaration": null,
                               "src": "1273:23:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -3509,7 +3509,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1272:28:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -3540,10 +3540,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "1212:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -3557,7 +3557,7 @@
                               "referencedDeclaration": null,
                               "src": "1212:14:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -3616,7 +3616,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1211:23:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                             "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                           }
                         },
@@ -3712,7 +3712,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -3720,10 +3720,10 @@
                     "id": 85,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "1155:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -3915,10 +3915,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "1590:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -3932,7 +3932,7 @@
                               "referencedDeclaration": null,
                               "src": "1590:22:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -3964,7 +3964,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1589:27:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -3995,10 +3995,10 @@
                                 "name": "Error",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 345,
+                                "referencedDeclaration": 350,
                                 "src": "1533:5:0",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                                  "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                                   "typeString": "type(enum ErrorReporter.Error)"
                                 }
                               },
@@ -4012,7 +4012,7 @@
                               "referencedDeclaration": null,
                               "src": "1533:14:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -4039,7 +4039,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1532:19:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                             "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                           }
                         },
@@ -4135,7 +4135,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -4143,10 +4143,10 @@
                     "id": 115,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "1451:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -4210,7 +4210,7 @@
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_Error_$345",
+                        "typeIdentifier": "t_enum$_Error_$350",
                         "typeString": "enum ErrorReporter.Error"
                       },
                       "typeName": {
@@ -4218,10 +4218,10 @@
                         "id": 156,
                         "name": "Error",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 345,
+                        "referencedDeclaration": 350,
                         "src": "1790:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_enum$_Error_$345",
+                          "typeIdentifier": "t_enum$_Error_$350",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       },
@@ -4304,7 +4304,7 @@
                       "referencedDeclaration": 143,
                       "src": "1814:3:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_enum$_Error_$345_$_t_uint256_$",
+                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_enum$_Error_$350_$_t_uint256_$",
                         "typeString": "function (uint256,uint256) pure returns (enum ErrorReporter.Error,uint256)"
                       }
                     },
@@ -4318,7 +4318,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1814:9:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                      "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                       "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                     }
                   },
@@ -4329,7 +4329,7 @@
                   "condition": {
                     "argumentTypes": null,
                     "commonType": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     },
                     "id": 168,
@@ -4346,7 +4346,7 @@
                       "referencedDeclaration": 157,
                       "src": "1838:4:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_Error_$345",
+                        "typeIdentifier": "t_enum$_Error_$350",
                         "typeString": "enum ErrorReporter.Error"
                       }
                     },
@@ -4360,10 +4360,10 @@
                         "name": "Error",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 345,
+                        "referencedDeclaration": 350,
                         "src": "1846:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_enum$_Error_$345_$",
+                          "typeIdentifier": "t_type$_t_enum$_Error_$350_$",
                           "typeString": "type(enum ErrorReporter.Error)"
                         }
                       },
@@ -4377,7 +4377,7 @@
                       "referencedDeclaration": null,
                       "src": "1846:14:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_Error_$345",
+                        "typeIdentifier": "t_enum$_Error_$350",
                         "typeString": "enum ErrorReporter.Error"
                       }
                     },
@@ -4409,7 +4409,7 @@
                               "referencedDeclaration": 157,
                               "src": "1884:4:0",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_enum$_Error_$345",
+                                "typeIdentifier": "t_enum$_Error_$350",
                                 "typeString": "enum ErrorReporter.Error"
                               }
                             },
@@ -4441,7 +4441,7 @@
                           "nodeType": "TupleExpression",
                           "src": "1883:9:0",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_rational_0_by_1_$",
+                            "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_rational_0_by_1_$",
                             "typeString": "tuple(enum ErrorReporter.Error,int_const 0)"
                           }
                         },
@@ -4502,7 +4502,7 @@
                       "referencedDeclaration": 109,
                       "src": "1920:3:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_enum$_Error_$345_$_t_uint256_$",
+                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_enum$_Error_$350_$_t_uint256_$",
                         "typeString": "function (uint256,uint256) pure returns (enum ErrorReporter.Error,uint256)"
                       }
                     },
@@ -4516,7 +4516,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1920:11:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_tuple$_t_enum$_Error_$345_$_t_uint256_$",
+                      "typeIdentifier": "t_tuple$_t_enum$_Error_$350_$_t_uint256_$",
                       "typeString": "tuple(enum ErrorReporter.Error,uint256)"
                     }
                   },
@@ -4635,7 +4635,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$345",
+                    "typeIdentifier": "t_enum$_Error_$350",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
@@ -4643,10 +4643,10 @@
                     "id": 151,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 345,
+                    "referencedDeclaration": 350,
                     "src": "1766:5:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$345",
+                      "typeIdentifier": "t_enum$_Error_$350",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -4701,7 +4701,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-09-29T16:08:44.536Z",
+  "updatedAt": "2020-10-02T14:13:26.281Z",
   "devdoc": {
     "methods": {},
     "title": "Careful Math"
