@@ -181,9 +181,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// Abstract contract for the full ERC 20 Token standard\n// https://github.com/ethereum/EIPs/issues/20\npragma solidity ^0.4.24;\n\n\ncontract EIP20Interface {\n    /* This is a slight change to the ERC20 base standard.\n    function totalSupply() constant returns (uint256 supply);\n    is replaced with:\n    uint256 public totalSupply;\n    This automatically creates a getter function for the totalSupply.\n    This is moved to the base contract since public getter functions are not\n    currently recognised as an implementation of the matching abstract\n    function by the compiler.\n    */\n    // total amount of tokens\n    uint256 public totalSupply;\n    /**\n     * @param _owner The address from which the balance will be retrieved\n     * @return The balance\n     */\n    function balanceOf(address _owner) public view returns (uint256 balance);\n\n    /**\n     * @notice send `_value` token to `_to` from `msg.sender`\n     * @param _to The address of the recipient\n     * @param _value The amount of token to be transferred\n     * @return Whether the transfer was successful or not\n     */\n    function transfer(address _to, uint256 _value) public returns (bool success);\n\n    /**\n     * @notice send `_value` token to `_to` from `_from` on the condition it is approved by `_from`\n     * @param _from The address of the sender\n     * @param _to The address of the recipient\n     * @param _value The amount of token to be transferred\n     * @return Whether the transfer was successful or not\n     */\n    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success);\n\n    /**\n     * @notice `msg.sender` approves `_spender` to spend `_value` tokens\n     * @param _spender The address of the account able to transfer the tokens\n     * @param _value The amount of tokens to be approved for transfer\n     * @return Whether the approval was successful or not\n     */\n    function approve(address _spender, uint256 _value) public returns (bool success);\n\n    /**\n     * @param _owner The address of the account owning tokens\n     * @param _spender The address of the account able to transfer the tokens\n     * @return Amount of remaining tokens allowed to spent\n     */\n    function allowance(address _owner, address _spender) public view returns (uint256 remaining);\n\n    // solhint-disable-next-line no-simple-event-func-name\n    event Transfer(address indexed _from, address indexed _to, uint256 _value);\n    event Approval(address indexed _owner, address indexed _spender, uint256 _value);\n}\n",
-  "sourcePath": "/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/EIP20Interface.sol",
+  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol",
   "ast": {
-    "absolutePath": "/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/EIP20Interface.sol",
+    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol",
     "exportedSymbols": {
       "EIP20Interface": [
         248
@@ -987,7 +987,7 @@
     "src": "102:2417:1"
   },
   "legacyAST": {
-    "absolutePath": "/Users/ryanbreen/workspace/Alkemi/research/lendfme/contracts/contracts/EIP20Interface.sol",
+    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol",
     "exportedSymbols": {
       "EIP20Interface": [
         248
@@ -1795,8 +1795,8 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.23",
-  "updatedAt": "2020-09-16T02:32:40.718Z",
+  "schemaVersion": "3.2.3",
+  "updatedAt": "2020-10-02T16:15:17.134Z",
   "devdoc": {
     "methods": {
       "allowance(address,address)": {

@@ -241,6 +241,172 @@ contract MoneyMarket is Exponential, SafeToken {
     event SetPaused(bool newState);
 
     /**
+     * @dev KYC Integration
+     */
+
+    /**
+     * @dev Mapping to identify the list of KYC Admins
+     */
+    mapping(address=>bool) private KYCAdmins;
+    /**
+     * @dev Mapping to identify the list of customers with verified KYC
+     */
+    mapping(address=>bool) private customersWithKYC;
+
+    /**
+     * @dev Events to notify the frontend of all the functions below
+     */
+    event KYCAdminAdded(address KYCAdmin);
+    event KYCAdminRemoved(address KYCAdmin);
+    event KYCCustomerAdded(address KYCCustomer);
+    event KYCCustomerRemoved(address KYCCustomer);
+
+    /**
+     * @dev Function to emit fail event to frontend
+     */
+    function emitError(Error error, FailureInfo failure) private returns(uint) {
+        return fail(error, failure);
+    }
+
+    /**
+     * @dev Modifier to check if the caller of the function is a KYC Admin
+     */
+    modifier isKYCAdmin {
+        // Check caller = KYCadmin
+        if (!KYCAdmins[msg.sender]) {
+            emitError(Error.KYC_ADMIN_CHECK_FAILED, FailureInfo.KYC_ADMIN_CHECK_FAILED);
+        } else {
+            require(KYCAdmins[msg.sender],"Operation can only be performed by a KYC Admin");
+            _;
+        }
+    }
+
+    /**
+     * @dev Modifier to check if the caller of the function is KYC verified
+     */
+    modifier isKYCVerifiedCustomer {
+        // Check caller = KYCVerifiedCustomer
+        if (!customersWithKYC[msg.sender]) {
+            emitError(Error.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED, FailureInfo.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED);
+        } else {
+            require(customersWithKYC[msg.sender],"Customer is not KYC Verified");
+            _;
+        }
+    }
+
+    /**
+     * @dev Function for use by the admin of the contract to add KYC Admins
+     */
+    function addKYCAdmin(address KYCAdmin) public returns(uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+        }
+        KYCAdmins[KYCAdmin] = true;
+        emit KYCAdminAdded(KYCAdmin);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function for use by the admin of the contract to remove KYC Admins
+     */
+    function removeKYCAdmin(address KYCAdmin) public returns(uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+        }
+        KYCAdmins[KYCAdmin] = false;
+        emit KYCAdminRemoved(KYCAdmin);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function for use by the KYC admins to add KYC Customers
+     */
+    function addCustomerKYC(address customer) public isKYCAdmin returns(uint) {
+        customersWithKYC[customer] = true;
+        emit KYCCustomerAdded(customer);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function for use by the KYC admins to remove KYC Customers
+     */
+    function removeCustomerKYC(address customer) public isKYCAdmin returns(uint) {
+        customersWithKYC[customer] = false;
+        emit KYCCustomerRemoved(customer);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function to fetch KYC verification status of a customer
+     */
+    function verifyKYC(address customer) public view returns(bool) {
+        return customersWithKYC[customer];
+    }
+
+    /**
+     * @dev Liquidator Integration
+     */
+
+    /**
+     * @dev Mapping to identify the list of customers with Liquidator roles
+     */
+    mapping(address=>bool) private liquidators;
+
+    /**
+     * @dev Events to notify the frontend of all the functions below
+     */
+    event LiquidatorAdded(address Liquidator);
+    event LiquidatorRemoved(address Liquidator);
+
+    /**
+     * @dev Modifier to check if the caller of the function is a Liquidator
+     */
+    modifier isLiquidator {
+        // Check caller = Liquidator
+        if (!liquidators[msg.sender]) {
+            emitError(Error.LIQUIDATOR_CHECK_FAILED, FailureInfo.LIQUIDATOR_CHECK_FAILED);
+        } else {
+            require(liquidators[msg.sender],"Customer is not a Liquidator");
+            _;
+        }
+    }
+
+    /**
+     * @dev Function for use by the admin of the contract to add Liquidators
+     */
+    function addLiquidator(address liquidator) public returns(uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+        }
+        liquidators[liquidator] = true;
+        emit LiquidatorAdded(liquidator);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function for use by the admin of the contract to remove Liquidators
+     */
+    function removeLiquidator(address liquidator) public returns(uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+        }
+        liquidators[liquidator] = false;
+        emit LiquidatorRemoved(liquidator);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Function to fetch Liquidator status of a customer
+     */
+    function verifyLiquidator(address liquidator) public view returns(bool) {
+        return liquidators[liquidator];
+    }
+
+    /**
      * @dev Simple function to calculate min between two numbers.
      */
     function min(uint a, uint b) pure internal returns (uint) {
@@ -869,7 +1035,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param amount The amount to supply
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function supply(address asset, uint amount) public returns (uint) {
+    function supply(address asset, uint amount) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
@@ -995,7 +1161,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param requestedAmount The amount to withdraw (or -1 for max)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function withdraw(address asset, uint requestedAmount) public returns (uint) {
+    function withdraw(address asset, uint requestedAmount) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.WITHDRAW_CONTRACT_PAUSED);
         }
@@ -1310,7 +1476,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param amount The amount to repay (or -1 for max)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function repayBorrow(address asset, uint amount) public returns (uint) {
+    function repayBorrow(address asset, uint amount) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.REPAY_BORROW_CONTRACT_PAUSED);
         }
@@ -1504,7 +1670,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param requestedAmountClose The amount to repay (or -1 for max)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public returns (uint) {
+    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public isKYCVerifiedCustomer isLiquidator returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.LIQUIDATE_CONTRACT_PAUSED);
         }
@@ -1913,7 +2079,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param amount The amount to borrow
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function borrow(address asset, uint amount) public returns (uint) {
+    function borrow(address asset, uint amount) public isKYCVerifiedCustomer returns (uint) {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
         }
