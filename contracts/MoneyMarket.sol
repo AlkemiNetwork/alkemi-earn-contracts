@@ -4,8 +4,7 @@ import "./Exponential.sol";
 import "./InterestRateModel.sol";
 import "./PriceOracleInterface.sol";
 import "./SafeToken.sol";
-import "@chainlink/contracts/src/v0.4/interfaces/AggregatorV3Interface.sol";
-
+import "./ChainLink.sol";
 
 contract MoneyMarket is Exponential, SafeToken {
 
@@ -24,25 +23,6 @@ contract MoneyMarket is Exponential, SafeToken {
         originationFee = Exp({mantissa: defaultOriginationFee});
         liquidationDiscount = Exp({mantissa: 0});
         // oracle must be configured via _setOracle
-    }
-    // chainlink test demo - to be deleted
-    AggregatorV3Interface internal priceFeed;
-
-    /**
-     * Returns the latest price
-     */
-    function getLatestPrice() public view returns (int) {
-        priceFeed = AggregatorV3Interface(0xECe365B379E1dD183B20fc5f022230C044d51404);
-        (
-            uint80 roundID, 
-            int price,
-            uint startedAt,
-            uint timeStamp,
-            uint80 answeredInRound
-        ) = priceFeed.latestRoundData();
-        // If the round is not complete yet, timestamp is 0
-        require(timeStamp > 0, "Round not complete");
-        return (price);
     }
 
     /**
@@ -594,6 +574,13 @@ contract MoneyMarket is Exponential, SafeToken {
         return (Error.NO_ERROR, truncate(borrowAmountWithFee));
     }
 
+    //ChainLink test
+    ChainLink priceOracle;
+    function getChainLinkPrice(address asset) public view returns (int) {
+        priceOracle = ChainLink(0x945167F4D3dA9aFF92dbb36C383F7Bd4ddB074E5);
+        int price = priceOracle.getAssetPrice(asset);
+        return price;
+    }
     /**
      * @dev fetches the price of asset from the PriceOracle and converts it to Exp
      * @param asset asset whose price should be fetched

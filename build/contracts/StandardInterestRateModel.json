@@ -10070,12 +10070,12 @@
         }
       },
       "links": {},
-      "address": "0x898112199EaEABbeE3735445F5A731CD8e6b23Be",
-      "transactionHash": "0x4ddb5d2379a3a321dd33514be44c53d7f215a6b8351d4d1e0c3e06b0c01f388c"
+      "address": "0xaa7Cac587c28E8F4e8337467fF1e51afBa3247a3",
+      "transactionHash": "0x3ba585011ddfc66b81dc94c4496197ca631f0dc9c96d5bf161db385e03bb4272"
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-02T16:28:20.097Z",
+  "updatedAt": "2020-10-06T16:25:44.309Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Compound",

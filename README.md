@@ -196,7 +196,7 @@
 	</tr>
 	<tr>
 		<td> WETH </td>
-		<td> 0xc778417e063141139fce010982780140aa0cd5ab </td>
+		<td> 0xc778417E063141139Fce010982780140Aa0cD5Ab </td>
 	</tr>
 	<tr>
 		<td> WETHRateModel </td>
@@ -204,7 +204,7 @@
 	</tr>
 	<tr>
 		<td> DAI </td>
-		<td> 0x31f42841c2db5173425b5223809cf3a38fede360 </td>
+		<td> 0x31F42841c2db5173425b5223809CF3A38FEde360 </td>
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
