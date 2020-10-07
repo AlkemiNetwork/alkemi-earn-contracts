@@ -59,8 +59,8 @@ contract ChainLink {
     /**
      * Returns the latest price
      */
-    function getAssetPrice(address asset) public view returns (int) {
-        if(!paused) {
+    function getAssetPrice(address asset) public view returns (uint) {
+        if(!paused && priceContractMapping[asset] != address(0)) {
             (
                 uint80 roundID, 
                 int price,
@@ -70,7 +70,12 @@ contract ChainLink {
             ) = priceContractMapping[asset].latestRoundData();
             // If the round is not complete yet, timestamp is 0
             require(timeStamp > 0, "Round not complete");
-            return (price);
+            if(price >0) {
+                return (uint(price));
+            }
+            else {
+                return 0;
+            }
         }
         else {
             return 0;

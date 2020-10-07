@@ -693,8 +693,8 @@ contract MoneyMarket is Exponential, SafeToken {
 
         // Verify contract at newOracle address supports assetPrices call.
         // This will revert if it doesn't.
-        ChainLink priceOracleTemp = ChainLink(newOracle);
-        priceOracleTemp.getAssetPrice(address(0));
+        // ChainLink priceOracleTemp = ChainLink(newOracle);
+        // priceOracleTemp.getAssetPrice(address(0));
 
         address oldOracle = oracle;
 
