@@ -36,9 +36,11 @@ module.exports = async (deployer, network, accounts) => {
 		// 	PriceOracleProxy,
 		// 	deploymentConfig.ROPSTEN.PRICE_ORACLE
 		// );
-		// await deployer.deploy(ChainLink);
-		// await deployer.link(ChainLink, MoneyMarket);
+		await deployer.deploy(ChainLink);
 		await deployer.deploy(MoneyMarket);
+		const oracle = await ChainLink.deployed();
+		const moneyMarket = await MoneyMarket.deployed();
+		await moneyMarket._setOracle(oracle.address);
 		// await deployer.deploy(Liquidator, MoneyMarket.address);
 		// await deployer.deploy(
 		// 	LiquidationChecker,

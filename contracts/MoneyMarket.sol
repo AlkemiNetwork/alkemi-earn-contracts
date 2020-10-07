@@ -50,6 +50,11 @@ contract MoneyMarket is Exponential, SafeToken {
     address public oracle;
 
     /**
+     * @dev Account allowed to fetch chainlink oracle prices for this contract. Can be changed by the admin.
+     */
+    ChainLink priceOracle;
+
+    /**
      * @dev Container for customer balance information written to storage.
      *
      *      struct Balance {
@@ -574,13 +579,6 @@ contract MoneyMarket is Exponential, SafeToken {
         return (Error.NO_ERROR, truncate(borrowAmountWithFee));
     }
 
-    //ChainLink test
-    ChainLink priceOracle;
-    function getChainLinkPrice(address asset) public view returns (int) {
-        priceOracle = ChainLink(0x945167F4D3dA9aFF92dbb36C383F7Bd4ddB074E5);
-        int price = priceOracle.getAssetPrice(asset);
-        return price;
-    }
     /**
      * @dev fetches the price of asset from the PriceOracle and converts it to Exp
      * @param asset asset whose price should be fetched
@@ -590,8 +588,7 @@ contract MoneyMarket is Exponential, SafeToken {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
 
-        PriceOracleInterface oracleInterface = PriceOracleInterface(oracle);
-        uint priceMantissa = oracleInterface.assetPrices(asset);
+        uint priceMantissa = priceOracle.getAssetPrice(asset);
 
         return (Error.NO_ERROR, Exp({mantissa: priceMantissa}));
     }
@@ -696,13 +693,15 @@ contract MoneyMarket is Exponential, SafeToken {
 
         // Verify contract at newOracle address supports assetPrices call.
         // This will revert if it doesn't.
-        PriceOracleInterface oracleInterface = PriceOracleInterface(newOracle);
-        oracleInterface.assetPrices(address(0));
+        ChainLink priceOracleTemp = ChainLink(newOracle);
+        priceOracleTemp.getAssetPrice(address(0));
 
         address oldOracle = oracle;
 
         // Store oracle = newOracle
         oracle = newOracle;
+        // Initialize the Chainlink contract in priceOracle
+        priceOracle = ChainLink(newOracle);
 
         emit NewOracle(oldOracle, newOracle);
 
