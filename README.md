@@ -149,7 +149,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0x63273b1C6e241E22Fc94A539Cdd3ecf669209Ad5 </td>
+		<td> 0xcE466383e526C7c77C869631f94181076A8Bd4Bb </td>
 		<td>  </td>
 	</tr>
 	<tr>
@@ -238,7 +238,7 @@
   </tr>
   <tr>
   	<td> ChainLink Oracle </td>
-  	<td> 0x945167F4D3dA9aFF92dbb36C383F7Bd4ddB074E5 </td>
+  	<td> 0x326ebf4572514fDF3270a0828740BdAfaa2c4673 </td>
   </tr>
 
 </table>

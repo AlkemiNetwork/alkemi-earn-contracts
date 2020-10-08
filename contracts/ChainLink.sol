@@ -7,9 +7,11 @@ contract ChainLink {
     mapping(address => AggregatorV3Interface) internal priceContractMapping;
     address public admin;
     bool public paused = false;
+    address public wethAddress;
 
     /**
      * Sets the initial assets and admin
+     * Add assets and set Weth Address using their own functions
      */
     constructor() public {
         admin = msg.sender;
@@ -24,10 +26,20 @@ contract ChainLink {
     }
     
     /**
+     * Event declarations for all the operations of this contract
+     */
+    event assetAdded(address assetAddress, address priceFeedContract);
+    event assetRemoved(address assetAddress);
+    event adminChanged(address oldAdmin, address newAdmin);
+    event wethAddressSet(address wethAddress);
+    event contractPausedOrUnpaused(bool currentStatus);
+
+    /**
      * Allows admin to add a new asset for price tracking
      */
     function addAsset(address assetAddress, address priceFeedContract) public onlyAdmin {
         priceContractMapping[assetAddress] = AggregatorV3Interface(priceFeedContract);
+        emit assetAdded(assetAddress, priceFeedContract);
     }
     
     /**
@@ -35,13 +47,23 @@ contract ChainLink {
      */
     function removeAsset(address assetAddress) public onlyAdmin {
         priceContractMapping[assetAddress] = AggregatorV3Interface(address(0));
+        emit assetRemoved(assetAddress);
     }
     
     /**
      * Allows admin to change the admin of the contract
      */
     function changeAdmin(address newAdmin) public onlyAdmin {
+        emit adminChanged(admin, newAdmin);
         admin = newAdmin;
+    }
+
+    /**
+     * Allows admin to set the weth address
+     */
+    function setWethAddress(address _wethAddress) public onlyAdmin {
+        wethAddress = _wethAddress;
+        emit wethAddressSet(_wethAddress);
     }
 
     /**
@@ -50,9 +72,11 @@ contract ChainLink {
     function togglePause() public onlyAdmin {
         if (paused) {
             paused = false;
+            emit contractPausedOrUnpaused(false);
         }
         else {
             paused = true;
+            emit contractPausedOrUnpaused(true);
         }
     }
 
@@ -60,6 +84,10 @@ contract ChainLink {
      * Returns the latest price
      */
     function getAssetPrice(address asset) public view returns (uint) {
+        // Return 1 * 10^18 for WETH, otherwise return actual price
+        if(!paused && asset == wethAddress) {
+            return 1000000000000000000;
+        }
         if(!paused && priceContractMapping[asset] != address(0)) {
             (
                 uint80 roundID, 
