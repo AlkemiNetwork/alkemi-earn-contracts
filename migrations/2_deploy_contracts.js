@@ -7,6 +7,7 @@ var ChainLink = artifacts.require("ChainLink.sol");
 var StandardInterestRateModel = artifacts.require(
 	"./StandardInterestRateModel.sol"
 );
+var TestTokens = artifacts.require("TestTokens.sol");
 
 const deploymentConfig = require("./deployment-config.json");
 
@@ -36,7 +37,14 @@ module.exports = async (deployer, network, accounts) => {
 		// 	PriceOracleProxy,
 		// 	deploymentConfig.ROPSTEN.PRICE_ORACLE
 		// );
-		await deployer.deploy(ChainLink);
+		await deployer.deploy(
+			TestTokens,
+			"Maker DAO",
+			"DAI",
+			18,
+			1000000 // Supply 18 decimals handled in constructor
+		);
+		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(MoneyMarket);
 		// const oracle = await ChainLink.deployed();
 		// const moneyMarket = await MoneyMarket.deployed();

@@ -219,7 +219,10 @@
 	</tr>
 	<tr>
 		<td> DAI </td>
-		<td> 0x31F42841c2db5173425b5223809CF3A38FEde360 </td>
+		<!-- <td> 0x31F42841c2db5173425b5223809CF3A38FEde360 </td> -->
+		<!-- The above is Compound's DAI token which does not work anymore -->
+		<!-- Below is a custom token created for Alkemi in Ropsten as a replacement for DAI in ropsten -->
+		<td> 0xf34BBebF549F67423941DFb4cC5036AcC12BfD06 </td>
 		<td> 0x24959556020AE5D39e5bAEC2bd6Bf12420C25aB5 </td>
 	</tr>
 	<tr>
@@ -238,7 +241,7 @@
   </tr>
   <tr>
   	<td> ChainLink Oracle </td>
-  	<td> 0x326ebf4572514fDF3270a0828740BdAfaa2c4673 </td>
+  	<td> 0xDb59bA7Cd17F3Ef501f8e765Fdf770E2f4bC0454 </td>
   </tr>
 
 </table>
