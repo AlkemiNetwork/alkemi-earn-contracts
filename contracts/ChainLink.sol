@@ -1,6 +1,7 @@
 pragma solidity 0.4.24;
 
 import "../node_modules/@chainlink/contracts/src/v0.4/interfaces/AggregatorV3Interface.sol";
+import './TestTokens.sol';
 
 contract ChainLink {
     
@@ -88,6 +89,8 @@ contract ChainLink {
         if(!paused && asset == wethAddress) {
             return 1000000000000000000;
         }
+        // Capture the decimals in the ERC20 token
+        uint8 assetDecimals = TestTokens(asset).decimals();
         if(!paused && priceContractMapping[asset] != address(0)) {
             (
                 uint80 roundID, 
@@ -99,7 +102,8 @@ contract ChainLink {
             // If the round is not complete yet, timestamp is 0
             require(timeStamp > 0, "Round not complete");
             if(price >0) {
-                return (uint(price));
+                // Magnify the result based on decimals
+                return (uint(price) * (10 ** (18 - uint(assetDecimals))));
             }
             else {
                 return 0;
