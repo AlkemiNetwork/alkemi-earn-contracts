@@ -145,70 +145,90 @@
 	<tr>
    		<th>Contract Name</th>
     	<th>Contract Address</th>
+		<th>Price Feed Contract Address</th>
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0x63273b1C6e241E22Fc94A539Cdd3ecf669209Ad5 </td>
+		<td> 0xcE466383e526C7c77C869631f94181076A8Bd4Bb </td>
+		<td>  </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
 		<td> 0xc3ACc4A629545ED6Db6135Ca319ADAA012605028 </td>
+		<td>  </td>
 	</tr>
 	<tr>
 		<td> PAX </td>
 		<td> 0xeb091ca495bba0fdbd783cc1326b237607d96cc8 </td>
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> PAXRateModel </td>
 		<!-- <td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td> -->
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> USDC </td>
 		<td> 0x0D9C8723B343A8368BebE0B5E89273fF8D712e3C </td>
+		<td> 0xB8784d2D77D3dbaa9cAC7d32D035A6d41e414e9c </td>
 	</tr>
 	<tr>
 		<td> USDCRateModel </td>
 		<td> 0x977E1AD0987dEA9ea880f711FD5a3cA9b37D4f39 </td>
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> USDT </td>
 		<!-- <td> 0x249987094de97c9612b8d04c15ca8273e43c20ac </td> -->
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> USDTRateModel </td>
 		<!-- <td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td> -->
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> USDx </td>
 		<!-- <td> 0xD96cC7f80C1cb595eBcdC072531e1799B3a2436E </td> -->
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> USDxRateModel </td>
 		<!-- <td> 0xe302E676E1Add419cc87e75fb5B73DAB24Ad1534 </td> -->
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> WBTC </td>
 		<td> 0xBde8bB00A7eF67007A96945B3a3621177B615C44 </td>
+		<td> 0xECf6936AD6030A1Aa4f2055Df44149B7846628F7 </td>
 	</tr>
 	<tr>
 		<td> WBTCRateModel </td>
 		<td> 0x8E494bcd29b45A194335b91947d09ff3643437F5 </td>
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> WETH </td>
-		<td> 0xc778417e063141139fce010982780140aa0cd5ab </td>
+		<td> 0xc778417E063141139Fce010982780140Aa0cD5Ab </td>
+		<td> 0xc778417E063141139Fce010982780140Aa0cD5Ab </td>
 	</tr>
 	<tr>
 		<td> WETHRateModel </td>
 		<td> 0x8E494bcd29b45A194335b91947d09ff3643437F5 </td>
+		<!-- <td>  </td> -->
 	</tr>
 	<tr>
 		<td> DAI </td>
-		<td> 0x31f42841c2db5173425b5223809cf3a38fede360 </td>
+		<!-- <td> 0x31F42841c2db5173425b5223809CF3A38FEde360 </td> -->
+		<!-- The above is Compound's DAI token which does not work anymore -->
+		<!-- Below is a custom token created for Alkemi in Ropsten as a replacement for DAI in ropsten -->
+		<td> 0xf34BBebF549F67423941DFb4cC5036AcC12BfD06 </td>
+		<td> 0x24959556020AE5D39e5bAEC2bd6Bf12420C25aB5 </td>
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
 		<td> 0x977E1AD0987dEA9ea880f711FD5a3cA9b37D4f39 </td>
+		<!-- <td>  </td> -->
 	</tr>
   <tr>
   	<td> PriceOracle </td>
@@ -218,6 +238,10 @@
   <tr>
   	<td> PriceOracleProxy </td>
   	<td> 0x726e35841f79A3ED7FA06e9a1750018D19b4C951 </td>
+  </tr>
+  <tr>
+  	<td> ChainLink Oracle </td>
+  	<td> 0xDb59bA7Cd17F3Ef501f8e765Fdf770E2f4bC0454 </td>
   </tr>
 
 </table>

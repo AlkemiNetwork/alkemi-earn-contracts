@@ -8,7 +8,7 @@ var StandardInterestRateModel = artifacts.require(
 const deploymentConfig = require("./deployment-config.json");
 
 module.exports = async (deployer, network, accounts) => {
-	if (network == "development") {
+	if (network == "development" || network == "ganacheUI") {
 		const priceOracle = await PriceOracle.deployed();
 		const moneyMarket = await MoneyMarket.deployed();
 		await moneyMarket._setOracle(priceOracle.address);

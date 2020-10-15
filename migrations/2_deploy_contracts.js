@@ -3,9 +3,11 @@ var PriceOracleProxy = artifacts.require("PriceOracleProxy.sol");
 var MoneyMarket = artifacts.require("./MoneyMarket.sol");
 var Liquidator = artifacts.require("./Liquidator.sol");
 var LiquidationChecker = artifacts.require("./LiquidationChecker.sol");
+var ChainLink = artifacts.require("ChainLink.sol");
 var StandardInterestRateModel = artifacts.require(
 	"./StandardInterestRateModel.sol"
 );
+var TestTokens = artifacts.require("TestTokens.sol");
 
 const deploymentConfig = require("./deployment-config.json");
 
@@ -14,6 +16,7 @@ module.exports = async (deployer, network, accounts) => {
 		await deployer.deploy(PriceOracle, deploymentConfig.DEVCHAIN.POSTER);
 		await deployer.deploy(PriceOracleProxy, PriceOracle.address);
 		await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(ChainLink);
 	} else if (network == "rinkeby") {
 		await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
 		await deployer.deploy(
@@ -29,13 +32,24 @@ module.exports = async (deployer, network, accounts) => {
 			true
 		);
 	} else if (network == "ropsten") {
-		await deployer.deploy(PriceOracle, deploymentConfig.ROPSTEN.POSTER);
-		await deployer.deploy(
-			PriceOracleProxy,
-			deploymentConfig.ROPSTEN.PRICE_ORACLE
-		);
-		await deployer.deploy(MoneyMarket);
-		await deployer.deploy(Liquidator, MoneyMarket.address);
+		// await deployer.deploy(PriceOracle, deploymentConfig.ROPSTEN.POSTER);
+		// await deployer.deploy(
+		// 	PriceOracleProxy,
+		// 	deploymentConfig.ROPSTEN.PRICE_ORACLE
+		// );
+		// await deployer.deploy(
+		// 	TestTokens,
+		// 	"Maker DAO",
+		// 	"DAI",
+		// 	18,
+		// 	1000000 // Supply 18 decimals handled in constructor
+		// );
+		await deployer.deploy(ChainLink);
+		// await deployer.deploy(MoneyMarket);
+		// const oracle = await ChainLink.deployed();
+		// const moneyMarket = await MoneyMarket.deployed();
+		// await moneyMarket._setOracle(oracle.address);
+		// await deployer.deploy(Liquidator, MoneyMarket.address);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
 		// 	MoneyMarket.address,
@@ -46,6 +60,7 @@ module.exports = async (deployer, network, accounts) => {
 		// await deployer.deploy(PriceOracleProxy, PriceOracle.address);
 		// await deployer.deploy(MoneyMarket, PriceOracle.address);
 		// await deployer.deploy(Liquidator, MoneyMarket.address);
+		await deployer.deploy(ChainLink);
 		await deployer.deploy(StandardInterestRateModel);
 	} else {
 		await deployer.deploy(PriceOracle, deploymentConfig.MAINNET.POSTER);
