@@ -351,6 +351,13 @@ contract MoneyMarket is Exponential, SafeToken {
     }
 
     /**
+     * @dev Function to fetch KYC Admin status of an admin
+     */
+    function checkKYCAdmin(address _KYCAdmin) public view returns(bool) {
+        return KYCAdmins[_KYCAdmin];
+    }
+
+    /**
      * @dev Liquidator Integration
      */
 
