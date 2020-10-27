@@ -24,21 +24,21 @@
       "type": "event"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":\"ErrorReporter\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x1e406b3babf983b29210956d1193034b88cc9b13cc347c34e6df3b629d2c19b5\",\"urls\":[\"bzzr://69c971fe8b31519e79ffc1e91af8c21dd5e55552459a0747b928bc05ea6c89d6\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820052f2906cc91a1eb1f04ed8a6f0cad7d8f438cb8dee0c4429c0fc2aa1125709d0029",
-  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820052f2906cc91a1eb1f04ed8a6f0cad7d8f438cb8dee0c4429c0fc2aa1125709d0029",
-  "sourceMap": "26:7326:5:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:7326:5;;;;;;;",
-  "deployedSourceMap": "26:7326:5:-;;;;;",
-  "source": "pragma solidity ^0.4.24;\n\ncontract ErrorReporter {\n    /**\n     * @dev `error` corresponds to enum Error; `info` corresponds to enum FailureInfo, and `detail` is an arbitrary\n     * contract-specific code that enables us to report opaque error codes from upgradeable contracts.\n     */\n    event Failure(uint error, uint info, uint detail);\n\n    enum Error {\n        NO_ERROR,\n        OPAQUE_ERROR, // To be used when reporting errors from upgradeable contracts; the opaque code should be given as `detail` in the `Failure` event\n        UNAUTHORIZED,\n        INTEGER_OVERFLOW,\n        INTEGER_UNDERFLOW,\n        DIVISION_BY_ZERO,\n        BAD_INPUT,\n        TOKEN_INSUFFICIENT_ALLOWANCE,\n        TOKEN_INSUFFICIENT_BALANCE,\n        TOKEN_TRANSFER_FAILED,\n        MARKET_NOT_SUPPORTED,\n        SUPPLY_RATE_CALCULATION_FAILED,\n        BORROW_RATE_CALCULATION_FAILED,\n        TOKEN_INSUFFICIENT_CASH,\n        TOKEN_TRANSFER_OUT_FAILED,\n        INSUFFICIENT_LIQUIDITY,\n        INSUFFICIENT_BALANCE,\n        INVALID_COLLATERAL_RATIO,\n        MISSING_ASSET_PRICE,\n        EQUITY_INSUFFICIENT_BALANCE,\n        INVALID_CLOSE_AMOUNT_REQUESTED,\n        ASSET_NOT_PRICED,\n        INVALID_LIQUIDATION_DISCOUNT,\n        INVALID_COMBINED_RISK_PARAMETERS,\n        ZERO_ORACLE_ADDRESS,\n        CONTRACT_PAUSED,\n        KYC_ADMIN_CHECK_FAILED,\n        KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,\n        KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,\n        LIQUIDATOR_CHECK_FAILED,\n        LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED\n    }\n\n    /**\n     * Note: FailureInfo (but not Error) is kept in alphabetical order\n     *       This is because FailureInfo grows significantly faster, and\n     *       the order of Error has some meaning, while the order of FailureInfo\n     *       is entirely arbitrary.\n     */\n    enum FailureInfo {\n        ACCEPT_ADMIN_PENDING_ADMIN_CHECK,\n        BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED,\n        BORROW_ACCOUNT_SHORTFALL_PRESENT,\n        BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED,\n        BORROW_AMOUNT_LIQUIDITY_SHORTFALL,\n        BORROW_AMOUNT_VALUE_CALCULATION_FAILED,\n        BORROW_CONTRACT_PAUSED,\n        BORROW_MARKET_NOT_SUPPORTED,\n        BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED,\n        BORROW_NEW_BORROW_RATE_CALCULATION_FAILED,\n        BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,\n        BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED,\n        BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,\n        BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED,\n        BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED,\n        BORROW_ORIGINATION_FEE_CALCULATION_FAILED,\n        BORROW_TRANSFER_OUT_FAILED,\n        EQUITY_WITHDRAWAL_AMOUNT_VALIDATION,\n        EQUITY_WITHDRAWAL_CALCULATE_EQUITY,\n        EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK,\n        EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED,\n        LIQUIDATE_ACCUMULATED_BORROW_BALANCE_CALCULATION_FAILED,\n        LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET,\n        LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET,\n        LIQUIDATE_AMOUNT_SEIZE_CALCULATION_FAILED,\n        LIQUIDATE_BORROW_DENOMINATED_COLLATERAL_CALCULATION_FAILED,\n        LIQUIDATE_CLOSE_AMOUNT_TOO_HIGH,\n        LIQUIDATE_CONTRACT_PAUSED,\n        LIQUIDATE_DISCOUNTED_REPAY_TO_EVEN_AMOUNT_CALCULATION_FAILED,\n        LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET,\n        LIQUIDATE_NEW_BORROW_RATE_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET,\n        LIQUIDATE_NEW_SUPPLY_RATE_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_TOTAL_BORROW_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_TOTAL_CASH_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET,\n        LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET,\n        LIQUIDATE_FETCH_ASSET_PRICE_FAILED,\n        LIQUIDATE_TRANSFER_IN_FAILED,\n        LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE,\n        REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED,\n        REPAY_BORROW_CONTRACT_PAUSED,\n        REPAY_BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_BORROW_RATE_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED,\n        REPAY_BORROW_TRANSFER_IN_FAILED,\n        REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE,\n        SET_ASSET_PRICE_CHECK_ORACLE,\n        SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK,\n        SET_ORACLE_OWNER_CHECK,\n        SET_ORIGINATION_FEE_OWNER_CHECK,\n        SET_PAUSED_OWNER_CHECK,\n        SET_PENDING_ADMIN_OWNER_CHECK,\n        SET_RISK_PARAMETERS_OWNER_CHECK,\n        SET_RISK_PARAMETERS_VALIDATION,\n        SUPPLY_ACCUMULATED_BALANCE_CALCULATION_FAILED,\n        SUPPLY_CONTRACT_PAUSED,\n        SUPPLY_MARKET_NOT_SUPPORTED,\n        SUPPLY_NEW_BORROW_INDEX_CALCULATION_FAILED,\n        SUPPLY_NEW_BORROW_RATE_CALCULATION_FAILED,\n        SUPPLY_NEW_SUPPLY_INDEX_CALCULATION_FAILED,\n        SUPPLY_NEW_SUPPLY_RATE_CALCULATION_FAILED,\n        SUPPLY_NEW_TOTAL_BALANCE_CALCULATION_FAILED,\n        SUPPLY_NEW_TOTAL_CASH_CALCULATION_FAILED,\n        SUPPLY_NEW_TOTAL_SUPPLY_CALCULATION_FAILED,\n        SUPPLY_TRANSFER_IN_FAILED,\n        SUPPLY_TRANSFER_IN_NOT_POSSIBLE,\n        SUPPORT_MARKET_FETCH_PRICE_FAILED,\n        SUPPORT_MARKET_OWNER_CHECK,\n        SUPPORT_MARKET_PRICE_CHECK,\n        SUSPEND_MARKET_OWNER_CHECK,\n        WITHDRAW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED,\n        WITHDRAW_ACCOUNT_SHORTFALL_PRESENT,\n        WITHDRAW_ACCUMULATED_BALANCE_CALCULATION_FAILED,\n        WITHDRAW_AMOUNT_LIQUIDITY_SHORTFALL,\n        WITHDRAW_AMOUNT_VALUE_CALCULATION_FAILED,\n        WITHDRAW_CAPACITY_CALCULATION_FAILED,\n        WITHDRAW_CONTRACT_PAUSED,\n        WITHDRAW_NEW_BORROW_INDEX_CALCULATION_FAILED,\n        WITHDRAW_NEW_BORROW_RATE_CALCULATION_FAILED,\n        WITHDRAW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,\n        WITHDRAW_NEW_SUPPLY_RATE_CALCULATION_FAILED,\n        WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,\n        WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED,\n        WITHDRAW_TRANSFER_OUT_FAILED,\n        WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE,\n        KYC_ADMIN_CHECK_FAILED,\n        KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,\n        KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,\n        LIQUIDATOR_CHECK_FAILED,\n        LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED\n    }\n\n    /**\n     * @dev use this when reporting a known error from the money market or a non-upgradeable collaborator\n     */\n    function fail(Error err, FailureInfo info) internal returns (uint) {\n        emit Failure(uint(err), uint(info), 0);\n\n        return uint(err);\n    }\n\n    /**\n     * @dev use this when reporting an opaque error from an upgradeable collaborator contract\n     */\n    function failOpaque(FailureInfo info, uint opaqueError) internal returns (uint) {\n        emit Failure(uint(Error.OPAQUE_ERROR), uint(info), opaqueError);\n\n        return uint(Error.OPAQUE_ERROR);\n    }\n}\n",
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":\"ErrorReporter\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0xa02be63a9f4c966732a5158dcf707657d68aeb3da222cb866b528b9aa72d8c97\",\"urls\":[\"bzzr://f63b2f2e273215354c353c6efb12a1a391e616a211c2b51800b56471a7443e89\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820ac7d55fbe87d9a0805c2626f651ddc7a390fef2a9c863d929b79bcf69c7bf9ee0029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820ac7d55fbe87d9a0805c2626f651ddc7a390fef2a9c863d929b79bcf69c7bf9ee0029",
+  "sourceMap": "26:7527:5:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:7527:5;;;;;;;",
+  "deployedSourceMap": "26:7527:5:-;;;;;",
+  "source": "pragma solidity ^0.4.24;\n\ncontract ErrorReporter {\n    /**\n     * @dev `error` corresponds to enum Error; `info` corresponds to enum FailureInfo, and `detail` is an arbitrary\n     * contract-specific code that enables us to report opaque error codes from upgradeable contracts.\n     */\n    event Failure(uint error, uint info, uint detail);\n\n    enum Error {\n        NO_ERROR,\n        OPAQUE_ERROR, // To be used when reporting errors from upgradeable contracts; the opaque code should be given as `detail` in the `Failure` event\n        UNAUTHORIZED,\n        INTEGER_OVERFLOW,\n        INTEGER_UNDERFLOW,\n        DIVISION_BY_ZERO,\n        BAD_INPUT,\n        TOKEN_INSUFFICIENT_ALLOWANCE,\n        TOKEN_INSUFFICIENT_BALANCE,\n        TOKEN_TRANSFER_FAILED,\n        MARKET_NOT_SUPPORTED,\n        SUPPLY_RATE_CALCULATION_FAILED,\n        BORROW_RATE_CALCULATION_FAILED,\n        TOKEN_INSUFFICIENT_CASH,\n        TOKEN_TRANSFER_OUT_FAILED,\n        INSUFFICIENT_LIQUIDITY,\n        INSUFFICIENT_BALANCE,\n        INVALID_COLLATERAL_RATIO,\n        MISSING_ASSET_PRICE,\n        EQUITY_INSUFFICIENT_BALANCE,\n        INVALID_CLOSE_AMOUNT_REQUESTED,\n        ASSET_NOT_PRICED,\n        INVALID_LIQUIDATION_DISCOUNT,\n        INVALID_COMBINED_RISK_PARAMETERS,\n        ZERO_ORACLE_ADDRESS,\n        CONTRACT_PAUSED,\n        KYC_ADMIN_CHECK_FAILED,\n        KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,\n        KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,\n        LIQUIDATOR_CHECK_FAILED,\n        LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,\n        SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,\n        WETH_ADDRESS_NOT_SET_ERROR\n    }\n\n    /**\n     * Note: FailureInfo (but not Error) is kept in alphabetical order\n     *       This is because FailureInfo grows significantly faster, and\n     *       the order of Error has some meaning, while the order of FailureInfo\n     *       is entirely arbitrary.\n     */\n    enum FailureInfo {\n        ACCEPT_ADMIN_PENDING_ADMIN_CHECK,\n        BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED,\n        BORROW_ACCOUNT_SHORTFALL_PRESENT,\n        BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED,\n        BORROW_AMOUNT_LIQUIDITY_SHORTFALL,\n        BORROW_AMOUNT_VALUE_CALCULATION_FAILED,\n        BORROW_CONTRACT_PAUSED,\n        BORROW_MARKET_NOT_SUPPORTED,\n        BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED,\n        BORROW_NEW_BORROW_RATE_CALCULATION_FAILED,\n        BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,\n        BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED,\n        BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,\n        BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED,\n        BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED,\n        BORROW_ORIGINATION_FEE_CALCULATION_FAILED,\n        BORROW_TRANSFER_OUT_FAILED,\n        EQUITY_WITHDRAWAL_AMOUNT_VALIDATION,\n        EQUITY_WITHDRAWAL_CALCULATE_EQUITY,\n        EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK,\n        EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED,\n        LIQUIDATE_ACCUMULATED_BORROW_BALANCE_CALCULATION_FAILED,\n        LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET,\n        LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET,\n        LIQUIDATE_AMOUNT_SEIZE_CALCULATION_FAILED,\n        LIQUIDATE_BORROW_DENOMINATED_COLLATERAL_CALCULATION_FAILED,\n        LIQUIDATE_CLOSE_AMOUNT_TOO_HIGH,\n        LIQUIDATE_CONTRACT_PAUSED,\n        LIQUIDATE_DISCOUNTED_REPAY_TO_EVEN_AMOUNT_CALCULATION_FAILED,\n        LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET,\n        LIQUIDATE_NEW_BORROW_RATE_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET,\n        LIQUIDATE_NEW_SUPPLY_RATE_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_TOTAL_BORROW_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_TOTAL_CASH_CALCULATION_FAILED_BORROWED_ASSET,\n        LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET,\n        LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET,\n        LIQUIDATE_FETCH_ASSET_PRICE_FAILED,\n        LIQUIDATE_TRANSFER_IN_FAILED,\n        LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE,\n        REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED,\n        REPAY_BORROW_CONTRACT_PAUSED,\n        REPAY_BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_BORROW_RATE_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED,\n        REPAY_BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED,\n        REPAY_BORROW_TRANSFER_IN_FAILED,\n        REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE,\n        SET_ASSET_PRICE_CHECK_ORACLE,\n        SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK,\n        SET_ORACLE_OWNER_CHECK,\n        SET_ORIGINATION_FEE_OWNER_CHECK,\n        SET_PAUSED_OWNER_CHECK,\n        SET_PENDING_ADMIN_OWNER_CHECK,\n        SET_RISK_PARAMETERS_OWNER_CHECK,\n        SET_RISK_PARAMETERS_VALIDATION,\n        SUPPLY_ACCUMULATED_BALANCE_CALCULATION_FAILED,\n        SUPPLY_CONTRACT_PAUSED,\n        SUPPLY_MARKET_NOT_SUPPORTED,\n        SUPPLY_NEW_BORROW_INDEX_CALCULATION_FAILED,\n        SUPPLY_NEW_BORROW_RATE_CALCULATION_FAILED,\n        SUPPLY_NEW_SUPPLY_INDEX_CALCULATION_FAILED,\n        SUPPLY_NEW_SUPPLY_RATE_CALCULATION_FAILED,\n        SUPPLY_NEW_TOTAL_BALANCE_CALCULATION_FAILED,\n        SUPPLY_NEW_TOTAL_CASH_CALCULATION_FAILED,\n        SUPPLY_NEW_TOTAL_SUPPLY_CALCULATION_FAILED,\n        SUPPLY_TRANSFER_IN_FAILED,\n        SUPPLY_TRANSFER_IN_NOT_POSSIBLE,\n        SUPPORT_MARKET_FETCH_PRICE_FAILED,\n        SUPPORT_MARKET_OWNER_CHECK,\n        SUPPORT_MARKET_PRICE_CHECK,\n        SUSPEND_MARKET_OWNER_CHECK,\n        WITHDRAW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED,\n        WITHDRAW_ACCOUNT_SHORTFALL_PRESENT,\n        WITHDRAW_ACCUMULATED_BALANCE_CALCULATION_FAILED,\n        WITHDRAW_AMOUNT_LIQUIDITY_SHORTFALL,\n        WITHDRAW_AMOUNT_VALUE_CALCULATION_FAILED,\n        WITHDRAW_CAPACITY_CALCULATION_FAILED,\n        WITHDRAW_CONTRACT_PAUSED,\n        WITHDRAW_NEW_BORROW_INDEX_CALCULATION_FAILED,\n        WITHDRAW_NEW_BORROW_RATE_CALCULATION_FAILED,\n        WITHDRAW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,\n        WITHDRAW_NEW_SUPPLY_RATE_CALCULATION_FAILED,\n        WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,\n        WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED,\n        WITHDRAW_TRANSFER_OUT_FAILED,\n        WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE,\n        KYC_ADMIN_CHECK_FAILED,\n        KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,\n        KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,\n        LIQUIDATOR_CHECK_FAILED,\n        LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,\n        SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,\n        WETH_ADDRESS_NOT_SET_ERROR,\n        SEND_ETHER_ADMIN_CHECK_FAILED\n    }\n\n    /**\n     * @dev use this when reporting a known error from the money market or a non-upgradeable collaborator\n     */\n    function fail(Error err, FailureInfo info) internal returns (uint) {\n        emit Failure(uint(err), uint(info), 0);\n\n        return uint(err);\n    }\n\n    /**\n     * @dev use this when reporting an opaque error from an upgradeable collaborator contract\n     */\n    function failOpaque(FailureInfo info, uint opaqueError) internal returns (uint) {\n        emit Failure(uint(Error.OPAQUE_ERROR), uint(info), opaqueError);\n\n        return uint(Error.OPAQUE_ERROR);\n    }\n}\n",
   "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
   "ast": {
     "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
     "exportedSymbols": {
       "ErrorReporter": [
-        1682
+        1687
       ]
     },
-    "id": 1683,
+    "id": 1688,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -58,9 +58,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 1682,
+        "id": 1687,
         "linearizedBaseContracts": [
-          1682
+          1687
         ],
         "name": "ErrorReporter",
         "nodeType": "ContractDefinition",
@@ -163,7 +163,7 @@
           },
           {
             "canonicalName": "ErrorReporter.Error",
-            "id": 1533,
+            "id": 1535,
             "members": [
               {
                 "id": 1502,
@@ -350,608 +350,638 @@
                 "name": "LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED",
                 "nodeType": "EnumValue",
                 "src": "1468:43:5"
+              },
+              {
+                "id": 1533,
+                "name": "SET_WETH_ADDRESS_ADMIN_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "1521:35:5"
+              },
+              {
+                "id": 1534,
+                "name": "WETH_ADDRESS_NOT_SET_ERROR",
+                "nodeType": "EnumValue",
+                "src": "1566:26:5"
               }
             ],
             "name": "Error",
             "nodeType": "EnumDefinition",
-            "src": "346:1171:5"
+            "src": "346:1252:5"
           },
           {
             "canonicalName": "ErrorReporter.FailureInfo",
-            "id": 1631,
+            "id": 1636,
             "members": [
               {
-                "id": 1534,
+                "id": 1536,
                 "name": "ACCEPT_ADMIN_PENDING_ADMIN_CHECK",
                 "nodeType": "EnumValue",
-                "src": "1827:32:5"
-              },
-              {
-                "id": 1535,
-                "name": "BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED",
-                "nodeType": "EnumValue",
-                "src": "1869:43:5"
-              },
-              {
-                "id": 1536,
-                "name": "BORROW_ACCOUNT_SHORTFALL_PRESENT",
-                "nodeType": "EnumValue",
-                "src": "1922:32:5"
+                "src": "1908:32:5"
               },
               {
                 "id": 1537,
-                "name": "BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
+                "name": "BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "1964:45:5"
+                "src": "1950:43:5"
               },
               {
                 "id": 1538,
-                "name": "BORROW_AMOUNT_LIQUIDITY_SHORTFALL",
+                "name": "BORROW_ACCOUNT_SHORTFALL_PRESENT",
                 "nodeType": "EnumValue",
-                "src": "2019:33:5"
+                "src": "2003:32:5"
               },
               {
                 "id": 1539,
-                "name": "BORROW_AMOUNT_VALUE_CALCULATION_FAILED",
+                "name": "BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2062:38:5"
+                "src": "2045:45:5"
               },
               {
                 "id": 1540,
-                "name": "BORROW_CONTRACT_PAUSED",
+                "name": "BORROW_AMOUNT_LIQUIDITY_SHORTFALL",
                 "nodeType": "EnumValue",
-                "src": "2110:22:5"
+                "src": "2100:33:5"
               },
               {
                 "id": 1541,
-                "name": "BORROW_MARKET_NOT_SUPPORTED",
+                "name": "BORROW_AMOUNT_VALUE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2142:27:5"
+                "src": "2143:38:5"
               },
               {
                 "id": 1542,
-                "name": "BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED",
+                "name": "BORROW_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "2179:42:5"
+                "src": "2191:22:5"
               },
               {
                 "id": 1543,
-                "name": "BORROW_NEW_BORROW_RATE_CALCULATION_FAILED",
+                "name": "BORROW_MARKET_NOT_SUPPORTED",
                 "nodeType": "EnumValue",
-                "src": "2231:41:5"
+                "src": "2223:27:5"
               },
               {
                 "id": 1544,
-                "name": "BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
+                "name": "BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2282:42:5"
+                "src": "2260:42:5"
               },
               {
                 "id": 1545,
-                "name": "BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
+                "name": "BORROW_NEW_BORROW_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2334:41:5"
+                "src": "2312:41:5"
               },
               {
                 "id": 1546,
-                "name": "BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
+                "name": "BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2385:43:5"
+                "src": "2363:42:5"
               },
               {
                 "id": 1547,
-                "name": "BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED",
+                "name": "BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2438:42:5"
+                "src": "2415:41:5"
               },
               {
                 "id": 1548,
-                "name": "BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED",
+                "name": "BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2490:40:5"
+                "src": "2466:43:5"
               },
               {
                 "id": 1549,
-                "name": "BORROW_ORIGINATION_FEE_CALCULATION_FAILED",
+                "name": "BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2540:41:5"
+                "src": "2519:42:5"
               },
               {
                 "id": 1550,
-                "name": "BORROW_TRANSFER_OUT_FAILED",
+                "name": "BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2591:26:5"
+                "src": "2571:40:5"
               },
               {
                 "id": 1551,
-                "name": "EQUITY_WITHDRAWAL_AMOUNT_VALIDATION",
+                "name": "BORROW_ORIGINATION_FEE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2627:35:5"
+                "src": "2621:41:5"
               },
               {
                 "id": 1552,
-                "name": "EQUITY_WITHDRAWAL_CALCULATE_EQUITY",
+                "name": "BORROW_TRANSFER_OUT_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2672:34:5"
+                "src": "2672:26:5"
               },
               {
                 "id": 1553,
-                "name": "EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK",
+                "name": "EQUITY_WITHDRAWAL_AMOUNT_VALIDATION",
                 "nodeType": "EnumValue",
-                "src": "2716:35:5"
+                "src": "2708:35:5"
               },
               {
                 "id": 1554,
-                "name": "EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED",
+                "name": "EQUITY_WITHDRAWAL_CALCULATE_EQUITY",
                 "nodeType": "EnumValue",
-                "src": "2761:37:5"
+                "src": "2753:34:5"
               },
               {
                 "id": 1555,
-                "name": "LIQUIDATE_ACCUMULATED_BORROW_BALANCE_CALCULATION_FAILED",
+                "name": "EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "2808:55:5"
+                "src": "2797:35:5"
               },
               {
                 "id": 1556,
-                "name": "LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET",
+                "name": "EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2873:81:5"
+                "src": "2842:37:5"
               },
               {
                 "id": 1557,
-                "name": "LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_ACCUMULATED_BORROW_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2964:83:5"
+                "src": "2889:55:5"
               },
               {
                 "id": 1558,
-                "name": "LIQUIDATE_AMOUNT_SEIZE_CALCULATION_FAILED",
+                "name": "LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3057:41:5"
+                "src": "2954:81:5"
               },
               {
                 "id": 1559,
-                "name": "LIQUIDATE_BORROW_DENOMINATED_COLLATERAL_CALCULATION_FAILED",
+                "name": "LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3108:58:5"
+                "src": "3045:83:5"
               },
               {
                 "id": 1560,
-                "name": "LIQUIDATE_CLOSE_AMOUNT_TOO_HIGH",
+                "name": "LIQUIDATE_AMOUNT_SEIZE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "3176:31:5"
+                "src": "3138:41:5"
               },
               {
                 "id": 1561,
-                "name": "LIQUIDATE_CONTRACT_PAUSED",
+                "name": "LIQUIDATE_BORROW_DENOMINATED_COLLATERAL_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "3217:25:5"
+                "src": "3189:58:5"
               },
               {
                 "id": 1562,
-                "name": "LIQUIDATE_DISCOUNTED_REPAY_TO_EVEN_AMOUNT_CALCULATION_FAILED",
+                "name": "LIQUIDATE_CLOSE_AMOUNT_TOO_HIGH",
                 "nodeType": "EnumValue",
-                "src": "3252:60:5"
+                "src": "3257:31:5"
               },
               {
                 "id": 1563,
-                "name": "LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "3322:60:5"
+                "src": "3298:25:5"
               },
               {
                 "id": 1564,
-                "name": "LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_DISCOUNTED_REPAY_TO_EVEN_AMOUNT_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "3392:62:5"
+                "src": "3333:60:5"
               },
               {
                 "id": 1565,
-                "name": "LIQUIDATE_NEW_BORROW_RATE_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3464:59:5"
+                "src": "3403:60:5"
               },
               {
                 "id": 1566,
-                "name": "LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3533:60:5"
+                "src": "3473:62:5"
               },
               {
                 "id": 1567,
-                "name": "LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_NEW_BORROW_RATE_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3603:62:5"
+                "src": "3545:59:5"
               },
               {
                 "id": 1568,
-                "name": "LIQUIDATE_NEW_SUPPLY_RATE_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3675:59:5"
+                "src": "3614:60:5"
               },
               {
                 "id": 1569,
-                "name": "LIQUIDATE_NEW_TOTAL_BORROW_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3744:60:5"
+                "src": "3684:62:5"
               },
               {
                 "id": 1570,
-                "name": "LIQUIDATE_NEW_TOTAL_CASH_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_SUPPLY_RATE_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3814:58:5"
+                "src": "3756:59:5"
               },
               {
                 "id": 1571,
-                "name": "LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_NEW_TOTAL_BORROW_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3882:79:5"
+                "src": "3825:60:5"
               },
               {
                 "id": 1572,
-                "name": "LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_NEW_TOTAL_CASH_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3971:81:5"
+                "src": "3895:58:5"
               },
               {
                 "id": 1573,
-                "name": "LIQUIDATE_FETCH_ASSET_PRICE_FAILED",
+                "name": "LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "4062:34:5"
+                "src": "3963:79:5"
               },
               {
                 "id": 1574,
-                "name": "LIQUIDATE_TRANSFER_IN_FAILED",
+                "name": "LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "4106:28:5"
+                "src": "4052:81:5"
               },
               {
                 "id": 1575,
-                "name": "LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE",
+                "name": "LIQUIDATE_FETCH_ASSET_PRICE_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4144:34:5"
+                "src": "4143:34:5"
               },
               {
                 "id": 1576,
-                "name": "REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
+                "name": "LIQUIDATE_TRANSFER_IN_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4188:51:5"
+                "src": "4187:28:5"
               },
               {
                 "id": 1577,
-                "name": "REPAY_BORROW_CONTRACT_PAUSED",
+                "name": "LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE",
                 "nodeType": "EnumValue",
-                "src": "4249:28:5"
+                "src": "4225:34:5"
               },
               {
                 "id": 1578,
-                "name": "REPAY_BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4287:48:5"
+                "src": "4269:51:5"
               },
               {
                 "id": 1579,
-                "name": "REPAY_BORROW_NEW_BORROW_RATE_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "4345:47:5"
+                "src": "4330:28:5"
               },
               {
                 "id": 1580,
-                "name": "REPAY_BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4402:48:5"
+                "src": "4368:48:5"
               },
               {
                 "id": 1581,
-                "name": "REPAY_BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_BORROW_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4460:47:5"
+                "src": "4426:47:5"
               },
               {
                 "id": 1582,
-                "name": "REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4517:49:5"
+                "src": "4483:48:5"
               },
               {
                 "id": 1583,
-                "name": "REPAY_BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4576:48:5"
+                "src": "4541:47:5"
               },
               {
                 "id": 1584,
-                "name": "REPAY_BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4634:46:5"
+                "src": "4598:49:5"
               },
               {
                 "id": 1585,
-                "name": "REPAY_BORROW_TRANSFER_IN_FAILED",
+                "name": "REPAY_BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4690:31:5"
+                "src": "4657:48:5"
               },
               {
                 "id": 1586,
-                "name": "REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE",
+                "name": "REPAY_BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4731:37:5"
+                "src": "4715:46:5"
               },
               {
                 "id": 1587,
-                "name": "SET_ASSET_PRICE_CHECK_ORACLE",
+                "name": "REPAY_BORROW_TRANSFER_IN_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4778:28:5"
+                "src": "4771:31:5"
               },
               {
                 "id": 1588,
-                "name": "SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK",
+                "name": "REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE",
                 "nodeType": "EnumValue",
-                "src": "4816:42:5"
+                "src": "4812:37:5"
               },
               {
                 "id": 1589,
-                "name": "SET_ORACLE_OWNER_CHECK",
+                "name": "SET_ASSET_PRICE_CHECK_ORACLE",
                 "nodeType": "EnumValue",
-                "src": "4868:22:5"
+                "src": "4859:28:5"
               },
               {
                 "id": 1590,
-                "name": "SET_ORIGINATION_FEE_OWNER_CHECK",
+                "name": "SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "4900:31:5"
+                "src": "4897:42:5"
               },
               {
                 "id": 1591,
-                "name": "SET_PAUSED_OWNER_CHECK",
+                "name": "SET_ORACLE_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "4941:22:5"
+                "src": "4949:22:5"
               },
               {
                 "id": 1592,
-                "name": "SET_PENDING_ADMIN_OWNER_CHECK",
+                "name": "SET_ORIGINATION_FEE_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "4973:29:5"
+                "src": "4981:31:5"
               },
               {
                 "id": 1593,
-                "name": "SET_RISK_PARAMETERS_OWNER_CHECK",
+                "name": "SET_PAUSED_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5012:31:5"
+                "src": "5022:22:5"
               },
               {
                 "id": 1594,
-                "name": "SET_RISK_PARAMETERS_VALIDATION",
+                "name": "SET_PENDING_ADMIN_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5053:30:5"
+                "src": "5054:29:5"
               },
               {
                 "id": 1595,
-                "name": "SUPPLY_ACCUMULATED_BALANCE_CALCULATION_FAILED",
+                "name": "SET_RISK_PARAMETERS_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5093:45:5"
+                "src": "5093:31:5"
               },
               {
                 "id": 1596,
-                "name": "SUPPLY_CONTRACT_PAUSED",
+                "name": "SET_RISK_PARAMETERS_VALIDATION",
                 "nodeType": "EnumValue",
-                "src": "5148:22:5"
+                "src": "5134:30:5"
               },
               {
                 "id": 1597,
-                "name": "SUPPLY_MARKET_NOT_SUPPORTED",
+                "name": "SUPPLY_ACCUMULATED_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5180:27:5"
+                "src": "5174:45:5"
               },
               {
                 "id": 1598,
-                "name": "SUPPLY_NEW_BORROW_INDEX_CALCULATION_FAILED",
+                "name": "SUPPLY_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "5217:42:5"
+                "src": "5229:22:5"
               },
               {
                 "id": 1599,
-                "name": "SUPPLY_NEW_BORROW_RATE_CALCULATION_FAILED",
+                "name": "SUPPLY_MARKET_NOT_SUPPORTED",
                 "nodeType": "EnumValue",
-                "src": "5269:41:5"
+                "src": "5261:27:5"
               },
               {
                 "id": 1600,
-                "name": "SUPPLY_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_BORROW_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5320:42:5"
+                "src": "5298:42:5"
               },
               {
                 "id": 1601,
-                "name": "SUPPLY_NEW_SUPPLY_RATE_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_BORROW_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5372:41:5"
+                "src": "5350:41:5"
               },
               {
                 "id": 1602,
-                "name": "SUPPLY_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5423:43:5"
+                "src": "5401:42:5"
               },
               {
                 "id": 1603,
-                "name": "SUPPLY_NEW_TOTAL_CASH_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_SUPPLY_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5476:40:5"
+                "src": "5453:41:5"
               },
               {
                 "id": 1604,
-                "name": "SUPPLY_NEW_TOTAL_SUPPLY_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5526:42:5"
+                "src": "5504:43:5"
               },
               {
                 "id": 1605,
-                "name": "SUPPLY_TRANSFER_IN_FAILED",
+                "name": "SUPPLY_NEW_TOTAL_CASH_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5578:25:5"
+                "src": "5557:40:5"
               },
               {
                 "id": 1606,
-                "name": "SUPPLY_TRANSFER_IN_NOT_POSSIBLE",
+                "name": "SUPPLY_NEW_TOTAL_SUPPLY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5613:31:5"
+                "src": "5607:42:5"
               },
               {
                 "id": 1607,
-                "name": "SUPPORT_MARKET_FETCH_PRICE_FAILED",
+                "name": "SUPPLY_TRANSFER_IN_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5654:33:5"
+                "src": "5659:25:5"
               },
               {
                 "id": 1608,
-                "name": "SUPPORT_MARKET_OWNER_CHECK",
+                "name": "SUPPLY_TRANSFER_IN_NOT_POSSIBLE",
                 "nodeType": "EnumValue",
-                "src": "5697:26:5"
+                "src": "5694:31:5"
               },
               {
                 "id": 1609,
-                "name": "SUPPORT_MARKET_PRICE_CHECK",
+                "name": "SUPPORT_MARKET_FETCH_PRICE_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5733:26:5"
+                "src": "5735:33:5"
               },
               {
                 "id": 1610,
-                "name": "SUSPEND_MARKET_OWNER_CHECK",
+                "name": "SUPPORT_MARKET_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5769:26:5"
+                "src": "5778:26:5"
               },
               {
                 "id": 1611,
-                "name": "WITHDRAW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED",
+                "name": "SUPPORT_MARKET_PRICE_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5805:45:5"
+                "src": "5814:26:5"
               },
               {
                 "id": 1612,
-                "name": "WITHDRAW_ACCOUNT_SHORTFALL_PRESENT",
+                "name": "SUSPEND_MARKET_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5860:34:5"
+                "src": "5850:26:5"
               },
               {
                 "id": 1613,
-                "name": "WITHDRAW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
+                "name": "WITHDRAW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5904:47:5"
+                "src": "5886:45:5"
               },
               {
                 "id": 1614,
-                "name": "WITHDRAW_AMOUNT_LIQUIDITY_SHORTFALL",
+                "name": "WITHDRAW_ACCOUNT_SHORTFALL_PRESENT",
                 "nodeType": "EnumValue",
-                "src": "5961:35:5"
+                "src": "5941:34:5"
               },
               {
                 "id": 1615,
-                "name": "WITHDRAW_AMOUNT_VALUE_CALCULATION_FAILED",
+                "name": "WITHDRAW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6006:40:5"
+                "src": "5985:47:5"
               },
               {
                 "id": 1616,
-                "name": "WITHDRAW_CAPACITY_CALCULATION_FAILED",
+                "name": "WITHDRAW_AMOUNT_LIQUIDITY_SHORTFALL",
                 "nodeType": "EnumValue",
-                "src": "6056:36:5"
+                "src": "6042:35:5"
               },
               {
                 "id": 1617,
-                "name": "WITHDRAW_CONTRACT_PAUSED",
+                "name": "WITHDRAW_AMOUNT_VALUE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6102:24:5"
+                "src": "6087:40:5"
               },
               {
                 "id": 1618,
-                "name": "WITHDRAW_NEW_BORROW_INDEX_CALCULATION_FAILED",
+                "name": "WITHDRAW_CAPACITY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6136:44:5"
+                "src": "6137:36:5"
               },
               {
                 "id": 1619,
-                "name": "WITHDRAW_NEW_BORROW_RATE_CALCULATION_FAILED",
+                "name": "WITHDRAW_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "6190:43:5"
+                "src": "6183:24:5"
               },
               {
                 "id": 1620,
-                "name": "WITHDRAW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
+                "name": "WITHDRAW_NEW_BORROW_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6243:44:5"
+                "src": "6217:44:5"
               },
               {
                 "id": 1621,
-                "name": "WITHDRAW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
+                "name": "WITHDRAW_NEW_BORROW_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6297:43:5"
+                "src": "6271:43:5"
               },
               {
                 "id": 1622,
-                "name": "WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
+                "name": "WITHDRAW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6350:45:5"
+                "src": "6324:44:5"
               },
               {
                 "id": 1623,
-                "name": "WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED",
+                "name": "WITHDRAW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6405:44:5"
+                "src": "6378:43:5"
               },
               {
                 "id": 1624,
-                "name": "WITHDRAW_TRANSFER_OUT_FAILED",
+                "name": "WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6459:28:5"
+                "src": "6431:45:5"
               },
               {
                 "id": 1625,
-                "name": "WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE",
+                "name": "WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6497:34:5"
+                "src": "6486:44:5"
               },
               {
                 "id": 1626,
-                "name": "KYC_ADMIN_CHECK_FAILED",
+                "name": "WITHDRAW_TRANSFER_OUT_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6541:22:5"
+                "src": "6540:28:5"
               },
               {
                 "id": 1627,
-                "name": "KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED",
+                "name": "WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE",
                 "nodeType": "EnumValue",
-                "src": "6573:42:5"
+                "src": "6578:34:5"
               },
               {
                 "id": 1628,
-                "name": "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED",
+                "name": "KYC_ADMIN_CHECK_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6625:38:5"
+                "src": "6622:22:5"
               },
               {
                 "id": 1629,
-                "name": "LIQUIDATOR_CHECK_FAILED",
+                "name": "KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6673:23:5"
+                "src": "6654:42:5"
               },
               {
                 "id": 1630,
+                "name": "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "6706:38:5"
+              },
+              {
+                "id": 1631,
+                "name": "LIQUIDATOR_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "6754:23:5"
+              },
+              {
+                "id": 1632,
                 "name": "LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6706:43:5"
+                "src": "6787:43:5"
+              },
+              {
+                "id": 1633,
+                "name": "SET_WETH_ADDRESS_ADMIN_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "6840:35:5"
+              },
+              {
+                "id": 1634,
+                "name": "WETH_ADDRESS_NOT_SET_ERROR",
+                "nodeType": "EnumValue",
+                "src": "6885:26:5"
+              },
+              {
+                "id": 1635,
+                "name": "SEND_ETHER_ADMIN_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "6921:29:5"
               }
             ],
             "name": "FailureInfo",
             "nodeType": "EnumDefinition",
-            "src": "1800:4955:5"
+            "src": "1881:5075:5"
           },
           {
             "body": {
-              "id": 1654,
+              "id": 1659,
               "nodeType": "Block",
-              "src": "6950:82:5",
+              "src": "7151:82:5",
               "statements": [
                 {
                   "eventCall": {
@@ -962,14 +992,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1642,
+                            "id": 1647,
                             "name": "err",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1633,
-                            "src": "6978:3:5",
+                            "referencedDeclaration": 1638,
+                            "src": "7179:3:5",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_Error_$1533",
+                              "typeIdentifier": "t_enum$_Error_$1535",
                               "typeString": "enum ErrorReporter.Error"
                             }
                           }
@@ -977,24 +1007,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_Error_$1533",
+                              "typeIdentifier": "t_enum$_Error_$1535",
                               "typeString": "enum ErrorReporter.Error"
                             }
                           ],
-                          "id": 1641,
+                          "id": 1646,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "6973:4:5",
+                          "src": "7174:4:5",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint256_$",
                             "typeString": "type(uint256)"
                           },
                           "typeName": "uint"
                         },
-                        "id": 1643,
+                        "id": 1648,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1002,7 +1032,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "6973:9:5",
+                        "src": "7174:9:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1013,14 +1043,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1645,
+                            "id": 1650,
                             "name": "info",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1635,
-                            "src": "6989:4:5",
+                            "referencedDeclaration": 1640,
+                            "src": "7190:4:5",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                              "typeIdentifier": "t_enum$_FailureInfo_$1636",
                               "typeString": "enum ErrorReporter.FailureInfo"
                             }
                           }
@@ -1028,24 +1058,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                              "typeIdentifier": "t_enum$_FailureInfo_$1636",
                               "typeString": "enum ErrorReporter.FailureInfo"
                             }
                           ],
-                          "id": 1644,
+                          "id": 1649,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "6984:4:5",
+                          "src": "7185:4:5",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint256_$",
                             "typeString": "type(uint256)"
                           },
                           "typeName": "uint"
                         },
-                        "id": 1646,
+                        "id": 1651,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1053,7 +1083,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "6984:10:5",
+                        "src": "7185:10:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1062,14 +1092,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 1647,
+                        "id": 1652,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "6996:1:5",
+                        "src": "7197:1:5",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
@@ -1093,18 +1123,18 @@
                           "typeString": "int_const 0"
                         }
                       ],
-                      "id": 1640,
+                      "id": 1645,
                       "name": "Failure",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1501,
-                      "src": "6965:7:5",
+                      "src": "7166:7:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_uint256_$_t_uint256_$returns$__$",
                         "typeString": "function (uint256,uint256,uint256)"
                       }
                     },
-                    "id": 1648,
+                    "id": 1653,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1112,15 +1142,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "6965:33:5",
+                    "src": "7166:33:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1649,
+                  "id": 1654,
                   "nodeType": "EmitStatement",
-                  "src": "6960:38:5"
+                  "src": "7161:38:5"
                 },
                 {
                   "expression": {
@@ -1128,14 +1158,14 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1651,
+                        "id": 1656,
                         "name": "err",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1633,
-                        "src": "7021:3:5",
+                        "referencedDeclaration": 1638,
+                        "src": "7222:3:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_enum$_Error_$1533",
+                          "typeIdentifier": "t_enum$_Error_$1535",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       }
@@ -1143,24 +1173,24 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_enum$_Error_$1533",
+                          "typeIdentifier": "t_enum$_Error_$1535",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       ],
-                      "id": 1650,
+                      "id": 1655,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "7016:4:5",
+                      "src": "7217:4:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_uint256_$",
                         "typeString": "type(uint256)"
                       },
                       "typeName": "uint"
                     },
-                    "id": 1652,
+                    "id": 1657,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1168,21 +1198,21 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "7016:9:5",
+                    "src": "7217:9:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 1639,
-                  "id": 1653,
+                  "functionReturnParameters": 1644,
+                  "id": 1658,
                   "nodeType": "Return",
-                  "src": "7009:16:5"
+                  "src": "7210:16:5"
                 }
               ]
             },
             "documentation": "@dev use this when reporting a known error from the money market or a non-upgradeable collaborator",
-            "id": 1655,
+            "id": 1660,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1190,31 +1220,31 @@
             "name": "fail",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1636,
+              "id": 1641,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1633,
+                  "id": 1638,
                   "name": "err",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1655,
-                  "src": "6897:9:5",
+                  "scope": 1660,
+                  "src": "7098:9:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$1533",
+                    "typeIdentifier": "t_enum$_Error_$1535",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1632,
+                    "id": 1637,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1533,
-                    "src": "6897:5:5",
+                    "referencedDeclaration": 1535,
+                    "src": "7098:5:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$1533",
+                      "typeIdentifier": "t_enum$_Error_$1535",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -1223,26 +1253,26 @@
                 },
                 {
                   "constant": false,
-                  "id": 1635,
+                  "id": 1640,
                   "name": "info",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1655,
-                  "src": "6908:16:5",
+                  "scope": 1660,
+                  "src": "7109:16:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                    "typeIdentifier": "t_enum$_FailureInfo_$1636",
                     "typeString": "enum ErrorReporter.FailureInfo"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1634,
+                    "id": 1639,
                     "name": "FailureInfo",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1631,
-                    "src": "6908:11:5",
+                    "referencedDeclaration": 1636,
+                    "src": "7109:11:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                      "typeIdentifier": "t_enum$_FailureInfo_$1636",
                       "typeString": "enum ErrorReporter.FailureInfo"
                     }
                   },
@@ -1250,20 +1280,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6896:29:5"
+              "src": "7097:29:5"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1639,
+              "id": 1644,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1638,
+                  "id": 1643,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1655,
-                  "src": "6944:4:5",
+                  "scope": 1660,
+                  "src": "7145:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1271,10 +1301,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1637,
+                    "id": 1642,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6944:4:5",
+                    "src": "7145:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1284,19 +1314,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6943:6:5"
+              "src": "7144:6:5"
             },
-            "scope": 1682,
-            "src": "6883:149:5",
+            "scope": 1687,
+            "src": "7084:149:5",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           },
           {
             "body": {
-              "id": 1680,
+              "id": 1685,
               "nodeType": "Block",
-              "src": "7228:122:5",
+              "src": "7429:122:5",
               "statements": [
                 {
                   "eventCall": {
@@ -1309,18 +1339,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 1666,
+                              "id": 1671,
                               "name": "Error",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1533,
-                              "src": "7256:5:5",
+                              "referencedDeclaration": 1535,
+                              "src": "7457:5:5",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_Error_$1533_$",
+                                "typeIdentifier": "t_type$_t_enum$_Error_$1535_$",
                                 "typeString": "type(enum ErrorReporter.Error)"
                               }
                             },
-                            "id": 1667,
+                            "id": 1672,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1328,9 +1358,9 @@
                             "memberName": "OPAQUE_ERROR",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": null,
-                            "src": "7256:18:5",
+                            "src": "7457:18:5",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_Error_$1533",
+                              "typeIdentifier": "t_enum$_Error_$1535",
                               "typeString": "enum ErrorReporter.Error"
                             }
                           }
@@ -1338,24 +1368,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_Error_$1533",
+                              "typeIdentifier": "t_enum$_Error_$1535",
                               "typeString": "enum ErrorReporter.Error"
                             }
                           ],
-                          "id": 1665,
+                          "id": 1670,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "7251:4:5",
+                          "src": "7452:4:5",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint256_$",
                             "typeString": "type(uint256)"
                           },
                           "typeName": "uint"
                         },
-                        "id": 1668,
+                        "id": 1673,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1363,7 +1393,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "7251:24:5",
+                        "src": "7452:24:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1374,14 +1404,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1670,
+                            "id": 1675,
                             "name": "info",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1657,
-                            "src": "7282:4:5",
+                            "referencedDeclaration": 1662,
+                            "src": "7483:4:5",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                              "typeIdentifier": "t_enum$_FailureInfo_$1636",
                               "typeString": "enum ErrorReporter.FailureInfo"
                             }
                           }
@@ -1389,24 +1419,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                              "typeIdentifier": "t_enum$_FailureInfo_$1636",
                               "typeString": "enum ErrorReporter.FailureInfo"
                             }
                           ],
-                          "id": 1669,
+                          "id": 1674,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "7277:4:5",
+                          "src": "7478:4:5",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint256_$",
                             "typeString": "type(uint256)"
                           },
                           "typeName": "uint"
                         },
-                        "id": 1671,
+                        "id": 1676,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1414,7 +1444,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "7277:10:5",
+                        "src": "7478:10:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1422,12 +1452,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1672,
+                        "id": 1677,
                         "name": "opaqueError",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1659,
-                        "src": "7289:11:5",
+                        "referencedDeclaration": 1664,
+                        "src": "7490:11:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1449,18 +1479,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1664,
+                      "id": 1669,
                       "name": "Failure",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1501,
-                      "src": "7243:7:5",
+                      "src": "7444:7:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_uint256_$_t_uint256_$returns$__$",
                         "typeString": "function (uint256,uint256,uint256)"
                       }
                     },
-                    "id": 1673,
+                    "id": 1678,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1468,15 +1498,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "7243:58:5",
+                    "src": "7444:58:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1674,
+                  "id": 1679,
                   "nodeType": "EmitStatement",
-                  "src": "7238:63:5"
+                  "src": "7439:63:5"
                 },
                 {
                   "expression": {
@@ -1486,18 +1516,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1676,
+                          "id": 1681,
                           "name": "Error",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1533,
-                          "src": "7324:5:5",
+                          "referencedDeclaration": 1535,
+                          "src": "7525:5:5",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_enum$_Error_$1533_$",
+                            "typeIdentifier": "t_type$_t_enum$_Error_$1535_$",
                             "typeString": "type(enum ErrorReporter.Error)"
                           }
                         },
-                        "id": 1677,
+                        "id": 1682,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1505,9 +1535,9 @@
                         "memberName": "OPAQUE_ERROR",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "7324:18:5",
+                        "src": "7525:18:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_enum$_Error_$1533",
+                          "typeIdentifier": "t_enum$_Error_$1535",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       }
@@ -1515,24 +1545,24 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_enum$_Error_$1533",
+                          "typeIdentifier": "t_enum$_Error_$1535",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       ],
-                      "id": 1675,
+                      "id": 1680,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "7319:4:5",
+                      "src": "7520:4:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_uint256_$",
                         "typeString": "type(uint256)"
                       },
                       "typeName": "uint"
                     },
-                    "id": 1678,
+                    "id": 1683,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -1540,21 +1570,21 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "7319:24:5",
+                    "src": "7520:24:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 1663,
-                  "id": 1679,
+                  "functionReturnParameters": 1668,
+                  "id": 1684,
                   "nodeType": "Return",
-                  "src": "7312:31:5"
+                  "src": "7513:31:5"
                 }
               ]
             },
             "documentation": "@dev use this when reporting an opaque error from an upgradeable collaborator contract",
-            "id": 1681,
+            "id": 1686,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1562,31 +1592,31 @@
             "name": "failOpaque",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1660,
+              "id": 1665,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1657,
+                  "id": 1662,
                   "name": "info",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1681,
-                  "src": "7168:16:5",
+                  "scope": 1686,
+                  "src": "7369:16:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                    "typeIdentifier": "t_enum$_FailureInfo_$1636",
                     "typeString": "enum ErrorReporter.FailureInfo"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1656,
+                    "id": 1661,
                     "name": "FailureInfo",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1631,
-                    "src": "7168:11:5",
+                    "referencedDeclaration": 1636,
+                    "src": "7369:11:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                      "typeIdentifier": "t_enum$_FailureInfo_$1636",
                       "typeString": "enum ErrorReporter.FailureInfo"
                     }
                   },
@@ -1595,11 +1625,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1659,
+                  "id": 1664,
                   "name": "opaqueError",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1681,
-                  "src": "7186:16:5",
+                  "scope": 1686,
+                  "src": "7387:16:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1607,10 +1637,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1658,
+                    "id": 1663,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7186:4:5",
+                    "src": "7387:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1620,20 +1650,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7167:36:5"
+              "src": "7368:36:5"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1663,
+              "id": 1668,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1662,
+                  "id": 1667,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1681,
-                  "src": "7222:4:5",
+                  "scope": 1686,
+                  "src": "7423:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1641,10 +1671,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1661,
+                    "id": 1666,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7222:4:5",
+                    "src": "7423:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1654,29 +1684,29 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7221:6:5"
+              "src": "7422:6:5"
             },
-            "scope": 1682,
-            "src": "7148:202:5",
+            "scope": 1687,
+            "src": "7349:202:5",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 1683,
-        "src": "26:7326:5"
+        "scope": 1688,
+        "src": "26:7527:5"
       }
     ],
-    "src": "0:7353:5"
+    "src": "0:7554:5"
   },
   "legacyAST": {
     "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
     "exportedSymbols": {
       "ErrorReporter": [
-        1682
+        1687
       ]
     },
-    "id": 1683,
+    "id": 1688,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -1696,9 +1726,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 1682,
+        "id": 1687,
         "linearizedBaseContracts": [
-          1682
+          1687
         ],
         "name": "ErrorReporter",
         "nodeType": "ContractDefinition",
@@ -1801,7 +1831,7 @@
           },
           {
             "canonicalName": "ErrorReporter.Error",
-            "id": 1533,
+            "id": 1535,
             "members": [
               {
                 "id": 1502,
@@ -1988,608 +2018,638 @@
                 "name": "LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED",
                 "nodeType": "EnumValue",
                 "src": "1468:43:5"
+              },
+              {
+                "id": 1533,
+                "name": "SET_WETH_ADDRESS_ADMIN_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "1521:35:5"
+              },
+              {
+                "id": 1534,
+                "name": "WETH_ADDRESS_NOT_SET_ERROR",
+                "nodeType": "EnumValue",
+                "src": "1566:26:5"
               }
             ],
             "name": "Error",
             "nodeType": "EnumDefinition",
-            "src": "346:1171:5"
+            "src": "346:1252:5"
           },
           {
             "canonicalName": "ErrorReporter.FailureInfo",
-            "id": 1631,
+            "id": 1636,
             "members": [
               {
-                "id": 1534,
+                "id": 1536,
                 "name": "ACCEPT_ADMIN_PENDING_ADMIN_CHECK",
                 "nodeType": "EnumValue",
-                "src": "1827:32:5"
-              },
-              {
-                "id": 1535,
-                "name": "BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED",
-                "nodeType": "EnumValue",
-                "src": "1869:43:5"
-              },
-              {
-                "id": 1536,
-                "name": "BORROW_ACCOUNT_SHORTFALL_PRESENT",
-                "nodeType": "EnumValue",
-                "src": "1922:32:5"
+                "src": "1908:32:5"
               },
               {
                 "id": 1537,
-                "name": "BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
+                "name": "BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "1964:45:5"
+                "src": "1950:43:5"
               },
               {
                 "id": 1538,
-                "name": "BORROW_AMOUNT_LIQUIDITY_SHORTFALL",
+                "name": "BORROW_ACCOUNT_SHORTFALL_PRESENT",
                 "nodeType": "EnumValue",
-                "src": "2019:33:5"
+                "src": "2003:32:5"
               },
               {
                 "id": 1539,
-                "name": "BORROW_AMOUNT_VALUE_CALCULATION_FAILED",
+                "name": "BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2062:38:5"
+                "src": "2045:45:5"
               },
               {
                 "id": 1540,
-                "name": "BORROW_CONTRACT_PAUSED",
+                "name": "BORROW_AMOUNT_LIQUIDITY_SHORTFALL",
                 "nodeType": "EnumValue",
-                "src": "2110:22:5"
+                "src": "2100:33:5"
               },
               {
                 "id": 1541,
-                "name": "BORROW_MARKET_NOT_SUPPORTED",
+                "name": "BORROW_AMOUNT_VALUE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2142:27:5"
+                "src": "2143:38:5"
               },
               {
                 "id": 1542,
-                "name": "BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED",
+                "name": "BORROW_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "2179:42:5"
+                "src": "2191:22:5"
               },
               {
                 "id": 1543,
-                "name": "BORROW_NEW_BORROW_RATE_CALCULATION_FAILED",
+                "name": "BORROW_MARKET_NOT_SUPPORTED",
                 "nodeType": "EnumValue",
-                "src": "2231:41:5"
+                "src": "2223:27:5"
               },
               {
                 "id": 1544,
-                "name": "BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
+                "name": "BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2282:42:5"
+                "src": "2260:42:5"
               },
               {
                 "id": 1545,
-                "name": "BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
+                "name": "BORROW_NEW_BORROW_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2334:41:5"
+                "src": "2312:41:5"
               },
               {
                 "id": 1546,
-                "name": "BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
+                "name": "BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2385:43:5"
+                "src": "2363:42:5"
               },
               {
                 "id": 1547,
-                "name": "BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED",
+                "name": "BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2438:42:5"
+                "src": "2415:41:5"
               },
               {
                 "id": 1548,
-                "name": "BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED",
+                "name": "BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2490:40:5"
+                "src": "2466:43:5"
               },
               {
                 "id": 1549,
-                "name": "BORROW_ORIGINATION_FEE_CALCULATION_FAILED",
+                "name": "BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2540:41:5"
+                "src": "2519:42:5"
               },
               {
                 "id": 1550,
-                "name": "BORROW_TRANSFER_OUT_FAILED",
+                "name": "BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2591:26:5"
+                "src": "2571:40:5"
               },
               {
                 "id": 1551,
-                "name": "EQUITY_WITHDRAWAL_AMOUNT_VALIDATION",
+                "name": "BORROW_ORIGINATION_FEE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2627:35:5"
+                "src": "2621:41:5"
               },
               {
                 "id": 1552,
-                "name": "EQUITY_WITHDRAWAL_CALCULATE_EQUITY",
+                "name": "BORROW_TRANSFER_OUT_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2672:34:5"
+                "src": "2672:26:5"
               },
               {
                 "id": 1553,
-                "name": "EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK",
+                "name": "EQUITY_WITHDRAWAL_AMOUNT_VALIDATION",
                 "nodeType": "EnumValue",
-                "src": "2716:35:5"
+                "src": "2708:35:5"
               },
               {
                 "id": 1554,
-                "name": "EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED",
+                "name": "EQUITY_WITHDRAWAL_CALCULATE_EQUITY",
                 "nodeType": "EnumValue",
-                "src": "2761:37:5"
+                "src": "2753:34:5"
               },
               {
                 "id": 1555,
-                "name": "LIQUIDATE_ACCUMULATED_BORROW_BALANCE_CALCULATION_FAILED",
+                "name": "EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "2808:55:5"
+                "src": "2797:35:5"
               },
               {
                 "id": 1556,
-                "name": "LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET",
+                "name": "EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2873:81:5"
+                "src": "2842:37:5"
               },
               {
                 "id": 1557,
-                "name": "LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_ACCUMULATED_BORROW_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "2964:83:5"
+                "src": "2889:55:5"
               },
               {
                 "id": 1558,
-                "name": "LIQUIDATE_AMOUNT_SEIZE_CALCULATION_FAILED",
+                "name": "LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3057:41:5"
+                "src": "2954:81:5"
               },
               {
                 "id": 1559,
-                "name": "LIQUIDATE_BORROW_DENOMINATED_COLLATERAL_CALCULATION_FAILED",
+                "name": "LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3108:58:5"
+                "src": "3045:83:5"
               },
               {
                 "id": 1560,
-                "name": "LIQUIDATE_CLOSE_AMOUNT_TOO_HIGH",
+                "name": "LIQUIDATE_AMOUNT_SEIZE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "3176:31:5"
+                "src": "3138:41:5"
               },
               {
                 "id": 1561,
-                "name": "LIQUIDATE_CONTRACT_PAUSED",
+                "name": "LIQUIDATE_BORROW_DENOMINATED_COLLATERAL_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "3217:25:5"
+                "src": "3189:58:5"
               },
               {
                 "id": 1562,
-                "name": "LIQUIDATE_DISCOUNTED_REPAY_TO_EVEN_AMOUNT_CALCULATION_FAILED",
+                "name": "LIQUIDATE_CLOSE_AMOUNT_TOO_HIGH",
                 "nodeType": "EnumValue",
-                "src": "3252:60:5"
+                "src": "3257:31:5"
               },
               {
                 "id": 1563,
-                "name": "LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "3322:60:5"
+                "src": "3298:25:5"
               },
               {
                 "id": 1564,
-                "name": "LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_DISCOUNTED_REPAY_TO_EVEN_AMOUNT_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "3392:62:5"
+                "src": "3333:60:5"
               },
               {
                 "id": 1565,
-                "name": "LIQUIDATE_NEW_BORROW_RATE_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3464:59:5"
+                "src": "3403:60:5"
               },
               {
                 "id": 1566,
-                "name": "LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3533:60:5"
+                "src": "3473:62:5"
               },
               {
                 "id": 1567,
-                "name": "LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_NEW_BORROW_RATE_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3603:62:5"
+                "src": "3545:59:5"
               },
               {
                 "id": 1568,
-                "name": "LIQUIDATE_NEW_SUPPLY_RATE_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3675:59:5"
+                "src": "3614:60:5"
               },
               {
                 "id": 1569,
-                "name": "LIQUIDATE_NEW_TOTAL_BORROW_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3744:60:5"
+                "src": "3684:62:5"
               },
               {
                 "id": 1570,
-                "name": "LIQUIDATE_NEW_TOTAL_CASH_CALCULATION_FAILED_BORROWED_ASSET",
+                "name": "LIQUIDATE_NEW_SUPPLY_RATE_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3814:58:5"
+                "src": "3756:59:5"
               },
               {
                 "id": 1571,
-                "name": "LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_NEW_TOTAL_BORROW_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3882:79:5"
+                "src": "3825:60:5"
               },
               {
                 "id": 1572,
-                "name": "LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET",
+                "name": "LIQUIDATE_NEW_TOTAL_CASH_CALCULATION_FAILED_BORROWED_ASSET",
                 "nodeType": "EnumValue",
-                "src": "3971:81:5"
+                "src": "3895:58:5"
               },
               {
                 "id": 1573,
-                "name": "LIQUIDATE_FETCH_ASSET_PRICE_FAILED",
+                "name": "LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "4062:34:5"
+                "src": "3963:79:5"
               },
               {
                 "id": 1574,
-                "name": "LIQUIDATE_TRANSFER_IN_FAILED",
+                "name": "LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET",
                 "nodeType": "EnumValue",
-                "src": "4106:28:5"
+                "src": "4052:81:5"
               },
               {
                 "id": 1575,
-                "name": "LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE",
+                "name": "LIQUIDATE_FETCH_ASSET_PRICE_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4144:34:5"
+                "src": "4143:34:5"
               },
               {
                 "id": 1576,
-                "name": "REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
+                "name": "LIQUIDATE_TRANSFER_IN_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4188:51:5"
+                "src": "4187:28:5"
               },
               {
                 "id": 1577,
-                "name": "REPAY_BORROW_CONTRACT_PAUSED",
+                "name": "LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE",
                 "nodeType": "EnumValue",
-                "src": "4249:28:5"
+                "src": "4225:34:5"
               },
               {
                 "id": 1578,
-                "name": "REPAY_BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4287:48:5"
+                "src": "4269:51:5"
               },
               {
                 "id": 1579,
-                "name": "REPAY_BORROW_NEW_BORROW_RATE_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "4345:47:5"
+                "src": "4330:28:5"
               },
               {
                 "id": 1580,
-                "name": "REPAY_BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4402:48:5"
+                "src": "4368:48:5"
               },
               {
                 "id": 1581,
-                "name": "REPAY_BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_BORROW_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4460:47:5"
+                "src": "4426:47:5"
               },
               {
                 "id": 1582,
-                "name": "REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4517:49:5"
+                "src": "4483:48:5"
               },
               {
                 "id": 1583,
-                "name": "REPAY_BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4576:48:5"
+                "src": "4541:47:5"
               },
               {
                 "id": 1584,
-                "name": "REPAY_BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED",
+                "name": "REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4634:46:5"
+                "src": "4598:49:5"
               },
               {
                 "id": 1585,
-                "name": "REPAY_BORROW_TRANSFER_IN_FAILED",
+                "name": "REPAY_BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4690:31:5"
+                "src": "4657:48:5"
               },
               {
                 "id": 1586,
-                "name": "REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE",
+                "name": "REPAY_BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4731:37:5"
+                "src": "4715:46:5"
               },
               {
                 "id": 1587,
-                "name": "SET_ASSET_PRICE_CHECK_ORACLE",
+                "name": "REPAY_BORROW_TRANSFER_IN_FAILED",
                 "nodeType": "EnumValue",
-                "src": "4778:28:5"
+                "src": "4771:31:5"
               },
               {
                 "id": 1588,
-                "name": "SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK",
+                "name": "REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE",
                 "nodeType": "EnumValue",
-                "src": "4816:42:5"
+                "src": "4812:37:5"
               },
               {
                 "id": 1589,
-                "name": "SET_ORACLE_OWNER_CHECK",
+                "name": "SET_ASSET_PRICE_CHECK_ORACLE",
                 "nodeType": "EnumValue",
-                "src": "4868:22:5"
+                "src": "4859:28:5"
               },
               {
                 "id": 1590,
-                "name": "SET_ORIGINATION_FEE_OWNER_CHECK",
+                "name": "SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "4900:31:5"
+                "src": "4897:42:5"
               },
               {
                 "id": 1591,
-                "name": "SET_PAUSED_OWNER_CHECK",
+                "name": "SET_ORACLE_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "4941:22:5"
+                "src": "4949:22:5"
               },
               {
                 "id": 1592,
-                "name": "SET_PENDING_ADMIN_OWNER_CHECK",
+                "name": "SET_ORIGINATION_FEE_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "4973:29:5"
+                "src": "4981:31:5"
               },
               {
                 "id": 1593,
-                "name": "SET_RISK_PARAMETERS_OWNER_CHECK",
+                "name": "SET_PAUSED_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5012:31:5"
+                "src": "5022:22:5"
               },
               {
                 "id": 1594,
-                "name": "SET_RISK_PARAMETERS_VALIDATION",
+                "name": "SET_PENDING_ADMIN_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5053:30:5"
+                "src": "5054:29:5"
               },
               {
                 "id": 1595,
-                "name": "SUPPLY_ACCUMULATED_BALANCE_CALCULATION_FAILED",
+                "name": "SET_RISK_PARAMETERS_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5093:45:5"
+                "src": "5093:31:5"
               },
               {
                 "id": 1596,
-                "name": "SUPPLY_CONTRACT_PAUSED",
+                "name": "SET_RISK_PARAMETERS_VALIDATION",
                 "nodeType": "EnumValue",
-                "src": "5148:22:5"
+                "src": "5134:30:5"
               },
               {
                 "id": 1597,
-                "name": "SUPPLY_MARKET_NOT_SUPPORTED",
+                "name": "SUPPLY_ACCUMULATED_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5180:27:5"
+                "src": "5174:45:5"
               },
               {
                 "id": 1598,
-                "name": "SUPPLY_NEW_BORROW_INDEX_CALCULATION_FAILED",
+                "name": "SUPPLY_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "5217:42:5"
+                "src": "5229:22:5"
               },
               {
                 "id": 1599,
-                "name": "SUPPLY_NEW_BORROW_RATE_CALCULATION_FAILED",
+                "name": "SUPPLY_MARKET_NOT_SUPPORTED",
                 "nodeType": "EnumValue",
-                "src": "5269:41:5"
+                "src": "5261:27:5"
               },
               {
                 "id": 1600,
-                "name": "SUPPLY_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_BORROW_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5320:42:5"
+                "src": "5298:42:5"
               },
               {
                 "id": 1601,
-                "name": "SUPPLY_NEW_SUPPLY_RATE_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_BORROW_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5372:41:5"
+                "src": "5350:41:5"
               },
               {
                 "id": 1602,
-                "name": "SUPPLY_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5423:43:5"
+                "src": "5401:42:5"
               },
               {
                 "id": 1603,
-                "name": "SUPPLY_NEW_TOTAL_CASH_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_SUPPLY_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5476:40:5"
+                "src": "5453:41:5"
               },
               {
                 "id": 1604,
-                "name": "SUPPLY_NEW_TOTAL_SUPPLY_CALCULATION_FAILED",
+                "name": "SUPPLY_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5526:42:5"
+                "src": "5504:43:5"
               },
               {
                 "id": 1605,
-                "name": "SUPPLY_TRANSFER_IN_FAILED",
+                "name": "SUPPLY_NEW_TOTAL_CASH_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5578:25:5"
+                "src": "5557:40:5"
               },
               {
                 "id": 1606,
-                "name": "SUPPLY_TRANSFER_IN_NOT_POSSIBLE",
+                "name": "SUPPLY_NEW_TOTAL_SUPPLY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5613:31:5"
+                "src": "5607:42:5"
               },
               {
                 "id": 1607,
-                "name": "SUPPORT_MARKET_FETCH_PRICE_FAILED",
+                "name": "SUPPLY_TRANSFER_IN_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5654:33:5"
+                "src": "5659:25:5"
               },
               {
                 "id": 1608,
-                "name": "SUPPORT_MARKET_OWNER_CHECK",
+                "name": "SUPPLY_TRANSFER_IN_NOT_POSSIBLE",
                 "nodeType": "EnumValue",
-                "src": "5697:26:5"
+                "src": "5694:31:5"
               },
               {
                 "id": 1609,
-                "name": "SUPPORT_MARKET_PRICE_CHECK",
+                "name": "SUPPORT_MARKET_FETCH_PRICE_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5733:26:5"
+                "src": "5735:33:5"
               },
               {
                 "id": 1610,
-                "name": "SUSPEND_MARKET_OWNER_CHECK",
+                "name": "SUPPORT_MARKET_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5769:26:5"
+                "src": "5778:26:5"
               },
               {
                 "id": 1611,
-                "name": "WITHDRAW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED",
+                "name": "SUPPORT_MARKET_PRICE_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5805:45:5"
+                "src": "5814:26:5"
               },
               {
                 "id": 1612,
-                "name": "WITHDRAW_ACCOUNT_SHORTFALL_PRESENT",
+                "name": "SUSPEND_MARKET_OWNER_CHECK",
                 "nodeType": "EnumValue",
-                "src": "5860:34:5"
+                "src": "5850:26:5"
               },
               {
                 "id": 1613,
-                "name": "WITHDRAW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
+                "name": "WITHDRAW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "5904:47:5"
+                "src": "5886:45:5"
               },
               {
                 "id": 1614,
-                "name": "WITHDRAW_AMOUNT_LIQUIDITY_SHORTFALL",
+                "name": "WITHDRAW_ACCOUNT_SHORTFALL_PRESENT",
                 "nodeType": "EnumValue",
-                "src": "5961:35:5"
+                "src": "5941:34:5"
               },
               {
                 "id": 1615,
-                "name": "WITHDRAW_AMOUNT_VALUE_CALCULATION_FAILED",
+                "name": "WITHDRAW_ACCUMULATED_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6006:40:5"
+                "src": "5985:47:5"
               },
               {
                 "id": 1616,
-                "name": "WITHDRAW_CAPACITY_CALCULATION_FAILED",
+                "name": "WITHDRAW_AMOUNT_LIQUIDITY_SHORTFALL",
                 "nodeType": "EnumValue",
-                "src": "6056:36:5"
+                "src": "6042:35:5"
               },
               {
                 "id": 1617,
-                "name": "WITHDRAW_CONTRACT_PAUSED",
+                "name": "WITHDRAW_AMOUNT_VALUE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6102:24:5"
+                "src": "6087:40:5"
               },
               {
                 "id": 1618,
-                "name": "WITHDRAW_NEW_BORROW_INDEX_CALCULATION_FAILED",
+                "name": "WITHDRAW_CAPACITY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6136:44:5"
+                "src": "6137:36:5"
               },
               {
                 "id": 1619,
-                "name": "WITHDRAW_NEW_BORROW_RATE_CALCULATION_FAILED",
+                "name": "WITHDRAW_CONTRACT_PAUSED",
                 "nodeType": "EnumValue",
-                "src": "6190:43:5"
+                "src": "6183:24:5"
               },
               {
                 "id": 1620,
-                "name": "WITHDRAW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
+                "name": "WITHDRAW_NEW_BORROW_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6243:44:5"
+                "src": "6217:44:5"
               },
               {
                 "id": 1621,
-                "name": "WITHDRAW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
+                "name": "WITHDRAW_NEW_BORROW_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6297:43:5"
+                "src": "6271:43:5"
               },
               {
                 "id": 1622,
-                "name": "WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
+                "name": "WITHDRAW_NEW_SUPPLY_INDEX_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6350:45:5"
+                "src": "6324:44:5"
               },
               {
                 "id": 1623,
-                "name": "WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED",
+                "name": "WITHDRAW_NEW_SUPPLY_RATE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6405:44:5"
+                "src": "6378:43:5"
               },
               {
                 "id": 1624,
-                "name": "WITHDRAW_TRANSFER_OUT_FAILED",
+                "name": "WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6459:28:5"
+                "src": "6431:45:5"
               },
               {
                 "id": 1625,
-                "name": "WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE",
+                "name": "WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6497:34:5"
+                "src": "6486:44:5"
               },
               {
                 "id": 1626,
-                "name": "KYC_ADMIN_CHECK_FAILED",
+                "name": "WITHDRAW_TRANSFER_OUT_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6541:22:5"
+                "src": "6540:28:5"
               },
               {
                 "id": 1627,
-                "name": "KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED",
+                "name": "WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE",
                 "nodeType": "EnumValue",
-                "src": "6573:42:5"
+                "src": "6578:34:5"
               },
               {
                 "id": 1628,
-                "name": "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED",
+                "name": "KYC_ADMIN_CHECK_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6625:38:5"
+                "src": "6622:22:5"
               },
               {
                 "id": 1629,
-                "name": "LIQUIDATOR_CHECK_FAILED",
+                "name": "KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6673:23:5"
+                "src": "6654:42:5"
               },
               {
                 "id": 1630,
+                "name": "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "6706:38:5"
+              },
+              {
+                "id": 1631,
+                "name": "LIQUIDATOR_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "6754:23:5"
+              },
+              {
+                "id": 1632,
                 "name": "LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED",
                 "nodeType": "EnumValue",
-                "src": "6706:43:5"
+                "src": "6787:43:5"
+              },
+              {
+                "id": 1633,
+                "name": "SET_WETH_ADDRESS_ADMIN_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "6840:35:5"
+              },
+              {
+                "id": 1634,
+                "name": "WETH_ADDRESS_NOT_SET_ERROR",
+                "nodeType": "EnumValue",
+                "src": "6885:26:5"
+              },
+              {
+                "id": 1635,
+                "name": "SEND_ETHER_ADMIN_CHECK_FAILED",
+                "nodeType": "EnumValue",
+                "src": "6921:29:5"
               }
             ],
             "name": "FailureInfo",
             "nodeType": "EnumDefinition",
-            "src": "1800:4955:5"
+            "src": "1881:5075:5"
           },
           {
             "body": {
-              "id": 1654,
+              "id": 1659,
               "nodeType": "Block",
-              "src": "6950:82:5",
+              "src": "7151:82:5",
               "statements": [
                 {
                   "eventCall": {
@@ -2600,14 +2660,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1642,
+                            "id": 1647,
                             "name": "err",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1633,
-                            "src": "6978:3:5",
+                            "referencedDeclaration": 1638,
+                            "src": "7179:3:5",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_Error_$1533",
+                              "typeIdentifier": "t_enum$_Error_$1535",
                               "typeString": "enum ErrorReporter.Error"
                             }
                           }
@@ -2615,24 +2675,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_Error_$1533",
+                              "typeIdentifier": "t_enum$_Error_$1535",
                               "typeString": "enum ErrorReporter.Error"
                             }
                           ],
-                          "id": 1641,
+                          "id": 1646,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "6973:4:5",
+                          "src": "7174:4:5",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint256_$",
                             "typeString": "type(uint256)"
                           },
                           "typeName": "uint"
                         },
-                        "id": 1643,
+                        "id": 1648,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2640,7 +2700,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "6973:9:5",
+                        "src": "7174:9:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -2651,14 +2711,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1645,
+                            "id": 1650,
                             "name": "info",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1635,
-                            "src": "6989:4:5",
+                            "referencedDeclaration": 1640,
+                            "src": "7190:4:5",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                              "typeIdentifier": "t_enum$_FailureInfo_$1636",
                               "typeString": "enum ErrorReporter.FailureInfo"
                             }
                           }
@@ -2666,24 +2726,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                              "typeIdentifier": "t_enum$_FailureInfo_$1636",
                               "typeString": "enum ErrorReporter.FailureInfo"
                             }
                           ],
-                          "id": 1644,
+                          "id": 1649,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "6984:4:5",
+                          "src": "7185:4:5",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint256_$",
                             "typeString": "type(uint256)"
                           },
                           "typeName": "uint"
                         },
-                        "id": 1646,
+                        "id": 1651,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2691,7 +2751,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "6984:10:5",
+                        "src": "7185:10:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -2700,14 +2760,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 1647,
+                        "id": 1652,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "6996:1:5",
+                        "src": "7197:1:5",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
@@ -2731,18 +2791,18 @@
                           "typeString": "int_const 0"
                         }
                       ],
-                      "id": 1640,
+                      "id": 1645,
                       "name": "Failure",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1501,
-                      "src": "6965:7:5",
+                      "src": "7166:7:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_uint256_$_t_uint256_$returns$__$",
                         "typeString": "function (uint256,uint256,uint256)"
                       }
                     },
-                    "id": 1648,
+                    "id": 1653,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2750,15 +2810,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "6965:33:5",
+                    "src": "7166:33:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1649,
+                  "id": 1654,
                   "nodeType": "EmitStatement",
-                  "src": "6960:38:5"
+                  "src": "7161:38:5"
                 },
                 {
                   "expression": {
@@ -2766,14 +2826,14 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1651,
+                        "id": 1656,
                         "name": "err",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1633,
-                        "src": "7021:3:5",
+                        "referencedDeclaration": 1638,
+                        "src": "7222:3:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_enum$_Error_$1533",
+                          "typeIdentifier": "t_enum$_Error_$1535",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       }
@@ -2781,24 +2841,24 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_enum$_Error_$1533",
+                          "typeIdentifier": "t_enum$_Error_$1535",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       ],
-                      "id": 1650,
+                      "id": 1655,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "7016:4:5",
+                      "src": "7217:4:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_uint256_$",
                         "typeString": "type(uint256)"
                       },
                       "typeName": "uint"
                     },
-                    "id": 1652,
+                    "id": 1657,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2806,21 +2866,21 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "7016:9:5",
+                    "src": "7217:9:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 1639,
-                  "id": 1653,
+                  "functionReturnParameters": 1644,
+                  "id": 1658,
                   "nodeType": "Return",
-                  "src": "7009:16:5"
+                  "src": "7210:16:5"
                 }
               ]
             },
             "documentation": "@dev use this when reporting a known error from the money market or a non-upgradeable collaborator",
-            "id": 1655,
+            "id": 1660,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2828,31 +2888,31 @@
             "name": "fail",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1636,
+              "id": 1641,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1633,
+                  "id": 1638,
                   "name": "err",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1655,
-                  "src": "6897:9:5",
+                  "scope": 1660,
+                  "src": "7098:9:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_Error_$1533",
+                    "typeIdentifier": "t_enum$_Error_$1535",
                     "typeString": "enum ErrorReporter.Error"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1632,
+                    "id": 1637,
                     "name": "Error",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1533,
-                    "src": "6897:5:5",
+                    "referencedDeclaration": 1535,
+                    "src": "7098:5:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_Error_$1533",
+                      "typeIdentifier": "t_enum$_Error_$1535",
                       "typeString": "enum ErrorReporter.Error"
                     }
                   },
@@ -2861,26 +2921,26 @@
                 },
                 {
                   "constant": false,
-                  "id": 1635,
+                  "id": 1640,
                   "name": "info",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1655,
-                  "src": "6908:16:5",
+                  "scope": 1660,
+                  "src": "7109:16:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                    "typeIdentifier": "t_enum$_FailureInfo_$1636",
                     "typeString": "enum ErrorReporter.FailureInfo"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1634,
+                    "id": 1639,
                     "name": "FailureInfo",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1631,
-                    "src": "6908:11:5",
+                    "referencedDeclaration": 1636,
+                    "src": "7109:11:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                      "typeIdentifier": "t_enum$_FailureInfo_$1636",
                       "typeString": "enum ErrorReporter.FailureInfo"
                     }
                   },
@@ -2888,20 +2948,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6896:29:5"
+              "src": "7097:29:5"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1639,
+              "id": 1644,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1638,
+                  "id": 1643,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1655,
-                  "src": "6944:4:5",
+                  "scope": 1660,
+                  "src": "7145:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2909,10 +2969,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1637,
+                    "id": 1642,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6944:4:5",
+                    "src": "7145:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2922,19 +2982,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6943:6:5"
+              "src": "7144:6:5"
             },
-            "scope": 1682,
-            "src": "6883:149:5",
+            "scope": 1687,
+            "src": "7084:149:5",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           },
           {
             "body": {
-              "id": 1680,
+              "id": 1685,
               "nodeType": "Block",
-              "src": "7228:122:5",
+              "src": "7429:122:5",
               "statements": [
                 {
                   "eventCall": {
@@ -2947,18 +3007,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 1666,
+                              "id": 1671,
                               "name": "Error",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1533,
-                              "src": "7256:5:5",
+                              "referencedDeclaration": 1535,
+                              "src": "7457:5:5",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_Error_$1533_$",
+                                "typeIdentifier": "t_type$_t_enum$_Error_$1535_$",
                                 "typeString": "type(enum ErrorReporter.Error)"
                               }
                             },
-                            "id": 1667,
+                            "id": 1672,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2966,9 +3026,9 @@
                             "memberName": "OPAQUE_ERROR",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": null,
-                            "src": "7256:18:5",
+                            "src": "7457:18:5",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_Error_$1533",
+                              "typeIdentifier": "t_enum$_Error_$1535",
                               "typeString": "enum ErrorReporter.Error"
                             }
                           }
@@ -2976,24 +3036,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_Error_$1533",
+                              "typeIdentifier": "t_enum$_Error_$1535",
                               "typeString": "enum ErrorReporter.Error"
                             }
                           ],
-                          "id": 1665,
+                          "id": 1670,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "7251:4:5",
+                          "src": "7452:4:5",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint256_$",
                             "typeString": "type(uint256)"
                           },
                           "typeName": "uint"
                         },
-                        "id": 1668,
+                        "id": 1673,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3001,7 +3061,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "7251:24:5",
+                        "src": "7452:24:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -3012,14 +3072,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1670,
+                            "id": 1675,
                             "name": "info",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1657,
-                            "src": "7282:4:5",
+                            "referencedDeclaration": 1662,
+                            "src": "7483:4:5",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                              "typeIdentifier": "t_enum$_FailureInfo_$1636",
                               "typeString": "enum ErrorReporter.FailureInfo"
                             }
                           }
@@ -3027,24 +3087,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                              "typeIdentifier": "t_enum$_FailureInfo_$1636",
                               "typeString": "enum ErrorReporter.FailureInfo"
                             }
                           ],
-                          "id": 1669,
+                          "id": 1674,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "7277:4:5",
+                          "src": "7478:4:5",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint256_$",
                             "typeString": "type(uint256)"
                           },
                           "typeName": "uint"
                         },
-                        "id": 1671,
+                        "id": 1676,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3052,7 +3112,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "7277:10:5",
+                        "src": "7478:10:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -3060,12 +3120,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1672,
+                        "id": 1677,
                         "name": "opaqueError",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1659,
-                        "src": "7289:11:5",
+                        "referencedDeclaration": 1664,
+                        "src": "7490:11:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -3087,18 +3147,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1664,
+                      "id": 1669,
                       "name": "Failure",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 1501,
-                      "src": "7243:7:5",
+                      "src": "7444:7:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_uint256_$_t_uint256_$returns$__$",
                         "typeString": "function (uint256,uint256,uint256)"
                       }
                     },
-                    "id": 1673,
+                    "id": 1678,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3106,15 +3166,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "7243:58:5",
+                    "src": "7444:58:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1674,
+                  "id": 1679,
                   "nodeType": "EmitStatement",
-                  "src": "7238:63:5"
+                  "src": "7439:63:5"
                 },
                 {
                   "expression": {
@@ -3124,18 +3184,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1676,
+                          "id": 1681,
                           "name": "Error",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1533,
-                          "src": "7324:5:5",
+                          "referencedDeclaration": 1535,
+                          "src": "7525:5:5",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_enum$_Error_$1533_$",
+                            "typeIdentifier": "t_type$_t_enum$_Error_$1535_$",
                             "typeString": "type(enum ErrorReporter.Error)"
                           }
                         },
-                        "id": 1677,
+                        "id": 1682,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3143,9 +3203,9 @@
                         "memberName": "OPAQUE_ERROR",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "7324:18:5",
+                        "src": "7525:18:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_enum$_Error_$1533",
+                          "typeIdentifier": "t_enum$_Error_$1535",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       }
@@ -3153,24 +3213,24 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_enum$_Error_$1533",
+                          "typeIdentifier": "t_enum$_Error_$1535",
                           "typeString": "enum ErrorReporter.Error"
                         }
                       ],
-                      "id": 1675,
+                      "id": 1680,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "7319:4:5",
+                      "src": "7520:4:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_uint256_$",
                         "typeString": "type(uint256)"
                       },
                       "typeName": "uint"
                     },
-                    "id": 1678,
+                    "id": 1683,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -3178,21 +3238,21 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "7319:24:5",
+                    "src": "7520:24:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 1663,
-                  "id": 1679,
+                  "functionReturnParameters": 1668,
+                  "id": 1684,
                   "nodeType": "Return",
-                  "src": "7312:31:5"
+                  "src": "7513:31:5"
                 }
               ]
             },
             "documentation": "@dev use this when reporting an opaque error from an upgradeable collaborator contract",
-            "id": 1681,
+            "id": 1686,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3200,31 +3260,31 @@
             "name": "failOpaque",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1660,
+              "id": 1665,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1657,
+                  "id": 1662,
                   "name": "info",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1681,
-                  "src": "7168:16:5",
+                  "scope": 1686,
+                  "src": "7369:16:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                    "typeIdentifier": "t_enum$_FailureInfo_$1636",
                     "typeString": "enum ErrorReporter.FailureInfo"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1656,
+                    "id": 1661,
                     "name": "FailureInfo",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1631,
-                    "src": "7168:11:5",
+                    "referencedDeclaration": 1636,
+                    "src": "7369:11:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_FailureInfo_$1631",
+                      "typeIdentifier": "t_enum$_FailureInfo_$1636",
                       "typeString": "enum ErrorReporter.FailureInfo"
                     }
                   },
@@ -3233,11 +3293,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1659,
+                  "id": 1664,
                   "name": "opaqueError",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1681,
-                  "src": "7186:16:5",
+                  "scope": 1686,
+                  "src": "7387:16:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3245,10 +3305,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1658,
+                    "id": 1663,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7186:4:5",
+                    "src": "7387:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3258,20 +3318,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7167:36:5"
+              "src": "7368:36:5"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1663,
+              "id": 1668,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1662,
+                  "id": 1667,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1681,
-                  "src": "7222:4:5",
+                  "scope": 1686,
+                  "src": "7423:4:5",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3279,10 +3339,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1661,
+                    "id": 1666,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "7222:4:5",
+                    "src": "7423:4:5",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3292,20 +3352,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "7221:6:5"
+              "src": "7422:6:5"
             },
-            "scope": 1682,
-            "src": "7148:202:5",
+            "scope": 1687,
+            "src": "7349:202:5",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 1683,
-        "src": "26:7326:5"
+        "scope": 1688,
+        "src": "26:7527:5"
       }
     ],
-    "src": "0:7353:5"
+    "src": "0:7554:5"
   },
   "compiler": {
     "name": "solc",
@@ -3313,7 +3373,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-20T21:59:02.453Z",
+  "updatedAt": "2020-10-26T23:09:15.514Z",
   "devdoc": {
     "methods": {}
   },

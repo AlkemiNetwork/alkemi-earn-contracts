@@ -4,6 +4,7 @@ var MoneyMarket = artifacts.require("./MoneyMarket.sol");
 var Liquidator = artifacts.require("./Liquidator.sol");
 var LiquidationChecker = artifacts.require("./LiquidationChecker.sol");
 var ChainLink = artifacts.require("ChainLink.sol");
+var AlkemiWETH = artifacts.require("AlkemiWETH.sol");
 var StandardInterestRateModel = artifacts.require(
 	"./StandardInterestRateModel.sol"
 );
@@ -44,8 +45,9 @@ module.exports = async (deployer, network, accounts) => {
 		// 	18,
 		// 	1000000 // Supply 18 decimals handled in constructor
 		// );
-		await deployer.deploy(ChainLink);
-		// await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(ChainLink);
+		await deployer.deploy(AlkemiWETH);
+		await deployer.deploy(MoneyMarket);
 		// const oracle = await ChainLink.deployed();
 		// const moneyMarket = await MoneyMarket.deployed();
 		// await moneyMarket._setOracle(oracle.address);
