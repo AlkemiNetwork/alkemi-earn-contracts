@@ -45061,7 +45061,8 @@
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-28T03:51:13.373Z",
+  "updatedAt": "2020-10-30T19:35:24.956Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {
       "_acceptAnchorAdmin()": {

@@ -7,11 +7,11 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0xb4ea11c7d3ff80384209f105c0e430ec01371f20 </td>
+		<td> 0xba77bD8BF687E0deA11967e66F5Df40F69bAa355 </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
-		<td> 0xB419ea509ED75608baC77C15E9532441247a2be4 </td>
+		<td> 0xeA124B4d586528868F7D8431CD0eBcB074886E61 </td>
 	</tr>
 	<tr>
 		<td> DAI </td>
@@ -19,7 +19,11 @@
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
-		<td> 0xC34C58f3AC4C928198523602E3CCA4cfb613C00B </td>
+		<td> 0x7b0D0cdEa01EA0cef729dC5bB9825AC188ae7735 </td>
+	</tr>
+	<tr>
+		<td> DAIPriceFeed </td>
+		<td> 0x22B58f1EbEDfCA50feF632bD73368b2FdA96D541 </td>
 	</tr>
     <tr>
     	<td> USDC </td>
@@ -27,7 +31,11 @@
     </tr>
     <tr>
     	<td> USDCRateModel </td>
-    	<td> 0xC34C58f3AC4C928198523602E3CCA4cfb613C00B </td>
+    	<td> 0x7b0D0cdEa01EA0cef729dC5bB9825AC188ae7735 </td>
+    </tr>
+	<tr>
+    	<td> USDCPriceFeed </td>
+    	<td> 0x64EaC61A2DFda2c3Fa04eED49AA33D021AeC8838 </td>
     </tr>
     <tr>
     	<td> WBTC </td>
@@ -35,15 +43,23 @@
     </tr>
     <tr>
     	<td> WBTCRateModel </td>
-    	<td> 0x898112199EaEABbeE3735445F5A731CD8e6b23Be </td>
+    	<td> 0xAD12264A631A4449BCd743D3FFdcd51d086ef515 </td>
+    </tr>
+	<tr>
+    	<td> WBTCPriceFeed </td>
+    	<td> 0xF4eE06480Cf3399D885639157A5a8CdE21F6934A </td>
     </tr>
     <tr>
     	<td> WETH </td>
-    	<td> 0x5eca15b12d959dfcf9c71c59f8b467eb8c6efd0b </td>
+    	<td> 0x22f0596d9Ac79b85BdA6723E3192BA258346C3d5 </td>
     </tr>
     <tr>
     	<td> WETHRateModel </td>
-    	<td> 0x898112199EaEABbeE3735445F5A731CD8e6b23Be </td>
+    	<td> 0x5CB39863613d18f6f3DD53E6f20cfb00B14b5eb5 </td>
+    </tr>
+	<tr>
+    	<td> ChainLink Oracle </td>
+    	<td> 0x75e21D4b5A9282D7F64F11AD4Ef4b488518106F3 </td>
     </tr>
     <tr>
     	<td> PriceOracle </td>
