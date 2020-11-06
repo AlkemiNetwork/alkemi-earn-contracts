@@ -69,20 +69,20 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.24;\n\n/**\n * @title The Lendf.Me InterestRateModel Interface\n * @notice Any interest rate model should derive from this contract.\n * @dev These functions are specifically not marked `pure` as implementations of this\n *      contract may read from storage variables.\n */\ncontract InterestRateModel {\n    /**\n     * @notice Gets the current supply interest rate based on the given asset, total cash and total borrows\n     * @dev The return value should be scaled by 1e18, thus a return value of\n     *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\n     * @param asset The asset to get the interest rate of\n     * @param cash The total cash of the asset in the market\n     * @param borrows The total borrows of the asset in the market\n     * @return Success or failure and the supply interest rate per block scaled by 10e18\n     */\n    function getSupplyRate(address asset, uint cash, uint borrows) public view returns (uint, uint);\n\n    /**\n     * @notice Gets the current borrow interest rate based on the given asset, total cash and total borrows\n     * @dev The return value should be scaled by 1e18, thus a return value of\n     *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\n     * @param asset The asset to get the interest rate of\n     * @param cash The total cash of the asset in the market\n     * @param borrows The total borrows of the asset in the market\n     * @return Success or failure and the borrow interest rate per block scaled by 10e18\n     */\n    function getBorrowRate(address asset, uint cash, uint borrows) public view returns (uint, uint);\n}\n",
-  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/InterestRateModel.sol",
+  "source": "pragma solidity ^0.4.24;\n\n/**\n * @title InterestRateModel Interface\n * @notice Any interest rate model should derive from this contract.\n * @dev These functions are specifically not marked `pure` as implementations of this\n *      contract may read from storage variables.\n */\ncontract InterestRateModel {\n    /**\n     * @notice Gets the current supply interest rate based on the given asset, total cash and total borrows\n     * @dev The return value should be scaled by 1e18, thus a return value of\n     *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\n     * @param asset The asset to get the interest rate of\n     * @param cash The total cash of the asset in the market\n     * @param borrows The total borrows of the asset in the market\n     * @return Success or failure and the supply interest rate per block scaled by 10e18\n     */\n    function getSupplyRate(address asset, uint cash, uint borrows) public view returns (uint, uint);\n\n    /**\n     * @notice Gets the current borrow interest rate based on the given asset, total cash and total borrows\n     * @dev The return value should be scaled by 1e18, thus a return value of\n     *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\n     * @param asset The asset to get the interest rate of\n     * @param cash The total cash of the asset in the market\n     * @param borrows The total borrows of the asset in the market\n     * @return Success or failure and the borrow interest rate per block scaled by 10e18\n     */\n    function getBorrowRate(address asset, uint cash, uint borrows) public view returns (uint, uint);\n}\n",
+  "sourcePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/InterestRateModel.sol",
   "ast": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/InterestRateModel.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/InterestRateModel.sol",
     "exportedSymbols": {
       "InterestRateModel": [
-        967
+        2471
       ]
     },
-    "id": 968,
+    "id": 2472,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 940,
+        "id": 2444,
         "literals": [
           "solidity",
           "^",
@@ -90,17 +90,17 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:5"
+        "src": "0:24:8"
       },
       {
         "baseContracts": [],
         "contractDependencies": [],
         "contractKind": "contract",
-        "documentation": "@title The Lendf.Me InterestRateModel Interface\n@notice Any interest rate model should derive from this contract.\n@dev These functions are specifically not marked `pure` as implementations of this\n     contract may read from storage variables.",
+        "documentation": "@title InterestRateModel Interface\n@notice Any interest rate model should derive from this contract.\n@dev These functions are specifically not marked `pure` as implementations of this\n     contract may read from storage variables.",
         "fullyImplemented": false,
-        "id": 967,
+        "id": 2471,
         "linearizedBaseContracts": [
-          967
+          2471
         ],
         "name": "InterestRateModel",
         "nodeType": "ContractDefinition",
@@ -108,7 +108,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the current supply interest rate based on the given asset, total cash and total borrows\n@dev The return value should be scaled by 1e18, thus a return value of\n     `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\n@param asset The asset to get the interest rate of\n@param cash The total cash of the asset in the market\n@param borrows The total borrows of the asset in the market\n@return Success or failure and the supply interest rate per block scaled by 10e18",
-            "id": 953,
+            "id": 2457,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -116,16 +116,16 @@
             "name": "getSupplyRate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 947,
+              "id": 2451,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 942,
+                  "id": 2446,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "920:13:5",
+                  "scope": 2457,
+                  "src": "907:13:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -133,10 +133,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 941,
+                    "id": 2445,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "920:7:5",
+                    "src": "907:7:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -147,11 +147,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 944,
+                  "id": 2448,
                   "name": "cash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "935:9:5",
+                  "scope": 2457,
+                  "src": "922:9:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -159,10 +159,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 943,
+                    "id": 2447,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "935:4:5",
+                    "src": "922:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -173,11 +173,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 946,
+                  "id": 2450,
                   "name": "borrows",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "946:12:5",
+                  "scope": 2457,
+                  "src": "933:12:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -185,10 +185,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 945,
+                    "id": 2449,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "946:4:5",
+                    "src": "933:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -198,20 +198,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "919:40:5"
+              "src": "906:40:8"
             },
             "payable": false,
             "returnParameters": {
-              "id": 952,
+              "id": 2456,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 949,
+                  "id": 2453,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "981:4:5",
+                  "scope": 2457,
+                  "src": "968:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -219,10 +219,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 948,
+                    "id": 2452,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "981:4:5",
+                    "src": "968:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -233,11 +233,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 951,
+                  "id": 2455,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "987:4:5",
+                  "scope": 2457,
+                  "src": "974:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -245,10 +245,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 950,
+                    "id": 2454,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "987:4:5",
+                    "src": "974:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -258,10 +258,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "980:12:5"
+              "src": "967:12:8"
             },
-            "scope": 967,
-            "src": "897:96:5",
+            "scope": 2471,
+            "src": "884:96:8",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -269,7 +269,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the current borrow interest rate based on the given asset, total cash and total borrows\n@dev The return value should be scaled by 1e18, thus a return value of\n     `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\n@param asset The asset to get the interest rate of\n@param cash The total cash of the asset in the market\n@param borrows The total borrows of the asset in the market\n@return Success or failure and the borrow interest rate per block scaled by 10e18",
-            "id": 966,
+            "id": 2470,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -277,16 +277,16 @@
             "name": "getBorrowRate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 960,
+              "id": 2464,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 955,
+                  "id": 2459,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1596:13:5",
+                  "scope": 2470,
+                  "src": "1583:13:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -294,10 +294,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 954,
+                    "id": 2458,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1596:7:5",
+                    "src": "1583:7:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -308,11 +308,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 957,
+                  "id": 2461,
                   "name": "cash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1611:9:5",
+                  "scope": 2470,
+                  "src": "1598:9:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -320,10 +320,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 956,
+                    "id": 2460,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1611:4:5",
+                    "src": "1598:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -334,11 +334,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 959,
+                  "id": 2463,
                   "name": "borrows",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1622:12:5",
+                  "scope": 2470,
+                  "src": "1609:12:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -346,10 +346,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 958,
+                    "id": 2462,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1622:4:5",
+                    "src": "1609:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -359,20 +359,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1595:40:5"
+              "src": "1582:40:8"
             },
             "payable": false,
             "returnParameters": {
-              "id": 965,
+              "id": 2469,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 962,
+                  "id": 2466,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1657:4:5",
+                  "scope": 2470,
+                  "src": "1644:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -380,10 +380,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 961,
+                    "id": 2465,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1657:4:5",
+                    "src": "1644:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -394,11 +394,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 964,
+                  "id": 2468,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1663:4:5",
+                  "scope": 2470,
+                  "src": "1650:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -406,10 +406,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 963,
+                    "id": 2467,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1663:4:5",
+                    "src": "1650:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -419,33 +419,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1656:12:5"
+              "src": "1643:12:8"
             },
-            "scope": 967,
-            "src": "1573:96:5",
+            "scope": 2471,
+            "src": "1560:96:8",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 968,
-        "src": "290:1381:5"
+        "scope": 2472,
+        "src": "277:1381:8"
       }
     ],
-    "src": "0:1672:5"
+    "src": "0:1659:8"
   },
   "legacyAST": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/InterestRateModel.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/InterestRateModel.sol",
     "exportedSymbols": {
       "InterestRateModel": [
-        967
+        2471
       ]
     },
-    "id": 968,
+    "id": 2472,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 940,
+        "id": 2444,
         "literals": [
           "solidity",
           "^",
@@ -453,17 +453,17 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:5"
+        "src": "0:24:8"
       },
       {
         "baseContracts": [],
         "contractDependencies": [],
         "contractKind": "contract",
-        "documentation": "@title The Lendf.Me InterestRateModel Interface\n@notice Any interest rate model should derive from this contract.\n@dev These functions are specifically not marked `pure` as implementations of this\n     contract may read from storage variables.",
+        "documentation": "@title InterestRateModel Interface\n@notice Any interest rate model should derive from this contract.\n@dev These functions are specifically not marked `pure` as implementations of this\n     contract may read from storage variables.",
         "fullyImplemented": false,
-        "id": 967,
+        "id": 2471,
         "linearizedBaseContracts": [
-          967
+          2471
         ],
         "name": "InterestRateModel",
         "nodeType": "ContractDefinition",
@@ -471,7 +471,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the current supply interest rate based on the given asset, total cash and total borrows\n@dev The return value should be scaled by 1e18, thus a return value of\n     `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\n@param asset The asset to get the interest rate of\n@param cash The total cash of the asset in the market\n@param borrows The total borrows of the asset in the market\n@return Success or failure and the supply interest rate per block scaled by 10e18",
-            "id": 953,
+            "id": 2457,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -479,16 +479,16 @@
             "name": "getSupplyRate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 947,
+              "id": 2451,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 942,
+                  "id": 2446,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "920:13:5",
+                  "scope": 2457,
+                  "src": "907:13:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -496,10 +496,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 941,
+                    "id": 2445,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "920:7:5",
+                    "src": "907:7:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -510,11 +510,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 944,
+                  "id": 2448,
                   "name": "cash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "935:9:5",
+                  "scope": 2457,
+                  "src": "922:9:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -522,10 +522,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 943,
+                    "id": 2447,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "935:4:5",
+                    "src": "922:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -536,11 +536,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 946,
+                  "id": 2450,
                   "name": "borrows",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "946:12:5",
+                  "scope": 2457,
+                  "src": "933:12:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -548,10 +548,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 945,
+                    "id": 2449,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "946:4:5",
+                    "src": "933:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -561,20 +561,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "919:40:5"
+              "src": "906:40:8"
             },
             "payable": false,
             "returnParameters": {
-              "id": 952,
+              "id": 2456,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 949,
+                  "id": 2453,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "981:4:5",
+                  "scope": 2457,
+                  "src": "968:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -582,10 +582,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 948,
+                    "id": 2452,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "981:4:5",
+                    "src": "968:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -596,11 +596,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 951,
+                  "id": 2455,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 953,
-                  "src": "987:4:5",
+                  "scope": 2457,
+                  "src": "974:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -608,10 +608,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 950,
+                    "id": 2454,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "987:4:5",
+                    "src": "974:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -621,10 +621,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "980:12:5"
+              "src": "967:12:8"
             },
-            "scope": 967,
-            "src": "897:96:5",
+            "scope": 2471,
+            "src": "884:96:8",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -632,7 +632,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the current borrow interest rate based on the given asset, total cash and total borrows\n@dev The return value should be scaled by 1e18, thus a return value of\n     `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\n@param asset The asset to get the interest rate of\n@param cash The total cash of the asset in the market\n@param borrows The total borrows of the asset in the market\n@return Success or failure and the borrow interest rate per block scaled by 10e18",
-            "id": 966,
+            "id": 2470,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -640,16 +640,16 @@
             "name": "getBorrowRate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 960,
+              "id": 2464,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 955,
+                  "id": 2459,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1596:13:5",
+                  "scope": 2470,
+                  "src": "1583:13:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -657,10 +657,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 954,
+                    "id": 2458,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1596:7:5",
+                    "src": "1583:7:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -671,11 +671,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 957,
+                  "id": 2461,
                   "name": "cash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1611:9:5",
+                  "scope": 2470,
+                  "src": "1598:9:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -683,10 +683,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 956,
+                    "id": 2460,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1611:4:5",
+                    "src": "1598:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -697,11 +697,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 959,
+                  "id": 2463,
                   "name": "borrows",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1622:12:5",
+                  "scope": 2470,
+                  "src": "1609:12:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -709,10 +709,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 958,
+                    "id": 2462,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1622:4:5",
+                    "src": "1609:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -722,20 +722,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1595:40:5"
+              "src": "1582:40:8"
             },
             "payable": false,
             "returnParameters": {
-              "id": 965,
+              "id": 2469,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 962,
+                  "id": 2466,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1657:4:5",
+                  "scope": 2470,
+                  "src": "1644:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -743,10 +743,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 961,
+                    "id": 2465,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1657:4:5",
+                    "src": "1644:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -757,11 +757,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 964,
+                  "id": 2468,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 966,
-                  "src": "1663:4:5",
+                  "scope": 2470,
+                  "src": "1650:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -769,10 +769,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 963,
+                    "id": 2467,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1663:4:5",
+                    "src": "1650:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -782,28 +782,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1656:12:5"
+              "src": "1643:12:8"
             },
-            "scope": 967,
-            "src": "1573:96:5",
+            "scope": 2471,
+            "src": "1560:96:8",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 968,
-        "src": "290:1381:5"
+        "scope": 2472,
+        "src": "277:1381:8"
       }
     ],
-    "src": "0:1672:5"
+    "src": "0:1659:8"
   },
   "compiler": {
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2020-09-29T16:08:44.554Z",
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2020-11-06T03:42:04.205Z",
   "devdoc": {
     "methods": {
       "getBorrowRate(address,uint256,uint256)": {
@@ -825,7 +825,7 @@
         "return": "Success or failure and the supply interest rate per block scaled by 10e18"
       }
     },
-    "title": "The Lendf.Me InterestRateModel Interface"
+    "title": "InterestRateModel Interface"
   },
   "userdoc": {
     "methods": {

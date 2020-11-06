@@ -24,15 +24,15 @@
       "type": "event"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{},\"title\":\"Careful Math\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":\"CarefulMath\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x86024d69204156fb3c884eda6b255e580503fd9ce69aabf21f00b719b9545be2\",\"urls\":[\"bzzr://d551339e134215906e14ae33e5f3acf36ec2fb91925b4ee3407a65df4eeb1b32\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x97359e402ca8c0c3651d5487bb86db6fe95868c587ccbd85e3ca70b3ffbfc6df\",\"urls\":[\"bzzr://c0e4eca77d0205410b7f14ee9a97f358747363a69a5b2fe777547a931a2326f0\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820746e2dcaf15c8f9166b7dfbc866bfa1d7b2595e9893fa4fa41943e3ca97d05470029",
-  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820746e2dcaf15c8f9166b7dfbc866bfa1d7b2595e9893fa4fa41943e3ca97d05470029",
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{},\"title\":\"Careful Math\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol\":\"CarefulMath\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x86024d69204156fb3c884eda6b255e580503fd9ce69aabf21f00b719b9545be2\",\"urls\":[\"bzzr://d551339e134215906e14ae33e5f3acf36ec2fb91925b4ee3407a65df4eeb1b32\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x97359e402ca8c0c3651d5487bb86db6fe95868c587ccbd85e3ca70b3ffbfc6df\",\"urls\":[\"bzzr://c0e4eca77d0205410b7f14ee9a97f358747363a69a5b2fe777547a931a2326f0\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820b25d2847857d96a6158f84d7f629d0c6d556f4479e07300ad0613741da9be8d70029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820b25d2847857d96a6158f84d7f629d0c6d556f4479e07300ad0613741da9be8d70029",
   "sourceMap": "249:2169:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;249:2169:2;;;;;;;",
   "deployedSourceMap": "249:2169:2:-;;;;;",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./ErrorReporter.sol\";\n\n/**\n * @title Careful Math\n * @notice Derived from OpenZeppelin's SafeMath library\n *         https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol\n */\ncontract CarefulMath is ErrorReporter {\n    /**\n     * @dev Multiplies two numbers, returns an error on overflow.\n     */\n    function mul(uint a, uint b) internal pure returns (Error, uint) {\n        if (a == 0) {\n            return (Error.NO_ERROR, 0);\n        }\n\n        uint c = a * b;\n\n        if (c / a != b) {\n            return (Error.INTEGER_OVERFLOW, 0);\n        } else {\n            return (Error.NO_ERROR, c);\n        }\n    }\n\n    /**\n     * @dev Integer division of two numbers, truncating the quotient.\n     */\n    function div(uint a, uint b) internal pure returns (Error, uint) {\n        if (b == 0) {\n            return (Error.DIVISION_BY_ZERO, 0);\n        }\n\n        return (Error.NO_ERROR, a / b);\n    }\n\n    /**\n     * @dev Subtracts two numbers, returns an error on overflow (i.e. if subtrahend is greater than minuend).\n     */\n    function sub(uint a, uint b) internal pure returns (Error, uint) {\n        if (b <= a) {\n            return (Error.NO_ERROR, a - b);\n        } else {\n            return (Error.INTEGER_UNDERFLOW, 0);\n        }\n    }\n\n    /**\n     * @dev Subtracts two numbers, returns an error on overflow (i.e. if subtrahend is greater than minuend).\n     */\n    function subInt(uint a, uint b) internal pure returns (Error, int) {\n            return (Error.NO_ERROR, int(a - b));\n    }\n\n    /**\n     * @dev Adds two numbers, returns an error on overflow.\n     */\n    function add(uint a, uint b) internal pure returns (Error, uint) {\n        uint c = a + b;\n\n        if (c >= a) {\n            return (Error.NO_ERROR, c);\n        } else {\n            return (Error.INTEGER_OVERFLOW, 0);\n        }\n    }\n\n    /**\n     * @dev Adds two numbers, returns an error on overflow.\n     */\n    function addInt(uint a, int b) internal pure returns (Error, int) {\n        int c = int(a) + b;\n            return (Error.NO_ERROR, c);\n    }\n\n    /**\n     * @dev add a and b and then subtract c\n     */\n    function addThenSub(uint a, uint b, uint c) internal pure returns (Error, uint) {\n        (Error err0, uint sum) = add(a, b);\n\n        if (err0 != Error.NO_ERROR) {\n            return (err0, 0);\n        }\n\n        return sub(sum, c);\n    }\n}\n",
-  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol",
+  "sourcePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol",
   "ast": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol",
     "exportedSymbols": {
       "CarefulMath": [
         1343
@@ -53,7 +53,7 @@
         "src": "0:24:2"
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol",
         "file": "./ErrorReporter.sol",
         "id": 1117,
         "nodeType": "ImportDirective",
@@ -2969,7 +2969,7 @@
     "src": "0:2419:2"
   },
   "legacyAST": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol",
     "exportedSymbols": {
       "CarefulMath": [
         1343
@@ -2990,7 +2990,7 @@
         "src": "0:24:2"
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol",
         "file": "./ErrorReporter.sol",
         "id": 1117,
         "nodeType": "ImportDirective",
@@ -5910,8 +5910,8 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-28T03:51:12.983Z",
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2020-11-06T03:42:04.195Z",
   "devdoc": {
     "methods": {},
     "title": "Careful Math"

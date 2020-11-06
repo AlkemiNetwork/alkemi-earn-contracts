@@ -24,15 +24,15 @@
       "type": "event"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Exponential.sol\":\"Exponential\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x86024d69204156fb3c884eda6b255e580503fd9ce69aabf21f00b719b9545be2\",\"urls\":[\"bzzr://d551339e134215906e14ae33e5f3acf36ec2fb91925b4ee3407a65df4eeb1b32\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x97359e402ca8c0c3651d5487bb86db6fe95868c587ccbd85e3ca70b3ffbfc6df\",\"urls\":[\"bzzr://c0e4eca77d0205410b7f14ee9a97f358747363a69a5b2fe777547a931a2326f0\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Exponential.sol\":{\"keccak256\":\"0x3e95266be5188ce593db759f61e351fe91a54194e557147190befb9091ef1b80\",\"urls\":[\"bzzr://5c65af314f8d9c7a7adc63d3791844e781ab0825e2dffcce24a80cc27f7b7d58\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a7230582059ec2d3792ebb1c1a190284acc695d2faec1d18b46d5b93e602ed6f16f1bbabe0029",
-  "deployedBytecode": "0x6080604052600080fd00a165627a7a7230582059ec2d3792ebb1c1a190284acc695d2faec1d18b46d5b93e602ed6f16f1bbabe0029",
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"error\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"info\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"detail\",\"type\":\"uint256\"}],\"name\":\"Failure\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Exponential.sol\":\"Exponential\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x86024d69204156fb3c884eda6b255e580503fd9ce69aabf21f00b719b9545be2\",\"urls\":[\"bzzr://d551339e134215906e14ae33e5f3acf36ec2fb91925b4ee3407a65df4eeb1b32\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x97359e402ca8c0c3651d5487bb86db6fe95868c587ccbd85e3ca70b3ffbfc6df\",\"urls\":[\"bzzr://c0e4eca77d0205410b7f14ee9a97f358747363a69a5b2fe777547a931a2326f0\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Exponential.sol\":{\"keccak256\":\"0x3e95266be5188ce593db759f61e351fe91a54194e557147190befb9091ef1b80\",\"urls\":[\"bzzr://5c65af314f8d9c7a7adc63d3791844e781ab0825e2dffcce24a80cc27f7b7d58\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a72305820bbfe93b627c4fd6480c59c5f3b53b4cab81260290d4db2b7e0eedb8defac0c0d0029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820bbfe93b627c4fd6480c59c5f3b53b4cab81260290d4db2b7e0eedb8defac0c0d0029",
   "sourceMap": "85:6803:7:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;85:6803:7;;;;;;;",
   "deployedSourceMap": "85:6803:7:-;;;;;",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./ErrorReporter.sol\";\nimport \"./CarefulMath.sol\";\n\ncontract Exponential is ErrorReporter, CarefulMath {\n    // TODO: We may wish to put the result of 10**18 here instead of the expression.\n    // Per https://solidity.readthedocs.io/en/latest/contracts.html#constant-state-variables\n    // the optimizer MAY replace the expression 10**18 with its calculated value.\n    uint constant expScale = 10**18;\n\n    // See TODO on expScale\n    uint constant halfExpScale = expScale/2;\n\n    struct Exp {\n        uint mantissa;\n    }\n\n    struct ExpNegative {\n        int mantissa;\n    }\n\n    uint constant mantissaOne = 10**18;\n    uint constant mantissaOneTenth = 10**17;\n\n    /**\n     * @dev Creates an exponential from numerator and denominator values.\n     *      Note: Returns an error if (`num` * 10e18) > MAX_INT,\n     *            or if `denom` is zero.\n     */\n    function getExp(uint num, uint denom) pure internal returns (Error, Exp memory) {\n        (Error err0, uint scaledNumerator) = mul(num, expScale);\n        if (err0 != Error.NO_ERROR) {\n            return (err0, Exp({mantissa: 0}));\n        }\n\n        (Error err1, uint rational) = div(scaledNumerator, denom);\n        if (err1 != Error.NO_ERROR) {\n            return (err1, Exp({mantissa: 0}));\n        }\n\n        return (Error.NO_ERROR, Exp({mantissa: rational}));\n    }\n\n    /**\n     * @dev Adds two exponentials, returning a new exponential.\n     */\n    function addExp(Exp memory a, Exp memory b) pure internal returns (Error, Exp memory) {\n        (Error error, uint result) = add(a.mantissa, b.mantissa);\n\n        return (error, Exp({mantissa: result}));\n    }\n\n    /**\n     * @dev Adds two exponentials, returning a new exponential.\n     */\n    function addExpNegative(Exp memory a, ExpNegative memory b) pure internal returns (Error, Exp memory) {\n        (Error error, int result) = addInt(a.mantissa, b.mantissa);\n\n        return (error, Exp({mantissa: uint(result)}));\n    }\n\n    /**\n     * @dev Subtracts two exponentials, returning a new exponential.\n     */\n    function subExp(Exp memory a, Exp memory b) pure internal returns (Error, Exp memory) {\n        (Error error, uint result) = sub(a.mantissa, b.mantissa);\n\n        return (error, Exp({mantissa: result}));\n    }\n\n    /**\n     * @dev Subtracts two exponentials, returning a new exponential.\n     */\n    function subExpNegative(Exp memory a, Exp memory b) pure internal returns (Error, ExpNegative memory) {\n        (Error error, int result) = subInt(a.mantissa, b.mantissa);\n\n        return (error, ExpNegative({mantissa: result}));\n    }\n\n    /**\n     * @dev Multiply an Exp by a scalar, returning a new Exp.\n     */\n    function mulScalar(Exp memory a, uint scalar) pure internal returns (Error, Exp memory) {\n        (Error err0, uint scaledMantissa) = mul(a.mantissa, scalar);\n        if (err0 != Error.NO_ERROR) {\n            return (err0, Exp({mantissa: 0}));\n        }\n\n        return (Error.NO_ERROR, Exp({mantissa: scaledMantissa}));\n    }\n\n    /**\n     * @dev Divide an Exp by a scalar, returning a new Exp.\n     */\n    function divScalar(Exp memory a, uint scalar) pure internal returns (Error, Exp memory) {\n        (Error err0, uint descaledMantissa) = div(a.mantissa, scalar);\n        if (err0 != Error.NO_ERROR) {\n            return (err0, Exp({mantissa: 0}));\n        }\n\n        return (Error.NO_ERROR, Exp({mantissa: descaledMantissa}));\n    }\n\n    /**\n     * @dev Divide a scalar by an Exp, returning a new Exp.\n     */\n    function divScalarByExp(uint scalar, Exp divisor) pure internal returns (Error, Exp memory) {\n        /*\n            We are doing this as:\n            getExp(mul(expScale, scalar), divisor.mantissa)\n\n            How it works:\n            Exp = a / b;\n            Scalar = s;\n            `s / (a / b)` = `b * s / a` and since for an Exp `a = mantissa, b = expScale`\n        */\n        (Error err0, uint numerator) = mul(expScale, scalar);\n        if (err0 != Error.NO_ERROR) {\n            return (err0, Exp({mantissa: 0}));\n        }\n        return getExp(numerator, divisor.mantissa);\n    }\n\n    /**\n     * @dev Multiplies two exponentials, returning a new exponential.\n     */\n    function mulExp(Exp memory a, Exp memory b) pure internal returns (Error, Exp memory) {\n\n        (Error err0, uint doubleScaledProduct) = mul(a.mantissa, b.mantissa);\n        if (err0 != Error.NO_ERROR) {\n            return (err0, Exp({mantissa: 0}));\n        }\n\n        // We add half the scale before dividing so that we get rounding instead of truncation.\n        //  See \"Listing 6\" and text above it at https://accu.org/index.php/journals/1717\n        // Without this change, a result like 6.6...e-19 will be truncated to 0 instead of being rounded to 1e-18.\n        (Error err1, uint doubleScaledProductWithHalfScale) = add(halfExpScale, doubleScaledProduct);\n        if (err1 != Error.NO_ERROR) {\n            return (err1, Exp({mantissa: 0}));\n        }\n\n        (Error err2, uint product) = div(doubleScaledProductWithHalfScale, expScale);\n        // The only error `div` can return is Error.DIVISION_BY_ZERO but we control `expScale` and it is not zero.\n        assert(err2 == Error.NO_ERROR);\n\n        return (Error.NO_ERROR, Exp({mantissa: product}));\n    }\n\n    /**\n     * @dev Divides two exponentials, returning a new exponential.\n     *     (a/scale) / (b/scale) = (a/scale) * (scale/b) = a/b,\n     *  which we can scale as an Exp by calling getExp(a.mantissa, b.mantissa)\n     */\n    function divExp(Exp memory a, Exp memory b) pure internal returns (Error, Exp memory) {\n        return getExp(a.mantissa, b.mantissa);\n    }\n\n    /**\n     * @dev Truncates the given exp to a whole number value.\n     *      For example, truncate(Exp{mantissa: 15 * (10**18)}) = 15\n     */\n    function truncate(Exp memory exp) pure internal returns (uint) {\n        // Note: We are not using careful math here as we're performing a division that cannot fail\n        return exp.mantissa / 10**18;\n    }\n\n    /**\n     * @dev Checks if first Exp is less than second Exp.\n     */\n    function lessThanExp(Exp memory left, Exp memory right) pure internal returns (bool) {\n        return left.mantissa < right.mantissa; //TODO: Add some simple tests and this in another PR yo.\n    }\n\n    /**\n     * @dev Checks if left Exp <= right Exp.\n     */\n    function lessThanOrEqualExp(Exp memory left, Exp memory right) pure internal returns (bool) {\n        return left.mantissa <= right.mantissa;\n    }\n\n    /**\n     * @dev Checks if first Exp is greater than second Exp.\n     */\n    function greaterThanExp(Exp memory left, Exp memory right) pure internal returns (bool) {\n        return left.mantissa > right.mantissa;\n    }\n\n    /**\n     * @dev returns true if Exp is exactly zero\n     */\n    function isZeroExp(Exp memory value) pure internal returns (bool) {\n        return value.mantissa == 0;\n    }\n}\n\n",
-  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Exponential.sol",
+  "sourcePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Exponential.sol",
   "ast": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Exponential.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Exponential.sol",
     "exportedSymbols": {
       "Exponential": [
         2442
@@ -53,7 +53,7 @@
         "src": "0:24:7"
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol",
         "file": "./ErrorReporter.sol",
         "id": 1936,
         "nodeType": "ImportDirective",
@@ -64,7 +64,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol",
         "file": "./CarefulMath.sol",
         "id": 1937,
         "nodeType": "ImportDirective",
@@ -6918,7 +6918,7 @@
     "src": "0:6890:7"
   },
   "legacyAST": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Exponential.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Exponential.sol",
     "exportedSymbols": {
       "Exponential": [
         2442
@@ -6939,7 +6939,7 @@
         "src": "0:24:7"
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol",
         "file": "./ErrorReporter.sol",
         "id": 1936,
         "nodeType": "ImportDirective",
@@ -6950,7 +6950,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol",
         "file": "./CarefulMath.sol",
         "id": 1937,
         "nodeType": "ImportDirective",
@@ -13808,8 +13808,8 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-28T03:51:13.006Z",
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2020-11-06T03:42:04.202Z",
   "devdoc": {
     "methods": {}
   },

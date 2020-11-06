@@ -59,13 +59,19 @@ function upgrade(address new_address) public nonpayable restricted
 
 ## Contracts
 
+* [AggregatorV3Interface](AggregatorV3Interface.md)
+* [AlkemiRateModel](AlkemiRateModel.md)
+* [AlkemiWETH](AlkemiWETH.md)
 * [CarefulMath](CarefulMath.md)
+* [ChainLink](ChainLink.md)
 * [EIP20Interface](EIP20Interface.md)
 * [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
 * [ErrorReporter](ErrorReporter.md)
 * [ExchangeRateModel](ExchangeRateModel.md)
 * [Exponential](Exponential.md)
 * [InterestRateModel](InterestRateModel.md)
+* [JumpRateModel](JumpRateModel.md)
+* [JumpRateModelV2](JumpRateModelV2.md)
 * [LiquidationChecker](LiquidationChecker.md)
 * [Liquidator](Liquidator.md)
 * [Migrations](Migrations.md)
@@ -73,4 +79,8 @@ function upgrade(address new_address) public nonpayable restricted
 * [PriceOracle](PriceOracle.md)
 * [PriceOracleInterface](PriceOracleInterface.md)
 * [PriceOracleProxy](PriceOracleProxy.md)
+* [SafeMath](SafeMath.md)
 * [SafeToken](SafeToken.md)
+* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
+* [StandardInterestRateModel](StandardInterestRateModel.md)
+* [TestTokens](TestTokens.md)

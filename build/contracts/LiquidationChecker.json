@@ -22,9 +22,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./EIP20Interface.sol\";\nimport \"./EIP20NonStandardInterface.sol\";\nimport \"./ErrorReporter.sol\";\nimport \"./InterestRateModel.sol\";\nimport \"./SafeToken.sol\";\n\ncontract LiquidationChecker {\n    function setAllowLiquidation(bool allowLiquidation_) public;\n}\n\ncontract MoneyMarket{\n    /**\n     * @dev Container for per-asset balance sheet and interest rate information written to storage, intended to be stored in a map where the asset address is the key\n     *\n     *      struct Market {\n     *         isSupported = Whether this market is supported or not (not to be confused with the list of collateral assets)\n     *         blockNumber = when the other values in this struct were calculated\n     *         totalSupply = total amount of this asset supplied (in asset wei)\n     *         supplyRateMantissa = the per-block interest rate for supplies of asset as of blockNumber, scaled by 10e18\n     *         supplyIndex = the interest index for supplies of asset as of blockNumber; initialized in _supportMarket\n     *         totalBorrows = total amount of this asset borrowed (in asset wei)\n     *         borrowRateMantissa = the per-block interest rate for borrows of asset as of blockNumber, scaled by 10e18\n     *         borrowIndex = the interest index for borrows of asset as of blockNumber; initialized in _supportMarket\n     *     }\n     */\n    struct Market {\n        bool isSupported;\n        uint blockNumber;\n        InterestRateModel interestRateModel;\n\n        uint totalSupply;\n        uint supplyRateMantissa;\n        uint supplyIndex;\n\n        uint totalBorrows;\n        uint borrowRateMantissa;\n        uint borrowIndex;\n    }\n\n    /**\n     * @dev map: assetAddress -> Market\n     */\n    mapping(address => Market) public markets;\n\n    /**\n     * @notice users repay all or some of an underwater borrow and receive collateral\n     * @param targetAccount The account whose borrow should be liquidated\n     * @param assetBorrow The market asset to repay\n     * @param assetCollateral The borrower's market asset to receive in exchange\n     * @param requestedAmountClose The amount to repay (or -1 for max)\n     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n     */\n    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public returns (uint);\n\n    /**\n     * @notice withdraw `amount` of `asset` from sender's account to sender's address\n     * @dev withdraw `amount` of `asset` from msg.sender's account to msg.sender\n     * @param asset The market asset to withdraw\n     * @param requestedAmount The amount to withdraw (or -1 for max)\n     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n     */\n    function withdraw(address asset, uint requestedAmount) public returns (uint);\n\n    /**\n     * @notice return supply balance with any accumulated interest for `asset` belonging to `account`\n     * @dev returns supply balance with any accumulated interest for `asset` belonging to `account`\n     * @param account the account to examine\n     * @param asset the market asset whose supply balance belonging to `account` should be checked\n     * @return uint supply balance on success, throws on failed assertion otherwise\n     */\n    function getSupplyBalance(address account, address asset) view public returns (uint);\n\n    /**\n     * @notice return borrow balance with any accumulated interest for `asset` belonging to `account`\n     * @dev returns borrow balance with any accumulated interest for `asset` belonging to `account`\n     * @param account the account to examine\n     * @param asset the market asset whose borrow balance belonging to `account` should be checked\n     * @return uint borrow balance on success, throws on failed assertion otherwise\n     */\n    function getBorrowBalance(address account, address asset) view public returns (uint);\n}\n\ncontract Liquidator is ErrorReporter, SafeToken {\n    MoneyMarket public moneyMarket;\n\n    constructor(address moneyMarket_) public {\n        moneyMarket = MoneyMarket(moneyMarket_);\n    }\n\n    event BorrowLiquidated(address targetAccount,\n        address assetBorrow,\n        uint borrowBalanceBefore,\n        uint borrowBalanceAccumulated,\n        uint amountRepaid,\n        uint borrowBalanceAfter,\n        address liquidator,\n        address assetCollateral,\n        uint collateralBalanceBefore,\n        uint collateralBalanceAccumulated,\n        uint amountSeized,\n        uint collateralBalanceAfter);\n\n    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public returns (uint) {\n        require(targetAccount != address(this), \"FAILED_LIQUIDATE_LIQUIDATOR\");\n        require(targetAccount != msg.sender, \"FAILED_LIQUIDATE_SELF\");\n        require(msg.sender != address(this), \"FAILED_LIQUIDATE_RECURSIVE\");\n        require(assetBorrow != assetCollateral, \"FAILED_LIQUIDATE_IN_KIND\");\n\n        InterestRateModel interestRateModel;\n        (,,interestRateModel,,,,,,) = moneyMarket.markets(assetBorrow);\n\n        require(interestRateModel != address(0), \"FAILED_LIQUIDATE_NO_INTEREST_RATE_MODEL\");\n        require(checkTransferIn(assetBorrow, msg.sender, requestedAmountClose) == Error.NO_ERROR, \"FAILED_LIQUIDATE_TRANSFER_IN_INVALID\");\n\n        require(doTransferIn(assetBorrow, msg.sender, requestedAmountClose) == Error.NO_ERROR, \"FAILED_LIQUIDATE_TRANSFER_IN_FAILED\");\n\n        tokenAllowAll(assetBorrow, moneyMarket);\n\n        LiquidationChecker(interestRateModel).setAllowLiquidation(true);\n\n        uint result = moneyMarket.liquidateBorrow(targetAccount, assetBorrow, assetCollateral, requestedAmountClose);\n\n        require(moneyMarket.withdraw(assetCollateral, uint(-1)) == uint(Error.NO_ERROR), \"FAILED_LIQUIDATE_WITHDRAW_FAILED\");\n\n        LiquidationChecker(interestRateModel).setAllowLiquidation(false);\n\n        // Ensure there's no remaining balances here\n        require(moneyMarket.getSupplyBalance(address(this), assetCollateral) == 0, \"FAILED_LIQUIDATE_REMAINING_SUPPLY_COLLATERAL\"); // just to be sure\n        require(moneyMarket.getSupplyBalance(address(this), assetBorrow) == 0, \"FAILED_LIQUIDATE_REMAINING_SUPPLY_BORROW\"); // just to be sure\n        require(moneyMarket.getBorrowBalance(address(this), assetCollateral) == 0, \"FAILED_LIQUIDATE_REMAINING_BORROW_COLLATERAL\"); // just to be sure\n        require(moneyMarket.getBorrowBalance(address(this), assetBorrow) == 0, \"FAILED_LIQUIDATE_REMAINING_BORROW_BORROW\"); // just to be sure\n\n        // Transfer out everything remaining\n        tokenTransferAll(assetCollateral, msg.sender);\n        tokenTransferAll(assetBorrow, msg.sender);\n\n        return uint(result);\n    }\n\n    function tokenAllowAll(address asset, address allowee) internal {\n        EIP20Interface token = EIP20Interface(asset);\n\n        if (token.allowance(address(this), allowee) != uint(-1))\n            // require(token.approve(allowee, uint(-1)), \"FAILED_LIQUIDATE_ASSET_ALLOWANCE_FAILED\");\n            require(doApprove(asset, allowee, uint(-1)) == Error.NO_ERROR, \"FAILED_LIQUIDATE_ASSET_ALLOWANCE_FAILED\");\n    }\n\n    function tokenTransferAll(address asset, address recipient) internal {\n        uint balance = getBalanceOf(asset, address(this));\n\n        if (balance > 0){\n            require(doTransferOut(asset, recipient, balance) == Error.NO_ERROR, \"FAILED_LIQUIDATE_TRANSFER_OUT_FAILED\");\n        }\n    }\n}\n",
-  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Liquidator.sol",
+  "sourcePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Liquidator.sol",
   "ast": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Liquidator.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Liquidator.sol",
     "exportedSymbols": {
       "LiquidationChecker": [
         3170
@@ -51,7 +51,7 @@
         "src": "0:24:12"
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/EIP20Interface.sol",
         "file": "./EIP20Interface.sol",
         "id": 3160,
         "nodeType": "ImportDirective",
@@ -62,7 +62,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20NonStandardInterface.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/EIP20NonStandardInterface.sol",
         "file": "./EIP20NonStandardInterface.sol",
         "id": 3161,
         "nodeType": "ImportDirective",
@@ -73,7 +73,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol",
         "file": "./ErrorReporter.sol",
         "id": 3162,
         "nodeType": "ImportDirective",
@@ -84,7 +84,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/InterestRateModel.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/InterestRateModel.sol",
         "file": "./InterestRateModel.sol",
         "id": 3163,
         "nodeType": "ImportDirective",
@@ -95,7 +95,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/SafeToken.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/SafeToken.sol",
         "file": "./SafeToken.sol",
         "id": 3164,
         "nodeType": "ImportDirective",
@@ -6007,7 +6007,7 @@
     "src": "0:7493:12"
   },
   "legacyAST": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Liquidator.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Liquidator.sol",
     "exportedSymbols": {
       "LiquidationChecker": [
         3170
@@ -6034,7 +6034,7 @@
         "src": "0:24:12"
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/EIP20Interface.sol",
         "file": "./EIP20Interface.sol",
         "id": 3160,
         "nodeType": "ImportDirective",
@@ -6045,7 +6045,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20NonStandardInterface.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/EIP20NonStandardInterface.sol",
         "file": "./EIP20NonStandardInterface.sol",
         "id": 3161,
         "nodeType": "ImportDirective",
@@ -6056,7 +6056,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol",
         "file": "./ErrorReporter.sol",
         "id": 3162,
         "nodeType": "ImportDirective",
@@ -6067,7 +6067,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/InterestRateModel.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/InterestRateModel.sol",
         "file": "./InterestRateModel.sol",
         "id": 3163,
         "nodeType": "ImportDirective",
@@ -6078,7 +6078,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/SafeToken.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/SafeToken.sol",
         "file": "./SafeToken.sol",
         "id": 3164,
         "nodeType": "ImportDirective",
@@ -11994,8 +11994,8 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-28T03:51:13.015Z",
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2020-11-06T03:42:04.209Z",
   "devdoc": {
     "methods": {}
   },
