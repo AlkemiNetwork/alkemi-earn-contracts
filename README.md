@@ -71,62 +71,60 @@
 		<td> Liquidator </td>
 		<td> 0xC5D133281F66041f6c5330c72ce696D9A847EC0F </td>
 	</tr>
-	<tr>
-		<td> PAX </td>
-		<td> 0x722e6238335d89393a42e2ca316a5fb1b8b2eb55 </td>
-	</tr>
-	<tr>
-		<td> PAXRateModel </td>
-		<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
-	</tr>
-	<tr>
-		<td> USDC </td>
-		<td> 0x4dbcdf9b62e891a7cec5a2568c3f4faf9e8abe2b </td>
-	</tr>
-	<tr>
-		<td> USDCRateModel </td>
-		<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
-	</tr>
-	<tr>
-		<td> USDT </td>
-		<td> 0x249987094de97c9612b8d04c15ca8273e43c20ac </td>
-	</tr>
-	<tr>
-		<td> USDTRateModel </td>
-		<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
-	</tr>
-	<tr>
-		<td> USDx </td>
-		<td> 0xD96cC7f80C1cb595eBcdC072531e1799B3a2436E </td>
-	</tr>
-	<tr>
-		<td> USDxRateModel </td>
-		<td> 0xe302E676E1Add419cc87e75fb5B73DAB24Ad1534 </td>
-	</tr>
-	<tr>
-		<td> WBTC </td>
-		<td> 0x577d296678535e4903d59a4c929b718e1d575e0a </td>
-	</tr>
-	<tr>
-		<td> WBTCRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
-	</tr>
-	<tr>
-		<td> WETH </td>
-		<td> 0xc8b1a5ef2e19937dd6c0f804df2e3efe9f093b1e </td>
-	</tr>
-	<tr>
-		<td> WETHRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
-	</tr>
-	<tr>
-		<td> DAI </td>
-		<td> 0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea </td>
-	</tr>
-	<tr>
-		<td> DAIRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
-	</tr>
+
+    <tr>
+    	<td> PAXRateModel </td>
+    	<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
+    </tr>
+    <tr>
+    	<td> USDC </td>
+    	<td> 0x4dbcdf9b62e891a7cec5a2568c3f4faf9e8abe2b </td>
+    </tr>
+    <tr>
+    	<td> USDCRateModel </td>
+    	<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
+    </tr>
+    <tr>
+    	<td> USDT </td>
+    	<td> 0x249987094de97c9612b8d04c15ca8273e43c20ac </td>
+    </tr>
+    <tr>
+    	<td> USDTRateModel </td>
+    	<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
+    </tr>
+    <tr>
+    	<td> USDx </td>
+    	<td> 0xD96cC7f80C1cb595eBcdC072531e1799B3a2436E </td>
+    </tr>
+    <tr>
+    	<td> USDxRateModel </td>
+    	<td> 0xe302E676E1Add419cc87e75fb5B73DAB24Ad1534 </td>
+    </tr>
+    <tr>
+    	<td> WBTC </td>
+    	<td> 0x577d296678535e4903d59a4c929b718e1d575e0a </td>
+    </tr>
+    <tr>
+    	<td> WBTCRateModel </td>
+    	<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+    </tr>
+    <tr>
+    	<td> WETH </td>
+    	<td> 0xc8b1a5ef2e19937dd6c0f804df2e3efe9f093b1e </td>
+    </tr>
+    <tr>
+    	<td> WETHRateModel </td>
+    	<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+    </tr>
+    <tr>
+    	<td> DAI </td>
+    	<td> 0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea </td>
+    </tr>
+    <tr>
+    	<td> DAIRateModel </td>
+    	<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+    </tr>
+
   <tr>
   	<td> PriceOracle </td>
   	<td> 0x7C45578C154c9c00DE843d9874a5220E7089c581
