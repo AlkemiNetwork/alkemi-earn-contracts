@@ -71,11 +71,6 @@
 		<td> Liquidator </td>
 		<td> 0xC5D133281F66041f6c5330c72ce696D9A847EC0F </td>
 	</tr>
-
-    <tr>
-    	<td> PAXRateModel </td>
-    	<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
-    </tr>
     <tr>
     	<td> USDC </td>
     	<td> 0x4dbcdf9b62e891a7cec5a2568c3f4faf9e8abe2b </td>
@@ -83,22 +78,6 @@
     <tr>
     	<td> USDCRateModel </td>
     	<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
-    </tr>
-    <tr>
-    	<td> USDT </td>
-    	<td> 0x249987094de97c9612b8d04c15ca8273e43c20ac </td>
-    </tr>
-    <tr>
-    	<td> USDTRateModel </td>
-    	<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
-    </tr>
-    <tr>
-    	<td> USDx </td>
-    	<td> 0xD96cC7f80C1cb595eBcdC072531e1799B3a2436E </td>
-    </tr>
-    <tr>
-    	<td> USDxRateModel </td>
-    	<td> 0xe302E676E1Add419cc87e75fb5B73DAB24Ad1534 </td>
     </tr>
     <tr>
     	<td> WBTC </td>
@@ -124,7 +103,6 @@
     	<td> DAIRateModel </td>
     	<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
     </tr>
-
   <tr>
   	<td> PriceOracle </td>
   	<td> 0x7C45578C154c9c00DE843d9874a5220E7089c581
@@ -154,14 +132,6 @@
 		<td> 0xc3ACc4A629545ED6Db6135Ca319ADAA012605028 </td>
 	</tr>
 	<tr>
-		<td> PAX </td>
-		<td> 0xeb091ca495bba0fdbd783cc1326b237607d96cc8 </td>
-	</tr>
-	<tr>
-		<td> PAXRateModel </td>
-		<!-- <td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td> -->
-	</tr>
-	<tr>
 		<td> USDC </td>
 		<td> 0x0D9C8723B343A8368BebE0B5E89273fF8D712e3C </td>
 	</tr>
@@ -173,22 +143,6 @@
 	<tr>
 		<td> USDCPriceFeed </td>
 		<td> 0xB8784d2D77D3dbaa9cAC7d32D035A6d41e414e9c </td>
-	</tr>
-	<tr>
-		<td> USDT </td>
-		<!-- <td> 0x249987094de97c9612b8d04c15ca8273e43c20ac </td> -->
-	</tr>
-	<tr>
-		<td> USDTRateModel </td>
-		<!-- <td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td> -->
-	</tr>
-	<tr>
-		<td> USDx </td>
-		<!-- <td> 0xD96cC7f80C1cb595eBcdC072531e1799B3a2436E </td> -->
-	</tr>
-	<tr>
-		<td> USDxRateModel </td>
-		<!-- <td> 0xe302E676E1Add419cc87e75fb5B73DAB24Ad1534 </td> -->
 	</tr>
 	<tr>
 		<td> WBTC </td>
@@ -246,5 +200,4 @@
   	<td> ChainLink Oracle </td>
   	<td> 0x8Ce38707f27F827669f61BfBF2172433a1C0B9CC </td>
   </tr>
-
 </table>
