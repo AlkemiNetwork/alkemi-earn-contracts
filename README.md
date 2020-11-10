@@ -261,7 +261,7 @@
   </tr>
   <tr>
   	<td> ChainLink Oracle </td>
-  	<td> 0x8Ce38707f27F827669f61BfBF2172433a1C0B9CC </td>
+  	<td> 0x309a7425e7Ba1cB1710B0a1A4251e835bF8A8235 </td>
   </tr>
 
 </table>

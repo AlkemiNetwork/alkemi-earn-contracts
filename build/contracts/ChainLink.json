@@ -7030,9 +7030,88 @@
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "3": {
+      "events": {
+        "0x5760e73aa1540f0e1b7caf958cf3b63a02ed643843163081214586096289d71b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "assetAddress",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "priceFeedContract",
+              "type": "address"
+            }
+          ],
+          "name": "assetAdded",
+          "type": "event"
+        },
+        "0xeb869716e6e4df646fa6f9580b7ce838674d58ef768d9ec740785cb0c971d695": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "assetAddress",
+              "type": "address"
+            }
+          ],
+          "name": "assetRemoved",
+          "type": "event"
+        },
+        "0xbadc9a52979e89f78b7c58309537410c5e51d0f63a0a455efe8d61d2b474e698": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "adminChanged",
+          "type": "event"
+        },
+        "0xcadfaf2b661f9e923b6415473af2ea89dae35c4745102596106d4660833f2371": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "wethAddress",
+              "type": "address"
+            }
+          ],
+          "name": "wethAddressSet",
+          "type": "event"
+        },
+        "0xc8bba866518ae9aa8da197216b6c4650cc7e794e25ba3db8367d55bff5200a3c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "currentStatus",
+              "type": "bool"
+            }
+          ],
+          "name": "contractPausedOrUnpaused",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x309a7425e7Ba1cB1710B0a1A4251e835bF8A8235",
+      "transactionHash": "0x0cb0ea1bf9b2b141a799f6432262074d4c73912045fbc8c6ee49b8271a6b2a9f"
+    }
+  },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-11-10T21:15:01.872Z",
+  "updatedAt": "2020-11-10T21:39:01.474Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },

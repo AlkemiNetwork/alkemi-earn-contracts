@@ -8047,7 +8047,8 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-11-10T21:15:02.342Z",
+  "updatedAt": "2020-11-10T21:39:01.497Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },

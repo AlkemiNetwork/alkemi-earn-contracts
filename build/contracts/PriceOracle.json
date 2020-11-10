@@ -44268,7 +44268,8 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-11-10T21:15:02.286Z",
+  "updatedAt": "2020-11-10T21:39:01.061Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {
       "_acceptAnchorAdmin()": {
