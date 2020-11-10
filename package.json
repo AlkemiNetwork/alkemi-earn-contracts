@@ -22,6 +22,7 @@
 	"homepage": "https://github.com/Lendfme/contracts#readme",
 	"dependencies": {
 		"@chainlink/contracts": "0.0.8",
+		"@openzeppelin/truffle-upgrades": "^1.2.2",
 		"solidoc": "^1.0.5",
 		"truffle": "^5.1.46",
 		"truffle-hdwallet-provider": "^1.0.17"

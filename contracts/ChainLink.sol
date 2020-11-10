@@ -1,6 +1,6 @@
 pragma solidity 0.4.24;
 
-import "../node_modules/@chainlink/contracts/src/v0.4/interfaces/AggregatorV3Interface.sol";
+import "./AggregatorV3Interface.sol";
 import './TestTokens.sol';
 
 contract ChainLink {

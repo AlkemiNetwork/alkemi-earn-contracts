@@ -2,28 +2,39 @@ pragma solidity ^0.4.24;
 
 import "./Exponential.sol";
 import "./InterestRateModel.sol";
-import "./PriceOracleInterface.sol";
 import "./SafeToken.sol";
 import "./ChainLink.sol";
 import "./AlkemiWETH.sol";
 
 contract MoneyMarket is Exponential, SafeToken {
 
-    uint constant initialInterestIndex = 10 ** 18;
-    uint constant defaultOriginationFee = 0; // default is zero bps
+    uint internal initialInterestIndex;
+    uint internal defaultOriginationFee; 
 
-    uint constant minimumCollateralRatioMantissa = 11 * (10 ** 17); // 1.1
-    uint constant maximumLiquidationDiscountMantissa = (10 ** 17); // 0.1
+    uint internal minimumCollateralRatioMantissa;
+    uint internal maximumLiquidationDiscountMantissa;
+    bool public initializationDone; // To make sure initializer is called only once
 
     /**
      * @notice `MoneyMarket` is the core MoneyMarket contract
+     * @notice This contract uses Openzeppelin Upgrades plugin to make use of the upgradeability functionality using proxies
+     * @notice Hence this contract has an 'initializer' in place of a 'constructor'
+     * @notice Make sure to add new global variables only at the bottom of all the existing global variables i.e., line #344
+     * @notice Also make sure to do extensive testing while modifying any structs and enums during an upgrade
      */
-    constructor() public {
-        admin = msg.sender;
-        collateralRatio = Exp({mantissa: 2 * mantissaOne});
-        originationFee = Exp({mantissa: defaultOriginationFee});
-        liquidationDiscount = Exp({mantissa: 0});
-        // oracle must be configured via _setOracle
+    function initializer() public {
+        if(initializationDone == false) {
+            initializationDone = true;
+            admin = msg.sender;
+            collateralRatio = Exp({mantissa: 2 * mantissaOne});
+            originationFee = Exp({mantissa: defaultOriginationFee});
+            liquidationDiscount = Exp({mantissa: 0});
+            initialInterestIndex = 10 ** 18;
+            defaultOriginationFee = 0; // default is zero bps
+            minimumCollateralRatioMantissa = 11 * (10 ** 17); // 1.1
+            maximumLiquidationDiscountMantissa = (10 ** 17); // 0.1
+            // oracle must be configured via _setOracle
+        }
     }
 
     /**
@@ -153,6 +164,196 @@ contract MoneyMarket is Exponential, SafeToken {
      */
     bool public paused;
 
+    /**
+     * @dev Mapping to identify the list of KYC Admins
+     */
+    mapping(address=>bool) private KYCAdmins;
+    /**
+     * @dev Mapping to identify the list of customers with verified KYC
+     */
+    mapping(address=>bool) private customersWithKYC;
+
+    /**
+     * @dev Mapping to identify the list of customers with Liquidator roles
+     */
+    mapping(address=>bool) private liquidators;
+
+    /**
+     * The `SupplyLocalVars` struct is used internally in the `supply` function.
+     *
+     * To avoid solidity limits on the number of local variables we:
+     * 1. Use a struct to hold local computation localResults
+     * 2. Re-use a single variable for Error returns. (This is required with 1 because variable binding to tuple localResults
+     *    requires either both to be declared inline or both to be previously declared.
+     * 3. Re-use a boolean error-like return variable.
+     */
+    struct SupplyLocalVars {
+        uint startingBalance;
+        uint newSupplyIndex;
+        uint userSupplyCurrent;
+        uint userSupplyUpdated;
+        uint newTotalSupply;
+        uint currentCash;
+        uint updatedCash;
+        uint newSupplyRateMantissa;
+        uint newBorrowIndex;
+        uint newBorrowRateMantissa;
+    }
+
+    /**
+     * The `WithdrawLocalVars` struct is used internally in the `withdraw` function.
+     *
+     * To avoid solidity limits on the number of local variables we:
+     * 1. Use a struct to hold local computation localResults
+     * 2. Re-use a single variable for Error returns. (This is required with 1 because variable binding to tuple localResults
+     *    requires either both to be declared inline or both to be previously declared.
+     * 3. Re-use a boolean error-like return variable.
+     */
+
+    struct WithdrawLocalVars {
+        uint withdrawAmount;
+        uint startingBalance;
+        uint newSupplyIndex;
+        uint userSupplyCurrent;
+        uint userSupplyUpdated;
+        uint newTotalSupply;
+        uint currentCash;
+        uint updatedCash;
+        uint newSupplyRateMantissa;
+        uint newBorrowIndex;
+        uint newBorrowRateMantissa;
+        Exp accountLiquidity;
+        Exp accountShortfall;
+        Exp ethValueOfWithdrawal;
+        uint withdrawCapacity;
+    }
+
+    // The `AccountValueLocalVars` struct is used internally in the `CalculateAccountValuesInternal` function.
+    struct AccountValueLocalVars {
+        address assetAddress;
+        uint collateralMarketsLength;
+
+        uint newSupplyIndex;
+        uint userSupplyCurrent;
+        Exp supplyTotalValue;
+        Exp sumSupplies;
+
+        uint newBorrowIndex;
+        uint userBorrowCurrent;
+        Exp borrowTotalValue;
+        Exp sumBorrows;
+    }
+
+    // The `PayBorrowLocalVars` struct is used internally in the `repayBorrow` function.
+    struct PayBorrowLocalVars {
+        uint newBorrowIndex;
+        uint userBorrowCurrent;
+        uint repayAmount;
+
+        uint userBorrowUpdated;
+        uint newTotalBorrows;
+        uint currentCash;
+        uint updatedCash;
+
+        uint newSupplyIndex;
+        uint newSupplyRateMantissa;
+        uint newBorrowRateMantissa;
+
+        uint startingBalance;
+    }
+
+    // The `BorrowLocalVars` struct is used internally in the `borrow` function.
+    struct BorrowLocalVars {
+        uint newBorrowIndex;
+        uint userBorrowCurrent;
+        uint borrowAmountWithFee;
+
+        uint userBorrowUpdated;
+        uint newTotalBorrows;
+        uint currentCash;
+        uint updatedCash;
+
+        uint newSupplyIndex;
+        uint newSupplyRateMantissa;
+        uint newBorrowRateMantissa;
+
+        uint startingBalance;
+
+        Exp accountLiquidity;
+        Exp accountShortfall;
+        Exp ethValueOfBorrowAmountWithFee;
+    }
+
+    // The `LiquidateLocalVars` struct is used internally in the `liquidateBorrow` function.
+    struct LiquidateLocalVars {
+        // we need these addresses in the struct for use with `emitLiquidationEvent` to avoid `CompilerError: Stack too deep, try removing local variables.`
+        address targetAccount;
+        address assetBorrow;
+        address liquidator;
+        address assetCollateral;
+
+        // borrow index and supply index are global to the asset, not specific to the user
+        uint newBorrowIndex_UnderwaterAsset;
+        uint newSupplyIndex_UnderwaterAsset;
+        uint newBorrowIndex_CollateralAsset;
+        uint newSupplyIndex_CollateralAsset;
+
+        // the target borrow's full balance with accumulated interest
+        uint currentBorrowBalance_TargetUnderwaterAsset;
+        // currentBorrowBalance_TargetUnderwaterAsset minus whatever gets repaid as part of the liquidation
+        uint updatedBorrowBalance_TargetUnderwaterAsset;
+
+        uint newTotalBorrows_ProtocolUnderwaterAsset;
+
+        uint startingBorrowBalance_TargetUnderwaterAsset;
+        uint startingSupplyBalance_TargetCollateralAsset;
+        uint startingSupplyBalance_LiquidatorCollateralAsset;
+
+        uint currentSupplyBalance_TargetCollateralAsset;
+        uint updatedSupplyBalance_TargetCollateralAsset;
+
+        // If liquidator already has a balance of collateralAsset, we will accumulate
+        // interest on it before transferring seized collateral from the borrower.
+        uint currentSupplyBalance_LiquidatorCollateralAsset;
+        // This will be the liquidator's accumulated balance of collateral asset before the liquidation (if any)
+        // plus the amount seized from the borrower.
+        uint updatedSupplyBalance_LiquidatorCollateralAsset;
+
+        uint newTotalSupply_ProtocolCollateralAsset;
+        uint currentCash_ProtocolUnderwaterAsset;
+        uint updatedCash_ProtocolUnderwaterAsset;
+
+        // cash does not change for collateral asset
+
+        uint newSupplyRateMantissa_ProtocolUnderwaterAsset;
+        uint newBorrowRateMantissa_ProtocolUnderwaterAsset;
+
+        // Why no variables for the interest rates for the collateral asset?
+        // We don't need to calculate new rates for the collateral asset since neither cash nor borrows change
+
+        uint discountedRepayToEvenAmount;
+
+        //[supplyCurrent / (1 + liquidationDiscount)] * (Oracle price for the collateral / Oracle price for the borrow) (discountedBorrowDenominatedCollateral)
+        uint discountedBorrowDenominatedCollateral;
+
+        uint maxCloseableBorrowAmount_TargetUnderwaterAsset;
+        uint closeBorrowAmount_TargetUnderwaterAsset;
+        uint seizeSupplyAmount_TargetCollateralAsset;
+
+        Exp collateralPrice;
+        Exp underwaterAssetPrice;
+    }
+
+    /**
+     * @dev Event emitted on successful addition of Weth Address
+     */
+    event WETHAddressSet(address wethAddress);
+
+    /**
+     * @dev Events to notify the frontend of all the functions below
+     */
+    event LiquidatorAdded(address Liquidator);
+    event LiquidatorRemoved(address Liquidator);
 
     /**
      * @dev emitted when a supply is received
@@ -262,15 +463,6 @@ contract MoneyMarket is Exponential, SafeToken {
      */
 
     /**
-     * @dev Mapping to identify the list of KYC Admins
-     */
-    mapping(address=>bool) private KYCAdmins;
-    /**
-     * @dev Mapping to identify the list of customers with verified KYC
-     */
-    mapping(address=>bool) private customersWithKYC;
-
-    /**
      * @dev Events to notify the frontend of all the functions below
      */
     event KYCAdminAdded(address KYCAdmin);
@@ -373,17 +565,6 @@ contract MoneyMarket is Exponential, SafeToken {
     /**
      * @dev Liquidator Integration
      */
-
-    /**
-     * @dev Mapping to identify the list of customers with Liquidator roles
-     */
-    mapping(address=>bool) private liquidators;
-
-    /**
-     * @dev Events to notify the frontend of all the functions below
-     */
-    event LiquidatorAdded(address Liquidator);
-    event LiquidatorRemoved(address Liquidator);
 
     /**
      * @dev Modifier to check if the caller of the function is a Liquidator
@@ -1042,33 +1223,6 @@ contract MoneyMarket is Exponential, SafeToken {
     }
 
     /**
-     * The `SupplyLocalVars` struct is used internally in the `supply` function.
-     *
-     * To avoid solidity limits on the number of local variables we:
-     * 1. Use a struct to hold local computation localResults
-     * 2. Re-use a single variable for Error returns. (This is required with 1 because variable binding to tuple localResults
-     *    requires either both to be declared inline or both to be previously declared.
-     * 3. Re-use a boolean error-like return variable.
-     */
-    struct SupplyLocalVars {
-        uint startingBalance;
-        uint newSupplyIndex;
-        uint userSupplyCurrent;
-        uint userSupplyUpdated;
-        uint newTotalSupply;
-        uint currentCash;
-        uint updatedCash;
-        uint newSupplyRateMantissa;
-        uint newBorrowIndex;
-        uint newBorrowRateMantissa;
-    }
-
-    /**
-     * @dev Event emitted on successful addition of Weth Address
-     */
-    event WETHAddressSet(address wethAddress);
-
-    /**
      * @dev Set WETH token contract address
      * @param wethContractAddress Enter the WETH token address
      */
@@ -1090,6 +1244,7 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param user User account address
      */
     function supplyEther(address user, uint etherAmount) internal returns (uint) {
+        user; // To silence the warning of unused local variable
         if(wethAddress != address(0)){
             WETHContract.deposit.value(etherAmount)();
             return uint(Error.NO_ERROR);
@@ -1242,25 +1397,6 @@ contract MoneyMarket is Exponential, SafeToken {
         emit SupplyReceived(msg.sender, asset, amount, localResults.startingBalance, localResults.userSupplyUpdated);
 
         return uint(Error.NO_ERROR); // success
-    }
-
-    struct WithdrawLocalVars {
-        uint withdrawAmount;
-        uint startingBalance;
-        uint newSupplyIndex;
-        uint userSupplyCurrent;
-        uint userSupplyUpdated;
-        uint newTotalSupply;
-        uint currentCash;
-        uint updatedCash;
-        uint newSupplyRateMantissa;
-        uint newBorrowIndex;
-        uint newBorrowRateMantissa;
-
-        Exp accountLiquidity;
-        Exp accountShortfall;
-        Exp ethValueOfWithdrawal;
-        uint withdrawCapacity;
     }
 
     /**
@@ -1433,21 +1569,6 @@ contract MoneyMarket is Exponential, SafeToken {
         return uint(Error.NO_ERROR); // success
     }
 
-    struct AccountValueLocalVars {
-        address assetAddress;
-        uint collateralMarketsLength;
-
-        uint newSupplyIndex;
-        uint userSupplyCurrent;
-        Exp supplyTotalValue;
-        Exp sumSupplies;
-
-        uint newBorrowIndex;
-        uint userBorrowCurrent;
-        Exp borrowTotalValue;
-        Exp sumBorrows;
-    }
-
     /**
      * @dev Gets the user's account liquidity and account shortfall balances. This includes
      *      any accumulated interest thus far but does NOT actually update anything in
@@ -1596,23 +1717,6 @@ contract MoneyMarket is Exponential, SafeToken {
         return (0, supplyValue, borrowValue);
     }
 
-    struct PayBorrowLocalVars {
-        uint newBorrowIndex;
-        uint userBorrowCurrent;
-        uint repayAmount;
-
-        uint userBorrowUpdated;
-        uint newTotalBorrows;
-        uint currentCash;
-        uint updatedCash;
-
-        uint newSupplyIndex;
-        uint newSupplyRateMantissa;
-        uint newBorrowRateMantissa;
-
-        uint startingBalance;
-    }
-
     /**
      * @notice Users repay borrowed assets from their own address to the protocol.
      * @param asset The market asset to repay
@@ -1751,86 +1855,6 @@ contract MoneyMarket is Exponential, SafeToken {
         emit BorrowRepaid(msg.sender, asset, localResults.repayAmount, localResults.startingBalance, localResults.userBorrowUpdated);
 
         return uint(Error.NO_ERROR); // success
-    }
-
-    struct BorrowLocalVars {
-        uint newBorrowIndex;
-        uint userBorrowCurrent;
-        uint borrowAmountWithFee;
-
-        uint userBorrowUpdated;
-        uint newTotalBorrows;
-        uint currentCash;
-        uint updatedCash;
-
-        uint newSupplyIndex;
-        uint newSupplyRateMantissa;
-        uint newBorrowRateMantissa;
-
-        uint startingBalance;
-
-        Exp accountLiquidity;
-        Exp accountShortfall;
-        Exp ethValueOfBorrowAmountWithFee;
-    }
-
-    struct LiquidateLocalVars {
-        // we need these addresses in the struct for use with `emitLiquidationEvent` to avoid `CompilerError: Stack too deep, try removing local variables.`
-        address targetAccount;
-        address assetBorrow;
-        address liquidator;
-        address assetCollateral;
-
-        // borrow index and supply index are global to the asset, not specific to the user
-        uint newBorrowIndex_UnderwaterAsset;
-        uint newSupplyIndex_UnderwaterAsset;
-        uint newBorrowIndex_CollateralAsset;
-        uint newSupplyIndex_CollateralAsset;
-
-        // the target borrow's full balance with accumulated interest
-        uint currentBorrowBalance_TargetUnderwaterAsset;
-        // currentBorrowBalance_TargetUnderwaterAsset minus whatever gets repaid as part of the liquidation
-        uint updatedBorrowBalance_TargetUnderwaterAsset;
-
-        uint newTotalBorrows_ProtocolUnderwaterAsset;
-
-        uint startingBorrowBalance_TargetUnderwaterAsset;
-        uint startingSupplyBalance_TargetCollateralAsset;
-        uint startingSupplyBalance_LiquidatorCollateralAsset;
-
-        uint currentSupplyBalance_TargetCollateralAsset;
-        uint updatedSupplyBalance_TargetCollateralAsset;
-
-        // If liquidator already has a balance of collateralAsset, we will accumulate
-        // interest on it before transferring seized collateral from the borrower.
-        uint currentSupplyBalance_LiquidatorCollateralAsset;
-        // This will be the liquidator's accumulated balance of collateral asset before the liquidation (if any)
-        // plus the amount seized from the borrower.
-        uint updatedSupplyBalance_LiquidatorCollateralAsset;
-
-        uint newTotalSupply_ProtocolCollateralAsset;
-        uint currentCash_ProtocolUnderwaterAsset;
-        uint updatedCash_ProtocolUnderwaterAsset;
-
-        // cash does not change for collateral asset
-
-        uint newSupplyRateMantissa_ProtocolUnderwaterAsset;
-        uint newBorrowRateMantissa_ProtocolUnderwaterAsset;
-
-        // Why no variables for the interest rates for the collateral asset?
-        // We don't need to calculate new rates for the collateral asset since neither cash nor borrows change
-
-        uint discountedRepayToEvenAmount;
-
-        //[supplyCurrent / (1 + liquidationDiscount)] * (Oracle price for the collateral / Oracle price for the borrow) (discountedBorrowDenominatedCollateral)
-        uint discountedBorrowDenominatedCollateral;
-
-        uint maxCloseableBorrowAmount_TargetUnderwaterAsset;
-        uint closeBorrowAmount_TargetUnderwaterAsset;
-        uint seizeSupplyAmount_TargetCollateralAsset;
-
-        Exp collateralPrice;
-        Exp underwaterAssetPrice;
     }
 
     /**
