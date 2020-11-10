@@ -164,8 +164,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<!-- <td> 0xcE466383e526C7c77C869631f94181076A8Bd4Bb </td> -->
-		<td> 0x95CcD9a576833A039C5D02A01360156D6c46C9A8 </td>
+		<td> 0x6c136D6774E712C9e14fBE0AE02dE2134Afb457D </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
@@ -233,7 +232,7 @@
 	</tr>
 	<tr>
 		<td> WETHPriceFeed </td>
-		<td> 0xc778417E063141139Fce010982780140Aa0cD5Ab </td>
+		<td> 0x72E79E602F345aACd9C683106782c08eAf92f0D7 </td>
 	</tr>
 	<tr>
 		<td> DAI </td>
