@@ -24302,7 +24302,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-11-10T21:15:01.846Z",
+  "updatedAt": "2020-11-16T14:50:13.145Z",
   "devdoc": {
     "methods": {
       "getBorrowRate(address,uint256,uint256)": {

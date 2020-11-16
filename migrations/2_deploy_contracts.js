@@ -24,9 +24,9 @@ module.exports = async (deployer, network, accounts) => {
 		// 	PriceOracleProxy,
 		// 	deploymentConfig.RINKEBY.PriceOracle
 		// );
-		await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(MoneyMarket);
 		// await deployer.deploy(ChainLink);
-		// await deployer.deploy(AlkemiWETH);
+		await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
 		// await deployer.deploy(
 		// 	LiquidationChecker,

@@ -81,7 +81,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0xe6a53f96ceca750ef8589c5b376872213aa4f230 </td>
+		<td> 0x21C11666CF85A249509f597194efF8D0FB6938df </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
@@ -101,7 +101,11 @@
 	</tr>
 	<tr>
 		<td> USDCRateModel </td>
-		<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
+		<td> 0x2fb9B12688A093350e5043FE9Dd01Da66e658794 </td>
+	</tr>
+	<tr>
+		<td> USDCPriceFeed </td>
+		<td> 0xdCA36F27cbC4E38aE16C4E9f99D39b42337F6dcf </td>
 	</tr>
 	<tr>
 		<td> USDT </td>
@@ -125,15 +129,23 @@
 	</tr>
 	<tr>
 		<td> WBTCRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+		<td> 0x8246Dc4cAcF026D99d525107c4cAC09883a2bb94 </td>
+	</tr>
+	<tr>
+		<td> WBTCPriceFeed </td>
+		<td> 0x2431452A0010a43878bF198e170F6319Af6d27F4 </td>
 	</tr>
 	<tr>
 		<td> WETH </td>
-		<td> 0xc8b1a5ef2e19937dd6c0f804df2e3efe9f093b1e </td>
+		<td> 0x9e3865F0A681F2356BcF5Cf6b978F0a773716886 </td>
 	</tr>
 	<tr>
 		<td> WETHRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+		<td> 0xfc101183D7f4fb67D3cE0431DFf65A5ea55F2316 </td>
+	</tr>
+	<tr>
+		<td> WETHPriceFeed </td>
+		<td> 0x9e3865F0A681F2356BcF5Cf6b978F0a773716886 </td>
 	</tr>
 	<tr>
 		<td> DAI </td>
@@ -141,7 +153,11 @@
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+		<td> 0x2fb9B12688A093350e5043FE9Dd01Da66e658794 </td>
+	</tr>
+	<tr>
+		<td> DAIPriceFeed </td>
+		<td> 0x74825DbC8BF76CC4e9494d0ecB210f676Efa001D </td>
 	</tr>
   <tr>
   	<td> PriceOracle </td>
@@ -151,6 +167,10 @@
   <tr>
   	<td> PriceOracleProxy </td>
   	<td> 0x994cb3eD851e05BfeE1A5c069337eC9486829E90 </td>
+  </tr>
+  <tr>
+  	<td> ChainLink </td>
+  	<td> 0xFF2A446d3134769c8a9689c1F5b4CE5416366895 </td>
   </tr>
 
 </table>
@@ -164,7 +184,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0x6c136D6774E712C9e14fBE0AE02dE2134Afb457D </td>
+		<td> 0x0eFd434dB6E97707cf05916379f3E7eA1Ea285cC </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>

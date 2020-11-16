@@ -6612,9 +6612,95 @@
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "4": {
+      "events": {
+        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "guy",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "name": "Approval",
+          "type": "event"
+        },
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "name": "Deposit",
+          "type": "event"
+        },
+        "0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "name": "Withdrawal",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x9e3865F0A681F2356BcF5Cf6b978F0a773716886",
+      "transactionHash": "0xcf287c7634849077a6729747bc44e04dddf948aef691423958d99530a5909838"
+    }
+  },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-11-10T21:39:01.481Z",
+  "updatedAt": "2020-11-16T15:01:30.802Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

@@ -282,7 +282,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-11-10T21:15:02.309Z",
+  "updatedAt": "2020-11-16T14:50:13.346Z",
   "devdoc": {
     "methods": {
       "assetPrices(address)": {
