@@ -3,9 +3,12 @@ var PriceOracleProxy = artifacts.require("PriceOracleProxy.sol");
 var MoneyMarket = artifacts.require("./MoneyMarket.sol");
 var Liquidator = artifacts.require("./Liquidator.sol");
 var LiquidationChecker = artifacts.require("./LiquidationChecker.sol");
+var ChainLink = artifacts.require("ChainLink.sol");
+var AlkemiWETH = artifacts.require("AlkemiWETH.sol");
 var StandardInterestRateModel = artifacts.require(
 	"./StandardInterestRateModel.sol"
 );
+var TestTokens = artifacts.require("TestTokens.sol");
 
 const deploymentConfig = require("./deployment-config.json");
 
@@ -14,28 +17,43 @@ module.exports = async (deployer, network, accounts) => {
 		await deployer.deploy(PriceOracle, deploymentConfig.DEVCHAIN.POSTER);
 		await deployer.deploy(PriceOracleProxy, PriceOracle.address);
 		await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(ChainLink);
 	} else if (network == "rinkeby") {
-		await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
-		await deployer.deploy(
-			PriceOracleProxy,
-			deploymentConfig.RINKEBY.PriceOracle
-		);
+		// await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
+		// await deployer.deploy(
+		// 	PriceOracleProxy,
+		// 	deploymentConfig.RINKEBY.PriceOracle
+		// );
 		await deployer.deploy(MoneyMarket);
-		await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
-		await deployer.deploy(
-			LiquidationChecker,
-			deploymentConfig.RINKEBY.MoneyMarket,
-			deploymentConfig.RINKEBY.Liquidator,
-			true
-		);
+		// await deployer.deploy(ChainLink);
+		// await deployer.deploy(AlkemiWETH);
+		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
+		// await deployer.deploy(
+		// 	LiquidationChecker,
+		// 	deploymentConfig.RINKEBY.MoneyMarket,
+		// 	deploymentConfig.RINKEBY.Liquidator,
+		// 	true
+		// );
 	} else if (network == "ropsten") {
-		await deployer.deploy(PriceOracle, deploymentConfig.ROPSTEN.POSTER);
-		await deployer.deploy(
-			PriceOracleProxy,
-			deploymentConfig.ROPSTEN.PRICE_ORACLE
-		);
+		// await deployer.deploy(PriceOracle, deploymentConfig.ROPSTEN.POSTER);
+		// await deployer.deploy(
+		// 	PriceOracleProxy,
+		// 	deploymentConfig.ROPSTEN.PRICE_ORACLE
+		// );
+		// await deployer.deploy(
+		// 	TestTokens,
+		// 	"Maker DAO",
+		// 	"DAI",
+		// 	18,
+		// 	1000000 // Supply 18 decimals handled in constructor
+		// );
+		// await deployer.deploy(ChainLink);
+		// await deployer.deploy(AlkemiWETH);
 		await deployer.deploy(MoneyMarket);
-		await deployer.deploy(Liquidator, MoneyMarket.address);
+		// const oracle = await ChainLink.deployed();
+		// const moneyMarket = await MoneyMarket.deployed();
+		// await moneyMarket._setOracle(oracle.address);
+		// await deployer.deploy(Liquidator, MoneyMarket.address);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
 		// 	MoneyMarket.address,
@@ -46,7 +64,10 @@ module.exports = async (deployer, network, accounts) => {
 		// await deployer.deploy(PriceOracleProxy, PriceOracle.address);
 		// await deployer.deploy(MoneyMarket, PriceOracle.address);
 		// await deployer.deploy(Liquidator, MoneyMarket.address);
-		await deployer.deploy(StandardInterestRateModel);
+		await deployer.deploy(ChainLink);
+		await deployer.deploy(MoneyMarket);
+		await deployer.deploy(AlkemiWETH);
+		// await deployer.deploy(StandardInterestRateModel);
 	} else {
 		await deployer.deploy(PriceOracle, deploymentConfig.MAINNET.POSTER);
 		await deployer.deploy(PriceOracleProxy, PriceOracle.address);

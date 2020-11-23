@@ -4,7 +4,8 @@ import "./Exponential.sol";
 import "./InterestRateModel.sol";
 import "./PriceOracleInterface.sol";
 import "./SafeToken.sol";
-
+import "./ChainLink.sol";
+import "./AlkemiWETH.sol";
 
 contract MoneyMarket is Exponential, SafeToken {
 
@@ -48,6 +49,11 @@ contract MoneyMarket is Exponential, SafeToken {
      *      in constructor, but can be changed by the admin.
      */
     address public oracle;
+
+    /**
+     * @dev Account allowed to fetch chainlink oracle prices for this contract. Can be changed by the admin.
+     */
+    ChainLink priceOracle;
 
     /**
      * @dev Container for customer balance information written to storage.
@@ -101,6 +107,17 @@ contract MoneyMarket is Exponential, SafeToken {
         uint borrowRateMantissa;
         uint borrowIndex;
     }
+
+    /**
+     * @dev wethAddress to hold the WETH token contract address
+     * set using setWethAddress function
+     */
+    address public wethAddress;
+
+    /**
+     * @dev Initiates the contract for supply and withdraw Ether and conversion to WETH
+     */
+    AlkemiWETH public WETHContract;
 
     /**
      * @dev map: assetAddress -> Market
@@ -287,6 +304,7 @@ contract MoneyMarket is Exponential, SafeToken {
     modifier isKYCVerifiedCustomer {
         // Check caller = KYCVerifiedCustomer
         if (!customersWithKYC[msg.sender]) {
+            revertEtherToUser(msg.sender,msg.value);
             emitError(Error.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED, FailureInfo.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED);
         } else {
             require(customersWithKYC[msg.sender],"Customer is not KYC Verified");
@@ -343,6 +361,13 @@ contract MoneyMarket is Exponential, SafeToken {
      */
     function verifyKYC(address customer) public view returns(bool) {
         return customersWithKYC[customer];
+    }
+
+    /**
+     * @dev Function to fetch KYC Admin status of an admin
+     */
+    function checkKYCAdmin(address _KYCAdmin) public view returns(bool) {
+        return KYCAdmins[_KYCAdmin];
     }
 
     /**
@@ -583,8 +608,7 @@ contract MoneyMarket is Exponential, SafeToken {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
 
-        PriceOracleInterface oracleInterface = PriceOracleInterface(oracle);
-        uint priceMantissa = oracleInterface.assetPrices(asset);
+        uint priceMantissa = priceOracle.getAssetPrice(asset);
 
         return (Error.NO_ERROR, Exp({mantissa: priceMantissa}));
     }
@@ -689,13 +713,15 @@ contract MoneyMarket is Exponential, SafeToken {
 
         // Verify contract at newOracle address supports assetPrices call.
         // This will revert if it doesn't.
-        PriceOracleInterface oracleInterface = PriceOracleInterface(newOracle);
-        oracleInterface.assetPrices(address(0));
+        // ChainLink priceOracleTemp = ChainLink(newOracle);
+        // priceOracleTemp.getAssetPrice(address(0));
 
         address oldOracle = oracle;
 
         // Store oracle = newOracle
         oracle = newOracle;
+        // Initialize the Chainlink contract in priceOracle
+        priceOracle = ChainLink(newOracle);
 
         emit NewOracle(oldOracle, newOracle);
 
@@ -992,11 +1018,21 @@ contract MoneyMarket is Exponential, SafeToken {
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
 
-        // We ERC-20 transfer the asset out of the protocol to the admin
-        Error err2 = doTransferOut(asset, admin, amount);
-        if (err2 != Error.NO_ERROR) {
-            // This is safe since it's our first interaction and it didn't do anything if it failed
-            return fail(err2, FailureInfo.EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED);
+        if(asset != wethAddress) { // Withdrawal should happen as Ether directly
+            // We ERC-20 transfer the asset out of the protocol to the admin
+            Error err2 = doTransferOut(asset, admin, amount);
+            if (err2 != Error.NO_ERROR) {
+                // This is safe since it's our first interaction and it didn't do anything if it failed
+                return fail(err2, FailureInfo.EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED);
+            }
+        }
+
+        if(asset == wethAddress) {
+            uint withdrawalerr = withdrawEther(admin,amount); // send Ether to user
+            if(withdrawalerr == 0){
+                emit EquityWithdrawn(asset, equity, amount, admin);
+                return uint(Error.NO_ERROR); // success
+            }
         }
 
         //event EquityWithdrawn(address asset, uint equityAvailableBefore, uint amount, address owner)
@@ -1027,6 +1063,52 @@ contract MoneyMarket is Exponential, SafeToken {
         uint newBorrowRateMantissa;
     }
 
+    /**
+     * @dev Event emitted on successful addition of Weth Address
+     */
+    event WETHAddressSet(address wethAddress);
+
+    /**
+     * @dev Set WETH token contract address
+     * @param wethContractAddress Enter the WETH token address
+     */
+    function setWethAddress(address wethContractAddress) public returns (uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.SET_WETH_ADDRESS_ADMIN_CHECK_FAILED, FailureInfo.SET_WETH_ADDRESS_ADMIN_CHECK_FAILED);
+        }
+        wethAddress = wethContractAddress;
+        WETHContract = AlkemiWETH(wethAddress);
+        emit WETHAddressSet(wethContractAddress);
+        return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @dev Convert Ether supplied by user into WETH tokens and then supply corresponding WETH to user
+     * @return errors if any
+     * @param etherAmount Amount of ether to be converted to WETH
+     * @param user User account address
+     */
+    function supplyEther(address user, uint etherAmount) internal returns (uint) {
+        if(wethAddress != address(0)){
+            WETHContract.deposit.value(etherAmount)();
+            return uint(Error.NO_ERROR);
+        }
+        else {
+            return uint(Error.WETH_ADDRESS_NOT_SET_ERROR);
+        }
+    }
+
+    /**
+     * @dev Revert Ether paid by user back to user's account in case transaction fails due to some other reason
+     * @param etherAmount Amount of ether to be sent back to user
+     * @param user User account address
+     */
+    function revertEtherToUser(address user, uint etherAmount) internal {
+        if(etherAmount > 0){
+            user.transfer(etherAmount);
+        }
+    }
 
     /**
      * @notice supply `amount` of `asset` (which must be supported) to `msg.sender` in the protocol
@@ -1035,8 +1117,9 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param amount The amount to supply
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function supply(address asset, uint amount) public isKYCVerifiedCustomer returns (uint) {
+    function supply(address asset, uint amount) public payable isKYCVerifiedCustomer returns (uint) {
         if (paused) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
 
@@ -1049,34 +1132,41 @@ contract MoneyMarket is Exponential, SafeToken {
 
         // Fail if market not supported
         if (!market.isSupported) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(Error.MARKET_NOT_SUPPORTED, FailureInfo.SUPPLY_MARKET_NOT_SUPPORTED);
         }
-
-        // Fail gracefully if asset is not approved or has insufficient balance
-        err = checkTransferIn(asset, msg.sender, amount);
-        if (err != Error.NO_ERROR) {
-            return fail(err, FailureInfo.SUPPLY_TRANSFER_IN_NOT_POSSIBLE);
+        if(asset != wethAddress) { // WETH is supplied to MoneyMarket contract in case of ETH automatically
+            // Fail gracefully if asset is not approved or has insufficient balance
+            revertEtherToUser(msg.sender,msg.value);
+            err = checkTransferIn(asset, msg.sender, amount);
+            if (err != Error.NO_ERROR) {
+                return fail(err, FailureInfo.SUPPLY_TRANSFER_IN_NOT_POSSIBLE);
+            }
         }
 
         // We calculate the newSupplyIndex, user's supplyCurrent and supplyUpdated for the asset
         (err, localResults.newSupplyIndex) = calculateInterestIndex(market.supplyIndex, market.supplyRateMantissa, market.blockNumber, getBlockNumber());
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.SUPPLY_NEW_SUPPLY_INDEX_CALCULATION_FAILED);
         }
 
         (err, localResults.userSupplyCurrent) = calculateBalance(balance.principal, balance.interestIndex, localResults.newSupplyIndex);
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.SUPPLY_ACCUMULATED_BALANCE_CALCULATION_FAILED);
         }
 
         (err, localResults.userSupplyUpdated) = add(localResults.userSupplyCurrent, amount);
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.SUPPLY_NEW_TOTAL_BALANCE_CALCULATION_FAILED);
         }
 
         // We calculate the protocol's totalSupply by subtracting the user's prior checkpointed balance, adding user's updated supply
         (err, localResults.newTotalSupply) = addThenSub(market.totalSupply, localResults.userSupplyUpdated, balance.principal);
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.SUPPLY_NEW_TOTAL_SUPPLY_CALCULATION_FAILED);
         }
 
@@ -1085,35 +1175,41 @@ contract MoneyMarket is Exponential, SafeToken {
 
         (err, localResults.updatedCash) = add(localResults.currentCash, amount);
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.SUPPLY_NEW_TOTAL_CASH_CALCULATION_FAILED);
         }
 
         // The utilization rate has changed! We calculate a new supply index and borrow index for the asset, and save it.
         (rateCalculationResultCode, localResults.newSupplyRateMantissa) = market.interestRateModel.getSupplyRate(asset, localResults.updatedCash, market.totalBorrows);
         if (rateCalculationResultCode != 0) {
+            revertEtherToUser(msg.sender,msg.value);
             return failOpaque(FailureInfo.SUPPLY_NEW_SUPPLY_RATE_CALCULATION_FAILED, rateCalculationResultCode);
         }
 
         // We calculate the newBorrowIndex (we already had newSupplyIndex)
         (err, localResults.newBorrowIndex) = calculateInterestIndex(market.borrowIndex, market.borrowRateMantissa, market.blockNumber, getBlockNumber());
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.SUPPLY_NEW_BORROW_INDEX_CALCULATION_FAILED);
         }
 
         (rateCalculationResultCode, localResults.newBorrowRateMantissa) = market.interestRateModel.getBorrowRate(asset, localResults.updatedCash, market.totalBorrows);
         if (rateCalculationResultCode != 0) {
+            revertEtherToUser(msg.sender,msg.value);
             return failOpaque(FailureInfo.SUPPLY_NEW_BORROW_RATE_CALCULATION_FAILED, rateCalculationResultCode);
         }
 
         /////////////////////////
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
-
-        // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
-        err = doTransferIn(asset, msg.sender, amount);
-        if (err != Error.NO_ERROR) {
-            // This is safe since it's our first interaction and it didn't do anything if it failed
-            return fail(err, FailureInfo.SUPPLY_TRANSFER_IN_FAILED);
+        if(asset != wethAddress) { // WETH is supplied to MoneyMarket contract in case of ETH automatically
+            // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
+            revertEtherToUser(msg.sender,msg.value);
+            err = doTransferIn(asset, msg.sender, amount);
+            if (err != Error.NO_ERROR) {
+                // This is safe since it's our first interaction and it didn't do anything if it failed
+                return fail(err, FailureInfo.SUPPLY_TRANSFER_IN_FAILED);
+            }
         }
 
         // Save market updates
@@ -1128,6 +1224,20 @@ contract MoneyMarket is Exponential, SafeToken {
         localResults.startingBalance = balance.principal; // save for use in `SupplyReceived` event
         balance.principal = localResults.userSupplyUpdated;
         balance.interestIndex = localResults.newSupplyIndex;
+
+        if(asset == wethAddress) {
+            if (msg.value == amount){
+                uint supplyError = supplyEther(msg.sender,msg.value);
+                if(supplyError !=0 ){
+                    revertEtherToUser(msg.sender,msg.value);
+                    return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
+                }
+            }
+            else {
+                revertEtherToUser(msg.sender,msg.value);
+                return fail(Error.ETHER_AMOUNT_MISMATCH_ERROR, FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR);
+            }
+        }
 
         emit SupplyReceived(msg.sender, asset, amount, localResults.startingBalance, localResults.userSupplyUpdated);
 
@@ -1153,6 +1263,29 @@ contract MoneyMarket is Exponential, SafeToken {
         uint withdrawCapacity;
     }
 
+    /**
+     * @notice withdraw `amount` of `ether` from sender's account to sender's address
+     * @dev withdraw `amount` of `ether` from msg.sender's account to msg.sender
+     * @param etherAmount Amount of ether to be converted to WETH
+     * @param user User account address
+     */
+    function withdrawEther(address user, uint etherAmount) internal returns (uint) {
+            WETHContract.withdraw(user,etherAmount);
+            return uint(Error.NO_ERROR);
+    }
+
+    /**
+     * @notice send Ether from contract to a user
+     * @dev Fail safe plan to send Ether stuck in contract in case there is a problem with withdraw
+     */
+    function sendEtherToUser(address user, uint amount) public returns (uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.UNAUTHORIZED, FailureInfo.SEND_ETHER_ADMIN_CHECK_FAILED);
+        }
+        user.transfer(amount);
+        return uint(Error.NO_ERROR);
+    }
 
     /**
      * @notice withdraw `amount` of `asset` from sender's account to sender's address
@@ -1265,11 +1398,13 @@ contract MoneyMarket is Exponential, SafeToken {
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
 
-        // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
-        err = doTransferOut(asset, msg.sender, localResults.withdrawAmount);
-        if (err != Error.NO_ERROR) {
-            // This is safe since it's our first interaction and it didn't do anything if it failed
-            return fail(err, FailureInfo.WITHDRAW_TRANSFER_OUT_FAILED);
+        if(asset != wethAddress) { // Withdrawal should happen as Ether directly
+            // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
+            err = doTransferOut(asset, msg.sender, localResults.withdrawAmount);
+            if (err != Error.NO_ERROR) {
+                // This is safe since it's our first interaction and it didn't do anything if it failed
+                return fail(err, FailureInfo.WITHDRAW_TRANSFER_OUT_FAILED);
+            }
         }
 
         // Save market updates
@@ -1285,8 +1420,16 @@ contract MoneyMarket is Exponential, SafeToken {
         supplyBalance.principal = localResults.userSupplyUpdated;
         supplyBalance.interestIndex = localResults.newSupplyIndex;
 
-        emit SupplyWithdrawn(msg.sender, asset, localResults.withdrawAmount, localResults.startingBalance, localResults.userSupplyUpdated);
+        if(asset == wethAddress) {
+            uint withdrawalerr = withdrawEther(msg.sender,localResults.withdrawAmount); // send Ether to user
+            if(withdrawalerr == 0){
+                emit SupplyWithdrawn(msg.sender, asset, localResults.withdrawAmount, localResults.startingBalance, localResults.userSupplyUpdated);
+                return uint(Error.NO_ERROR); // success
+            }
+        }
 
+        emit SupplyWithdrawn(msg.sender, asset, localResults.withdrawAmount, localResults.startingBalance, localResults.userSupplyUpdated);
+        
         return uint(Error.NO_ERROR); // success
     }
 
@@ -1476,8 +1619,9 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param amount The amount to repay (or -1 for max)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function repayBorrow(address asset, uint amount) public isKYCVerifiedCustomer returns (uint) {
+    function repayBorrow(address asset, uint amount) public payable isKYCVerifiedCustomer returns (uint) {
         if (paused) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(Error.CONTRACT_PAUSED, FailureInfo.REPAY_BORROW_CONTRACT_PAUSED);
         }
         PayBorrowLocalVars memory localResults;
@@ -1489,11 +1633,13 @@ contract MoneyMarket is Exponential, SafeToken {
         // We calculate the newBorrowIndex, user's borrowCurrent and borrowUpdated for the asset
         (err, localResults.newBorrowIndex) = calculateInterestIndex(market.borrowIndex, market.borrowRateMantissa, market.blockNumber, getBlockNumber());
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.REPAY_BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED);
         }
 
         (err, localResults.userBorrowCurrent) = calculateBalance(borrowBalance.principal, borrowBalance.interestIndex, localResults.newBorrowIndex);
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED);
         }
 
@@ -1509,14 +1655,18 @@ contract MoneyMarket is Exponential, SafeToken {
         // Note: this checks that repayAmount is less than borrowCurrent
         (err, localResults.userBorrowUpdated) = sub(localResults.userBorrowCurrent, localResults.repayAmount);
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED);
         }
 
         // Fail gracefully if asset is not approved or has insufficient balance
         // Note: this checks that repayAmount is less than or equal to their ERC-20 balance
-        err = checkTransferIn(asset, msg.sender, localResults.repayAmount);
-        if (err != Error.NO_ERROR) {
-            return fail(err, FailureInfo.REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE);
+        if(asset != wethAddress) { // WETH is supplied to MoneyMarket contract in case of ETH automatically
+            revertEtherToUser(msg.sender,msg.value);
+            err = checkTransferIn(asset, msg.sender, localResults.repayAmount);
+            if (err != Error.NO_ERROR) {
+                return fail(err, FailureInfo.REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE);
+            }
         }
 
         // We calculate the protocol's totalBorrow by subtracting the user's prior checkpointed balance, adding user's updated borrow
@@ -1524,6 +1674,7 @@ contract MoneyMarket is Exponential, SafeToken {
         // action, the updated balance *could* be higher than the prior checkpointed balance.
         (err, localResults.newTotalBorrows) = addThenSub(market.totalBorrows, localResults.userBorrowUpdated, borrowBalance.principal);
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.REPAY_BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED);
         }
 
@@ -1532,6 +1683,7 @@ contract MoneyMarket is Exponential, SafeToken {
 
         (err, localResults.updatedCash) = add(localResults.currentCash, localResults.repayAmount);
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.REPAY_BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED);
         }
 
@@ -1540,28 +1692,33 @@ contract MoneyMarket is Exponential, SafeToken {
         // We calculate the newSupplyIndex, but we have newBorrowIndex already
         (err, localResults.newSupplyIndex) = calculateInterestIndex(market.supplyIndex, market.supplyRateMantissa, market.blockNumber, getBlockNumber());
         if (err != Error.NO_ERROR) {
+            revertEtherToUser(msg.sender,msg.value);
             return fail(err, FailureInfo.REPAY_BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED);
         }
 
         (rateCalculationResultCode, localResults.newSupplyRateMantissa) = market.interestRateModel.getSupplyRate(asset, localResults.updatedCash, localResults.newTotalBorrows);
         if (rateCalculationResultCode != 0) {
+            revertEtherToUser(msg.sender,msg.value);
             return failOpaque(FailureInfo.REPAY_BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED, rateCalculationResultCode);
         }
 
         (rateCalculationResultCode, localResults.newBorrowRateMantissa) = market.interestRateModel.getBorrowRate(asset, localResults.updatedCash, localResults.newTotalBorrows);
         if (rateCalculationResultCode != 0) {
+            revertEtherToUser(msg.sender,msg.value);
             return failOpaque(FailureInfo.REPAY_BORROW_NEW_BORROW_RATE_CALCULATION_FAILED, rateCalculationResultCode);
         }
 
         /////////////////////////
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
-
-        // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
-        err = doTransferIn(asset, msg.sender, localResults.repayAmount);
-        if (err != Error.NO_ERROR) {
-            // This is safe since it's our first interaction and it didn't do anything if it failed
-            return fail(err, FailureInfo.REPAY_BORROW_TRANSFER_IN_FAILED);
+        if(asset != wethAddress) { // WETH is supplied to MoneyMarket contract in case of ETH automatically
+            // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
+            revertEtherToUser(msg.sender,msg.value);
+            err = doTransferIn(asset, msg.sender, localResults.repayAmount);
+            if (err != Error.NO_ERROR) {
+                // This is safe since it's our first interaction and it didn't do anything if it failed
+                return fail(err, FailureInfo.REPAY_BORROW_TRANSFER_IN_FAILED);
+            }
         }
 
         // Save market updates
@@ -1576,6 +1733,20 @@ contract MoneyMarket is Exponential, SafeToken {
         localResults.startingBalance = borrowBalance.principal; // save for use in `BorrowRepaid` event
         borrowBalance.principal = localResults.userBorrowUpdated;
         borrowBalance.interestIndex = localResults.newBorrowIndex;
+
+        if(asset == wethAddress) {
+            if (msg.value == amount){
+                uint supplyError = supplyEther(msg.sender,msg.value);
+                if(supplyError !=0 ){
+                    revertEtherToUser(msg.sender,msg.value);
+                    return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
+                }
+            }
+            else {
+                revertEtherToUser(msg.sender,msg.value);
+                return fail(Error.ETHER_AMOUNT_MISMATCH_ERROR, FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR);
+            }
+        }
 
         emit BorrowRepaid(msg.sender, asset, localResults.repayAmount, localResults.startingBalance, localResults.userBorrowUpdated);
 
@@ -1807,9 +1978,11 @@ contract MoneyMarket is Exponential, SafeToken {
 
         // We are going to ERC-20 transfer closeBorrowAmount_TargetUnderwaterAsset of assetBorrow into protocol
         // Fail gracefully if asset is not approved or has insufficient balance
-        err = checkTransferIn(assetBorrow, localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset);
-        if (err != Error.NO_ERROR) {
-            return fail(err, FailureInfo.LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE);
+        if(assetBorrow != wethAddress) { // WETH is supplied to MoneyMarket contract in case of ETH automatically
+            err = checkTransferIn(assetBorrow, localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset);
+            if (err != Error.NO_ERROR) {
+                return fail(err, FailureInfo.LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE);
+            }
         }
 
         // We are going to repay the target user's borrow using the calling user's funds
@@ -1883,10 +2056,12 @@ contract MoneyMarket is Exponential, SafeToken {
         // (No safe failures beyond this point)
 
         // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
-        err = doTransferIn(assetBorrow, localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset);
-        if (err != Error.NO_ERROR) {
-            // This is safe since it's our first interaction and it didn't do anything if it failed
-            return fail(err, FailureInfo.LIQUIDATE_TRANSFER_IN_FAILED);
+        if(assetBorrow != wethAddress) { // WETH is supplied to MoneyMarket contract in case of ETH automatically
+            err = doTransferIn(assetBorrow, localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset);
+            if (err != Error.NO_ERROR) {
+                // This is safe since it's our first interaction and it didn't do anything if it failed
+                return fail(err, FailureInfo.LIQUIDATE_TRANSFER_IN_FAILED);
+            }
         }
 
         // Save borrow market updates
@@ -1918,6 +2093,13 @@ contract MoneyMarket is Exponential, SafeToken {
         localResults.startingSupplyBalance_LiquidatorCollateralAsset = supplyBalance_LiquidatorCollateralAsset.principal; // save for use in event
         supplyBalance_LiquidatorCollateralAsset.principal = localResults.updatedSupplyBalance_LiquidatorCollateralAsset;
         supplyBalance_LiquidatorCollateralAsset.interestIndex = localResults.newSupplyIndex_CollateralAsset;
+
+        if(assetBorrow == wethAddress) {
+            uint supplyError = supplyEther(localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset);
+            if(supplyError !=0 ){
+                return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
+            }
+        }
 
         emitLiquidationEvent(localResults);
 
@@ -2177,11 +2359,13 @@ contract MoneyMarket is Exponential, SafeToken {
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
 
-        // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
-        err = doTransferOut(asset, msg.sender, amount);
-        if (err != Error.NO_ERROR) {
-            // This is safe since it's our first interaction and it didn't do anything if it failed
-            return fail(err, FailureInfo.BORROW_TRANSFER_OUT_FAILED);
+        if(asset != wethAddress) { // Withdrawal should happen as Ether directly
+            // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
+            err = doTransferOut(asset, msg.sender, amount);
+            if (err != Error.NO_ERROR) {
+                // This is safe since it's our first interaction and it didn't do anything if it failed
+                return fail(err, FailureInfo.BORROW_TRANSFER_OUT_FAILED);
+            }
         }
 
         // Save market updates
@@ -2196,6 +2380,14 @@ contract MoneyMarket is Exponential, SafeToken {
         localResults.startingBalance = borrowBalance.principal; // save for use in `BorrowTaken` event
         borrowBalance.principal = localResults.userBorrowUpdated;
         borrowBalance.interestIndex = localResults.newBorrowIndex;
+
+        if(asset == wethAddress) {
+            uint withdrawalerr = withdrawEther(msg.sender,amount); // send Ether to user
+            if(withdrawalerr == 0){
+                emit BorrowTaken(msg.sender, asset, amount, localResults.startingBalance, localResults.borrowAmountWithFee, localResults.userBorrowUpdated);
+                return uint(Error.NO_ERROR); // success
+            }
+        }
 
         emit BorrowTaken(msg.sender, asset, amount, localResults.startingBalance, localResults.borrowAmountWithFee, localResults.userBorrowUpdated);
 

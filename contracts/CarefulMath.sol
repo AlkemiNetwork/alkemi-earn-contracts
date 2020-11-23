@@ -48,6 +48,13 @@ contract CarefulMath is ErrorReporter {
     }
 
     /**
+     * @dev Subtracts two numbers, returns an error on overflow (i.e. if subtrahend is greater than minuend).
+     */
+    function subInt(uint a, uint b) internal pure returns (Error, int) {
+            return (Error.NO_ERROR, int(a - b));
+    }
+
+    /**
      * @dev Adds two numbers, returns an error on overflow.
      */
     function add(uint a, uint b) internal pure returns (Error, uint) {
@@ -58,6 +65,14 @@ contract CarefulMath is ErrorReporter {
         } else {
             return (Error.INTEGER_OVERFLOW, 0);
         }
+    }
+
+    /**
+     * @dev Adds two numbers, returns an error on overflow.
+     */
+    function addInt(uint a, int b) internal pure returns (Error, int) {
+        int c = int(a) + b;
+            return (Error.NO_ERROR, c);
     }
 
     /**
