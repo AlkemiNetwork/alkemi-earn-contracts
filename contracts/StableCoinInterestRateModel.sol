@@ -86,7 +86,7 @@ contract StableCoinInterestRateModel is Exponential {
       * @param borrows The total borrows of the asset in the market
       * @return Success or failure and the supply interest rate per block scaled by 10e18
       */
-    function getSupplyRate(address _asset, uint cash, uint borrows) public view returns (uint, uint) {
+    function getSupplyRate(address _asset, uint cash, uint borrows) public pure returns (uint, uint) {
         _asset; // pragma ignore unused argument
 
         (IRError err0, Exp memory utilizationRate0, Exp memory annualBorrowRate) = getUtilizationAndAnnualBorrowRate(cash, borrows);
@@ -133,7 +133,7 @@ contract StableCoinInterestRateModel is Exponential {
       * @param borrows The total borrows of the asset in the market
       * @return Success or failure and the borrow interest rate per block scaled by 10e18
       */
-    function getBorrowRate(address _asset, uint cash, uint borrows) public view returns (uint, uint) {
+    function getBorrowRate(address _asset, uint cash, uint borrows) public pure returns (uint, uint) {
         _asset; // pragma ignore unused argument
 
         (IRError err0, Exp memory _utilizationRate, Exp memory annualBorrowRate) = getUtilizationAndAnnualBorrowRate(cash, borrows);

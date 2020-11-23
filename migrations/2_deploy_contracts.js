@@ -24,9 +24,9 @@ module.exports = async (deployer, network, accounts) => {
 		// 	PriceOracleProxy,
 		// 	deploymentConfig.RINKEBY.PriceOracle
 		// );
-		await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(MoneyMarket);
 		// await deployer.deploy(ChainLink);
-		// await deployer.deploy(AlkemiWETH);
+		await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
@@ -47,9 +47,9 @@ module.exports = async (deployer, network, accounts) => {
 		// 	18,
 		// 	1000000 // Supply 18 decimals handled in constructor
 		// );
-		// await deployer.deploy(ChainLink);
+		await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
-		await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(MoneyMarket);
 		// const oracle = await ChainLink.deployed();
 		// const moneyMarket = await MoneyMarket.deployed();
 		// await moneyMarket._setOracle(oracle.address);
