@@ -345,6 +345,11 @@ contract MoneyMarket is Exponential, SafeToken {
     }
 
     /**
+     * @dev 2-level map: customerAddress -> assetAddress -> originationFeeBalance for borrows
+     */
+    mapping(address => mapping(address => uint)) public originationFeeBalance;
+
+    /**
      * @dev Event emitted on successful addition of Weth Address
      */
     event WETHAddressSet(address wethAddress);
@@ -361,6 +366,11 @@ contract MoneyMarket is Exponential, SafeToken {
      */
     event SupplyReceived(address account, address asset, uint amount, uint startingBalance, uint newBalance);
 
+    /**
+     * @dev emitted when a origination fee supply is received as admin
+     *      Note: newBalance - amount - startingBalance = interest accumulated since last change
+     */
+    event SupplyOrgFeeAsAdmin(address account, address asset, uint amount, uint startingBalance, uint newBalance);
     /**
      * @dev emitted when a supply is withdrawn
      *      Note: startingBalance - amount - startingBalance = interest accumulated since last change
@@ -1206,13 +1216,10 @@ contract MoneyMarket is Exponential, SafeToken {
                 // This is safe since it's our first interaction and it didn't do anything if it failed
                 return fail(err2, FailureInfo.EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED);
             }
-        }
-
-        if(asset == wethAddress) {
+        } else {
             uint withdrawalerr = withdrawEther(admin,amount); // send Ether to user
-            if(withdrawalerr == 0){
-                emit EquityWithdrawn(asset, equity, amount, admin);
-                return uint(Error.NO_ERROR); // success
+            if(withdrawalerr != 0){
+                return uint(withdrawalerr); // success
             }
         }
 
@@ -1365,6 +1372,18 @@ contract MoneyMarket is Exponential, SafeToken {
                 // This is safe since it's our first interaction and it didn't do anything if it failed
                 return fail(err, FailureInfo.SUPPLY_TRANSFER_IN_FAILED);
             }
+        } else {
+            if (msg.value == amount){
+                uint supplyError = supplyEther(msg.sender,msg.value);
+                if(supplyError !=0 ){
+                    revertEtherToUser(msg.sender,msg.value);
+                    return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
+                }
+            }
+            else {
+                revertEtherToUser(msg.sender,msg.value);
+                return fail(Error.ETHER_AMOUNT_MISMATCH_ERROR, FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR);
+            }
         }
 
         // Save market updates
@@ -1379,20 +1398,6 @@ contract MoneyMarket is Exponential, SafeToken {
         localResults.startingBalance = balance.principal; // save for use in `SupplyReceived` event
         balance.principal = localResults.userSupplyUpdated;
         balance.interestIndex = localResults.newSupplyIndex;
-
-        if(asset == wethAddress) {
-            if (msg.value == amount){
-                uint supplyError = supplyEther(msg.sender,msg.value);
-                if(supplyError !=0 ){
-                    revertEtherToUser(msg.sender,msg.value);
-                    return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
-                }
-            }
-            else {
-                revertEtherToUser(msg.sender,msg.value);
-                return fail(Error.ETHER_AMOUNT_MISMATCH_ERROR, FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR);
-            }
-        }
 
         emit SupplyReceived(msg.sender, asset, amount, localResults.startingBalance, localResults.userSupplyUpdated);
 
@@ -1541,6 +1546,11 @@ contract MoneyMarket is Exponential, SafeToken {
                 // This is safe since it's our first interaction and it didn't do anything if it failed
                 return fail(err, FailureInfo.WITHDRAW_TRANSFER_OUT_FAILED);
             }
+        } else {
+            uint withdrawalerr = withdrawEther(msg.sender,localResults.withdrawAmount); // send Ether to user
+            if(withdrawalerr != 0){
+                return uint(withdrawalerr); // failure
+            }
         }
 
         // Save market updates
@@ -1555,14 +1565,6 @@ contract MoneyMarket is Exponential, SafeToken {
         localResults.startingBalance = supplyBalance.principal; // save for use in `SupplyWithdrawn` event
         supplyBalance.principal = localResults.userSupplyUpdated;
         supplyBalance.interestIndex = localResults.newSupplyIndex;
-
-        if(asset == wethAddress) {
-            uint withdrawalerr = withdrawEther(msg.sender,localResults.withdrawAmount); // send Ether to user
-            if(withdrawalerr == 0){
-                emit SupplyWithdrawn(msg.sender, asset, localResults.withdrawAmount, localResults.startingBalance, localResults.userSupplyUpdated);
-                return uint(Error.NO_ERROR); // success
-            }
-        }
 
         emit SupplyWithdrawn(msg.sender, asset, localResults.withdrawAmount, localResults.startingBalance, localResults.userSupplyUpdated);
         
@@ -1823,6 +1825,18 @@ contract MoneyMarket is Exponential, SafeToken {
                 // This is safe since it's our first interaction and it didn't do anything if it failed
                 return fail(err, FailureInfo.REPAY_BORROW_TRANSFER_IN_FAILED);
             }
+        } else {
+            if (msg.value == amount){
+                uint supplyError = supplyEther(msg.sender,msg.value);
+                if(supplyError != 0 ){
+                    revertEtherToUser(msg.sender,msg.value);
+                    return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
+                } 
+            }
+            else {
+                revertEtherToUser(msg.sender,msg.value);
+                return fail(Error.ETHER_AMOUNT_MISMATCH_ERROR, FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR);
+            }
         }
 
         // Save market updates
@@ -1837,20 +1851,8 @@ contract MoneyMarket is Exponential, SafeToken {
         localResults.startingBalance = borrowBalance.principal; // save for use in `BorrowRepaid` event
         borrowBalance.principal = localResults.userBorrowUpdated;
         borrowBalance.interestIndex = localResults.newBorrowIndex;
-
-        if(asset == wethAddress) {
-            if (msg.value == amount){
-                uint supplyError = supplyEther(msg.sender,msg.value);
-                if(supplyError !=0 ){
-                    revertEtherToUser(msg.sender,msg.value);
-                    return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
-                }
-            }
-            else {
-                revertEtherToUser(msg.sender,msg.value);
-                return fail(Error.ETHER_AMOUNT_MISMATCH_ERROR, FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR);
-            }
-        }
+        
+        supplyOriginationFeeAsAdmin(asset,msg.sender, localResults.repayAmount,localResults.newSupplyIndex);
 
         emit BorrowRepaid(msg.sender, asset, localResults.repayAmount, localResults.startingBalance, localResults.userBorrowUpdated);
 
@@ -2086,6 +2088,11 @@ contract MoneyMarket is Exponential, SafeToken {
                 // This is safe since it's our first interaction and it didn't do anything if it failed
                 return fail(err, FailureInfo.LIQUIDATE_TRANSFER_IN_FAILED);
             }
+        } else {
+            uint supplyError = supplyEther(localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset);
+            if(supplyError !=0 ){
+                return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
+            }
         }
 
         // Save borrow market updates
@@ -2117,13 +2124,8 @@ contract MoneyMarket is Exponential, SafeToken {
         localResults.startingSupplyBalance_LiquidatorCollateralAsset = supplyBalance_LiquidatorCollateralAsset.principal; // save for use in event
         supplyBalance_LiquidatorCollateralAsset.principal = localResults.updatedSupplyBalance_LiquidatorCollateralAsset;
         supplyBalance_LiquidatorCollateralAsset.interestIndex = localResults.newSupplyIndex_CollateralAsset;
-
-        if(assetBorrow == wethAddress) {
-            uint supplyError = supplyEther(localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset);
-            if(supplyError !=0 ){
-                return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
-            }
-        }
+        
+        supplyOriginationFeeAsAdmin(assetBorrow,localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset, localResults.newSupplyIndex_UnderwaterAsset);
 
         emitLiquidationEvent(localResults);
 
@@ -2317,6 +2319,7 @@ contract MoneyMarket is Exponential, SafeToken {
         if (err != Error.NO_ERROR) {
             return fail(err, FailureInfo.BORROW_ORIGINATION_FEE_CALCULATION_FAILED);
         }
+        uint orgFeeBalance = localResults.borrowAmountWithFee - amount;
 
         // Add the `borrowAmountWithFee` to the `userBorrowCurrent` to get `userBorrowUpdated`
         (err, localResults.userBorrowUpdated) = add(localResults.userBorrowCurrent, localResults.borrowAmountWithFee);
@@ -2390,6 +2393,11 @@ contract MoneyMarket is Exponential, SafeToken {
                 // This is safe since it's our first interaction and it didn't do anything if it failed
                 return fail(err, FailureInfo.BORROW_TRANSFER_OUT_FAILED);
             }
+        } else {
+            uint withdrawalerr = withdrawEther(msg.sender,amount); // send Ether to user
+            if(withdrawalerr != 0){
+                return uint(withdrawalerr); // success
+            }
         }
 
         // Save market updates
@@ -2405,16 +2413,44 @@ contract MoneyMarket is Exponential, SafeToken {
         borrowBalance.principal = localResults.userBorrowUpdated;
         borrowBalance.interestIndex = localResults.newBorrowIndex;
 
-        if(asset == wethAddress) {
-            uint withdrawalerr = withdrawEther(msg.sender,amount); // send Ether to user
-            if(withdrawalerr == 0){
-                emit BorrowTaken(msg.sender, asset, amount, localResults.startingBalance, localResults.borrowAmountWithFee, localResults.userBorrowUpdated);
-                return uint(Error.NO_ERROR); // success
-            }
-        }
+        originationFeeBalance[msg.sender][asset] += orgFeeBalance;
 
         emit BorrowTaken(msg.sender, asset, amount, localResults.startingBalance, localResults.borrowAmountWithFee, localResults.userBorrowUpdated);
 
         return uint(Error.NO_ERROR); // success
+    }
+
+    function supplyOriginationFeeAsAdmin(address asset, address user, uint amount, uint newSupplyIndex) private {
+        uint originationFeeRepaid = 0;
+        if (originationFeeBalance[user][asset] != 0){
+            if (amount < originationFeeBalance[user][asset]) {
+                originationFeeRepaid = amount;
+            } else {
+                originationFeeRepaid = originationFeeBalance[user][asset];
+            }
+            Balance storage balance = supplyBalances[admin][asset];
+
+            SupplyLocalVars memory localResults; // Holds all our uint calculation results
+            Error err; // Re-used for every function call that includes an Error in its return value(s).
+
+            originationFeeBalance[user][asset] -= originationFeeRepaid;
+
+            (err, localResults.userSupplyCurrent) = calculateBalance(balance.principal, balance.interestIndex, newSupplyIndex);
+
+            (err, localResults.userSupplyUpdated) = add(localResults.userSupplyCurrent, originationFeeRepaid);
+
+            // We calculate the protocol's totalSupply by subtracting the user's prior checkpointed balance, adding user's updated supply
+            (err, localResults.newTotalSupply) = addThenSub(markets[asset].totalSupply, localResults.userSupplyUpdated, balance.principal);
+
+            // Save market updates
+            markets[asset].totalSupply =  localResults.newTotalSupply;
+
+            // Save user updates
+            localResults.startingBalance = balance.principal;
+            balance.principal = localResults.userSupplyUpdated;
+            balance.interestIndex = newSupplyIndex;
+
+            emit SupplyOrgFeeAsAdmin(admin, asset, originationFeeRepaid, localResults.startingBalance, localResults.userSupplyUpdated);
+        }
     }
 }
