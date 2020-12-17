@@ -3,7 +3,7 @@
 View Source: [contracts/Exponential.sol](../contracts/Exponential.sol)
 
 **↗ Extends: [ErrorReporter](ErrorReporter.md), [CarefulMath](CarefulMath.md)**
-**↘ Derived Contracts: [ExchangeRateModel](ExchangeRateModel.md), [MoneyMarket](MoneyMarket.md), [PriceOracle](PriceOracle.md)**
+**↘ Derived Contracts: [AlkemiRateModel](AlkemiRateModel.md), [ExchangeRateModel](ExchangeRateModel.md), [MoneyMarket](MoneyMarket.md), [PriceOracle](PriceOracle.md), [StableCoinInterestRateModel](StableCoinInterestRateModel.md), [StandardInterestRateModel](StandardInterestRateModel.md)**
 
 **Exponential**
 
@@ -13,6 +13,14 @@ View Source: [contracts/Exponential.sol](../contracts/Exponential.sol)
 ```js
 struct Exp {
  uint256 mantissa
+}
+```
+
+### ExpNegative
+
+```js
+struct ExpNegative {
+ int256 mantissa
 }
 ```
 
@@ -31,7 +39,9 @@ uint256 internal constant mantissaOneTenth;
 
 - [getExp(uint256 num, uint256 denom)](#getexp)
 - [addExp(struct Exponential.Exp a, struct Exponential.Exp b)](#addexp)
+- [addExpNegative(struct Exponential.Exp a, struct Exponential.ExpNegative b)](#addexpnegative)
 - [subExp(struct Exponential.Exp a, struct Exponential.Exp b)](#subexp)
+- [subExpNegative(struct Exponential.Exp a, struct Exponential.Exp b)](#subexpnegative)
 - [mulScalar(struct Exponential.Exp a, uint256 scalar)](#mulscalar)
 - [divScalar(struct Exponential.Exp a, uint256 scalar)](#divscalar)
 - [divScalarByExp(uint256 scalar, struct Exponential.Exp divisor)](#divscalarbyexp)
@@ -77,6 +87,22 @@ returns(enum ErrorReporter.Error, struct Exponential.Exp)
 | a | struct Exponential.Exp |  | 
 | b | struct Exponential.Exp |  | 
 
+### addExpNegative
+
+Adds two exponentials, returning a new exponential.
+
+```js
+function addExpNegative(struct Exponential.Exp a, struct Exponential.ExpNegative b) internal pure
+returns(enum ErrorReporter.Error, struct Exponential.Exp)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| a | struct Exponential.Exp |  | 
+| b | struct Exponential.ExpNegative |  | 
+
 ### subExp
 
 Subtracts two exponentials, returning a new exponential.
@@ -84,6 +110,22 @@ Subtracts two exponentials, returning a new exponential.
 ```js
 function subExp(struct Exponential.Exp a, struct Exponential.Exp b) internal pure
 returns(enum ErrorReporter.Error, struct Exponential.Exp)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| a | struct Exponential.Exp |  | 
+| b | struct Exponential.Exp |  | 
+
+### subExpNegative
+
+Subtracts two exponentials, returning a new exponential.
+
+```js
+function subExpNegative(struct Exponential.Exp a, struct Exponential.Exp b) internal pure
+returns(enum ErrorReporter.Error, struct Exponential.ExpNegative)
 ```
 
 **Arguments**
@@ -256,13 +298,19 @@ returns(bool)
 
 ## Contracts
 
+* [AggregatorV3Interface](AggregatorV3Interface.md)
+* [AlkemiRateModel](AlkemiRateModel.md)
+* [AlkemiWETH](AlkemiWETH.md)
 * [CarefulMath](CarefulMath.md)
+* [ChainLink](ChainLink.md)
 * [EIP20Interface](EIP20Interface.md)
 * [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
 * [ErrorReporter](ErrorReporter.md)
 * [ExchangeRateModel](ExchangeRateModel.md)
 * [Exponential](Exponential.md)
 * [InterestRateModel](InterestRateModel.md)
+* [JumpRateModel](JumpRateModel.md)
+* [JumpRateModelV2](JumpRateModelV2.md)
 * [LiquidationChecker](LiquidationChecker.md)
 * [Liquidator](Liquidator.md)
 * [Migrations](Migrations.md)
@@ -270,4 +318,8 @@ returns(bool)
 * [PriceOracle](PriceOracle.md)
 * [PriceOracleInterface](PriceOracleInterface.md)
 * [PriceOracleProxy](PriceOracleProxy.md)
+* [SafeMath](SafeMath.md)
 * [SafeToken](SafeToken.md)
+* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
+* [StandardInterestRateModel](StandardInterestRateModel.md)
+* [TestTokens](TestTokens.md)
