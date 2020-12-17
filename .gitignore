@@ -25,3 +25,9 @@ npm-debug.log
 # Logs
 logs
 *.log
+
+.vscode
+
+build/
+
+package-lock.json
