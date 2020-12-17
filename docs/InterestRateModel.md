@@ -1,6 +1,8 @@
-# The InterestRateModel Interface (InterestRateModel.sol)
+# InterestRateModel Interface (InterestRateModel.sol)
 
 View Source: [contracts/InterestRateModel.sol](../contracts/InterestRateModel.sol)
+
+**↘ Derived Contracts: [JumpRateModel](JumpRateModel.md), [JumpRateModelV2](JumpRateModelV2.md)**
 
 **InterestRateModel**
 
@@ -26,11 +28,11 @@ Success or failure and the supply interest rate per block scaled by 10e18
 
 **Arguments**
 
-| Name    | Type    | Description                                  |
-| ------- | ------- | -------------------------------------------- |
-| asset   | address | The asset to get the interest rate of        |
-| cash    | uint256 | The total cash of the asset in the market    |
-| borrows | uint256 | The total borrows of the asset in the market |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | The asset to get the interest rate of | 
+| cash | uint256 | The total cash of the asset in the market | 
+| borrows | uint256 | The total borrows of the asset in the market | 
 
 ### getBorrowRate
 
@@ -47,26 +49,36 @@ Success or failure and the borrow interest rate per block scaled by 10e18
 
 **Arguments**
 
-| Name    | Type    | Description                                  |
-| ------- | ------- | -------------------------------------------- |
-| asset   | address | The asset to get the interest rate of        |
-| cash    | uint256 | The total cash of the asset in the market    |
-| borrows | uint256 | The total borrows of the asset in the market |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | The asset to get the interest rate of | 
+| cash | uint256 | The total cash of the asset in the market | 
+| borrows | uint256 | The total borrows of the asset in the market | 
 
 ## Contracts
 
-- [CarefulMath](CarefulMath.md)
-- [EIP20Interface](EIP20Interface.md)
-- [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-- [ErrorReporter](ErrorReporter.md)
-- [ExchangeRateModel](ExchangeRateModel.md)
-- [Exponential](Exponential.md)
-- [InterestRateModel](InterestRateModel.md)
-- [LiquidationChecker](LiquidationChecker.md)
-- [Liquidator](Liquidator.md)
-- [Migrations](Migrations.md)
-- [MoneyMarket](MoneyMarket.md)
-- [PriceOracle](PriceOracle.md)
-- [PriceOracleInterface](PriceOracleInterface.md)
-- [PriceOracleProxy](PriceOracleProxy.md)
-- [SafeToken](SafeToken.md)
+* [AggregatorV3Interface](AggregatorV3Interface.md)
+* [AlkemiRateModel](AlkemiRateModel.md)
+* [AlkemiWETH](AlkemiWETH.md)
+* [CarefulMath](CarefulMath.md)
+* [ChainLink](ChainLink.md)
+* [EIP20Interface](EIP20Interface.md)
+* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
+* [ErrorReporter](ErrorReporter.md)
+* [ExchangeRateModel](ExchangeRateModel.md)
+* [Exponential](Exponential.md)
+* [InterestRateModel](InterestRateModel.md)
+* [JumpRateModel](JumpRateModel.md)
+* [JumpRateModelV2](JumpRateModelV2.md)
+* [LiquidationChecker](LiquidationChecker.md)
+* [Liquidator](Liquidator.md)
+* [Migrations](Migrations.md)
+* [MoneyMarket](MoneyMarket.md)
+* [PriceOracle](PriceOracle.md)
+* [PriceOracleInterface](PriceOracleInterface.md)
+* [PriceOracleProxy](PriceOracleProxy.md)
+* [SafeMath](SafeMath.md)
+* [SafeToken](SafeToken.md)
+* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
+* [StandardInterestRateModel](StandardInterestRateModel.md)
+* [TestTokens](TestTokens.md)
