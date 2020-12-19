@@ -7,11 +7,11 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0xb4ea11c7d3ff80384209f105c0e430ec01371f20 </td>
+		<td> 0x87F8D2fDeFD6Ebd0D4d03719C1DE10f4aDE2C7f5 </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
-		<td> 0xB419ea509ED75608baC77C15E9532441247a2be4 </td>
+		<td> 0xeA124B4d586528868F7D8431CD0eBcB074886E61 </td>
 	</tr>
 	<tr>
 		<td> DAI </td>
@@ -19,7 +19,11 @@
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
-		<td> 0xC34C58f3AC4C928198523602E3CCA4cfb613C00B </td>
+		<td> 0x84B16818A31576d45df65bb565DA94B3Dd98812B </td>
+	</tr>
+	<tr>
+		<td> DAIPriceFeed </td>
+		<td> 0x22B58f1EbEDfCA50feF632bD73368b2FdA96D541 </td>
 	</tr>
     <tr>
     	<td> USDC </td>
@@ -27,7 +31,11 @@
     </tr>
     <tr>
     	<td> USDCRateModel </td>
-    	<td> 0xC34C58f3AC4C928198523602E3CCA4cfb613C00B </td>
+    	<td> 0x84B16818A31576d45df65bb565DA94B3Dd98812B </td>
+    </tr>
+	<tr>
+    	<td> USDCPriceFeed </td>
+    	<td> 0x64EaC61A2DFda2c3Fa04eED49AA33D021AeC8838 </td>
     </tr>
     <tr>
     	<td> WBTC </td>
@@ -35,15 +43,24 @@
     </tr>
     <tr>
     	<td> WBTCRateModel </td>
-    	<td> 0x898112199EaEABbeE3735445F5A731CD8e6b23Be </td>
+    	<td> 0xE5FE0F259aBa3f8469526b8bB6Ce3170487a1984 </td>
+    </tr>
+	<tr>
+    	<td> WBTCPriceFeed </td>
+    	<td> 0xF4eE06480Cf3399D885639157A5a8CdE21F6934A </td>
     </tr>
     <tr>
     	<td> WETH </td>
-    	<td> 0x5eca15b12d959dfcf9c71c59f8b467eb8c6efd0b </td>
+    	<td> 0x22f0596d9Ac79b85BdA6723E3192BA258346C3d5 </td>
+		<!-- 0x5eca15b12d959dfcf9c71c59f8b467eb8c6efd0b -->
     </tr>
     <tr>
     	<td> WETHRateModel </td>
-    	<td> 0x898112199EaEABbeE3735445F5A731CD8e6b23Be </td>
+    	<td> 0x6989eE17E68a3F3Bfd84360f17Cf85eb2f0D7A3d </td>
+    </tr>
+	<tr>
+    	<td> ChainLink Oracle </td>
+    	<td> 0x75e21D4b5A9282D7F64F11AD4Ef4b488518106F3 </td>
     </tr>
     <tr>
     	<td> PriceOracle </td>
@@ -65,7 +82,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0xe6a53f96ceca750ef8589c5b376872213aa4f230 </td>
+		<td> 0x094Aa82872c43031810470317d4D8e3CA9214087 </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
@@ -85,7 +102,11 @@
 	</tr>
 	<tr>
 		<td> USDCRateModel </td>
-		<td> 0x63b920386b3b4021d36EcFaB90F3F5b74Bc8b902 </td>
+		<td> 0xb3c80B7D08C1D34847917b11af48269345B2632F </td>
+	</tr>
+	<tr>
+		<td> USDCPriceFeed </td>
+		<td> 0xdCA36F27cbC4E38aE16C4E9f99D39b42337F6dcf </td>
 	</tr>
 	<tr>
 		<td> USDT </td>
@@ -109,15 +130,23 @@
 	</tr>
 	<tr>
 		<td> WBTCRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+		<td> 0x47A36b3fF09f2e5B2e50a4e3eA8066bAF18759d6 </td>
+	</tr>
+	<tr>
+		<td> WBTCPriceFeed </td>
+		<td> 0x2431452A0010a43878bF198e170F6319Af6d27F4 </td>
 	</tr>
 	<tr>
 		<td> WETH </td>
-		<td> 0xc8b1a5ef2e19937dd6c0f804df2e3efe9f093b1e </td>
+		<td> 0x9e3865F0A681F2356BcF5Cf6b978F0a773716886 </td>
 	</tr>
 	<tr>
 		<td> WETHRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+		<td> 0x88f94067e44E4b2b814C11Ba5c72232faea3f029 </td>
+	</tr>
+	<tr>
+		<td> WETHPriceFeed </td>
+		<td> 0x9e3865F0A681F2356BcF5Cf6b978F0a773716886 </td>
 	</tr>
 	<tr>
 		<td> DAI </td>
@@ -125,7 +154,11 @@
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
-		<td> 0x0Ecc207Eb5E1d9476543D7e32D61A75e6bf767d3 </td>
+		<td> 0xb3c80B7D08C1D34847917b11af48269345B2632F </td>
+	</tr>
+	<tr>
+		<td> DAIPriceFeed </td>
+		<td> 0x74825DbC8BF76CC4e9494d0ecB210f676Efa001D </td>
 	</tr>
   <tr>
   	<td> PriceOracle </td>
@@ -135,6 +168,10 @@
   <tr>
   	<td> PriceOracleProxy </td>
   	<td> 0x994cb3eD851e05BfeE1A5c069337eC9486829E90 </td>
+  </tr>
+  <tr>
+  	<td> ChainLink </td>
+  	<td> 0xFF2A446d3134769c8a9689c1F5b4CE5416366895 </td>
   </tr>
 
 </table>
@@ -148,7 +185,11 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0x63273b1C6e241E22Fc94A539Cdd3ecf669209Ad5 </td>
+		<td> 0x877fc552EE05123A9532Da4511aaA5c6F212ECc0 </td>
+	</tr>
+	<tr>
+		<td> MoneyMarket Proxy Backend </td>
+		<td> 0xC3B40aca9Ba564948Dfdb90F13D7409766136D1A </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
@@ -168,7 +209,12 @@
 	</tr>
 	<tr>
 		<td> USDCRateModel </td>
-		<td> 0x977E1AD0987dEA9ea880f711FD5a3cA9b37D4f39 </td>
+		<!-- <td> 0x977E1AD0987dEA9ea880f711FD5a3cA9b37D4f39 </td> -->
+		<td> 0x562E25eCbf8A5287b31d81f6020AADe698030BcA </td>
+	</tr>
+	<tr>
+		<td> USDCPriceFeed </td>
+		<td> 0xB8784d2D77D3dbaa9cAC7d32D035A6d41e414e9c </td>
 	</tr>
 	<tr>
 		<td> USDT </td>
@@ -192,23 +238,42 @@
 	</tr>
 	<tr>
 		<td> WBTCRateModel </td>
-		<td> 0x8E494bcd29b45A194335b91947d09ff3643437F5 </td>
+		<!-- <td> 0x8E494bcd29b45A194335b91947d09ff3643437F5 </td> -->
+		<td> 0xd26C97d0A5665c86E233659548c17B018ba4E086 </td>
+	</tr>
+	<tr>
+		<td> WBTCPriceFeed </td>
+		<td> 0xECf6936AD6030A1Aa4f2055Df44149B7846628F7 </td>
 	</tr>
 	<tr>
 		<td> WETH </td>
-		<td> 0xc778417e063141139fce010982780140aa0cd5ab </td>
+		<!-- <td> 0xc778417E063141139Fce010982780140Aa0cD5Ab </td> -->
+		<td> 0x72E79E602F345aACd9C683106782c08eAf92f0D7 </td>
 	</tr>
 	<tr>
 		<td> WETHRateModel </td>
-		<td> 0x8E494bcd29b45A194335b91947d09ff3643437F5 </td>
+		<!-- <td> 0x8E494bcd29b45A194335b91947d09ff3643437F5 </td> -->
+		<td> 0xb92815aE038a21cd830576a41812A2cea8B85447 </td>
+	</tr>
+	<tr>
+		<td> WETHPriceFeed </td>
+		<td> 0x72E79E602F345aACd9C683106782c08eAf92f0D7 </td>
 	</tr>
 	<tr>
 		<td> DAI </td>
-		<td> 0x31f42841c2db5173425b5223809cf3a38fede360 </td>
+		<!-- <td> 0x31F42841c2db5173425b5223809CF3A38FEde360 </td> -->
+		<!-- The above is Compound's DAI token which does not work anymore -->
+		<!-- Below is a custom token created for Alkemi in Ropsten as a replacement for DAI in ropsten -->
+		<td> 0xE8EF14A5cBAADa1542D0341ec4a76b611BA209aF </td>
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
-		<td> 0x977E1AD0987dEA9ea880f711FD5a3cA9b37D4f39 </td>
+		<!-- <td> 0x977E1AD0987dEA9ea880f711FD5a3cA9b37D4f39 </td> -->
+		<td> 0x562E25eCbf8A5287b31d81f6020AADe698030BcA </td>
+	</tr>
+	<tr>
+		<td> DAIPriceFeed </td>
+		<td> 0x24959556020AE5D39e5bAEC2bd6Bf12420C25aB5 </td>
 	</tr>
   <tr>
   	<td> PriceOracle </td>
@@ -218,6 +283,10 @@
   <tr>
   	<td> PriceOracleProxy </td>
   	<td> 0x726e35841f79A3ED7FA06e9a1750018D19b4C951 </td>
+  </tr>
+  <tr>
+  	<td> ChainLink Oracle </td>
+  	<td> 0x309a7425e7Ba1cB1710B0a1A4251e835bF8A8235 </td>
   </tr>
 
 </table>
