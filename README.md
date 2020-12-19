@@ -7,7 +7,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0xba77bD8BF687E0deA11967e66F5Df40F69bAa355 </td>
+		<td> 0x87F8D2fDeFD6Ebd0D4d03719C1DE10f4aDE2C7f5 </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
@@ -19,7 +19,7 @@
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
-		<td> 0x7b0D0cdEa01EA0cef729dC5bB9825AC188ae7735 </td>
+		<td> 0x84B16818A31576d45df65bb565DA94B3Dd98812B </td>
 	</tr>
 	<tr>
 		<td> DAIPriceFeed </td>
@@ -31,7 +31,7 @@
     </tr>
     <tr>
     	<td> USDCRateModel </td>
-    	<td> 0x7b0D0cdEa01EA0cef729dC5bB9825AC188ae7735 </td>
+    	<td> 0x84B16818A31576d45df65bb565DA94B3Dd98812B </td>
     </tr>
 	<tr>
     	<td> USDCPriceFeed </td>
@@ -43,7 +43,7 @@
     </tr>
     <tr>
     	<td> WBTCRateModel </td>
-    	<td> 0xAD12264A631A4449BCd743D3FFdcd51d086ef515 </td>
+    	<td> 0xE5FE0F259aBa3f8469526b8bB6Ce3170487a1984 </td>
     </tr>
 	<tr>
     	<td> WBTCPriceFeed </td>
@@ -56,7 +56,7 @@
     </tr>
     <tr>
     	<td> WETHRateModel </td>
-    	<td> 0x5CB39863613d18f6f3DD53E6f20cfb00B14b5eb5 </td>
+    	<td> 0x6989eE17E68a3F3Bfd84360f17Cf85eb2f0D7A3d </td>
     </tr>
 	<tr>
     	<td> ChainLink Oracle </td>
@@ -82,7 +82,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0x21C11666CF85A249509f597194efF8D0FB6938df </td>
+		<td> 0x094Aa82872c43031810470317d4D8e3CA9214087 </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
@@ -102,7 +102,7 @@
 	</tr>
 	<tr>
 		<td> USDCRateModel </td>
-		<td> 0x2fb9B12688A093350e5043FE9Dd01Da66e658794 </td>
+		<td> 0xb3c80B7D08C1D34847917b11af48269345B2632F </td>
 	</tr>
 	<tr>
 		<td> USDCPriceFeed </td>
@@ -130,7 +130,7 @@
 	</tr>
 	<tr>
 		<td> WBTCRateModel </td>
-		<td> 0x8246Dc4cAcF026D99d525107c4cAC09883a2bb94 </td>
+		<td> 0x47A36b3fF09f2e5B2e50a4e3eA8066bAF18759d6 </td>
 	</tr>
 	<tr>
 		<td> WBTCPriceFeed </td>
@@ -142,7 +142,7 @@
 	</tr>
 	<tr>
 		<td> WETHRateModel </td>
-		<td> 0xfc101183D7f4fb67D3cE0431DFf65A5ea55F2316 </td>
+		<td> 0x88f94067e44E4b2b814C11Ba5c72232faea3f029 </td>
 	</tr>
 	<tr>
 		<td> WETHPriceFeed </td>
@@ -154,7 +154,7 @@
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
-		<td> 0x2fb9B12688A093350e5043FE9Dd01Da66e658794 </td>
+		<td> 0xb3c80B7D08C1D34847917b11af48269345B2632F </td>
 	</tr>
 	<tr>
 		<td> DAIPriceFeed </td>
