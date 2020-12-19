@@ -1,37 +1,125 @@
-# EIP20Interface.sol
+# TestTokens.sol
 
-View Source: [contracts/LiquidationChecker.sol](../contracts/LiquidationChecker.sol)
+View Source: [contracts/TestTokens.sol](../contracts/TestTokens.sol)
 
-**EIP20Interface**
+**TestTokens**
 
 ## Contract Members
 **Constants & Variables**
 
 ```js
-address public mostRecentCaller;
-uint256 public mostRecentBlock;
-address public oracle;
-contract MoneyMarket public moneyMarket;
-address public liquidator;
-bool public allowLiquidation;
+string public name;
+string public symbol;
+uint8 public decimals;
+uint256 public supply;
+mapping(address => uint256) public balances;
+mapping(address => mapping(address => uint256)) public allowed;
 
+```
+
+**Events**
+
+```js
+event Transfer(address  sender, address  receiver, uint256  tokens);
+event Approval(address  sender, address  delegate, uint256  tokens);
 ```
 
 ## Functions
 
-- [balanceOf(address _owner)](#balanceof)
-- [assetPrices(address asset)](#assetprices)
-- [isAllowed(address asset, uint256 newCash)](#isallowed)
-- [isLiquidate(address asset, uint256 newCash)](#isliquidate)
-- [cashIsUp(address asset, uint256 newCash)](#cashisup)
-- [oracleTouched()](#oracletouched)
-- [setAllowLiquidation(bool allowLiquidation_)](#setallowliquidation)
+- [totalSupply()](#totalsupply)
+- [balanceOf(address tokenOwner)](#balanceof)
+- [transfer(address receiver, uint256 numTokens)](#transfer)
+- [approve(address delegate, uint256 numTokens)](#approve)
+- [allowance(address owner, address delegate)](#allowance)
+- [transferFrom(address owner, address buyer, uint256 numTokens)](#transferfrom)
+- [allocateTo(address _owner, uint256 value)](#allocateto)
+
+### totalSupply
+
+```js
+function totalSupply() external view
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
 ### balanceOf
 
 ```js
-function balanceOf(address _owner) public view
-returns(balance uint256)
+function balanceOf(address tokenOwner) external view
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| tokenOwner | address |  | 
+
+### transfer
+
+```js
+function transfer(address receiver, uint256 numTokens) external nonpayable
+returns(bool)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| receiver | address |  | 
+| numTokens | uint256 |  | 
+
+### approve
+
+```js
+function approve(address delegate, uint256 numTokens) external nonpayable
+returns(bool)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| delegate | address |  | 
+| numTokens | uint256 |  | 
+
+### allowance
+
+```js
+function allowance(address owner, address delegate) external view
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| owner | address |  | 
+| delegate | address |  | 
+
+### transferFrom
+
+```js
+function transferFrom(address owner, address buyer, uint256 numTokens) external nonpayable
+returns(bool)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| owner | address |  | 
+| buyer | address |  | 
+| numTokens | uint256 |  | 
+
+### allocateTo
+
+```js
+function allocateTo(address _owner, uint256 value) public nonpayable
 ```
 
 **Arguments**
@@ -39,91 +127,7 @@ returns(balance uint256)
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
 | _owner | address |  | 
-
-### assetPrices
-
-Gets the price of a given asset
-
-```js
-function assetPrices(address asset) public nonpayable
-returns(uint256)
-```
-
-**Returns**
-
-the price scaled by 10**18, or zero if the price is not available
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| asset | address | Asset to get the price of | 
-
-### isAllowed
-
-```js
-function isAllowed(address asset, uint256 newCash) internal nonpayable
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
-
-### isLiquidate
-
-```js
-function isLiquidate(address asset, uint256 newCash) internal nonpayable
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
-
-### cashIsUp
-
-```js
-function cashIsUp(address asset, uint256 newCash) internal view
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
-
-### oracleTouched
-
-```js
-function oracleTouched() internal nonpayable
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-
-### setAllowLiquidation
-
-```js
-function setAllowLiquidation(bool allowLiquidation_) public nonpayable
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| allowLiquidation_ | bool |  | 
+| value | uint256 |  | 
 
 ## Contracts
 

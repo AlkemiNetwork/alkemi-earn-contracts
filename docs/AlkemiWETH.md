@@ -1,68 +1,91 @@
-# EIP20Interface.sol
+# AlkemiWETH.sol
 
-View Source: [contracts/LiquidationChecker.sol](../contracts/LiquidationChecker.sol)
+View Source: [contracts/AlkemiWETH.sol](../contracts/AlkemiWETH.sol)
 
-**EIP20Interface**
+**AlkemiWETH**
 
 ## Contract Members
 **Constants & Variables**
 
 ```js
-address public mostRecentCaller;
-uint256 public mostRecentBlock;
-address public oracle;
-contract MoneyMarket public moneyMarket;
-address public liquidator;
-bool public allowLiquidation;
+string public name;
+string public symbol;
+uint8 public decimals;
+mapping(address => uint256) public balanceOf;
+mapping(address => mapping(address => uint256)) public allowance;
 
+```
+
+**Events**
+
+```js
+event Approval(address indexed src, address indexed guy, uint256  wad);
+event Transfer(address indexed src, address indexed dst, uint256  wad);
+event Deposit(address indexed dst, uint256  wad);
+event Withdrawal(address indexed src, uint256  wad);
 ```
 
 ## Functions
 
-- [balanceOf(address _owner)](#balanceof)
-- [assetPrices(address asset)](#assetprices)
-- [isAllowed(address asset, uint256 newCash)](#isallowed)
-- [isLiquidate(address asset, uint256 newCash)](#isliquidate)
-- [cashIsUp(address asset, uint256 newCash)](#cashisup)
-- [oracleTouched()](#oracletouched)
-- [setAllowLiquidation(bool allowLiquidation_)](#setallowliquidation)
+- [()](#)
+- [deposit()](#deposit)
+- [withdraw(address user, uint256 wad)](#withdraw)
+- [totalSupply()](#totalsupply)
+- [approve(address guy, uint256 wad)](#approve)
+- [transfer(address dst, uint256 wad)](#transfer)
+- [transferFrom(address src, address dst, uint256 wad)](#transferfrom)
 
-### balanceOf
+### 
 
 ```js
-function balanceOf(address _owner) public view
-returns(balance uint256)
+function () public payable
 ```
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| _owner | address |  | 
 
-### assetPrices
-
-Gets the price of a given asset
+### deposit
 
 ```js
-function assetPrices(address asset) public nonpayable
+function deposit() public payable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+
+### withdraw
+
+```js
+function withdraw(address user, uint256 wad) public nonpayable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| user | address |  | 
+| wad | uint256 |  | 
+
+### totalSupply
+
+```js
+function totalSupply() public view
 returns(uint256)
 ```
 
-**Returns**
-
-the price scaled by 10**18, or zero if the price is not available
-
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| asset | address | Asset to get the price of | 
 
-### isAllowed
+### approve
 
 ```js
-function isAllowed(address asset, uint256 newCash) internal nonpayable
+function approve(address guy, uint256 wad) public nonpayable
 returns(bool)
 ```
 
@@ -70,13 +93,13 @@ returns(bool)
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
+| guy | address |  | 
+| wad | uint256 |  | 
 
-### isLiquidate
+### transfer
 
 ```js
-function isLiquidate(address asset, uint256 newCash) internal nonpayable
+function transfer(address dst, uint256 wad) public nonpayable
 returns(bool)
 ```
 
@@ -84,13 +107,13 @@ returns(bool)
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
+| dst | address |  | 
+| wad | uint256 |  | 
 
-### cashIsUp
+### transferFrom
 
 ```js
-function cashIsUp(address asset, uint256 newCash) internal view
+function transferFrom(address src, address dst, uint256 wad) public nonpayable
 returns(bool)
 ```
 
@@ -98,32 +121,9 @@ returns(bool)
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
-
-### oracleTouched
-
-```js
-function oracleTouched() internal nonpayable
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-
-### setAllowLiquidation
-
-```js
-function setAllowLiquidation(bool allowLiquidation_) public nonpayable
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| allowLiquidation_ | bool |  | 
+| src | address |  | 
+| dst | address |  | 
+| wad | uint256 |  | 
 
 ## Contracts
 

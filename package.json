@@ -1,28 +1,28 @@
 {
-	"name": "lendfme",
-	"version": "1.0.0",
-	"description": "<table> \t<tr>    \t\t<th>Contract Name</th>     \t<th>Contract Address</th> \t</tr> \t<tr> \t\t<td> MoneyMarket </td> \t\t<td> 0x0eEe3E3828A45f7601D5F54bF49bB01d1A9dF5ea </td> \t</tr> \t<tr> \t\t<td> Liquidator </td> \t\t<td> 0x9893292300c4e530a14FB2526271732a2a9b3f05 </td> \t</tr> \t<tr> \t\t<td> HBTC </td> \t\t<td> 0x0316EB71485b0Ab14103307bf65a021042c6d380 </td> \t</tr> \t<tr> \t\t<td> HBTCRateModel </td> \t\t<td> 0x5Dc95A046020880b93F15902540Dbfe86489FddA </td> \t</tr>     <tr> \t\t<td> imBTC </td> \t\t<td> 0x3212b29E33587A00FB1C83346f5dBFA69A458923 </td> \t</tr> \t<tr> \t\t<td> imBTCRateModel </td> \t\t<td> 0x9a18c4D9587344f2B15686Aa67EE7e5C4B00D549 </td> \t</tr> \t<tr> \t\t<td> PAX </td> \t\t<td> 0x8E870D67F660D95d5be530380D0eC0bd388289E1 </td> \t</tr> \t<tr> \t\t<td> PAXRateModel </td> \t\t<td> 0x79BE3Be94b8D25F6628c616a99fA09094bcF3712 </td> \t</tr> \t<tr> \t\t<td> TUSD </td> \t\t<td> 0x0000000000085d4780B73119b644AE5ecd22b376 </td> \t</tr> \t<tr> \t\t<td> TUSDRateModel </td> \t\t<td> 0x79BE3Be94b8D25F6628c616a99fA09094bcF3712 </td> \t</tr> \t<tr> \t\t<td> USDC </td> \t\t<td> 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 </td> \t</tr> \t<tr> \t\t<td> USDCRateModel </td> \t\t<td> 0x79BE3Be94b8D25F6628c616a99fA09094bcF3712 </td> \t</tr> \t<tr> \t\t<td> USDT </td> \t\t<td> 0xdAC17F958D2ee523a2206206994597C13D831ec7 </td> \t</tr> \t<tr> \t\t<td> USDTRateModel </td> \t\t<td> 0x79BE3Be94b8D25F6628c616a99fA09094bcF3712 </td> \t</tr> \t<tr> \t\t<td> USDx </td> \t\t<td> 0xeb269732ab75A6fD61Ea60b06fE994cD32a83549 </td> \t</tr> \t<tr> \t\t<td> USDxRateModel </td> \t\t<td> 0x83D5f6dc9d9750A137a744333C55b4Adf5F9A234 </td> \t</tr> \t<tr> \t\t<td> WBTC </td> \t\t<td> 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599 </td> \t</tr> \t<tr> \t\t<td> WBTCRateModel </td> \t\t<td> 0x5Dc95A046020880b93F15902540Dbfe86489FddA </td> \t</tr> \t<tr> \t\t<td> WETH </td> \t\t<td> 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 </td> \t</tr> \t<tr> \t\t<td> WETHRateModel </td> \t\t<td> 0x5Dc95A046020880b93F15902540Dbfe86489FddA </td> \t</tr> \t<tr> \t\t<td> PriceOracle </td> \t\t<td> 0xE8a616FD9D7e82cfCaEf3f8a90c6A7EEA97E0856 </td> \t</tr> \t<tr> \t\t<td> PriceOracleProxy </td> \t\t<td> 0x21F2a370d02996BC914e1B92160D47D279d9F15a </td> \t</tr> </table>",
-	"main": "index.js",
-	"directories": {
-		"test": "test"
-	},
-	"scripts": {
-		"test": "npm test",
-		"docgen": "solidoc ./ ./docs"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Lendfme/contracts.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/Lendfme/contracts/issues"
-	},
-	"homepage": "https://github.com/Lendfme/contracts#readme",
-	"dependencies": {
-		"solidoc": "^1.0.5",
-		"truffle": "^5.1.46",
-		"truffle-hdwallet-provider": "^1.0.17"
-	}
+  "name": "alkemi-earn-protocol",
+  "version": "1.0.0",
+  "description": "TBD",
+  "main": "truffle-config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "0.0.8",
+    "solidoc": "^1.0.5",
+    "truffle": "^5.1.46",
+    "truffle-hdwallet-provider": "^1.0.17"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test",
+    "docgen": "solidoc ./ ./docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/project-alkemi/alkemi-earn-protocol.git"
+  },
+  "author": "Alkemi",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/project-alkemi/alkemi-earn-protocol#readme"
 }

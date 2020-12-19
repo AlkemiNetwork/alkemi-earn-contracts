@@ -36,7 +36,15 @@ enum Error {
  INVALID_LIQUIDATION_DISCOUNT,
  INVALID_COMBINED_RISK_PARAMETERS,
  ZERO_ORACLE_ADDRESS,
- CONTRACT_PAUSED
+ CONTRACT_PAUSED,
+ KYC_ADMIN_CHECK_FAILED,
+ KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+ KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,
+ LIQUIDATOR_CHECK_FAILED,
+ LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+ SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
+ WETH_ADDRESS_NOT_SET_ERROR,
+ ETHER_AMOUNT_MISMATCH_ERROR
 }
 ```
 
@@ -135,7 +143,16 @@ enum FailureInfo {
  WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,
  WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED,
  WITHDRAW_TRANSFER_OUT_FAILED,
- WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE
+ WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE,
+ KYC_ADMIN_CHECK_FAILED,
+ KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+ KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,
+ LIQUIDATOR_CHECK_FAILED,
+ LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+ SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
+ WETH_ADDRESS_NOT_SET_ERROR,
+ SEND_ETHER_ADMIN_CHECK_FAILED,
+ ETHER_AMOUNT_MISMATCH_ERROR
 }
 ```
 
@@ -184,13 +201,19 @@ returns(uint256)
 
 ## Contracts
 
+* [AggregatorV3Interface](AggregatorV3Interface.md)
+* [AlkemiRateModel](AlkemiRateModel.md)
+* [AlkemiWETH](AlkemiWETH.md)
 * [CarefulMath](CarefulMath.md)
+* [ChainLink](ChainLink.md)
 * [EIP20Interface](EIP20Interface.md)
 * [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
 * [ErrorReporter](ErrorReporter.md)
 * [ExchangeRateModel](ExchangeRateModel.md)
 * [Exponential](Exponential.md)
 * [InterestRateModel](InterestRateModel.md)
+* [JumpRateModel](JumpRateModel.md)
+* [JumpRateModelV2](JumpRateModelV2.md)
 * [LiquidationChecker](LiquidationChecker.md)
 * [Liquidator](Liquidator.md)
 * [Migrations](Migrations.md)
@@ -198,4 +221,8 @@ returns(uint256)
 * [PriceOracle](PriceOracle.md)
 * [PriceOracleInterface](PriceOracleInterface.md)
 * [PriceOracleProxy](PriceOracleProxy.md)
+* [SafeMath](SafeMath.md)
 * [SafeToken](SafeToken.md)
+* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
+* [StandardInterestRateModel](StandardInterestRateModel.md)
+* [TestTokens](TestTokens.md)

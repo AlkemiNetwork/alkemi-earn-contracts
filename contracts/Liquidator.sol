@@ -5,82 +5,8 @@ import "./EIP20NonStandardInterface.sol";
 import "./ErrorReporter.sol";
 import "./InterestRateModel.sol";
 import "./SafeToken.sol";
-
-contract LiquidationChecker {
-    function setAllowLiquidation(bool allowLiquidation_) public;
-}
-
-contract MoneyMarket{
-    /**
-     * @dev Container for per-asset balance sheet and interest rate information written to storage, intended to be stored in a map where the asset address is the key
-     *
-     *      struct Market {
-     *         isSupported = Whether this market is supported or not (not to be confused with the list of collateral assets)
-     *         blockNumber = when the other values in this struct were calculated
-     *         totalSupply = total amount of this asset supplied (in asset wei)
-     *         supplyRateMantissa = the per-block interest rate for supplies of asset as of blockNumber, scaled by 10e18
-     *         supplyIndex = the interest index for supplies of asset as of blockNumber; initialized in _supportMarket
-     *         totalBorrows = total amount of this asset borrowed (in asset wei)
-     *         borrowRateMantissa = the per-block interest rate for borrows of asset as of blockNumber, scaled by 10e18
-     *         borrowIndex = the interest index for borrows of asset as of blockNumber; initialized in _supportMarket
-     *     }
-     */
-    struct Market {
-        bool isSupported;
-        uint blockNumber;
-        InterestRateModel interestRateModel;
-
-        uint totalSupply;
-        uint supplyRateMantissa;
-        uint supplyIndex;
-
-        uint totalBorrows;
-        uint borrowRateMantissa;
-        uint borrowIndex;
-    }
-
-    /**
-     * @dev map: assetAddress -> Market
-     */
-    mapping(address => Market) public markets;
-
-    /**
-     * @notice users repay all or some of an underwater borrow and receive collateral
-     * @param targetAccount The account whose borrow should be liquidated
-     * @param assetBorrow The market asset to repay
-     * @param assetCollateral The borrower's market asset to receive in exchange
-     * @param requestedAmountClose The amount to repay (or -1 for max)
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     */
-    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public returns (uint);
-
-    /**
-     * @notice withdraw `amount` of `asset` from sender's account to sender's address
-     * @dev withdraw `amount` of `asset` from msg.sender's account to msg.sender
-     * @param asset The market asset to withdraw
-     * @param requestedAmount The amount to withdraw (or -1 for max)
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     */
-    function withdraw(address asset, uint requestedAmount) public returns (uint);
-
-    /**
-     * @notice return supply balance with any accumulated interest for `asset` belonging to `account`
-     * @dev returns supply balance with any accumulated interest for `asset` belonging to `account`
-     * @param account the account to examine
-     * @param asset the market asset whose supply balance belonging to `account` should be checked
-     * @return uint supply balance on success, throws on failed assertion otherwise
-     */
-    function getSupplyBalance(address account, address asset) view public returns (uint);
-
-    /**
-     * @notice return borrow balance with any accumulated interest for `asset` belonging to `account`
-     * @dev returns borrow balance with any accumulated interest for `asset` belonging to `account`
-     * @param account the account to examine
-     * @param asset the market asset whose borrow balance belonging to `account` should be checked
-     * @return uint borrow balance on success, throws on failed assertion otherwise
-     */
-    function getBorrowBalance(address account, address asset) view public returns (uint);
-}
+import "./MoneyMarket.sol";
+import "./LiquidationChecker.sol";
 
 contract Liquidator is ErrorReporter, SafeToken {
     MoneyMarket public moneyMarket;

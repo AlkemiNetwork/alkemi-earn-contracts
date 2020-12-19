@@ -1,61 +1,77 @@
-# Migrations.sol
+# AggregatorV3Interface.sol
 
-View Source: [contracts/Migrations.sol](../contracts/Migrations.sol)
+View Source: [node_modules/@chainlink/contracts/src/v0.4/interfaces/AggregatorV3Interface.sol](../node_modules/@chainlink/contracts/src/v0.4/interfaces/AggregatorV3Interface.sol)
 
-**Migrations**
-
-## Contract Members
-**Constants & Variables**
-
-```js
-address public owner;
-uint256 public last_completed_migration;
-
-```
-
-## Modifiers
-
-- [restricted](#restricted)
-
-### restricted
-
-```js
-modifier restricted() internal
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
+**AggregatorV3Interface**
 
 ## Functions
 
-- [setCompleted(uint256 completed)](#setcompleted)
-- [upgrade(address new_address)](#upgrade)
+- [decimals()](#decimals)
+- [description()](#description)
+- [version()](#version)
+- [getRoundData(uint80 _roundId)](#getrounddata)
+- [latestRoundData()](#latestrounddata)
 
-### setCompleted
+### decimals
 
 ```js
-function setCompleted(uint256 completed) public nonpayable restricted 
+function decimals() external view
+returns(uint8)
 ```
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| completed | uint256 |  | 
 
-### upgrade
+### description
 
 ```js
-function upgrade(address new_address) public nonpayable restricted 
+function description() external view
+returns(string)
 ```
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| new_address | address |  | 
+
+### version
+
+```js
+function version() external view
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+
+### getRoundData
+
+```js
+function getRoundData(uint80 _roundId) external view
+returns(roundId uint80, answer int256, startedAt uint256, updatedAt uint256, answeredInRound uint80)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| _roundId | uint80 |  | 
+
+### latestRoundData
+
+```js
+function latestRoundData() external view
+returns(roundId uint80, answer int256, startedAt uint256, updatedAt uint256, answeredInRound uint80)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
 ## Contracts
 
