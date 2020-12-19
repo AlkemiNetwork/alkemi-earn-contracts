@@ -14,8 +14,8 @@ npm-debug.log
 .env
 
 # Truffle build directory
-build/
-.openzeppelin/
+build
+.openzeppelin
 
 # misc
 .DS_Store
