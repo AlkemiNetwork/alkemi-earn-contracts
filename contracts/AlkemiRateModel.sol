@@ -3,7 +3,6 @@ pragma solidity ^0.4.24;
 import "./Exponential.sol";
 import "./LiquidationChecker.sol";
 
-
 contract AlkemiRateModel is Exponential, LiquidationChecker {
 
     uint constant blocksPerYear = 2102400;
@@ -47,6 +46,50 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
     constructor(string memory _contractName,uint MinRate,uint HealthyMinUR,uint HealthyMinRate,uint HealthyMaxUR,uint HealthyMaxRate,uint MaxRate, address moneyMarket, address liquidator) LiquidationChecker(moneyMarket, liquidator) public {
         // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
         owner = msg.sender;
+        contractName = _contractName;
+        Exp memory  temp1;
+        Exp memory temp2;
+        Exp memory HunderedMantissa;
+        Error err;
+        
+        (err,HunderedMantissa) = getExp(100,1);
+        
+        (err,MinRateActual) = getExp(MinRate,100);
+        (err,HealthyMinURActual) = getExp(HealthyMinUR,100);
+        (err,HealthyMinRateActual) = getExp(HealthyMinRate,100);
+        (err,MaxRateActual) = getExp(MaxRate,100);
+        (err,HealthyMaxURActual) = getExp(HealthyMaxUR,100);
+        (err,HealthyMaxRateActual) = getExp(HealthyMaxRate,100);
+        
+        SpreadLow = MinRateActual;
+        BreakPointLow = HealthyMinURActual;
+        BreakPointHigh = HealthyMaxURActual;
+        
+        // ReserveLow = (HealthyMinRate-SpreadLow)/BreakPointLow;
+        (err,temp1) = subExp(HealthyMinRateActual,SpreadLow);
+        (err,ReserveLow) = divExp(temp1,BreakPointLow);
+        
+        // ReserveMid = (HealthyMaxRate-HealthyMinRate)/(HealthyMaxUR-HealthyMinUR);
+        (err,temp1) = subExp(HealthyMaxRateActual,HealthyMinRateActual);
+        (err,temp2) = subExp(HealthyMaxURActual,HealthyMinURActual);
+        (err,ReserveMid) = divExp(temp1,temp2);
+        
+        // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
+        (err,temp1) = mulExp(ReserveMid,BreakPointLow);
+        (err,SpreadMid) = subExp(HealthyMinRateActual,temp1);
+        
+        // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
+        (err,temp1) = subExp(MaxRateActual,HealthyMaxRateActual);
+        (err,temp2) = subExp(HunderedMantissa,HealthyMaxURActual);
+        (err,ReserveHigh) = divExp(temp1,temp2);
+        
+        // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
+        (err,temp2) = mulExp(ReserveHigh,BreakPointHigh);
+        (err,SpreadHigh) = subExpNegative(HealthyMaxRateActual,temp2);
+    }
+
+    function changeRates(string memory _contractName,uint MinRate,uint HealthyMinUR,uint HealthyMinRate,uint HealthyMaxUR,uint HealthyMaxRate,uint MaxRate) public onlyOwner {
+        // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
         contractName = _contractName;
         Exp memory  temp1;
         Exp memory temp2;

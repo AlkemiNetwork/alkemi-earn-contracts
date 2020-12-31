@@ -32,14 +32,14 @@
     "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
     "exportedSymbols": {
       "PriceOracleInterface": [
-        11725
+        12094
       ]
     },
-    "id": 11726,
+    "id": 12095,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11717,
+        "id": 12086,
         "literals": [
           "solidity",
           "^",
@@ -55,9 +55,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 11725,
+        "id": 12094,
         "linearizedBaseContracts": [
-          11725
+          12094
         ],
         "name": "PriceOracleInterface",
         "nodeType": "ContractDefinition",
@@ -65,7 +65,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
-            "id": 11724,
+            "id": 12093,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -73,15 +73,15 @@
             "name": "assetPrices",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11720,
+              "id": 12089,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11719,
+                  "id": 12088,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11724,
+                  "scope": 12093,
                   "src": "320:13:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -90,7 +90,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11718,
+                    "id": 12087,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "320:7:17",
@@ -107,15 +107,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 11723,
+              "id": 12092,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11722,
+                  "id": 12091,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11724,
+                  "scope": 12093,
                   "src": "356:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -124,7 +124,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11721,
+                    "id": 12090,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "356:4:17",
@@ -139,14 +139,14 @@
               ],
               "src": "355:6:17"
             },
-            "scope": 11725,
+            "scope": 12094,
             "src": "299:63:17",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 11726,
+        "scope": 12095,
         "src": "26:338:17"
       }
     ],
@@ -156,14 +156,14 @@
     "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
     "exportedSymbols": {
       "PriceOracleInterface": [
-        11725
+        12094
       ]
     },
-    "id": 11726,
+    "id": 12095,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11717,
+        "id": 12086,
         "literals": [
           "solidity",
           "^",
@@ -179,9 +179,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 11725,
+        "id": 12094,
         "linearizedBaseContracts": [
-          11725
+          12094
         ],
         "name": "PriceOracleInterface",
         "nodeType": "ContractDefinition",
@@ -189,7 +189,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
-            "id": 11724,
+            "id": 12093,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -197,15 +197,15 @@
             "name": "assetPrices",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11720,
+              "id": 12089,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11719,
+                  "id": 12088,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11724,
+                  "scope": 12093,
                   "src": "320:13:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -214,7 +214,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11718,
+                    "id": 12087,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "320:7:17",
@@ -231,15 +231,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 11723,
+              "id": 12092,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11722,
+                  "id": 12091,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11724,
+                  "scope": 12093,
                   "src": "356:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -248,7 +248,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11721,
+                    "id": 12090,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "356:4:17",
@@ -263,14 +263,14 @@
               ],
               "src": "355:6:17"
             },
-            "scope": 11725,
+            "scope": 12094,
             "src": "299:63:17",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 11726,
+        "scope": 12095,
         "src": "26:338:17"
       }
     ],
@@ -282,7 +282,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-12-10T01:11:52.912Z",
+  "updatedAt": "2020-12-30T23:48:19.443Z",
   "devdoc": {
     "methods": {
       "assetPrices(address)": {

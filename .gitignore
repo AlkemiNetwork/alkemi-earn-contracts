@@ -12,6 +12,8 @@ npm-debug.log
 
 # Local env variables
 .env
+.mnemonic
+.mnemonic2
 
 # Truffle build directory
 build
