@@ -14,9 +14,9 @@ const deploymentConfig = require("./deployment-config.json");
 
 module.exports = async (deployer, network, accounts) => {
 	if (network == "development" || network == "ganacheUI") {
-		await deployer.deploy(PriceOracle, deploymentConfig.DEVCHAIN.POSTER);
-		await deployer.deploy(PriceOracleProxy, PriceOracle.address);
-		await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(PriceOracle, deploymentConfig.DEVCHAIN.POSTER);
+		// await deployer.deploy(PriceOracleProxy, PriceOracle.address);
+		// await deployer.deploy(MoneyMarket);
 		// await deployer.deploy(ChainLink);
 	} else if (network == "rinkeby") {
 		// await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
@@ -26,7 +26,7 @@ module.exports = async (deployer, network, accounts) => {
 		// );
 		// await deployer.deploy(MoneyMarket);
 		// await deployer.deploy(ChainLink);
-		await deployer.deploy(AlkemiWETH);
+		// await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
@@ -49,7 +49,7 @@ module.exports = async (deployer, network, accounts) => {
 		// );
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
-		await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(MoneyMarket);
 		// const oracle = await ChainLink.deployed();
 		// const moneyMarket = await MoneyMarket.deployed();
 		// await moneyMarket._setOracle(oracle.address);
@@ -64,13 +64,29 @@ module.exports = async (deployer, network, accounts) => {
 		// await deployer.deploy(PriceOracleProxy, PriceOracle.address);
 		// await deployer.deploy(MoneyMarket, PriceOracle.address);
 		// await deployer.deploy(Liquidator, MoneyMarket.address);
-		await deployer.deploy(ChainLink);
-		await deployer.deploy(MoneyMarket);
-		await deployer.deploy(AlkemiWETH);
+		// await deployer.deploy(ChainLink);
+		// await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(StandardInterestRateModel);
+	} else if (network == "mainnet") {
+		// await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
+		// await deployer.deploy(
+		// 	PriceOracleProxy,
+		// 	deploymentConfig.RINKEBY.PriceOracle
+		// );
+		// await deployer.deploy(MoneyMarket);
+		await deployer.deploy(ChainLink);
+		// await deployer.deploy(AlkemiWETH);
+		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
+		// await deployer.deploy(
+		// 	LiquidationChecker,
+		// 	deploymentConfig.RINKEBY.MoneyMarket,
+		// 	deploymentConfig.RINKEBY.Liquidator,
+		// 	true
+		// );
 	} else {
-		await deployer.deploy(PriceOracle, deploymentConfig.MAINNET.POSTER);
-		await deployer.deploy(PriceOracleProxy, PriceOracle.address);
-		await deployer.deploy(MoneyMarket);
+		// await deployer.deploy(PriceOracle, deploymentConfig.MAINNET.POSTER);
+		// await deployer.deploy(PriceOracleProxy, PriceOracle.address);
+		// await deployer.deploy(MoneyMarket);
 	}
 };

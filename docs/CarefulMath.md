@@ -1,3 +1,8 @@
+---
+layout: default
+title: CarefulMath
+---
+
 # Careful Math (CarefulMath.sol)
 
 View Source: [contracts/CarefulMath.sol](../contracts/CarefulMath.sol)
@@ -5,7 +10,7 @@ View Source: [contracts/CarefulMath.sol](../contracts/CarefulMath.sol)
 **↗ Extends: [ErrorReporter](ErrorReporter.md)**
 **↘ Derived Contracts: [Exponential](Exponential.md)**
 
-**CarefulMath**
+**{{ContractName}}**
 
 Derived from OpenZeppelin's SafeMath library
         https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol
@@ -133,30 +138,3 @@ returns(enum ErrorReporter.Error, uint256)
 | b | uint256 |  | 
 | c | uint256 |  | 
 
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)

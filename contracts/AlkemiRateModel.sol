@@ -3,14 +3,13 @@ pragma solidity ^0.4.24;
 import "./Exponential.sol";
 import "./LiquidationChecker.sol";
 
-
 contract AlkemiRateModel is Exponential, LiquidationChecker {
 
     uint constant blocksPerYear = 2102400;
 
     address public owner;
     address public newOwner;
-    
+
     string public contractName;
 
     modifier onlyOwner() {
@@ -27,7 +26,7 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
 
     event OwnerUpdate(address indexed owner, address indexed newOwner);
     event LiquidatorUpdate(address indexed owner, address indexed newLiquidator, address indexed oldLiquidator);
-    
+
     Exp internal SpreadLow;
     Exp internal BreakPointLow;
     Exp internal ReserveLow;
@@ -36,7 +35,7 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
     Exp internal BreakPointHigh;
     Exp internal ReserveHigh;
     ExpNegative internal SpreadHigh;
-    
+
     Exp internal MinRateActual;
     Exp internal HealthyMinURActual;
     Exp internal HealthyMinRateActual;
@@ -52,38 +51,82 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
         Exp memory temp2;
         Exp memory HunderedMantissa;
         Error err;
-        
+
         (err,HunderedMantissa) = getExp(100,1);
-        
+
         (err,MinRateActual) = getExp(MinRate,100);
         (err,HealthyMinURActual) = getExp(HealthyMinUR,100);
         (err,HealthyMinRateActual) = getExp(HealthyMinRate,100);
         (err,MaxRateActual) = getExp(MaxRate,100);
         (err,HealthyMaxURActual) = getExp(HealthyMaxUR,100);
         (err,HealthyMaxRateActual) = getExp(HealthyMaxRate,100);
-        
+
         SpreadLow = MinRateActual;
         BreakPointLow = HealthyMinURActual;
         BreakPointHigh = HealthyMaxURActual;
-        
+
         // ReserveLow = (HealthyMinRate-SpreadLow)/BreakPointLow;
         (err,temp1) = subExp(HealthyMinRateActual,SpreadLow);
         (err,ReserveLow) = divExp(temp1,BreakPointLow);
-        
+
         // ReserveMid = (HealthyMaxRate-HealthyMinRate)/(HealthyMaxUR-HealthyMinUR);
         (err,temp1) = subExp(HealthyMaxRateActual,HealthyMinRateActual);
         (err,temp2) = subExp(HealthyMaxURActual,HealthyMinURActual);
         (err,ReserveMid) = divExp(temp1,temp2);
-        
+
         // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
         (err,temp1) = mulExp(ReserveMid,BreakPointLow);
         (err,SpreadMid) = subExp(HealthyMinRateActual,temp1);
-        
+
         // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
         (err,temp1) = subExp(MaxRateActual,HealthyMaxRateActual);
         (err,temp2) = subExp(HunderedMantissa,HealthyMaxURActual);
         (err,ReserveHigh) = divExp(temp1,temp2);
-        
+
+        // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
+        (err,temp2) = mulExp(ReserveHigh,BreakPointHigh);
+        (err,SpreadHigh) = subExpNegative(HealthyMaxRateActual,temp2);
+    }
+
+    function changeRates(string memory _contractName,uint MinRate,uint HealthyMinUR,uint HealthyMinRate,uint HealthyMaxUR,uint HealthyMaxRate,uint MaxRate) public onlyOwner {
+        // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
+        contractName = _contractName;
+        Exp memory  temp1;
+        Exp memory temp2;
+        Exp memory HunderedMantissa;
+        Error err;
+
+        (err,HunderedMantissa) = getExp(100,1);
+
+        (err,MinRateActual) = getExp(MinRate,100);
+        (err,HealthyMinURActual) = getExp(HealthyMinUR,100);
+        (err,HealthyMinRateActual) = getExp(HealthyMinRate,100);
+        (err,MaxRateActual) = getExp(MaxRate,100);
+        (err,HealthyMaxURActual) = getExp(HealthyMaxUR,100);
+        (err,HealthyMaxRateActual) = getExp(HealthyMaxRate,100);
+
+        SpreadLow = MinRateActual;
+        BreakPointLow = HealthyMinURActual;
+        BreakPointHigh = HealthyMaxURActual;
+
+        // ReserveLow = (HealthyMinRate-SpreadLow)/BreakPointLow;
+        (err,temp1) = subExp(HealthyMinRateActual,SpreadLow);
+        (err,ReserveLow) = divExp(temp1,BreakPointLow);
+
+        // ReserveMid = (HealthyMaxRate-HealthyMinRate)/(HealthyMaxUR-HealthyMinUR);
+        (err,temp1) = subExp(HealthyMaxRateActual,HealthyMinRateActual);
+        (err,temp2) = subExp(HealthyMaxURActual,HealthyMinURActual);
+        (err,ReserveMid) = divExp(temp1,temp2);
+
+        // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
+        (err,temp1) = mulExp(ReserveMid,BreakPointLow);
+        (err,SpreadMid) = subExp(HealthyMinRateActual,temp1);
+
+        // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
+        (err,temp1) = subExp(MaxRateActual,HealthyMaxRateActual);
+        (err,temp2) = subExp(HunderedMantissa,HealthyMaxURActual);
+        (err,ReserveHigh) = divExp(temp1,temp2);
+
         // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
         (err,temp2) = mulExp(ReserveHigh,BreakPointHigh);
         (err,SpreadHigh) = subExpNegative(HealthyMaxRateActual,temp2);
@@ -131,7 +174,7 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
 
         return (IRError.NO_ERROR, utilizationRate);
     }
-    
+
     /*
      * @dev Calculates the utilization and borrow rates for use by get{Supply,Borrow}Rate functions
      */
@@ -149,11 +192,11 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
          */
 
         Error err;
-        
+
         uint annualBorrowRateScaled;
         Exp memory tempScaled;
         Exp memory tempScaled2;
-        
+
         if(utilizationRate.mantissa < BreakPointLow.mantissa) {
             (err, tempScaled) = mulExp(utilizationRate, ReserveLow);
             assert(err == Error.NO_ERROR);
@@ -194,17 +237,17 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
         if (err0 != IRError.NO_ERROR) {
             return (uint(err0), 0);
         }
-         
-         /**
-         *  Supply Rate
-         *  = BorrowRate * utilizationRate * (1 - SpreadLow)
-         */
-         Exp memory temp1;
-         Error err1;
-         Exp memory oneMinusSpreadBasisPoints;
-         (err1,temp1) = getExp(100,1);
-         assert(err1 == Error.NO_ERROR);
-         (err1,oneMinusSpreadBasisPoints) = subExp(temp1,SpreadLow);
+
+       /**
+       *  Supply Rate
+       *  = BorrowRate * utilizationRate * (1 - SpreadLow)
+       */
+       Exp memory temp1;
+       Error err1;
+       Exp memory oneMinusSpreadBasisPoints;
+       (err1,temp1) = getExp(100,1);
+       assert(err1 == Error.NO_ERROR);
+       (err1,oneMinusSpreadBasisPoints) = subExp(temp1,SpreadLow);
 
         // mulScalar only overflows when product is greater than or equal to 2^256.
         // utilization rate's mantissa is a number between [0e18,1e18]. That means that
@@ -220,7 +263,7 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
         // As such, the multiplication is in the interval of [0, 2.025e39]. This is strictly
         // less than 2^256 (which is about 10e77).
         assert(err1 == Error.NO_ERROR);
-        
+
         (err1, temp1) = mulExp(temp1, oneMinusSpreadBasisPoints);
         assert(err1 == Error.NO_ERROR);
 

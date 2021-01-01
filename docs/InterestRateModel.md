@@ -1,10 +1,15 @@
-# InterestRateModel Interface (InterestRateModel.sol)
+---
+layout: default
+title: InterestRateModel
+---
+
+# The Lendf.Me InterestRateModel Interface (InterestRateModel.sol)
 
 View Source: [contracts/InterestRateModel.sol](../contracts/InterestRateModel.sol)
 
 **↘ Derived Contracts: [JumpRateModel](JumpRateModel.md), [JumpRateModelV2](JumpRateModelV2.md)**
 
-**InterestRateModel**
+**{{ContractName}}**
 
 Any interest rate model should derive from this contract.
 
@@ -55,30 +60,3 @@ Success or failure and the borrow interest rate per block scaled by 10e18
 | cash | uint256 | The total cash of the asset in the market | 
 | borrows | uint256 | The total borrows of the asset in the market | 
 
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)
