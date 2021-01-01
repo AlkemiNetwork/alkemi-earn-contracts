@@ -1,10 +1,15 @@
+---
+layout: default
+title: MoneyMarket
+---
+
 # MoneyMarket.sol
 
 View Source: [contracts/MoneyMarket.sol](../contracts/MoneyMarket.sol)
 
 **↗ Extends: [Exponential](Exponential.md), [SafeToken](SafeToken.md)**
 
-**MoneyMarket**
+**{{ContractName}}**
 
 ## Structs
 ### Balance
@@ -169,15 +174,19 @@ struct LiquidateLocalVars {
 
 ```js
 //internal members
-uint256 internal constant initialInterestIndex;
-uint256 internal constant defaultOriginationFee;
-uint256 internal constant minimumCollateralRatioMantissa;
-uint256 internal constant maximumLiquidationDiscountMantissa;
+uint256 internal initialInterestIndex;
+uint256 internal defaultOriginationFee;
+uint256 internal defaultCollateralRatio;
+uint256 internal defaultLiquidationDiscount;
+uint256 internal minimumCollateralRatioMantissa;
+uint256 internal maximumLiquidationDiscountMantissa;
 contract ChainLink internal priceOracle;
 
 //public members
+bool public initializationDone;
 address public pendingAdmin;
 address public admin;
+mapping(address => bool) public managers;
 address public oracle;
 mapping(address => mapping(address => struct MoneyMarket.Balance)) public supplyBalances;
 mapping(address => mapping(address => struct MoneyMarket.Balance)) public borrowBalances;
@@ -189,6 +198,7 @@ struct Exponential.Exp public collateralRatio;
 struct Exponential.Exp public originationFee;
 struct Exponential.Exp public liquidationDiscount;
 bool public paused;
+mapping(address => mapping(address => uint256)) public originationFeeBalance;
 
 //private members
 mapping(address => bool) private KYCAdmins;
@@ -200,7 +210,11 @@ mapping(address => bool) private liquidators;
 **Events**
 
 ```js
+event WETHAddressSet(address  wethAddress);
+event LiquidatorAdded(address  Liquidator);
+event LiquidatorRemoved(address  Liquidator);
 event SupplyReceived(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
+event SupplyOrgFeeAsAdmin(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
 event SupplyWithdrawn(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
 event BorrowTaken(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  borrowAmountWithFee, uint256  newBalance);
 event BorrowRepaid(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
@@ -209,7 +223,7 @@ event NewPendingAdmin(address  oldPendingAdmin, address  newPendingAdmin);
 event NewAdmin(address  oldAdmin, address  newAdmin);
 event NewOracle(address  oldOracle, address  newOracle);
 event SupportedMarket(address  asset, address  interestRateModel);
-event NewRiskParameters(uint256  oldCollateralRatioMantissa, uint256  newCollateralRatioMantissa, uint256  oldLiquidationDiscountMantissa, uint256  newLiquidationDiscountMantissa);
+event NewRiskParameters(uint256  oldCollateralRatioMantissa, uint256  newCollateralRatioMantissa, uint256  oldLiquidationDiscountMantissa, uint256  newLiquidationDiscountMantissa, uint256  NewMinimumCollateralRatioMantissa, uint256  newMaximumLiquidationDiscountMantissa);
 event NewOriginationFee(uint256  oldOriginationFeeMantissa, uint256  newOriginationFeeMantissa);
 event SetMarketInterestRateModel(address  asset, address  interestRateModel);
 event EquityWithdrawn(address  asset, uint256  equityAvailableBefore, uint256  amount, address  owner);
@@ -219,16 +233,27 @@ event KYCAdminAdded(address  KYCAdmin);
 event KYCAdminRemoved(address  KYCAdmin);
 event KYCCustomerAdded(address  KYCCustomer);
 event KYCCustomerRemoved(address  KYCCustomer);
-event LiquidatorAdded(address  Liquidator);
-event LiquidatorRemoved(address  Liquidator);
-event WETHAddressSet(address  wethAddress);
 ```
 
 ## Modifiers
 
+- [onlyAdminOrManager](#onlyadminormanager)
 - [isKYCAdmin](#iskycadmin)
 - [isKYCVerifiedCustomer](#iskycverifiedcustomer)
 - [isLiquidator](#isliquidator)
+
+### onlyAdminOrManager
+
+Modifier to check if the caller of the function is a manager or owner
+
+```js
+modifier onlyAdminOrManager() internal
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
 ### isKYCAdmin
 
@@ -271,6 +296,7 @@ modifier isLiquidator() internal
 
 ## Functions
 
+- [initializer()](#initializer)
 - [()](#)
 - [emitError(enum ErrorReporter.Error error, enum ErrorReporter.FailureInfo failure)](#emiterror)
 - [addKYCAdmin(address KYCAdmin)](#addkycadmin)
@@ -303,12 +329,13 @@ modifier isLiquidator() internal
 - [getBorrowBalance(address account, address asset)](#getborrowbalance)
 - [_supportMarket(address asset, InterestRateModel interestRateModel)](#_supportmarket)
 - [_suspendMarket(address asset)](#_suspendmarket)
-- [_setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa)](#_setriskparameters)
+- [_setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa, uint256 _minimumCollateralRatioMantissa, uint256 _maximumLiquidationDiscountMantissa)](#_setriskparameters)
 - [_setOriginationFee(uint256 originationFeeMantissa)](#_setoriginationfee)
 - [_setMarketInterestRateModel(address asset, InterestRateModel interestRateModel)](#_setmarketinterestratemodel)
 - [_withdrawEquity(address asset, uint256 amount)](#_withdrawequity)
 - [setWethAddress(address wethContractAddress)](#setwethaddress)
 - [supplyEther(address user, uint256 etherAmount)](#supplyether)
+- [revertEtherToUser(address user, uint256 etherAmount)](#revertethertouser)
 - [supply(address asset, uint256 amount)](#supply)
 - [withdrawEther(address user, uint256 etherAmount)](#withdrawether)
 - [sendEtherToUser(address user, uint256 amount)](#sendethertouser)
@@ -323,6 +350,20 @@ modifier isLiquidator() internal
 - [calculateDiscountedBorrowDenominatedCollateral(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 supplyCurrent_TargetCollateralAsset)](#calculatediscountedborrowdenominatedcollateral)
 - [calculateAmountSeize(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 closeBorrowAmount_TargetUnderwaterAsset)](#calculateamountseize)
 - [borrow(address asset, uint256 amount)](#borrow)
+- [supplyOriginationFeeAsAdmin(address asset, address user, uint256 amount, uint256 newSupplyIndex)](#supplyoriginationfeeasadmin)
+
+### initializer
+
+`MoneyMarket` is the core MoneyMarket contract
+
+```js
+function initializer() public nonpayable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
 ### 
 
@@ -877,7 +918,7 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 Sets the risk parameters: collateral ratio and liquidation discount
 
 ```js
-function _setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa) public nonpayable
+function _setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa, uint256 _minimumCollateralRatioMantissa, uint256 _maximumLiquidationDiscountMantissa) public nonpayable
 returns(uint256)
 ```
 
@@ -891,6 +932,8 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 | ------------- |------------- | -----|
 | collateralRatioMantissa | uint256 | rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1 | 
 | liquidationDiscountMantissa | uint256 | rational liquidation discount, scaled by 1e18. The de-scaled value must be <= 0.1 and must be less than (descaled collateral ratio minus 1) | 
+| _minimumCollateralRatioMantissa | uint256 |  | 
+| _maximumLiquidationDiscountMantissa | uint256 |  | 
 
 ### _setOriginationFee
 
@@ -985,6 +1028,21 @@ errors if any
 | ------------- |------------- | -----|
 | user | address | User account address | 
 | etherAmount | uint256 | Amount of ether to be converted to WETH | 
+
+### revertEtherToUser
+
+Revert Ether paid by user back to user's account in case transaction fails due to some other reason
+
+```js
+function revertEtherToUser(address user, uint256 etherAmount) internal nonpayable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| user | address | User account address | 
+| etherAmount | uint256 | Amount of ether to be sent back to user | 
 
 ### supply
 
@@ -1251,30 +1309,18 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 | asset | address | The market asset to borrow | 
 | amount | uint256 | The amount to borrow | 
 
-## Contracts
+### supplyOriginationFeeAsAdmin
 
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)
+```js
+function supplyOriginationFeeAsAdmin(address asset, address user, uint256 amount, uint256 newSupplyIndex) private nonpayable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address |  | 
+| user | address |  | 
+| amount | uint256 |  | 
+| newSupplyIndex | uint256 |  | 
+

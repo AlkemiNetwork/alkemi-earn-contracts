@@ -10,6 +10,8 @@ contract MoneyMarket is Exponential, SafeToken {
 
     uint internal initialInterestIndex;
     uint internal defaultOriginationFee; 
+    uint internal defaultCollateralRatio;
+    uint internal defaultLiquidationDiscount;
 
     uint internal minimumCollateralRatioMantissa;
     uint internal maximumLiquidationDiscountMantissa;
@@ -26,13 +28,15 @@ contract MoneyMarket is Exponential, SafeToken {
         if(initializationDone == false) {
             initializationDone = true;
             admin = msg.sender;
-            collateralRatio = Exp({mantissa: 2 * mantissaOne});
-            originationFee = Exp({mantissa: defaultOriginationFee});
-            liquidationDiscount = Exp({mantissa: 0});
             initialInterestIndex = 10 ** 18;
-            defaultOriginationFee = 0; // default is zero bps
+            defaultOriginationFee = (10 ** 15); // default is 0.1%
+            defaultCollateralRatio = 125 * (10 ** 16); // default is 125% or 1.25
+            defaultLiquidationDiscount = (10 ** 17); // default is 10% or 0.1
             minimumCollateralRatioMantissa = 11 * (10 ** 17); // 1.1
             maximumLiquidationDiscountMantissa = (10 ** 17); // 0.1
+            collateralRatio = Exp({mantissa: defaultCollateralRatio});
+            originationFee = Exp({mantissa: defaultOriginationFee});
+            liquidationDiscount = Exp({mantissa: defaultLiquidationDiscount});
             // oracle must be configured via _setOracle
         }
     }
@@ -54,6 +58,12 @@ contract MoneyMarket is Exponential, SafeToken {
      *      be changed by the admin itself.
      */
     address public admin;
+
+    /**
+     * @dev Managers for this contract with limited permissions. Can
+     *      be changed by the admin.
+     */
+    mapping (address => bool) public managers;
 
     /**
      * @dev Account allowed to set oracle prices for this contract. Initially set
@@ -440,7 +450,7 @@ contract MoneyMarket is Exponential, SafeToken {
     /**
      * @dev emitted when risk parameters are changed by admin
      */
-    event NewRiskParameters(uint oldCollateralRatioMantissa, uint newCollateralRatioMantissa, uint oldLiquidationDiscountMantissa, uint newLiquidationDiscountMantissa);
+    event NewRiskParameters(uint oldCollateralRatioMantissa, uint newCollateralRatioMantissa, uint oldLiquidationDiscountMantissa, uint newLiquidationDiscountMantissa, uint NewMinimumCollateralRatioMantissa, uint newMaximumLiquidationDiscountMantissa);
 
     /**
      * @dev emitted when origination fee is changed by admin
@@ -479,6 +489,15 @@ contract MoneyMarket is Exponential, SafeToken {
     event KYCAdminRemoved(address KYCAdmin);
     event KYCCustomerAdded(address KYCCustomer);
     event KYCCustomerRemoved(address KYCCustomer);
+
+    /**
+     * @dev Modifier to check if the caller of the function is a manager or owner
+     */
+    modifier onlyAdminOrManager {
+        // Check caller = KYCadmin
+        require(msg.sender == admin || managers[msg.sender],"Only owner or manager can perform operation");
+        _;
+    }
 
     /**
      * @dev Function to emit fail event to frontend
@@ -1092,12 +1111,14 @@ contract MoneyMarket is Exponential, SafeToken {
      * @param liquidationDiscountMantissa rational liquidation discount, scaled by 1e18. The de-scaled value must be <= 0.1 and must be less than (descaled collateral ratio minus 1)
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function _setRiskParameters(uint collateralRatioMantissa, uint liquidationDiscountMantissa) public returns (uint) {
+    function _setRiskParameters(uint collateralRatioMantissa, uint liquidationDiscountMantissa, uint _minimumCollateralRatioMantissa, uint _maximumLiquidationDiscountMantissa) public returns (uint) {
         // Check caller = admin
         if (msg.sender != admin) {
             return fail(Error.UNAUTHORIZED, FailureInfo.SET_RISK_PARAMETERS_OWNER_CHECK);
         }
 
+        minimumCollateralRatioMantissa =  _minimumCollateralRatioMantissa;
+        maximumLiquidationDiscountMantissa =  _maximumLiquidationDiscountMantissa;
         Exp memory newCollateralRatio = Exp({mantissa: collateralRatioMantissa});
         Exp memory newLiquidationDiscount = Exp({mantissa: liquidationDiscountMantissa});
         Exp memory minimumCollateralRatio = Exp({mantissa: minimumCollateralRatioMantissa});
@@ -1134,7 +1155,7 @@ contract MoneyMarket is Exponential, SafeToken {
         collateralRatio = newCollateralRatio;
         liquidationDiscount = newLiquidationDiscount;
 
-        emit NewRiskParameters(oldCollateralRatio.mantissa, collateralRatioMantissa, oldLiquidationDiscount.mantissa, liquidationDiscountMantissa);
+        emit NewRiskParameters(oldCollateralRatio.mantissa, collateralRatioMantissa, oldLiquidationDiscount.mantissa, liquidationDiscountMantissa, minimumCollateralRatioMantissa, maximumLiquidationDiscountMantissa);
 
         return uint(Error.NO_ERROR);
     }

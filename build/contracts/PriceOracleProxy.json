@@ -1,0 +1,1229 @@
+{
+  "contractName": "PriceOracleProxy",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "mostRecentBlock",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "mostRecentCaller",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "realPriceOracle",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "realPriceOracle_",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "asset",
+          "type": "address"
+        }
+      ],
+      "name": "assetPrices",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"asset\",\"type\":\"address\"}],\"name\":\"assetPrices\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"mostRecentBlock\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"mostRecentCaller\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"realPriceOracle\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"realPriceOracle_\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{\"assetPrices(address)\":{\"details\":\"fetches the price of a given asset\",\"params\":{\"asset\":\"Asset to get the price of\"},\"return\":\"the price scaled by 10**18, or zero if the price is not available\"}}},\"userdoc\":{\"methods\":{\"assetPrices(address)\":{\"notice\":\"Gets the price of a given asset\"}}}},\"settings\":{\"compilationTarget\":{\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleProxy.sol\":\"PriceOracleProxy\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol\":{\"keccak256\":\"0x76af9cc30659e75f490fd57d2f05b40fbfe57bf407dbdc2e0a28cc1f16869389\",\"urls\":[\"bzzr://4f2505fe2b905f06ac751248077af308e4560ee77f782459132eea6b11f512b9\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleProxy.sol\":{\"keccak256\":\"0xa6324094c4a0c7ca473ad73b5254f6c4183e97dd517b141e30fcecec84b370e7\",\"urls\":[\"bzzr://e0cbe6c59ab6dd443a19c7cdaa6e7e46c136c453a781364405819573c54e9094\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50604051602080610292833981016040525160028054600160a060020a031916600160a060020a03909216919091179055610242806100506000396000f3006080604052600436106100615763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416635e9a523c81146100665780636084747f146100a6578063be59b4b1146100bb578063fb07ac86146100f9575b600080fd5b34801561007257600080fd5b5061009473ffffffffffffffffffffffffffffffffffffffff6004351661010e565b60408051918252519081900360200190f35b3480156100b257600080fd5b506100946101d8565b3480156100c757600080fd5b506100d06101de565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b34801561010557600080fd5b506100d06101fa565b6000805473ffffffffffffffffffffffffffffffffffffffff19163217815543600155600254604080517f5e9a523c00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff858116600483015291519290911691635e9a523c9160248082019260209290919082900301818787803b1580156101a657600080fd5b505af11580156101ba573d6000803e3d6000fd5b505050506040513d60208110156101d057600080fd5b505192915050565b60015481565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b60025473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582074090fa9aa674ba6bc26b08bcf178aa5f07060f7a921529ef28e3fce89acd9e60029",
+  "deployedBytecode": "0x6080604052600436106100615763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416635e9a523c81146100665780636084747f146100a6578063be59b4b1146100bb578063fb07ac86146100f9575b600080fd5b34801561007257600080fd5b5061009473ffffffffffffffffffffffffffffffffffffffff6004351661010e565b60408051918252519081900360200190f35b3480156100b257600080fd5b506100946101d8565b3480156100c757600080fd5b506100d06101de565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b34801561010557600080fd5b506100d06101fa565b6000805473ffffffffffffffffffffffffffffffffffffffff19163217815543600155600254604080517f5e9a523c00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff858116600483015291519290911691635e9a523c9160248082019260209290919082900301818787803b1580156101a657600080fd5b505af11580156101ba573d6000803e3d6000fd5b505050506040513d60208110156101d057600080fd5b505192915050565b60015481565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b60025473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582074090fa9aa674ba6bc26b08bcf178aa5f07060f7a921529ef28e3fce89acd9e60029",
+  "sourceMap": "65:710:18:-;;;217:118;8:9:-1;5:2;;;30:1;27;20:12;5:2;217:118:18;;;;;;;;;;;;;272:15;:56;;-1:-1:-1;;;;;;272:56:18;-1:-1:-1;;;;;272:56:18;;;;;;;;;65:710;;;-1:-1:-1;65:710:18;;",
+  "deployedSourceMap": "65:710:18:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;578:195;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;578:195:18;;;;;;;;;;;;;;;;;;;;;;;134:27;;8:9:-1;5:2;;;30:1;27;20:12;5:2;134:27:18;;;;97:31;;8:9:-1;5:2;;;30:1;27;20:12;5:2;97:31:18;;;;;;;;;;;;;;;;;;;;;;;167:43;;8:9:-1;5:2;;;30:1;27;20:12;5:2;167:43:18;;;;578:195;630:4;646:28;;-1:-1:-1;;646:28:18;665:9;646:28;;;702:12;646:28;684:30;732:15;;:34;;;;;;646:28;732:34;;;;;;;;;:15;;;;;:27;;:34;;;;;;;;;;;;;;;630:4;732:15;:34;;;5:2:-1;;;;30:1;27;20:12;5:2;732:34:18;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;732:34:18;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;732:34:18;;578:195;-1:-1:-1;;578:195:18:o;134:27::-;;;;:::o;97:31::-;;;;;;:::o;167:43::-;;;;;;:::o",
+  "source": "pragma solidity ^0.4.24;\n\nimport \"./PriceOracleInterface.sol\";\n\n\ncontract PriceOracleProxy {\n    address public mostRecentCaller;\n    uint public mostRecentBlock;\n    PriceOracleInterface public realPriceOracle;\n\n    constructor(address realPriceOracle_) public {\n        realPriceOracle = PriceOracleInterface(realPriceOracle_);\n    }\n\n    /**\n     * @notice Gets the price of a given asset\n     * @dev fetches the price of a given asset\n     * @param asset Asset to get the price of\n     * @return the price scaled by 10**18, or zero if the price is not available\n     */\n    function assetPrices(address asset) public returns (uint) {\n        mostRecentCaller = tx.origin;\n        mostRecentBlock = block.number;\n\n        return realPriceOracle.assetPrices(asset);\n    }\n}\n",
+  "sourcePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleProxy.sol",
+  "ast": {
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleProxy.sol",
+    "exportedSymbols": {
+      "PriceOracleProxy": [
+        12141
+      ]
+    },
+    "id": 12142,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 12098,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:18"
+      },
+      {
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
+        "file": "./PriceOracleInterface.sol",
+        "id": 12099,
+        "nodeType": "ImportDirective",
+        "scope": 12142,
+        "sourceUnit": 12097,
+        "src": "26:36:18",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 12141,
+        "linearizedBaseContracts": [
+          12141
+        ],
+        "name": "PriceOracleProxy",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 12101,
+            "name": "mostRecentCaller",
+            "nodeType": "VariableDeclaration",
+            "scope": 12141,
+            "src": "97:31:18",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 12100,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "97:7:18",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 12103,
+            "name": "mostRecentBlock",
+            "nodeType": "VariableDeclaration",
+            "scope": 12141,
+            "src": "134:27:18",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 12102,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "134:4:18",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 12105,
+            "name": "realPriceOracle",
+            "nodeType": "VariableDeclaration",
+            "scope": 12141,
+            "src": "167:43:18",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+              "typeString": "contract PriceOracleInterface"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 12104,
+              "name": "PriceOracleInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 12096,
+              "src": "167:20:18",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                "typeString": "contract PriceOracleInterface"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 12116,
+              "nodeType": "Block",
+              "src": "262:73:18",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 12114,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 12110,
+                      "name": "realPriceOracle",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 12105,
+                      "src": "272:15:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                        "typeString": "contract PriceOracleInterface"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 12112,
+                          "name": "realPriceOracle_",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 12107,
+                          "src": "311:16:18",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 12111,
+                        "name": "PriceOracleInterface",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 12096,
+                        "src": "290:20:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_PriceOracleInterface_$12096_$",
+                          "typeString": "type(contract PriceOracleInterface)"
+                        }
+                      },
+                      "id": 12113,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "290:38:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                        "typeString": "contract PriceOracleInterface"
+                      }
+                    },
+                    "src": "272:56:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                      "typeString": "contract PriceOracleInterface"
+                    }
+                  },
+                  "id": 12115,
+                  "nodeType": "ExpressionStatement",
+                  "src": "272:56:18"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 12117,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 12108,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12107,
+                  "name": "realPriceOracle_",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12117,
+                  "src": "229:24:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 12106,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "229:7:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "228:26:18"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 12109,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "262:0:18"
+            },
+            "scope": 12141,
+            "src": "217:118:18",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 12139,
+              "nodeType": "Block",
+              "src": "636:137:18",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 12127,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 12124,
+                      "name": "mostRecentCaller",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 12101,
+                      "src": "646:16:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 12125,
+                        "name": "tx",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13668,
+                        "src": "665:2:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_magic_transaction",
+                          "typeString": "tx"
+                        }
+                      },
+                      "id": 12126,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "origin",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "665:9:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "646:28:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 12128,
+                  "nodeType": "ExpressionStatement",
+                  "src": "646:28:18"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 12132,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 12129,
+                      "name": "mostRecentBlock",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 12103,
+                      "src": "684:15:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 12130,
+                        "name": "block",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13646,
+                        "src": "702:5:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_magic_block",
+                          "typeString": "block"
+                        }
+                      },
+                      "id": 12131,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "number",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "702:12:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "684:30:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 12133,
+                  "nodeType": "ExpressionStatement",
+                  "src": "684:30:18"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 12136,
+                        "name": "asset",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 12119,
+                        "src": "760:5:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 12134,
+                        "name": "realPriceOracle",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 12105,
+                        "src": "732:15:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                          "typeString": "contract PriceOracleInterface"
+                        }
+                      },
+                      "id": 12135,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "assetPrices",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 12095,
+                      "src": "732:27:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
+                        "typeString": "function (address) view external returns (uint256)"
+                      }
+                    },
+                    "id": 12137,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "732:34:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 12123,
+                  "id": 12138,
+                  "nodeType": "Return",
+                  "src": "725:41:18"
+                }
+              ]
+            },
+            "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
+            "id": 12140,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "assetPrices",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 12120,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12119,
+                  "name": "asset",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12140,
+                  "src": "599:13:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 12118,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "599:7:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "598:15:18"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 12123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12122,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12140,
+                  "src": "630:4:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 12121,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "630:4:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "629:6:18"
+            },
+            "scope": 12141,
+            "src": "578:195:18",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 12142,
+        "src": "65:710:18"
+      }
+    ],
+    "src": "0:776:18"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleProxy.sol",
+    "exportedSymbols": {
+      "PriceOracleProxy": [
+        12141
+      ]
+    },
+    "id": 12142,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 12098,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:18"
+      },
+      {
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
+        "file": "./PriceOracleInterface.sol",
+        "id": 12099,
+        "nodeType": "ImportDirective",
+        "scope": 12142,
+        "sourceUnit": 12097,
+        "src": "26:36:18",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 12141,
+        "linearizedBaseContracts": [
+          12141
+        ],
+        "name": "PriceOracleProxy",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 12101,
+            "name": "mostRecentCaller",
+            "nodeType": "VariableDeclaration",
+            "scope": 12141,
+            "src": "97:31:18",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 12100,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "97:7:18",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 12103,
+            "name": "mostRecentBlock",
+            "nodeType": "VariableDeclaration",
+            "scope": 12141,
+            "src": "134:27:18",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 12102,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "134:4:18",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 12105,
+            "name": "realPriceOracle",
+            "nodeType": "VariableDeclaration",
+            "scope": 12141,
+            "src": "167:43:18",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+              "typeString": "contract PriceOracleInterface"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 12104,
+              "name": "PriceOracleInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 12096,
+              "src": "167:20:18",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                "typeString": "contract PriceOracleInterface"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 12116,
+              "nodeType": "Block",
+              "src": "262:73:18",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 12114,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 12110,
+                      "name": "realPriceOracle",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 12105,
+                      "src": "272:15:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                        "typeString": "contract PriceOracleInterface"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 12112,
+                          "name": "realPriceOracle_",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 12107,
+                          "src": "311:16:18",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 12111,
+                        "name": "PriceOracleInterface",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 12096,
+                        "src": "290:20:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_PriceOracleInterface_$12096_$",
+                          "typeString": "type(contract PriceOracleInterface)"
+                        }
+                      },
+                      "id": 12113,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "290:38:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                        "typeString": "contract PriceOracleInterface"
+                      }
+                    },
+                    "src": "272:56:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                      "typeString": "contract PriceOracleInterface"
+                    }
+                  },
+                  "id": 12115,
+                  "nodeType": "ExpressionStatement",
+                  "src": "272:56:18"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 12117,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 12108,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12107,
+                  "name": "realPriceOracle_",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12117,
+                  "src": "229:24:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 12106,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "229:7:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "228:26:18"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 12109,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "262:0:18"
+            },
+            "scope": 12141,
+            "src": "217:118:18",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 12139,
+              "nodeType": "Block",
+              "src": "636:137:18",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 12127,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 12124,
+                      "name": "mostRecentCaller",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 12101,
+                      "src": "646:16:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 12125,
+                        "name": "tx",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13668,
+                        "src": "665:2:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_magic_transaction",
+                          "typeString": "tx"
+                        }
+                      },
+                      "id": 12126,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "origin",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "665:9:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "646:28:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 12128,
+                  "nodeType": "ExpressionStatement",
+                  "src": "646:28:18"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 12132,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 12129,
+                      "name": "mostRecentBlock",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 12103,
+                      "src": "684:15:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 12130,
+                        "name": "block",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13646,
+                        "src": "702:5:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_magic_block",
+                          "typeString": "block"
+                        }
+                      },
+                      "id": 12131,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "number",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "702:12:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "684:30:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 12133,
+                  "nodeType": "ExpressionStatement",
+                  "src": "684:30:18"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 12136,
+                        "name": "asset",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 12119,
+                        "src": "760:5:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 12134,
+                        "name": "realPriceOracle",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 12105,
+                        "src": "732:15:18",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_PriceOracleInterface_$12096",
+                          "typeString": "contract PriceOracleInterface"
+                        }
+                      },
+                      "id": 12135,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "assetPrices",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 12095,
+                      "src": "732:27:18",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
+                        "typeString": "function (address) view external returns (uint256)"
+                      }
+                    },
+                    "id": 12137,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "732:34:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 12123,
+                  "id": 12138,
+                  "nodeType": "Return",
+                  "src": "725:41:18"
+                }
+              ]
+            },
+            "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
+            "id": 12140,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "assetPrices",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 12120,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12119,
+                  "name": "asset",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12140,
+                  "src": "599:13:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 12118,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "599:7:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "598:15:18"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 12123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12122,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12140,
+                  "src": "630:4:18",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 12121,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "630:4:18",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "629:6:18"
+            },
+            "scope": 12141,
+            "src": "578:195:18",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 12142,
+        "src": "65:710:18"
+      }
+    ],
+    "src": "0:776:18"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2021-01-01T03:41:58.492Z",
+  "devdoc": {
+    "methods": {
+      "assetPrices(address)": {
+        "details": "fetches the price of a given asset",
+        "params": {
+          "asset": "Asset to get the price of"
+        },
+        "return": "the price scaled by 10**18, or zero if the price is not available"
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {
+      "assetPrices(address)": {
+        "notice": "Gets the price of a given asset"
+      }
+    }
+  }
+}

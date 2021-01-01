@@ -1,10 +1,15 @@
+---
+layout: default
+title: PriceOracle
+---
+
 # PriceOracle.sol
 
 View Source: [contracts/PriceOracle.sol](../contracts/PriceOracle.sol)
 
 **↗ Extends: [Exponential](Exponential.md)**
 
-**PriceOracle**
+**{{ContractName}}**
 
 **Enums**
 ### OracleError
@@ -514,30 +519,3 @@ uint values in same order as inputs. For each: 0=success, otherwise a failure (s
 | assets | address[] | a list of up to assets for which to set a price. required: 0 < assets.length == requestedPriceMantissas.length | 
 | requestedPriceMantissas | uint256[] | requested new prices for the assets, scaled by 10**18. required: 0 < assets.length == requestedPriceMantissas.length | 
 
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)

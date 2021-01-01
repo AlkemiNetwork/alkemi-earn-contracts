@@ -1,10 +1,15 @@
+---
+layout: default
+title: StableCoinInterestRateModel
+---
+
 # The Compound Stable Coin Interest Rate Model (StableCoinInterestRateModel.sol)
 
 View Source: [contracts/StableCoinInterestRateModel.sol](../contracts/StableCoinInterestRateModel.sol)
 
 **↗ Extends: [Exponential](Exponential.md)**
 
-**StableCoinInterestRateModel**
+**{{ContractName}}**
 
 See Section 2.4 of the Compound Whitepaper
 
@@ -69,7 +74,7 @@ returns(enum StableCoinInterestRateModel.IRError, struct Exponential.Exp, struct
 Gets the current supply interest rate based on the given asset, total cash and total borrows
 
 ```js
-function getSupplyRate(address _asset, uint256 cash, uint256 borrows) public view
+function getSupplyRate(address _asset, uint256 cash, uint256 borrows) public pure
 returns(uint256, uint256)
 ```
 
@@ -90,7 +95,7 @@ Success or failure and the supply interest rate per block scaled by 10e18
 Gets the current borrow interest rate based on the given asset, total cash and total borrows
 
 ```js
-function getBorrowRate(address _asset, uint256 cash, uint256 borrows) public view
+function getBorrowRate(address _asset, uint256 cash, uint256 borrows) public pure
 returns(uint256, uint256)
 ```
 
@@ -106,30 +111,3 @@ Success or failure and the borrow interest rate per block scaled by 10e18
 | cash | uint256 | The total cash of the asset in the market | 
 | borrows | uint256 | The total borrows of the asset in the market | 
 
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)
