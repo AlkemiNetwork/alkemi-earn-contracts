@@ -1,4 +1,3 @@
-
 # Coverage directory
 coverage
 coverage.json
@@ -29,3 +28,9 @@ build
 # Logs
 logs
 *.log
+
+.vscode
+
+build/
+
+package-lock.json
