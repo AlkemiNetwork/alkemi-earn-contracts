@@ -1,6 +1,6 @@
 # Alkemi Earn Protocol
 
-![GitHub](https://img.shields.io/github/license/project-alkemi/alkemi-earn-protocol) [![Build Status](https://travis-ci.com/project-alkemi/alkemi-earn-protocol.svg?branch=master)](https://travis-ci.com/project-alkemi/alkemi-earn-protocol) [![CircleCI](https://circleci.com/gh/project-alkemi/alkemi-earn-protocol/tree/master.svg?style=svg)](https://circleci.com/gh/project-alkemi/alkemi-earn-protocol/tree/master)[![MythXBadge](https://badgen.net/https/api.mythx.io/v1/projects/bdc732b7-27d2-4a17-be68-0a1f842ed64b/badge/data?cache=300&icon=https://raw.githubusercontent.com/ConsenSys/mythx-github-badge/main/logo_white.svg)](https://docs.mythx.io/dashboard/github-badges)
+![GitHub](https://img.shields.io/github/license/project-alkemi/alkemi-earn-protocol) [![Build Status](https://travis-ci.com/project-alkemi/alkemi-earn-protocol.svg?branch=master)](https://travis-ci.com/project-alkemi/alkemi-earn-protocol) [![CircleCI](https://circleci.com/bb/project-alkemi/alkemi-earn-protocol/tree/master.svg?style=svg)](https://app.circleci.com/pipelines/bitbucket/project-alkemi/alkemi-earn-protocol/tree/master)[![MythXBadge](https://badgen.net/https/api.mythx.io/v1/projects/bdc732b7-27d2-4a17-be68-0a1f842ed64b/badge/data?cache=300&icon=https://raw.githubusercontent.com/ConsenSys/mythx-github-badge/main/logo_white.svg)](https://docs.mythx.io/dashboard/github-badges)
 
 ![GitHub stars](https://img.shields.io/github/stars/project-alkemi/alkemi-earn-protocol?style=social&label=star) ![GitHub forks](https://img.shields.io/github/forks/project-alkemi/alkemi-earn-protocol?style=social&label=fork) ![GitHub watchers](https://img.shields.io/github/watchers/project-alkemi/alkemi-earn-protocol?style=social&label=watch) ![GitHub followers](https://img.shields.io/github/followers/project-alkemi?label=follow&style=social)
 
@@ -16,14 +16,12 @@
 - [Testing](#testing)
   - [Code Linting](#code-linting)
 - [Networks](#networks)
-
   - [Mainnets](#mainnet-deployments)
     - [Ethereum Mainnet](#ethereum-mainnet)
   - [Testnets](#testnet-deployments)
     - [Kovan Testnet](#kovan-testnet)
     - [Rinkeby Testnet](#rinkeby-testnet)
     - [Ropsten Testnet](#ropsten-testnet)
-
 - [Documentation](#documentation)
 - [Issues](#issues)
 - [License](#license)
