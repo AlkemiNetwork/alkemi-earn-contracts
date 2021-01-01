@@ -5,11 +5,19 @@
 # You can specify a custom docker image from Docker Hub as your build environment.
 image: node:10.15.3
 
+definitions:
+  services:
+    docker:
+      memory: 2048 # Increasing Docker Memory Size to 2GB instead of defailt 1GB
+  steps:
+    # DEFINE Mirror to Github STEP
+    - step: &github
+        name: "Mirror to Github"
+        script:
+          - git push --mirror git@github.com:project-alkemi/alkemi-earn-protocol.git
+
 pipelines:
-  default:
-    - step:
-        caches:
-          - node
-        script: # Modify the commands below to build your repository.
-          - npm install
-          - truffle build
+  branches:
+    master:
+      # Runs only on Master Branch
+      - step: *github
