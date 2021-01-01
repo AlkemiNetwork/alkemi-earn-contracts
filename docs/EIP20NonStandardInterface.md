@@ -1,8 +1,13 @@
+---
+layout: default
+title: EIP20NonStandardInterface
+---
+
 # EIP20NonStandardInterface (EIP20NonStandardInterface.sol)
 
 View Source: [contracts/EIP20NonStandardInterface.sol](../contracts/EIP20NonStandardInterface.sol)
 
-**EIP20NonStandardInterface**
+**{{ContractName}}**
 
 Version of ERC20 with no return values for `transfer` and `transferFrom`
 See https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
@@ -92,6 +97,7 @@ Whether the transfer was successful or not
 
 ```js
 function approve(address _spender, uint256 _value) public nonpayable
+returns(success bool)
 ```
 
 **Returns**
@@ -123,20 +129,3 @@ Amount of remaining tokens allowed to spent
 | _owner | address | The address of the account owning tokens | 
 | _spender | address | The address of the account able to transfer the tokens | 
 
-## Contracts
-
-* [CarefulMath](CarefulMath.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeToken](SafeToken.md)

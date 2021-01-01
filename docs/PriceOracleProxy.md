@@ -1,8 +1,13 @@
+---
+layout: default
+title: PriceOracleProxy
+---
+
 # PriceOracleProxy.sol
 
 View Source: [contracts/PriceOracleProxy.sol](../contracts/PriceOracleProxy.sol)
 
-**PriceOracleProxy**
+**{{ContractName}}**
 
 ## Contract Members
 **Constants & Variables**
@@ -37,20 +42,3 @@ the price scaled by 10**18, or zero if the price is not available
 | ------------- |------------- | -----|
 | asset | address | Asset to get the price of | 
 
-## Contracts
-
-* [CarefulMath](CarefulMath.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeToken](SafeToken.md)

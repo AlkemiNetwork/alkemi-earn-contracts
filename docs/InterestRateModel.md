@@ -1,8 +1,15 @@
-# The InterestRateModel Interface (InterestRateModel.sol)
+---
+layout: default
+title: InterestRateModel
+---
+
+# The Lendf.Me InterestRateModel Interface (InterestRateModel.sol)
 
 View Source: [contracts/InterestRateModel.sol](../contracts/InterestRateModel.sol)
 
-**InterestRateModel**
+**↘ Derived Contracts: [JumpRateModel](JumpRateModel.md), [JumpRateModelV2](JumpRateModelV2.md)**
+
+**{{ContractName}}**
 
 Any interest rate model should derive from this contract.
 
@@ -26,11 +33,11 @@ Success or failure and the supply interest rate per block scaled by 10e18
 
 **Arguments**
 
-| Name    | Type    | Description                                  |
-| ------- | ------- | -------------------------------------------- |
-| asset   | address | The asset to get the interest rate of        |
-| cash    | uint256 | The total cash of the asset in the market    |
-| borrows | uint256 | The total borrows of the asset in the market |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | The asset to get the interest rate of | 
+| cash | uint256 | The total cash of the asset in the market | 
+| borrows | uint256 | The total borrows of the asset in the market | 
 
 ### getBorrowRate
 
@@ -47,26 +54,9 @@ Success or failure and the borrow interest rate per block scaled by 10e18
 
 **Arguments**
 
-| Name    | Type    | Description                                  |
-| ------- | ------- | -------------------------------------------- |
-| asset   | address | The asset to get the interest rate of        |
-| cash    | uint256 | The total cash of the asset in the market    |
-| borrows | uint256 | The total borrows of the asset in the market |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | The asset to get the interest rate of | 
+| cash | uint256 | The total cash of the asset in the market | 
+| borrows | uint256 | The total borrows of the asset in the market | 
 
-## Contracts
-
-- [CarefulMath](CarefulMath.md)
-- [EIP20Interface](EIP20Interface.md)
-- [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-- [ErrorReporter](ErrorReporter.md)
-- [ExchangeRateModel](ExchangeRateModel.md)
-- [Exponential](Exponential.md)
-- [InterestRateModel](InterestRateModel.md)
-- [LiquidationChecker](LiquidationChecker.md)
-- [Liquidator](Liquidator.md)
-- [Migrations](Migrations.md)
-- [MoneyMarket](MoneyMarket.md)
-- [PriceOracle](PriceOracle.md)
-- [PriceOracleInterface](PriceOracleInterface.md)
-- [PriceOracleProxy](PriceOracleProxy.md)
-- [SafeToken](SafeToken.md)

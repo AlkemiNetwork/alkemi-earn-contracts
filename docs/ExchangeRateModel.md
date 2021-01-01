@@ -1,10 +1,15 @@
+---
+layout: default
+title: ExchangeRateModel
+---
+
 # ExchangeRateModel.sol
 
 View Source: [contracts/PriceOracle.sol](../contracts/PriceOracle.sol)
 
 **↗ Extends: [Exponential](Exponential.md)**
 
-**ExchangeRateModel**
+**{{ContractName}}**
 
 **Enums**
 ### OracleError
@@ -514,20 +519,3 @@ uint values in same order as inputs. For each: 0=success, otherwise a failure (s
 | assets | address[] | a list of up to assets for which to set a price. required: 0 < assets.length == requestedPriceMantissas.length | 
 | requestedPriceMantissas | uint256[] | requested new prices for the assets, scaled by 10**18. required: 0 < assets.length == requestedPriceMantissas.length | 
 
-## Contracts
-
-* [CarefulMath](CarefulMath.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeToken](SafeToken.md)

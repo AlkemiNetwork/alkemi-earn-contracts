@@ -27,19 +27,19 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.4.24;\n\ncontract PriceOracleInterface {\n    /**\n     * @notice Gets the price of a given asset\n     * @dev fetches the price of a given asset\n     * @param asset Asset to get the price of\n     * @return the price scaled by 10**18, or zero if the price is not available\n     */\n    function assetPrices(address asset) public view returns (uint);\n}\n",
-  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
+  "sourcePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
   "ast": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
     "exportedSymbols": {
       "PriceOracleInterface": [
-        12094
+        12096
       ]
     },
-    "id": 12095,
+    "id": 12097,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 12086,
+        "id": 12088,
         "literals": [
           "solidity",
           "^",
@@ -55,9 +55,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 12094,
+        "id": 12096,
         "linearizedBaseContracts": [
-          12094
+          12096
         ],
         "name": "PriceOracleInterface",
         "nodeType": "ContractDefinition",
@@ -65,7 +65,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
-            "id": 12093,
+            "id": 12095,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -73,15 +73,15 @@
             "name": "assetPrices",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 12089,
+              "id": 12091,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 12088,
+                  "id": 12090,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12093,
+                  "scope": 12095,
                   "src": "320:13:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -90,7 +90,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 12087,
+                    "id": 12089,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "320:7:17",
@@ -107,15 +107,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 12092,
+              "id": 12094,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 12091,
+                  "id": 12093,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12093,
+                  "scope": 12095,
                   "src": "356:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -124,7 +124,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 12090,
+                    "id": 12092,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "356:4:17",
@@ -139,31 +139,31 @@
               ],
               "src": "355:6:17"
             },
-            "scope": 12094,
+            "scope": 12096,
             "src": "299:63:17",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 12095,
+        "scope": 12097,
         "src": "26:338:17"
       }
     ],
     "src": "0:365:17"
   },
   "legacyAST": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
     "exportedSymbols": {
       "PriceOracleInterface": [
-        12094
+        12096
       ]
     },
-    "id": 12095,
+    "id": 12097,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 12086,
+        "id": 12088,
         "literals": [
           "solidity",
           "^",
@@ -179,9 +179,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 12094,
+        "id": 12096,
         "linearizedBaseContracts": [
-          12094
+          12096
         ],
         "name": "PriceOracleInterface",
         "nodeType": "ContractDefinition",
@@ -189,7 +189,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
-            "id": 12093,
+            "id": 12095,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -197,15 +197,15 @@
             "name": "assetPrices",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 12089,
+              "id": 12091,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 12088,
+                  "id": 12090,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12093,
+                  "scope": 12095,
                   "src": "320:13:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -214,7 +214,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 12087,
+                    "id": 12089,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "320:7:17",
@@ -231,15 +231,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 12092,
+              "id": 12094,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 12091,
+                  "id": 12093,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12093,
+                  "scope": 12095,
                   "src": "356:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -248,7 +248,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 12090,
+                    "id": 12092,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "356:4:17",
@@ -263,14 +263,14 @@
               ],
               "src": "355:6:17"
             },
-            "scope": 12094,
+            "scope": 12096,
             "src": "299:63:17",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 12095,
+        "scope": 12097,
         "src": "26:338:17"
       }
     ],
@@ -281,8 +281,8 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2020-12-30T23:48:19.443Z",
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2021-01-01T03:41:58.491Z",
   "devdoc": {
     "methods": {
       "assetPrices(address)": {
