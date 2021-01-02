@@ -3,6 +3,12 @@ pragma solidity ^0.4.24;
 import "./Exponential.sol";
 import "./LiquidationChecker.sol";
 
+/**
+  * @title  Earn Interest Rate Model
+  * @author ShiftForex
+  * @notice See Model here
+  */
+
 contract AlkemiRateModel is Exponential, LiquidationChecker {
 
     uint constant blocksPerYear = 2102400;

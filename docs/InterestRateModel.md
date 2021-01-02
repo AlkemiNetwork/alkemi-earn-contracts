@@ -3,7 +3,7 @@ layout: default
 title: InterestRateModel
 ---
 
-# The Lendf.Me InterestRateModel Interface (InterestRateModel.sol)
+# InterestRateModel Interface (InterestRateModel.sol)
 
 View Source: [contracts/InterestRateModel.sol](../contracts/InterestRateModel.sol)
 

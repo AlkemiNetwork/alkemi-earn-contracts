@@ -3,13 +3,15 @@ layout: default
 title: AlkemiRateModel
 ---
 
-# AlkemiRateModel.sol
+# Earn Interest Rate Model (AlkemiRateModel.sol)
 
 View Source: [contracts/AlkemiRateModel.sol](../contracts/AlkemiRateModel.sol)
 
 **↗ Extends: [Exponential](Exponential.md), [LiquidationChecker](LiquidationChecker.md)**
 
 **{{ContractName}}**
+
+See Model here
 
 ## Constructor
 

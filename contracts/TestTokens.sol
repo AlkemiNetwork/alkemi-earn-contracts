@@ -24,12 +24,12 @@ constructor (string memory _name, string memory _symbol, uint8 _decimals, uint25
 //return the total number of tokens that you have
 function totalSupply() external view returns (uint256){
     return supply;
-} 
+}
 
 //How many tokens does this person have
 function balanceOf(address tokenOwner) external view returns (uint){
     return balances[tokenOwner];
-} 
+}
 
 //helps in transferring from your account to another person
 function transfer(address receiver, uint numTokens) external returns (bool){
@@ -39,7 +39,7 @@ function transfer(address receiver, uint numTokens) external returns (bool){
     balances[receiver] += numTokens;
     emit Transfer(msg.sender,receiver,numTokens);
     return true;
-} 
+}
 
 // Used to delegate authority to send tokens without my approval
 function approve(address delegate, uint numTokens) external returns (bool){
@@ -47,12 +47,12 @@ function approve(address delegate, uint numTokens) external returns (bool){
     allowed[msg.sender][delegate] = numTokens;
     emit Approval(msg.sender,delegate,numTokens);
     return true;
-} 
+}
 
 // How much has the owner delegated/approved to the delegate
 function allowance(address owner, address delegate) external view returns (uint){
     return allowed[owner][delegate];
-} 
+}
 
 // Used by exchanges to send money from owner to buyer
 function transferFrom(address owner, address buyer, uint numTokens) external returns (bool){
