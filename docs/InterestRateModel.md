@@ -7,8 +7,6 @@ title: InterestRateModel
 
 View Source: [contracts/InterestRateModel.sol](../contracts/InterestRateModel.sol)
 
-**↘ Derived Contracts: [JumpRateModel](JumpRateModel.md), [JumpRateModelV2](JumpRateModelV2.md)**
-
 **{{ContractName}}**
 
 Any interest rate model should derive from this contract.

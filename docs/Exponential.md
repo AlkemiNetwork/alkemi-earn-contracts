@@ -8,7 +8,7 @@ title: Exponential
 View Source: [contracts/Exponential.sol](../contracts/Exponential.sol)
 
 **↗ Extends: [ErrorReporter](ErrorReporter.md), [CarefulMath](CarefulMath.md)**
-**↘ Derived Contracts: [AlkemiRateModel](AlkemiRateModel.md), [ExchangeRateModel](ExchangeRateModel.md), [MoneyMarket](MoneyMarket.md), [PriceOracle](PriceOracle.md), [StableCoinInterestRateModel](StableCoinInterestRateModel.md), [StandardInterestRateModel](StandardInterestRateModel.md)**
+**↘ Derived Contracts: [AlkemiRateModel](AlkemiRateModel.md), [ExchangeRateModel](ExchangeRateModel.md), [MoneyMarket](MoneyMarket.md), [PriceOracle](PriceOracle.md)**
 
 **{{ContractName}}**
 
