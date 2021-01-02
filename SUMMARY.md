@@ -1,0 +1,32 @@
+# Table of contents
+
+* [Alkemi Earn Protocol](README.md)
+
+## Functional Specs
+
+* [Contracts](functional-specs/contracts/README.md)
+  * [Earn Interest Rate Model \(AlkemiRateModel.sol\)](functional-specs/contracts/alkemiratemodel.md)
+  * [MoneyMarket.sol](functional-specs/contracts/moneymarket.md)
+  * [PriceOracle.sol](functional-specs/contracts/priceoracle.md)
+  * [PriceOracleProxy.sol](functional-specs/contracts/priceoracleproxy.md)
+  * [ExchangeRateModel.sol](functional-specs/contracts/exchangeratemodel.md)
+  * [ChainLink.sol](functional-specs/contracts/chainlink.md)
+  * [Liquidator.sol](functional-specs/contracts/liquidator.md)
+  * [LiquidationChecker.sol](functional-specs/contracts/liquidationchecker.md)
+  * [Migrations.sol](functional-specs/contracts/migrations.md)
+  * [ErrorReporter.sol](functional-specs/contracts/errorreporter.md)
+* [Interfaces](functional-specs/interfaces/README.md)
+  * [AggregatorV3Interface.sol](functional-specs/interfaces/aggregatorv3interface.md)
+  * [InterestRateModel.sol](functional-specs/interfaces/interestratemodel.md)
+  * [PriceOracleInterface.sol](functional-specs/interfaces/priceoracleinterface.md)
+  * [EIP20NonStandardInterface.sol](functional-specs/interfaces/eip20nonstandardinterface.md)
+  * [EIP20Interface.sol](functional-specs/interfaces/eip20interface.md)
+* [Tokens](functional-specs/tokens/README.md)
+  * [AlkemiWETH.sol](functional-specs/tokens/alkemiweth.md)
+  * [TestTokens.sol](functional-specs/tokens/testtokens.md)
+* [Libraries](functional-specs/libraries/README.md)
+  * [Careful Math \(CarefulMath.sol\)](functional-specs/libraries/carefulmath.md)
+  * [Exponential.sol](functional-specs/libraries/exponential.md)
+  * [SafeToken.sol](functional-specs/libraries/safetoken.md)
+  * [SafeMath.sol](functional-specs/libraries/safemath.md)
+

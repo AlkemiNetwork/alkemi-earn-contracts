@@ -5,16 +5,15 @@ title: ErrorReporter
 
 # ErrorReporter.sol
 
-View Source: [contracts/ErrorReporter.sol](../contracts/ErrorReporter.sol)
+View Source: [contracts/ErrorReporter.sol](https://github.com/project-alkemi/alkemi-earn-protocol/tree/2a353e0fa125b9f579db260fbb031d53b74bf7e2/contracts/ErrorReporter.sol)
 
-**↘ Derived Contracts: [CarefulMath](CarefulMath.md), [Exponential](Exponential.md), [Liquidator](Liquidator.md), [SafeToken](SafeToken.md)**
-
-**{{ContractName}}**
+**↘ Derived Contracts:** [**CarefulMath**](../libraries/carefulmath.md)**,** [**Exponential**](../libraries/exponential.md)**,** [**Liquidator**](liquidator.md)**,** [**SafeToken**](../libraries/safetoken.md)
 
 **Enums**
+
 ### Error
 
-```js
+```javascript
 enum Error {
  NO_ERROR,
  OPAQUE_ERROR,
@@ -55,7 +54,7 @@ enum Error {
 
 ### FailureInfo
 
-```js
+```javascript
 enum FailureInfo {
  ACCEPT_ADMIN_PENDING_ADMIN_CHECK,
  BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED,
@@ -163,44 +162,44 @@ enum FailureInfo {
 
 **Events**
 
-```js
+```javascript
 event Failure(uint256  error, uint256  info, uint256  detail);
 ```
 
 ## Functions
 
-- [fail(enum ErrorReporter.Error err, enum ErrorReporter.FailureInfo info)](#fail)
-- [failOpaque(enum ErrorReporter.FailureInfo info, uint256 opaqueError)](#failopaque)
+* [fail\(enum ErrorReporter.Error err, enum ErrorReporter.FailureInfo info\)](errorreporter.md#fail)
+* [failOpaque\(enum ErrorReporter.FailureInfo info, uint256 opaqueError\)](errorreporter.md#failopaque)
 
 ### fail
 
 use this when reporting a known error from the money market or a non-upgradeable collaborator
 
-```js
+```javascript
 function fail(enum ErrorReporter.Error err, enum ErrorReporter.FailureInfo info) internal nonpayable
 returns(uint256)
 ```
 
 **Arguments**
 
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| err | enum ErrorReporter.Error |  | 
-| info | enum ErrorReporter.FailureInfo |  | 
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| err | enum ErrorReporter.Error |  |
+| info | enum ErrorReporter.FailureInfo |  |
 
 ### failOpaque
 
 use this when reporting an opaque error from an upgradeable collaborator contract
 
-```js
+```javascript
 function failOpaque(enum ErrorReporter.FailureInfo info, uint256 opaqueError) internal nonpayable
 returns(uint256)
 ```
 
 **Arguments**
 
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| info | enum ErrorReporter.FailureInfo |  | 
-| opaqueError | uint256 |  | 
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| info | enum ErrorReporter.FailureInfo |  |
+| opaqueError | uint256 |  |
 
