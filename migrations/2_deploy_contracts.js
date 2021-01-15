@@ -62,7 +62,7 @@ module.exports = async (deployer, network, accounts) => {
 	} else if (network == "kovan") {
 		// await deployer.deploy(PriceOracle, deploymentConfig.KOVAN.POSTER);
 		// await deployer.deploy(PriceOracleProxy, PriceOracle.address);
-		// await deployer.deploy(MoneyMarket, PriceOracle.address);
+		await deployer.deploy(MoneyMarket);
 		// await deployer.deploy(Liquidator, MoneyMarket.address);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(MoneyMarket);

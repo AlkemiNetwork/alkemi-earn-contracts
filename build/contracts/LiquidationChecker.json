@@ -73,9 +73,9 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"allowLiquidation\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"allowLiquidation_\",\"type\":\"bool\"}],\"name\":\"setAllowLiquidation\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"liquidator\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"moneyMarket\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"moneyMarket_\",\"type\":\"address\"},{\"name\":\"liquidator_\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol\":\"LiquidationChecker\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/AggregatorV3Interface.sol\":{\"keccak256\":\"0x161bda2631a82e8bddb0f162e398b80e1f1e07e6bc0ff046e079991821a816d6\",\"urls\":[\"bzzr://7b571243fd9a990c0fa5b6ff21dae0c9c605c11d43745c9f450af73aa44e3ef6\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/AlkemiWETH.sol\":{\"keccak256\":\"0x8a5824e13d8c12db50538e40c59454854db7d11cf17f260a62e4f0ee79d3e6bb\",\"urls\":[\"bzzr://5290a9a302481e76dd07f80b65965b4036694644f15249becbee6eeae00f3875\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x86024d69204156fb3c884eda6b255e580503fd9ce69aabf21f00b719b9545be2\",\"urls\":[\"bzzr://d551339e134215906e14ae33e5f3acf36ec2fb91925b4ee3407a65df4eeb1b32\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ChainLink.sol\":{\"keccak256\":\"0x6a808c6f0203ca4fd7843f2ab12e2821ffc282b01821e325fa92f3c1325a9a7b\",\"urls\":[\"bzzr://eee7801da18d6d5857588d3bd318f424273e07c46fd52e663c7f33c2a6d2240d\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol\":{\"keccak256\":\"0x390e7f7ce830a7d1b64a38b11da61596e99f358c4aab58df06eb917a5da5e9b1\",\"urls\":[\"bzzr://c7d5ad7c74fa0fcb1f142298ab742e5115ad155a61268faf7388c47f551f9c26\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20NonStandardInterface.sol\":{\"keccak256\":\"0xe5e4ca3efdbaa1c2d412c440643fca47e90bda52823c4fcbc3f1a8e34932dc87\",\"urls\":[\"bzzr://cff1295b74931e7d938064bd63e4ddff708a265aee1938df585b4dd8a5475766\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x97359e402ca8c0c3651d5487bb86db6fe95868c587ccbd85e3ca70b3ffbfc6df\",\"urls\":[\"bzzr://c0e4eca77d0205410b7f14ee9a97f358747363a69a5b2fe777547a931a2326f0\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Exponential.sol\":{\"keccak256\":\"0x3e95266be5188ce593db759f61e351fe91a54194e557147190befb9091ef1b80\",\"urls\":[\"bzzr://5c65af314f8d9c7a7adc63d3791844e781ab0825e2dffcce24a80cc27f7b7d58\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/InterestRateModel.sol\":{\"keccak256\":\"0x2175424303f1087a72c3626a498c47dea6cc38c960aa9cda412dc210eaab2b5b\",\"urls\":[\"bzzr://b9eee55364b4ade7960947e92eed3e43a4ec9ce41860550c0b2ca4d722205d55\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol\":{\"keccak256\":\"0x43cde149b519b34eba8ebdc1c934f044fe11a25c19fc3c84ce5fae2408280079\",\"urls\":[\"bzzr://8a2589afa2b4d03eb08554b0c6c1cf16a3f547e284734a52a73decfe29fa61c0\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/MoneyMarket.sol\":{\"keccak256\":\"0x1b3f8f893b0cd2c47aa77c71e07e106798ece9b247f046d6a583210f1869daa2\",\"urls\":[\"bzzr://683339f53b5b34b9b0be6e2c843653cb10efcd0c3d5e765637ab6a8dc92c5d05\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol\":{\"keccak256\":\"0x76af9cc30659e75f490fd57d2f05b40fbfe57bf407dbdc2e0a28cc1f16869389\",\"urls\":[\"bzzr://4f2505fe2b905f06ac751248077af308e4560ee77f782459132eea6b11f512b9\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleProxy.sol\":{\"keccak256\":\"0xa6324094c4a0c7ca473ad73b5254f6c4183e97dd517b141e30fcecec84b370e7\",\"urls\":[\"bzzr://e0cbe6c59ab6dd443a19c7cdaa6e7e46c136c453a781364405819573c54e9094\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/SafeToken.sol\":{\"keccak256\":\"0x9bf40651ef8ae14a6e45aaef20830ffd35c49acdee54ff0532a2395d5d7ee4ab\",\"urls\":[\"bzzr://b23543739bd11b43f5cf328e6561d9ae163ba41187cfb394584f74a61e06e5e5\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/TestTokens.sol\":{\"keccak256\":\"0xb96d2667396c8f6ea8008c31a05ba99ec639eb5fb1f5e6885b0adef228332993\",\"urls\":[\"bzzr://ab49cb8bfbda895da0360e1be8fd7fe02b0c8b1113ebdd67e364cb7c922e208c\"]}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b506040516040806102e083398101604052805160209091015160008054600160a060020a0319908116600160a060020a0394851617825560018054909116939092169290921760a060020a60ff021916905561026e90819061007290396000f3006080604052600436106100605763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416620fba16811461006557806325468f681461008e5780634046ebae146100aa578063d6d75f51146100e8575b600080fd5b34801561007157600080fd5b5061007a6100fd565b604080519115158252519081900360200190f35b34801561009a57600080fd5b506100a8600435151561011e565b005b3480156100b657600080fd5b506100bf61020a565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100f457600080fd5b506100bf610226565b60015474010000000000000000000000000000000000000000900460ff1681565b60015473ffffffffffffffffffffffffffffffffffffffff1633146101ca57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c49515560448201527f494441544f520000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60018054911515740100000000000000000000000000000000000000000274ff000000000000000000000000000000000000000019909216919091179055565b60015473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058203c2ada68caf69f9f0f6cf0a1484182f73d1d99d46bee19808dac3e6045c856000029",
-  "deployedBytecode": "0x6080604052600436106100605763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416620fba16811461006557806325468f681461008e5780634046ebae146100aa578063d6d75f51146100e8575b600080fd5b34801561007157600080fd5b5061007a6100fd565b604080519115158252519081900360200190f35b34801561009a57600080fd5b506100a8600435151561011e565b005b3480156100b657600080fd5b506100bf61020a565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100f457600080fd5b506100bf610226565b60015474010000000000000000000000000000000000000000900460ff1681565b60015473ffffffffffffffffffffffffffffffffffffffff1633146101ca57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c49515560448201527f494441544f520000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60018054911515740100000000000000000000000000000000000000000274ff000000000000000000000000000000000000000019909216919091179055565b60015473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058203c2ada68caf69f9f0f6cf0a1484182f73d1d99d46bee19808dac3e6045c856000029",
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"allowLiquidation\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"allowLiquidation_\",\"type\":\"bool\"}],\"name\":\"setAllowLiquidation\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"liquidator\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"moneyMarket\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"moneyMarket_\",\"type\":\"address\"},{\"name\":\"liquidator_\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol\":\"LiquidationChecker\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/AggregatorV3Interface.sol\":{\"keccak256\":\"0x161bda2631a82e8bddb0f162e398b80e1f1e07e6bc0ff046e079991821a816d6\",\"urls\":[\"bzzr://7b571243fd9a990c0fa5b6ff21dae0c9c605c11d43745c9f450af73aa44e3ef6\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/AlkemiWETH.sol\":{\"keccak256\":\"0x8a5824e13d8c12db50538e40c59454854db7d11cf17f260a62e4f0ee79d3e6bb\",\"urls\":[\"bzzr://5290a9a302481e76dd07f80b65965b4036694644f15249becbee6eeae00f3875\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x86024d69204156fb3c884eda6b255e580503fd9ce69aabf21f00b719b9545be2\",\"urls\":[\"bzzr://d551339e134215906e14ae33e5f3acf36ec2fb91925b4ee3407a65df4eeb1b32\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ChainLink.sol\":{\"keccak256\":\"0x6a808c6f0203ca4fd7843f2ab12e2821ffc282b01821e325fa92f3c1325a9a7b\",\"urls\":[\"bzzr://eee7801da18d6d5857588d3bd318f424273e07c46fd52e663c7f33c2a6d2240d\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol\":{\"keccak256\":\"0x390e7f7ce830a7d1b64a38b11da61596e99f358c4aab58df06eb917a5da5e9b1\",\"urls\":[\"bzzr://c7d5ad7c74fa0fcb1f142298ab742e5115ad155a61268faf7388c47f551f9c26\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20NonStandardInterface.sol\":{\"keccak256\":\"0xe5e4ca3efdbaa1c2d412c440643fca47e90bda52823c4fcbc3f1a8e34932dc87\",\"urls\":[\"bzzr://cff1295b74931e7d938064bd63e4ddff708a265aee1938df585b4dd8a5475766\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x97359e402ca8c0c3651d5487bb86db6fe95868c587ccbd85e3ca70b3ffbfc6df\",\"urls\":[\"bzzr://c0e4eca77d0205410b7f14ee9a97f358747363a69a5b2fe777547a931a2326f0\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Exponential.sol\":{\"keccak256\":\"0x3e95266be5188ce593db759f61e351fe91a54194e557147190befb9091ef1b80\",\"urls\":[\"bzzr://5c65af314f8d9c7a7adc63d3791844e781ab0825e2dffcce24a80cc27f7b7d58\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/InterestRateModel.sol\":{\"keccak256\":\"0x2175424303f1087a72c3626a498c47dea6cc38c960aa9cda412dc210eaab2b5b\",\"urls\":[\"bzzr://b9eee55364b4ade7960947e92eed3e43a4ec9ce41860550c0b2ca4d722205d55\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol\":{\"keccak256\":\"0x43cde149b519b34eba8ebdc1c934f044fe11a25c19fc3c84ce5fae2408280079\",\"urls\":[\"bzzr://8a2589afa2b4d03eb08554b0c6c1cf16a3f547e284734a52a73decfe29fa61c0\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/MoneyMarket.sol\":{\"keccak256\":\"0x827015d1c48a393fa4492b6b7cbc2bc2905f94997fb7c92cc7952024e41fe868\",\"urls\":[\"bzzr://56b5bf46e9faea3029eb53c3e25245630a6eb22005fdde4b6d38bc4e43068f77\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol\":{\"keccak256\":\"0x76af9cc30659e75f490fd57d2f05b40fbfe57bf407dbdc2e0a28cc1f16869389\",\"urls\":[\"bzzr://4f2505fe2b905f06ac751248077af308e4560ee77f782459132eea6b11f512b9\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleProxy.sol\":{\"keccak256\":\"0xa6324094c4a0c7ca473ad73b5254f6c4183e97dd517b141e30fcecec84b370e7\",\"urls\":[\"bzzr://e0cbe6c59ab6dd443a19c7cdaa6e7e46c136c453a781364405819573c54e9094\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/SafeToken.sol\":{\"keccak256\":\"0x9bf40651ef8ae14a6e45aaef20830ffd35c49acdee54ff0532a2395d5d7ee4ab\",\"urls\":[\"bzzr://b23543739bd11b43f5cf328e6561d9ae163ba41187cfb394584f74a61e06e5e5\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/TestTokens.sol\":{\"keccak256\":\"0xb96d2667396c8f6ea8008c31a05ba99ec639eb5fb1f5e6885b0adef228332993\",\"urls\":[\"bzzr://ab49cb8bfbda895da0360e1be8fd7fe02b0c8b1113ebdd67e364cb7c922e208c\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516040806102e083398101604052805160209091015160008054600160a060020a0319908116600160a060020a0394851617825560018054909116939092169290921760a060020a60ff021916905561026e90819061007290396000f3006080604052600436106100605763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416620fba16811461006557806325468f681461008e5780634046ebae146100aa578063d6d75f51146100e8575b600080fd5b34801561007157600080fd5b5061007a6100fd565b604080519115158252519081900360200190f35b34801561009a57600080fd5b506100a8600435151561011e565b005b3480156100b657600080fd5b506100bf61020a565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100f457600080fd5b506100bf610226565b60015474010000000000000000000000000000000000000000900460ff1681565b60015473ffffffffffffffffffffffffffffffffffffffff1633146101ca57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c49515560448201527f494441544f520000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60018054911515740100000000000000000000000000000000000000000274ff000000000000000000000000000000000000000019909216919091179055565b60015473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820e4b7e63f42d80fee1cdfa10687c2ff3e672be638e16a1933f82744f6fbe6cfb20029",
+  "deployedBytecode": "0x6080604052600436106100605763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416620fba16811461006557806325468f681461008e5780634046ebae146100aa578063d6d75f51146100e8575b600080fd5b34801561007157600080fd5b5061007a6100fd565b604080519115158252519081900360200190f35b34801561009a57600080fd5b506100a8600435151561011e565b005b3480156100b657600080fd5b506100bf61020a565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100f457600080fd5b506100bf610226565b60015474010000000000000000000000000000000000000000900460ff1681565b60015473ffffffffffffffffffffffffffffffffffffffff1633146101ca57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c49515560448201527f494441544f520000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60018054911515740100000000000000000000000000000000000000000274ff000000000000000000000000000000000000000019909216919091179055565b60015473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820e4b7e63f42d80fee1cdfa10687c2ff3e672be638e16a1933f82744f6fbe6cfb20029",
   "sourceMap": "119:1342:12:-;;;255:186;8:9:-1;5:2;;;30:1;27;20:12;5:2;255:186:12;;;;;;;;;;;;;;;;;;;327:11;:39;;-1:-1:-1;;;;;;327:39:12;;;-1:-1:-1;;;;;327:39:12;;;;;;-1:-1:-1;376:24:12;;;;;;;;;;;;;-1:-1:-1;;;;;;410:24:12;;;119:1342;;;;;;;;",
   "deployedSourceMap": "119:1342:12:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;220:28;;8:9:-1;5:2;;;30:1;27;20:12;5:2;220:28:12;;;;;;;;;;;;;;;;;;;;;;1260:199;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;1260:199:12;;;;;;;;;189:25;;8:9:-1;5:2;;;30:1;27;20:12;5:2;189:25:12;;;;;;;;;;;;;;;;;;;;;;;153:30;;8:9:-1;5:2;;;30:1;27;20:12;5:2;153:30:12;;;;220:28;;;;;;;;;:::o;1260:199::-;1352:10;;;;1338;:24;1330:75;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1416:16;:36;;;;;;;-1:-1:-1;;1416:36:12;;;;;;;;;1260:199::o;189:25::-;;;;;;:::o;153:30::-;;;;;;:::o",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./EIP20Interface.sol\";\nimport \"./PriceOracleProxy.sol\";\nimport \"./MoneyMarket.sol\";\n\ncontract LiquidationChecker {\n    MoneyMarket public moneyMarket;\n    address public liquidator;\n    bool public allowLiquidation;\n\n    constructor(address moneyMarket_, address liquidator_) public {\n        moneyMarket = MoneyMarket(moneyMarket_);\n        liquidator = liquidator_;\n        allowLiquidation = false;\n    }\n\n    function isAllowed(address asset, uint newCash) internal view returns(bool) {\n        return allowLiquidation || !isLiquidate(asset, newCash);\n    }\n\n    function isLiquidate(address asset, uint newCash) internal view returns(bool) {\n        return cashIsUp(asset, newCash) && oracleTouched();\n    }\n\n    function cashIsUp(address asset, uint newCash) internal view returns(bool) {\n        uint oldCash = EIP20Interface(asset).balanceOf(moneyMarket);\n\n        return newCash >= oldCash;\n    }\n\n    function oracleTouched() internal view returns(bool) {\n        PriceOracleProxy oracle = PriceOracleProxy(moneyMarket.oracle());\n\n        bool sameOrigin = oracle.mostRecentCaller() == tx.origin;\n        bool sameBlock = oracle.mostRecentBlock() == block.number;\n\n        return sameOrigin && sameBlock;\n    }\n\n    function setAllowLiquidation(bool allowLiquidation_) public {\n        require(msg.sender == liquidator, \"LIQUIDATION_CHECKER_INVALID_LIQUIDATOR\");\n\n        allowLiquidation = allowLiquidation_;\n    }\n}\n",
@@ -118,7 +118,7 @@
         "id": 3351,
         "nodeType": "ImportDirective",
         "scope": 3495,
-        "sourceUnit": 12140,
+        "sourceUnit": 12209,
         "src": "57:32:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -129,7 +129,7 @@
         "id": 3352,
         "nodeType": "ImportDirective",
         "scope": 3495,
-        "sourceUnit": 10459,
+        "sourceUnit": 10528,
         "src": "90:27:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -157,7 +157,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+              "typeIdentifier": "t_contract$_MoneyMarket_$10527",
               "typeString": "contract MoneyMarket"
             },
             "typeName": {
@@ -165,10 +165,10 @@
               "id": 3353,
               "name": "MoneyMarket",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10458,
+              "referencedDeclaration": 10527,
               "src": "153:11:12",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                 "typeString": "contract MoneyMarket"
               }
             },
@@ -250,7 +250,7 @@
                       "referencedDeclaration": 3354,
                       "src": "327:11:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                        "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                         "typeString": "contract MoneyMarket"
                       }
                     },
@@ -284,10 +284,10 @@
                         "name": "MoneyMarket",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10458,
+                        "referencedDeclaration": 10527,
                         "src": "341:11:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_MoneyMarket_$10458_$",
+                          "typeIdentifier": "t_type$_t_contract$_MoneyMarket_$10527_$",
                           "typeString": "type(contract MoneyMarket)"
                         }
                       },
@@ -301,13 +301,13 @@
                       "nodeType": "FunctionCall",
                       "src": "341:25:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                        "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                         "typeString": "contract MoneyMarket"
                       }
                     },
                     "src": "327:39:12",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                      "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                       "typeString": "contract MoneyMarket"
                     }
                   },
@@ -1016,7 +1016,7 @@
                         "referencedDeclaration": 3354,
                         "src": "884:11:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                          "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                           "typeString": "contract MoneyMarket"
                         }
                       }
@@ -1024,7 +1024,7 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                          "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                           "typeString": "contract MoneyMarket"
                         }
                       ],
@@ -1289,7 +1289,7 @@
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                        "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                         "typeString": "contract PriceOracleProxy"
                       },
                       "typeName": {
@@ -1297,10 +1297,10 @@
                         "id": 3444,
                         "name": "PriceOracleProxy",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 12139,
+                        "referencedDeclaration": 12208,
                         "src": "1008:16:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                          "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                           "typeString": "contract PriceOracleProxy"
                         }
                       },
@@ -1326,7 +1326,7 @@
                             "referencedDeclaration": 3354,
                             "src": "1051:11:12",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                              "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                               "typeString": "contract MoneyMarket"
                             }
                           },
@@ -1370,10 +1370,10 @@
                       "name": "PriceOracleProxy",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 12139,
+                      "referencedDeclaration": 12208,
                       "src": "1034:16:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$12139_$",
+                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$12208_$",
                         "typeString": "type(contract PriceOracleProxy)"
                       }
                     },
@@ -1387,7 +1387,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1034:38:12",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                      "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                       "typeString": "contract PriceOracleProxy"
                     }
                   },
@@ -1452,7 +1452,7 @@
                           "referencedDeclaration": 3445,
                           "src": "1101:6:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                             "typeString": "contract PriceOracleProxy"
                           }
                         },
@@ -1463,7 +1463,7 @@
                         "lValueRequested": false,
                         "memberName": "mostRecentCaller",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 12099,
+                        "referencedDeclaration": 12168,
                         "src": "1101:23:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -1494,7 +1494,7 @@
                         "name": "tx",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13666,
+                        "referencedDeclaration": 13735,
                         "src": "1130:2:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_transaction",
@@ -1582,7 +1582,7 @@
                           "referencedDeclaration": 3445,
                           "src": "1166:6:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                             "typeString": "contract PriceOracleProxy"
                           }
                         },
@@ -1593,7 +1593,7 @@
                         "lValueRequested": false,
                         "memberName": "mostRecentBlock",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 12101,
+                        "referencedDeclaration": 12170,
                         "src": "1166:22:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
@@ -1624,7 +1624,7 @@
                         "name": "block",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13644,
+                        "referencedDeclaration": 13713,
                         "src": "1194:5:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_block",
@@ -1790,7 +1790,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 13654,
+                            "referencedDeclaration": 13723,
                             "src": "1338:3:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -1866,10 +1866,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        13657,
-                        13658
+                        13726,
+                        13727
                       ],
-                      "referencedDeclaration": 13658,
+                      "referencedDeclaration": 13727,
                       "src": "1330:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2041,7 +2041,7 @@
         "id": 3351,
         "nodeType": "ImportDirective",
         "scope": 3495,
-        "sourceUnit": 12140,
+        "sourceUnit": 12209,
         "src": "57:32:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2052,7 +2052,7 @@
         "id": 3352,
         "nodeType": "ImportDirective",
         "scope": 3495,
-        "sourceUnit": 10459,
+        "sourceUnit": 10528,
         "src": "90:27:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2080,7 +2080,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+              "typeIdentifier": "t_contract$_MoneyMarket_$10527",
               "typeString": "contract MoneyMarket"
             },
             "typeName": {
@@ -2088,10 +2088,10 @@
               "id": 3353,
               "name": "MoneyMarket",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10458,
+              "referencedDeclaration": 10527,
               "src": "153:11:12",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                 "typeString": "contract MoneyMarket"
               }
             },
@@ -2173,7 +2173,7 @@
                       "referencedDeclaration": 3354,
                       "src": "327:11:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                        "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                         "typeString": "contract MoneyMarket"
                       }
                     },
@@ -2207,10 +2207,10 @@
                         "name": "MoneyMarket",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10458,
+                        "referencedDeclaration": 10527,
                         "src": "341:11:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_MoneyMarket_$10458_$",
+                          "typeIdentifier": "t_type$_t_contract$_MoneyMarket_$10527_$",
                           "typeString": "type(contract MoneyMarket)"
                         }
                       },
@@ -2224,13 +2224,13 @@
                       "nodeType": "FunctionCall",
                       "src": "341:25:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                        "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                         "typeString": "contract MoneyMarket"
                       }
                     },
                     "src": "327:39:12",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                      "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                       "typeString": "contract MoneyMarket"
                     }
                   },
@@ -2939,7 +2939,7 @@
                         "referencedDeclaration": 3354,
                         "src": "884:11:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                          "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                           "typeString": "contract MoneyMarket"
                         }
                       }
@@ -2947,7 +2947,7 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                          "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                           "typeString": "contract MoneyMarket"
                         }
                       ],
@@ -3212,7 +3212,7 @@
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                        "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                         "typeString": "contract PriceOracleProxy"
                       },
                       "typeName": {
@@ -3220,10 +3220,10 @@
                         "id": 3444,
                         "name": "PriceOracleProxy",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 12139,
+                        "referencedDeclaration": 12208,
                         "src": "1008:16:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                          "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                           "typeString": "contract PriceOracleProxy"
                         }
                       },
@@ -3249,7 +3249,7 @@
                             "referencedDeclaration": 3354,
                             "src": "1051:11:12",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+                              "typeIdentifier": "t_contract$_MoneyMarket_$10527",
                               "typeString": "contract MoneyMarket"
                             }
                           },
@@ -3293,10 +3293,10 @@
                       "name": "PriceOracleProxy",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 12139,
+                      "referencedDeclaration": 12208,
                       "src": "1034:16:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$12139_$",
+                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$12208_$",
                         "typeString": "type(contract PriceOracleProxy)"
                       }
                     },
@@ -3310,7 +3310,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1034:38:12",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                      "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                       "typeString": "contract PriceOracleProxy"
                     }
                   },
@@ -3375,7 +3375,7 @@
                           "referencedDeclaration": 3445,
                           "src": "1101:6:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                             "typeString": "contract PriceOracleProxy"
                           }
                         },
@@ -3386,7 +3386,7 @@
                         "lValueRequested": false,
                         "memberName": "mostRecentCaller",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 12099,
+                        "referencedDeclaration": 12168,
                         "src": "1101:23:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -3417,7 +3417,7 @@
                         "name": "tx",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13666,
+                        "referencedDeclaration": 13735,
                         "src": "1130:2:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_transaction",
@@ -3505,7 +3505,7 @@
                           "referencedDeclaration": 3445,
                           "src": "1166:6:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12139",
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12208",
                             "typeString": "contract PriceOracleProxy"
                           }
                         },
@@ -3516,7 +3516,7 @@
                         "lValueRequested": false,
                         "memberName": "mostRecentBlock",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 12101,
+                        "referencedDeclaration": 12170,
                         "src": "1166:22:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
@@ -3547,7 +3547,7 @@
                         "name": "block",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13644,
+                        "referencedDeclaration": 13713,
                         "src": "1194:5:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_block",
@@ -3713,7 +3713,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 13654,
+                            "referencedDeclaration": 13723,
                             "src": "1338:3:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -3789,10 +3789,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        13657,
-                        13658
+                        13726,
+                        13727
                       ],
-                      "referencedDeclaration": 13658,
+                      "referencedDeclaration": 13727,
                       "src": "1330:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -3932,8 +3932,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-12-31T04:11:39.724Z",
-  "networkType": "ethereum",
+  "updatedAt": "2021-01-15T20:47:56.367Z",
   "devdoc": {
     "methods": {}
   },

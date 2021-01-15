@@ -1770,12 +1770,27 @@ contract MoneyMarket is Exponential, SafeToken {
             return fail(err, FailureInfo.REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED);
         }
 
+        uint reimburseAmount;
         // If the user specifies -1 amount to repay (“max”), repayAmount =>
         // the lesser of the senders ERC-20 balance and borrowCurrent
-        if (amount == uint(-1)) {
-            localResults.repayAmount = min(getBalanceOf(asset, msg.sender), localResults.userBorrowCurrent);
+        if (asset != wethAddress) {
+            if (amount == uint(-1)) {
+                localResults.repayAmount = min(getBalanceOf(asset, msg.sender), localResults.userBorrowCurrent);
+            } else {
+                localResults.repayAmount = amount;
+            }
         } else {
-            localResults.repayAmount = amount;
+            // To calculate the actual repay use has to do and reimburse the excess amount of ETH collected
+            if (amount > localResults.userBorrowCurrent) {
+                localResults.repayAmount = localResults.userBorrowCurrent;
+                (err, reimburseAmount) = sub(amount,localResults.userBorrowCurrent); // reimbursement called at the end to make sure function does not have any other errors
+                if (err != Error.NO_ERROR) {
+                    revertEtherToUser(msg.sender,msg.value);
+                    return fail(err, FailureInfo.REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED);
+                }
+            } else {
+                localResults.repayAmount = amount;
+            }
         }
 
         // Subtract the `repayAmount` from the `userBorrowCurrent` to get `userBorrowUpdated`
@@ -1848,7 +1863,11 @@ contract MoneyMarket is Exponential, SafeToken {
             }
         } else {
             if (msg.value == amount){
-                uint supplyError = supplyEther(msg.sender,msg.value);
+                uint supplyError = supplyEther(msg.sender,localResults.repayAmount);
+                //Repay excess funds
+                if(reimburseAmount > 0){
+                    revertEtherToUser(msg.sender,reimburseAmount);
+                }
                 if(supplyError != 0 ){
                     revertEtherToUser(msg.sender,msg.value);
                     return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);

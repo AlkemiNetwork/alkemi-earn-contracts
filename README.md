@@ -143,7 +143,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket </td>
-		<td> 0x094Aa82872c43031810470317d4D8e3CA9214087 </td>
+		<td> 0x9296F7df6A25053A9816db9166a4A8bbc34287B3 </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
