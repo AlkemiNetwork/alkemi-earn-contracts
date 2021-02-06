@@ -32,14 +32,14 @@
     "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
     "exportedSymbols": {
       "PriceOracleInterface": [
-        12234
+        18923
       ]
     },
-    "id": 12235,
+    "id": 18924,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 12226,
+        "id": 18915,
         "literals": [
           "solidity",
           "^",
@@ -47,7 +47,7 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:17"
+        "src": "0:24:18"
       },
       {
         "baseContracts": [],
@@ -55,9 +55,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 12234,
+        "id": 18923,
         "linearizedBaseContracts": [
-          12234
+          18923
         ],
         "name": "PriceOracleInterface",
         "nodeType": "ContractDefinition",
@@ -65,7 +65,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
-            "id": 12233,
+            "id": 18922,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -73,16 +73,16 @@
             "name": "assetPrices",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 12229,
+              "id": 18918,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 12228,
+                  "id": 18917,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12233,
-                  "src": "320:13:17",
+                  "scope": 18922,
+                  "src": "320:13:18",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -90,10 +90,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 12227,
+                    "id": 18916,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "320:7:17",
+                    "src": "320:7:18",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -103,20 +103,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "319:15:17"
+              "src": "319:15:18"
             },
             "payable": false,
             "returnParameters": {
-              "id": 12232,
+              "id": 18921,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 12231,
+                  "id": 18920,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12233,
-                  "src": "356:4:17",
+                  "scope": 18922,
+                  "src": "356:4:18",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -124,10 +124,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 12230,
+                    "id": 18919,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "356:4:17",
+                    "src": "356:4:18",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -137,33 +137,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "355:6:17"
+              "src": "355:6:18"
             },
-            "scope": 12234,
-            "src": "299:63:17",
+            "scope": 18923,
+            "src": "299:63:18",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 12235,
-        "src": "26:338:17"
+        "scope": 18924,
+        "src": "26:338:18"
       }
     ],
-    "src": "0:365:17"
+    "src": "0:365:18"
   },
   "legacyAST": {
     "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
     "exportedSymbols": {
       "PriceOracleInterface": [
-        12234
+        18923
       ]
     },
-    "id": 12235,
+    "id": 18924,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 12226,
+        "id": 18915,
         "literals": [
           "solidity",
           "^",
@@ -171,7 +171,7 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:17"
+        "src": "0:24:18"
       },
       {
         "baseContracts": [],
@@ -179,9 +179,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 12234,
+        "id": 18923,
         "linearizedBaseContracts": [
-          12234
+          18923
         ],
         "name": "PriceOracleInterface",
         "nodeType": "ContractDefinition",
@@ -189,7 +189,7 @@
           {
             "body": null,
             "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
-            "id": 12233,
+            "id": 18922,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -197,16 +197,16 @@
             "name": "assetPrices",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 12229,
+              "id": 18918,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 12228,
+                  "id": 18917,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12233,
-                  "src": "320:13:17",
+                  "scope": 18922,
+                  "src": "320:13:18",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -214,10 +214,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 12227,
+                    "id": 18916,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "320:7:17",
+                    "src": "320:7:18",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -227,20 +227,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "319:15:17"
+              "src": "319:15:18"
             },
             "payable": false,
             "returnParameters": {
-              "id": 12232,
+              "id": 18921,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 12231,
+                  "id": 18920,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12233,
-                  "src": "356:4:17",
+                  "scope": 18922,
+                  "src": "356:4:18",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -248,10 +248,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 12230,
+                    "id": 18919,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "356:4:17",
+                    "src": "356:4:18",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -261,20 +261,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "355:6:17"
+              "src": "355:6:18"
             },
-            "scope": 12234,
-            "src": "299:63:17",
+            "scope": 18923,
+            "src": "299:63:18",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 12235,
-        "src": "26:338:17"
+        "scope": 18924,
+        "src": "26:338:18"
       }
     ],
-    "src": "0:365:17"
+    "src": "0:365:18"
   },
   "compiler": {
     "name": "solc",
@@ -282,7 +282,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2021-02-06T01:20:58.435Z",
+  "updatedAt": "2021-02-06T01:58:28.956Z",
   "devdoc": {
     "methods": {
       "assetPrices(address)": {

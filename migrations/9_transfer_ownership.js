@@ -7,7 +7,7 @@ module.exports = async function (deployer, network) {
 
 	// Don't change ProxyAdmin ownership for our test network
 	if (network == "rinkeby") {
-		// The owner of the ProxyAdmin can upgrade our contracts
+		// The owner of the ProxyAdmin can upgrade our contracts - do from our contract using _setPendingAdmin and _acceptAdmin functions
 		// await admin.transferProxyAdminOwnership(gnosisSafe);
 	}
 };

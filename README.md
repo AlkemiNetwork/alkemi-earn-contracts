@@ -142,8 +142,12 @@
     	<th>Contract Address</th>
 	</tr>
 	<tr>
-		<td> MoneyMarket </td>
-		<td> 0x9296F7df6A25053A9816db9166a4A8bbc34287B3 </td>
+		<td> MoneyMarket Upgrade Proxy </td>
+		<td> 0xccFcc25E498c40c67baD046F55bDB01F0eeDA870 </td>
+	</tr>
+	<tr>
+		<td> MoneyMarket Implementation</td>
+		<td> 0x0AB49DbDD28Caa20Cdafbc09763Dc2B2F85c7A3B </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
