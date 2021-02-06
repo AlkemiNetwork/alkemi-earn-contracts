@@ -9,6 +9,11 @@ const infuraKey = "c92203bc3a4544f28dae1f94627e5367";
 module.exports = {
 	networks: {
 		development: {
+			// provider: () =>
+			// 	new HDWalletProvider(
+			// 		"stand boy digital govern play draft hard garage remove neglect become slight",
+			// 		`http://127.0.0.1:7545`
+			// 	),
 			host: "127.0.0.1", // Localhost (default: none)
 			port: 8545, // Standard Ethereum port (default: none)
 			network_id: "*", // Any network (default: none)
@@ -68,7 +73,9 @@ module.exports = {
 
 	// Set default mocha options here, use special reporters etc.
 	mocha: {
-		// timeout: 100000
+		enableTimeouts: false,
+		before_timeout: 0,
+		test_timeout: 0,
 	},
 
 	compilers: {

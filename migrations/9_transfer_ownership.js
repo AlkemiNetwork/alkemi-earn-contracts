@@ -8,6 +8,6 @@ module.exports = async function (deployer, network) {
 	// Don't change ProxyAdmin ownership for our test network
 	if (network == "rinkeby") {
 		// The owner of the ProxyAdmin can upgrade our contracts
-		await admin.transferProxyAdminOwnership(gnosisSafe);
+		// await admin.transferProxyAdminOwnership(gnosisSafe);
 	}
 };

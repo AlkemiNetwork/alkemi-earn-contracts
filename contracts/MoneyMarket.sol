@@ -352,6 +352,8 @@ contract MoneyMarket is Exponential, SafeToken {
 
         Exp collateralPrice;
         Exp underwaterAssetPrice;
+
+        uint reimburseAmount;
     }
 
     /**
@@ -2023,10 +2025,24 @@ contract MoneyMarket is Exponential, SafeToken {
         }
 
         // If liquidateBorrowAmount = -1, then closeBorrowAmount_TargetUnderwaterAsset = maxCloseableBorrowAmount_TargetUnderwaterAsset
-        if (requestedAmountClose == uint(-1)) {
-            localResults.closeBorrowAmount_TargetUnderwaterAsset = localResults.maxCloseableBorrowAmount_TargetUnderwaterAsset;
+        if (assetBorrow != wethAddress) {
+            if (requestedAmountClose == uint(-1)) {
+                localResults.closeBorrowAmount_TargetUnderwaterAsset = localResults.maxCloseableBorrowAmount_TargetUnderwaterAsset;
+            } else {
+                localResults.closeBorrowAmount_TargetUnderwaterAsset = requestedAmountClose;
+            }
         } else {
-            localResults.closeBorrowAmount_TargetUnderwaterAsset = requestedAmountClose;
+            // To calculate the actual repay use has to do and reimburse the excess amount of ETH collected
+            if (requestedAmountClose > localResults.maxCloseableBorrowAmount_TargetUnderwaterAsset) {
+                localResults.closeBorrowAmount_TargetUnderwaterAsset = localResults.maxCloseableBorrowAmount_TargetUnderwaterAsset;
+                (err, localResults.reimburseAmount) = sub(requestedAmountClose,localResults.maxCloseableBorrowAmount_TargetUnderwaterAsset); // reimbursement called at the end to make sure function does not have any other errors
+                if (err != Error.NO_ERROR) {
+                    revertEtherToUser(msg.sender,msg.value);
+                    return fail(err, FailureInfo.REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED);
+                }
+            } else {
+                localResults.closeBorrowAmount_TargetUnderwaterAsset = requestedAmountClose;
+            }
         }
 
         // From here on, no more use of `requestedAmountClose`
@@ -2130,6 +2146,10 @@ contract MoneyMarket is Exponential, SafeToken {
             }
         } else {
             uint supplyError = supplyEther(localResults.liquidator, localResults.closeBorrowAmount_TargetUnderwaterAsset);
+            //Repay excess funds
+                if(localResults.reimburseAmount > 0){
+                    revertEtherToUser(localResults.liquidator,localResults.reimburseAmount);
+                }
             if(supplyError !=0 ){
                 return fail(Error.WETH_ADDRESS_NOT_SET_ERROR, FailureInfo.WETH_ADDRESS_NOT_SET_ERROR);
             }

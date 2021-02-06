@@ -1,10 +1,13 @@
-const MoneyMarket = artifacts.require("./abi/MoneyMarket");
+const MoneyMarket = artifacts.require("MoneyMarket");
 
 contract("MoneyMarket", (accounts) => {
 	// First test case
 	var MoneyMarketInstance;
 	beforeEach(async () => {
 		MoneyMarketInstance = await MoneyMarket.deployed();
+		await MoneyMarketInstance.initializer({
+			from: accounts[0],
+		});
 	});
 	describe("Add and remove KYC Admin", () => {
 		describe("Success", () => {

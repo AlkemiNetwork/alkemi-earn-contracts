@@ -23,8 +23,11 @@
 	"dependencies": {
 		"@chainlink/contracts": "0.0.8",
 		"@openzeppelin/truffle-upgrades": "^1.2.2",
+		"bignumber.js": "^7.2.1",
+		"seamless-immutable": "^7.1.4",
 		"solidoc": "^1.0.5",
-		"truffle": "^5.1.46",
+		"solium": "^1.1.7",
+		"truffle": "^4.1.11",
 		"truffle-hdwallet-provider": "^1.0.17"
 	}
 }
