@@ -1619,7 +1619,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2021-02-06T01:58:27.988Z",
+  "updatedAt": "2021-02-19T22:18:53.094Z",
   "devdoc": {
     "methods": {
       "allowance(address,address)": {

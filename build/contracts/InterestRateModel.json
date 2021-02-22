@@ -803,7 +803,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2021-02-06T01:58:28.011Z",
+  "updatedAt": "2021-02-19T22:18:53.111Z",
   "devdoc": {
     "methods": {
       "getBorrowRate(address,uint256,uint256)": {

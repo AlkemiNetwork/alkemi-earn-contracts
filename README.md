@@ -9,6 +9,7 @@
 		<td> MoneyMarket </td>
 		<td> 0x397c315d64D74d82A731d656f9C4D586D200F90A </td>
 		<!-- Money market: 0x3c6513d4d0de82d42ea30593a86273e9607f66a0
+		Money Market V1.1: 0x8770B2a109AEE8CDbe278FaE6CaE5Aa4Bcd13E1c
 		Admin Upgradeability Proxy: 0x397c315d64D74d82A731d656f9C4D586D200F90A
 		Proxy Admin: 0x94dB9B9d725a39F01816987deDC6fd00d58DcE65 -->
 	</tr>
@@ -51,6 +52,14 @@
 	<tr>
     	<td> WBTCPriceFeed </td>
     	<td> 0xdeb288F737066589598e9214E782fa5A8eD689e8 </td>
+    </tr>
+	<tr>
+    	<td> WETH </td>
+    	<td> 0x1f52453b32bfab737247114d56d756a6c37dd9ef </td>
+    </tr>
+    <tr>
+    	<td> WETHRateModel </td>
+    	<td> 0x6ad4333758188a9c0c464447f857add59e7b936c </td>
     </tr>
 	<tr>
     	<td> ChainLink Oracle </td>
