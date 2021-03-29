@@ -6,9 +6,11 @@ import './TestTokens.sol';
 contract ChainLink {
     
     mapping(address => AggregatorV3Interface) internal priceContractMapping;
+    mapping (address => bool) public assetsWithPriceFeedBasedOnUSD;
     address public admin;
     bool public paused = false;
     address public wethAddress;
+    AggregatorV3Interface public USDETHPriceFeed;
 
     /**
      * Sets the initial assets and admin
@@ -33,13 +35,18 @@ contract ChainLink {
     event assetRemoved(address assetAddress);
     event adminChanged(address oldAdmin, address newAdmin);
     event wethAddressSet(address wethAddress);
+    event USDETHPriceFeedSet(address USDETHPriceFeed);
     event contractPausedOrUnpaused(bool currentStatus);
 
     /**
      * Allows admin to add a new asset for price tracking
      */
-    function addAsset(address assetAddress, address priceFeedContract) public onlyAdmin {
+    function addAsset(address assetAddress, address priceFeedContract, bool _assetWithPriceFeedBasedOnUSD) public onlyAdmin {
+        if (_assetWithPriceFeedBasedOnUSD) {
+            require(USDETHPriceFeed != address(0),"USDETHPriceFeed not set");
+        }
         priceContractMapping[assetAddress] = AggregatorV3Interface(priceFeedContract);
+        assetsWithPriceFeedBasedOnUSD[assetAddress] = _assetWithPriceFeedBasedOnUSD;
         emit assetAdded(assetAddress, priceFeedContract);
     }
     
@@ -65,6 +72,14 @@ contract ChainLink {
     function setWethAddress(address _wethAddress) public onlyAdmin {
         wethAddress = _wethAddress;
         emit wethAddressSet(_wethAddress);
+    }
+
+    /**
+     * Allows admin to set the weth address
+     */
+    function setUSDETHPriceFeedAddress(AggregatorV3Interface _USDETHPriceFeed) public onlyAdmin {
+        USDETHPriceFeed = _USDETHPriceFeed;
+        emit USDETHPriceFeedSet(_USDETHPriceFeed);
     }
 
     /**
@@ -101,12 +116,28 @@ contract ChainLink {
             ) = priceContractMapping[asset].latestRoundData();
             // If the round is not complete yet, timestamp is 0
             require(timeStamp > 0, "Round not complete");
-            if(price >0) {
+            // Calculate USD/ETH price for contracts using USD based price feed
+            if(assetsWithPriceFeedBasedOnUSD[asset]) {
+                int priceUSD;
+                (
+                    roundID, 
+                    priceUSD,
+                    startedAt,
+                    timeStamp,
+                    answeredInRound
+                ) = USDETHPriceFeed.latestRoundData();
+                // If the round is not complete yet, timestamp is 0
+                require(timeStamp > 0, "Round not complete");
+                uint returnedPrice = uint(price) * uint(priceUSD) / (10 ** 8);
+                return returnedPrice;
+            } else {
+                if(price >0) {
                 // Magnify the result based on decimals
                 return (uint(price) * (10 ** (18 - uint(assetDecimals))));
             }
             else {
                 return 0;
+            }
             }
         }
         else {

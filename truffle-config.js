@@ -4,11 +4,16 @@
 const HDWalletProvider = require("truffle-hdwallet-provider");
 const fs = require("fs");
 const mnemonic = fs.readFileSync(".mnemonic").toString().trim();
-const infuraKey = "703fd864c3ac4995849ebfda2e7a3e96";
+const infuraKey = "c92203bc3a4544f28dae1f94627e5367";
 
 module.exports = {
 	networks: {
 		development: {
+			// provider: () =>
+			// 	new HDWalletProvider(
+			// 		"stand boy digital govern play draft hard garage remove neglect become slight",
+			// 		`http://127.0.0.1:7545`
+			// 	),
 			host: "127.0.0.1", // Localhost (default: none)
 			port: 8545, // Standard Ethereum port (default: none)
 			network_id: "*", // Any network (default: none)
@@ -40,6 +45,7 @@ module.exports = {
 					mnemonic,
 					`https://kovan.infura.io/v3/${infuraKey}`
 				),
+			gasPrice: 170000000000,
 			network_id: 42,
 			skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
 		},
@@ -58,6 +64,8 @@ module.exports = {
 					mnemonic,
 					`https://mainnet.infura.io/v3/${infuraKey}`
 				),
+			gasPrice: 100000000000,
+			timeoutBlocks: 4000,
 			network_id: 1,
 			skipDryRun: false, // Skip dry run before migrations? (default: false for public nets )
 		},
@@ -65,7 +73,9 @@ module.exports = {
 
 	// Set default mocha options here, use special reporters etc.
 	mocha: {
-		// timeout: 100000
+		enableTimeouts: false,
+		before_timeout: 0,
+		test_timeout: 0,
 	},
 
 	compilers: {

@@ -3,11 +3,11 @@ const { admin } = require("@openzeppelin/truffle-upgrades");
 
 module.exports = async function (deployer, network) {
 	// Use address of your Gnosis Safe
-	const gnosisSafe = "0x9ea4613fEe81338ba6F532a93d3Cb2f09AB07BBF";
+	const gnosisSafe = "0x4A4396188308Ff2679c7fD7aa052b3713555dD15";
 
 	// Don't change ProxyAdmin ownership for our test network
-	// if (network !== "test") {
-	// The owner of the ProxyAdmin can upgrade our contracts
-	await admin.transferProxyAdminOwnership(gnosisSafe);
-	// }
+	if (network == "rinkeby") {
+		// The owner of the ProxyAdmin can upgrade our contracts - do from our contract using _setPendingAdmin and _acceptAdmin functions
+		// await admin.transferProxyAdminOwnership(gnosisSafe);
+	}
 };

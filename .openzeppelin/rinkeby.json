@@ -172,6 +172,983 @@
           }
         }
       }
+    },
+    "5ce33bc6bf1c8072ce73c62357ab467c19eac1ebd00b6d3211ab64d6c1c7f405": {
+      "address": "0x00275Ccb8b16db043ec684DB376e48751BedD443",
+      "txHash": "0xfcec882a64bc180213f8da5cc6856386c8b35dbfc5301a286dc784cdd1e34740",
+      "layout": {
+        "storage": [
+          {
+            "contract": "MoneyMarket",
+            "label": "initialInterestIndex",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:11"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultOriginationFee",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:12"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "minimumCollateralRatioMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:14"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "maximumLiquidationDiscountMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:15"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "initializationDone",
+            "type": "t_bool",
+            "src": "MoneyMarket.sol:16"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "pendingAdmin",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:50"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "admin",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:56"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "oracle",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:62"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "priceOracle",
+            "type": "t_contract(ChainLink)1657",
+            "src": "MoneyMarket.sol:67"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "supplyBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)3685_storage))",
+            "src": "MoneyMarket.sol:85"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "borrowBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)3685_storage))",
+            "src": "MoneyMarket.sol:91"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "wethAddress",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:126"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "WETHContract",
+            "type": "t_contract(AlkemiWETH)1162",
+            "src": "MoneyMarket.sol:131"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "markets",
+            "type": "t_mapping(t_address,t_struct(Market)3716_storage)",
+            "src": "MoneyMarket.sol:136"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "collateralMarkets",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "MoneyMarket.sol:141"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "collateralRatio",
+            "type": "t_struct(Exp)2002_storage",
+            "src": "MoneyMarket.sol:147"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "originationFee",
+            "type": "t_struct(Exp)2002_storage",
+            "src": "MoneyMarket.sol:153"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "liquidationDiscount",
+            "type": "t_struct(Exp)2002_storage",
+            "src": "MoneyMarket.sol:159"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "paused",
+            "type": "t_bool",
+            "src": "MoneyMarket.sol:165"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "KYCAdmins",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:170"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "customersWithKYC",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:174"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "liquidators",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:179"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "originationFeeBalance",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "MoneyMarket.sol:350"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_contract(ChainLink)1657": {
+            "label": "contract ChainLink"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)3685_storage))": {
+            "label": "mapping(address => mapping(address => struct MoneyMarket.Balance))"
+          },
+          "t_contract(AlkemiWETH)1162": {
+            "label": "contract AlkemiWETH"
+          },
+          "t_mapping(t_address,t_struct(Market)3716_storage)": {
+            "label": "mapping(address => struct MoneyMarket.Market)"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_struct(Exp)2002_storage": {
+            "label": "struct Exponential.Exp"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          }
+        }
+      }
+    },
+    "cf2409d1bd4596f8e32094ba7d4daa1225acb4b7aff71ec3dcfc04d3b17cd6e4": {
+      "address": "0xBe569a2a1C9cE705e5c80B99c083C34b9D67dD60",
+      "txHash": "0xb147a4022d998cffc75d8a11cb0b24d281f726f6394cd83c698bbfdb3194fbd2",
+      "layout": {
+        "storage": [
+          {
+            "contract": "MoneyMarket",
+            "label": "initialInterestIndex",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:11"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultOriginationFee",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:12"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultCollateralRatio",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:13"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultLiquidationDiscount",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:14"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "minimumCollateralRatioMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:16"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "maximumLiquidationDiscountMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:17"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "initializationDone",
+            "type": "t_bool",
+            "src": "MoneyMarket.sol:18"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "pendingAdmin",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:54"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "admin",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:60"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "managers",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:66"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "oracle",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:72"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "priceOracle",
+            "type": "t_contract(ChainLink)1966",
+            "src": "MoneyMarket.sol:77"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "supplyBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))",
+            "src": "MoneyMarket.sol:95"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "borrowBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))",
+            "src": "MoneyMarket.sol:101"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "wethAddress",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:136"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "WETHContract",
+            "type": "t_contract(AlkemiWETH)1381",
+            "src": "MoneyMarket.sol:141"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "markets",
+            "type": "t_mapping(t_address,t_struct(Market)4050_storage)",
+            "src": "MoneyMarket.sol:146"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "collateralMarkets",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "MoneyMarket.sol:151"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "collateralRatio",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:157"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "originationFee",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:163"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "liquidationDiscount",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:169"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "paused",
+            "type": "t_bool",
+            "src": "MoneyMarket.sol:175"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "KYCAdmins",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:180"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "customersWithKYC",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:184"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "liquidators",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:189"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "originationFeeBalance",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "MoneyMarket.sol:360"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_contract(ChainLink)1966": {
+            "label": "contract ChainLink"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))": {
+            "label": "mapping(address => mapping(address => struct MoneyMarket.Balance))"
+          },
+          "t_contract(AlkemiWETH)1381": {
+            "label": "contract AlkemiWETH"
+          },
+          "t_mapping(t_address,t_struct(Market)4050_storage)": {
+            "label": "mapping(address => struct MoneyMarket.Market)"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_struct(Exp)2311_storage": {
+            "label": "struct Exponential.Exp"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          }
+        }
+      }
+    },
+    "3e3658a539f1954798389da1f0f41953aa3fd64bc69248b554895e2781c9f78e": {
+      "address": "0x5042600032CDFC51Da583A48233174583732acc0",
+      "txHash": "0x3d0360bc861dd44e8304809c202b75780ee764ea0b323a4cb7aad83dd40c9a02",
+      "layout": {
+        "storage": [
+          {
+            "contract": "MoneyMarket",
+            "label": "initialInterestIndex",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:11"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultOriginationFee",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:12"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultCollateralRatio",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:13"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultLiquidationDiscount",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:14"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "minimumCollateralRatioMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:16"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "maximumLiquidationDiscountMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:17"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "initializationDone",
+            "type": "t_bool",
+            "src": "MoneyMarket.sol:18"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "pendingAdmin",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:54"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "admin",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:60"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "managers",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:66"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "oracle",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:72"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "priceOracle",
+            "type": "t_contract(ChainLink)1966",
+            "src": "MoneyMarket.sol:77"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "supplyBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))",
+            "src": "MoneyMarket.sol:95"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "borrowBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))",
+            "src": "MoneyMarket.sol:101"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "wethAddress",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:136"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "WETHContract",
+            "type": "t_contract(AlkemiWETH)1381",
+            "src": "MoneyMarket.sol:141"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "markets",
+            "type": "t_mapping(t_address,t_struct(Market)4050_storage)",
+            "src": "MoneyMarket.sol:146"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "collateralMarkets",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "MoneyMarket.sol:151"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "collateralRatio",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:157"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "originationFee",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:163"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "liquidationDiscount",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:169"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "paused",
+            "type": "t_bool",
+            "src": "MoneyMarket.sol:175"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "KYCAdmins",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:180"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "customersWithKYC",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:184"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "liquidators",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:189"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "originationFeeBalance",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "MoneyMarket.sol:362"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_contract(ChainLink)1966": {
+            "label": "contract ChainLink"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))": {
+            "label": "mapping(address => mapping(address => struct MoneyMarket.Balance))"
+          },
+          "t_contract(AlkemiWETH)1381": {
+            "label": "contract AlkemiWETH"
+          },
+          "t_mapping(t_address,t_struct(Market)4050_storage)": {
+            "label": "mapping(address => struct MoneyMarket.Market)"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_struct(Exp)2311_storage": {
+            "label": "struct Exponential.Exp"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          }
+        }
+      }
+    },
+    "57dc1c960cc26f75994575cd99a77d400a7eb3fc7ae289176c92a19c56236299": {
+      "address": "0xc3cfAF0c851EeF45fE1E2652d0873bbA4f44ef80",
+      "txHash": "0x16dc3d8debee5d207380ec5fa7a6d142aa95846f8253ae1d2ca97a7348a44973",
+      "layout": {
+        "storage": [
+          {
+            "contract": "MoneyMarket",
+            "label": "initialInterestIndex",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:11"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultOriginationFee",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:12"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultCollateralRatio",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:13"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "defaultLiquidationDiscount",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:14"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "minimumCollateralRatioMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:16"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "maximumLiquidationDiscountMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarket.sol:17"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "initializationDone",
+            "type": "t_bool",
+            "src": "MoneyMarket.sol:18"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "pendingAdmin",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:54"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "admin",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:60"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "managers",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:66"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "oracle",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:72"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "priceOracle",
+            "type": "t_contract(ChainLink)1966",
+            "src": "MoneyMarket.sol:77"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "supplyBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))",
+            "src": "MoneyMarket.sol:95"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "borrowBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))",
+            "src": "MoneyMarket.sol:101"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "wethAddress",
+            "type": "t_address",
+            "src": "MoneyMarket.sol:136"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "WETHContract",
+            "type": "t_contract(AlkemiWETH)1381",
+            "src": "MoneyMarket.sol:141"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "markets",
+            "type": "t_mapping(t_address,t_struct(Market)4050_storage)",
+            "src": "MoneyMarket.sol:146"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "collateralMarkets",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "MoneyMarket.sol:151"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "collateralRatio",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:157"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "originationFee",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:163"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "liquidationDiscount",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarket.sol:169"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "paused",
+            "type": "t_bool",
+            "src": "MoneyMarket.sol:175"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "KYCAdmins",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:180"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "customersWithKYC",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:184"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "liquidators",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarket.sol:189"
+          },
+          {
+            "contract": "MoneyMarket",
+            "label": "originationFeeBalance",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "MoneyMarket.sol:362"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_contract(ChainLink)1966": {
+            "label": "contract ChainLink"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)4019_storage))": {
+            "label": "mapping(address => mapping(address => struct MoneyMarket.Balance))"
+          },
+          "t_contract(AlkemiWETH)1381": {
+            "label": "contract AlkemiWETH"
+          },
+          "t_mapping(t_address,t_struct(Market)4050_storage)": {
+            "label": "mapping(address => struct MoneyMarket.Market)"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_struct(Exp)2311_storage": {
+            "label": "struct Exponential.Exp"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          }
+        }
+      }
+    },
+    "fa15580a6d0117d81feeafb2ab8664f7986156d361bb2cd16c4c40ba4006a211": {
+      "address": "0x0AB49DbDD28Caa20Cdafbc09763Dc2B2F85c7A3B",
+      "txHash": "0x6d7b3e1bc4dc2f1019be24748940f4686acfc475c8b360a8cb2101731f4b9d9e",
+      "layout": {
+        "storage": [
+          {
+            "contract": "MoneyMarketV11",
+            "label": "initialInterestIndex",
+            "type": "t_uint256",
+            "src": "MoneyMarketV11.sol:11"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "defaultOriginationFee",
+            "type": "t_uint256",
+            "src": "MoneyMarketV11.sol:12"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "defaultCollateralRatio",
+            "type": "t_uint256",
+            "src": "MoneyMarketV11.sol:13"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "defaultLiquidationDiscount",
+            "type": "t_uint256",
+            "src": "MoneyMarketV11.sol:14"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "minimumCollateralRatioMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarketV11.sol:16"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "maximumLiquidationDiscountMantissa",
+            "type": "t_uint256",
+            "src": "MoneyMarketV11.sol:17"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "initializationDone",
+            "type": "t_bool",
+            "src": "MoneyMarketV11.sol:18"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "pendingAdmin",
+            "type": "t_address",
+            "src": "MoneyMarketV11.sol:54"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "admin",
+            "type": "t_address",
+            "src": "MoneyMarketV11.sol:60"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "managers",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarketV11.sol:66"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "oracle",
+            "type": "t_address",
+            "src": "MoneyMarketV11.sol:72"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "priceOracle",
+            "type": "t_contract(ChainLink)1966",
+            "src": "MoneyMarketV11.sol:77"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "supplyBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)10721_storage))",
+            "src": "MoneyMarketV11.sol:95"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "borrowBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)10721_storage))",
+            "src": "MoneyMarketV11.sol:101"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "wethAddress",
+            "type": "t_address",
+            "src": "MoneyMarketV11.sol:136"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "WETHContract",
+            "type": "t_contract(AlkemiWETH)1381",
+            "src": "MoneyMarketV11.sol:141"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "markets",
+            "type": "t_mapping(t_address,t_struct(Market)10752_storage)",
+            "src": "MoneyMarketV11.sol:146"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "collateralMarkets",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "MoneyMarketV11.sol:151"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "collateralRatio",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarketV11.sol:157"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "originationFee",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarketV11.sol:163"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "liquidationDiscount",
+            "type": "t_struct(Exp)2311_storage",
+            "src": "MoneyMarketV11.sol:169"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "paused",
+            "type": "t_bool",
+            "src": "MoneyMarketV11.sol:175"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "KYCAdmins",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarketV11.sol:180"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "customersWithKYC",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarketV11.sol:184"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "liquidators",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "MoneyMarketV11.sol:189"
+          },
+          {
+            "contract": "MoneyMarketV11",
+            "label": "originationFeeBalance",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "MoneyMarketV11.sol:362"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_contract(ChainLink)1966": {
+            "label": "contract ChainLink"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)10721_storage))": {
+            "label": "mapping(address => mapping(address => struct MoneyMarketV11.Balance))"
+          },
+          "t_contract(AlkemiWETH)1381": {
+            "label": "contract AlkemiWETH"
+          },
+          "t_mapping(t_address,t_struct(Market)10752_storage)": {
+            "label": "mapping(address => struct MoneyMarketV11.Market)"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_struct(Exp)2311_storage": {
+            "label": "struct Exponential.Exp"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          }
+        }
+      }
     }
   },
   "admin": {

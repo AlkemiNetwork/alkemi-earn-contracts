@@ -1,3 +1,73 @@
+## Mainnet Deployments
+
+<table>
+	<tr>
+   		<th>Contract Name</th>
+    	<th>Contract Address</th>
+	</tr>
+	<tr>
+		<td> MoneyMarket </td>
+		<td> 0x397c315d64D74d82A731d656f9C4D586D200F90A </td>
+		<!-- Money market: 0x3c6513d4d0de82d42ea30593a86273e9607f66a0
+		Money Market V1.1: 0x8770B2a109AEE8CDbe278FaE6CaE5Aa4Bcd13E1c
+		Admin Upgradeability Proxy: 0x397c315d64D74d82A731d656f9C4D586D200F90A
+		Proxy Admin: 0x94dB9B9d725a39F01816987deDC6fd00d58DcE65 -->
+	</tr>
+	<tr>
+		<td> Liquidator </td>
+		<td> 0x123ceAC83C6d5110671F09E96C0F8076CE4bC839 </td>
+	</tr>
+	<tr>
+		<td> DAI </td>
+		<td> 0x6b175474e89094c44da98b954eedeac495271d0f </td>
+	</tr>
+	<tr>
+		<td> DAIRateModel </td>
+		<td> 0x95C45786B117e5FF09029D9CB71Aafe278264A3b </td>
+	</tr>
+	<tr>
+		<td> DAIPriceFeed </td>
+		<td> 0x773616E4d11A78F511299002da57A0a94577F1f4 </td>
+	</tr>
+    <tr>
+    	<td> USDC </td>
+    	<td> 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 </td>
+    </tr>
+    <tr>
+    	<td> USDCRateModel </td>
+    	<td> 0x95C45786B117e5FF09029D9CB71Aafe278264A3b </td>
+    </tr>
+	<tr>
+    	<td> USDCPriceFeed </td>
+    	<td> 0x986b5E1e1755e3C2440e960477f25201B0a8bbD4 </td>
+    </tr>
+    <tr>
+    	<td> WBTC </td>
+    	<td> 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599 </td>
+    </tr>
+    <tr>
+    	<td> WBTCRateModel </td>
+    	<td> 0x976704A8949b82687d6e48b5FCe4030aab7c2e4F </td>
+    </tr>
+	<tr>
+    	<td> WBTCPriceFeed </td>
+    	<td> 0xdeb288F737066589598e9214E782fa5A8eD689e8 </td>
+    </tr>
+	<tr>
+    	<td> WETH </td>
+    	<td> 0x1f52453b32bfab737247114d56d756a6c37dd9ef </td>
+    </tr>
+    <tr>
+    	<td> WETHRateModel </td>
+    	<td> 0x6ad4333758188a9c0c464447f857add59e7b936c </td>
+    </tr>
+	<tr>
+    	<td> ChainLink Oracle </td>
+    	<td> 0x2f83073131efc90693b90cdf3fa1fdd0f7030e05 </td>
+    </tr>
+
+</table>
+
 ## Kovan Deployments
 
 <table>
@@ -81,8 +151,12 @@
     	<th>Contract Address</th>
 	</tr>
 	<tr>
-		<td> MoneyMarket </td>
-		<td> 0x094Aa82872c43031810470317d4D8e3CA9214087 </td>
+		<td> MoneyMarket Upgrade Proxy </td>
+		<td> 0xccFcc25E498c40c67baD046F55bDB01F0eeDA870 </td>
+	</tr>
+	<tr>
+		<td> MoneyMarket Implementation</td>
+		<td> 0x0AB49DbDD28Caa20Cdafbc09763Dc2B2F85c7A3B </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>
