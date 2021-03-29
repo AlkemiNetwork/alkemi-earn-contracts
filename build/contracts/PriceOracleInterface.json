@@ -1,304 +1,286 @@
 {
-  "contractName": "PriceOracleInterface",
-  "abi": [
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "asset",
-          "type": "address"
-        }
-      ],
-      "name": "assetPrices",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }
-  ],
-  "metadata": "",
-  "bytecode": "0x",
-  "deployedBytecode": "0x",
-  "sourceMap": "",
-  "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.24;\n\ncontract PriceOracleInterface {\n    /**\n     * @notice Gets the price of a given asset\n     * @dev fetches the price of a given asset\n     * @param asset Asset to get the price of\n     * @return the price scaled by 10**18, or zero if the price is not available\n     */\n    function assetPrices(address asset) public view returns (uint);\n}\n",
-  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
-  "ast": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
-    "exportedSymbols": {
-      "PriceOracleInterface": [
-        18790
-      ]
-    },
-    "id": 18791,
-    "nodeType": "SourceUnit",
-    "nodes": [
-      {
-        "id": 18782,
-        "literals": [
-          "solidity",
-          "^",
-          "0.4",
-          ".24"
-        ],
-        "nodeType": "PragmaDirective",
-        "src": "0:24:18"
-      },
-      {
-        "baseContracts": [],
-        "contractDependencies": [],
-        "contractKind": "contract",
-        "documentation": null,
-        "fullyImplemented": false,
-        "id": 18790,
-        "linearizedBaseContracts": [
-          18790
-        ],
-        "name": "PriceOracleInterface",
-        "nodeType": "ContractDefinition",
-        "nodes": [
-          {
-            "body": null,
-            "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
-            "id": 18789,
-            "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "assetPrices",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 18785,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 18784,
-                  "name": "asset",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 18789,
-                  "src": "320:13:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 18783,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "320:7:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "319:15:18"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 18788,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 18787,
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 18789,
-                  "src": "356:4:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 18786,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "356:4:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "355:6:18"
-            },
-            "scope": 18790,
-            "src": "299:63:18",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "public"
-          }
-        ],
-        "scope": 18791,
-        "src": "26:338:18"
-      }
-    ],
-    "src": "0:365:18"
-  },
-  "legacyAST": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
-    "exportedSymbols": {
-      "PriceOracleInterface": [
-        18790
-      ]
-    },
-    "id": 18791,
-    "nodeType": "SourceUnit",
-    "nodes": [
-      {
-        "id": 18782,
-        "literals": [
-          "solidity",
-          "^",
-          "0.4",
-          ".24"
-        ],
-        "nodeType": "PragmaDirective",
-        "src": "0:24:18"
-      },
-      {
-        "baseContracts": [],
-        "contractDependencies": [],
-        "contractKind": "contract",
-        "documentation": null,
-        "fullyImplemented": false,
-        "id": 18790,
-        "linearizedBaseContracts": [
-          18790
-        ],
-        "name": "PriceOracleInterface",
-        "nodeType": "ContractDefinition",
-        "nodes": [
-          {
-            "body": null,
-            "documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
-            "id": 18789,
-            "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "assetPrices",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 18785,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 18784,
-                  "name": "asset",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 18789,
-                  "src": "320:13:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 18783,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "320:7:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "319:15:18"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 18788,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 18787,
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 18789,
-                  "src": "356:4:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 18786,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "356:4:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "355:6:18"
-            },
-            "scope": 18790,
-            "src": "299:63:18",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "public"
-          }
-        ],
-        "scope": 18791,
-        "src": "26:338:18"
-      }
-    ],
-    "src": "0:365:18"
-  },
-  "compiler": {
-    "name": "solc",
-    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
-  },
-  "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2021-02-19T22:18:53.879Z",
-  "devdoc": {
-    "methods": {
-      "assetPrices(address)": {
-        "details": "fetches the price of a given asset",
-        "params": {
-          "asset": "Asset to get the price of"
-        },
-        "return": "the price scaled by 10**18, or zero if the price is not available"
-      }
-    }
-  },
-  "userdoc": {
-    "methods": {
-      "assetPrices(address)": {
-        "notice": "Gets the price of a given asset"
-      }
-    }
-  }
+	"contractName": "PriceOracleInterface",
+	"abi": [
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "asset",
+					"type": "address"
+				}
+			],
+			"name": "assetPrices",
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		}
+	],
+	"metadata": "",
+	"bytecode": "0x",
+	"deployedBytecode": "0x",
+	"sourceMap": "",
+	"deployedSourceMap": "",
+	"source": "pragma solidity ^0.4.24;\n\ncontract PriceOracleInterface {\n    /**\n     * @notice Gets the price of a given asset\n     * @dev fetches the price of a given asset\n     * @param asset Asset to get the price of\n     * @return the price scaled by 10**18, or zero if the price is not available\n     */\n    function assetPrices(address asset) public view returns (uint);\n}\n",
+	"sourcePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
+	"ast": {
+		"absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
+		"exportedSymbols": {
+			"PriceOracleInterface": [12096]
+		},
+		"id": 12097,
+		"nodeType": "SourceUnit",
+		"nodes": [
+			{
+				"id": 12088,
+				"literals": ["solidity", "^", "0.4", ".24"],
+				"nodeType": "PragmaDirective",
+				"src": "0:24:18"
+			},
+			{
+				"baseContracts": [],
+				"contractDependencies": [],
+				"contractKind": "contract",
+				"documentation": null,
+				"fullyImplemented": false,
+				"id": 12096,
+				"linearizedBaseContracts": [12096],
+				"name": "PriceOracleInterface",
+				"nodeType": "ContractDefinition",
+				"nodes": [
+					{
+						"body": null,
+						"documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
+						"id": 12095,
+						"implemented": false,
+						"isConstructor": false,
+						"isDeclaredConst": true,
+						"modifiers": [],
+						"name": "assetPrices",
+						"nodeType": "FunctionDefinition",
+						"parameters": {
+							"id": 12091,
+							"nodeType": "ParameterList",
+							"parameters": [
+								{
+									"constant": false,
+									"id": 12090,
+									"name": "asset",
+									"nodeType": "VariableDeclaration",
+									"scope": 12095,
+									"src": "320:13:17",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_address",
+										"typeString": "address"
+									},
+									"typeName": {
+										"id": 12089,
+										"name": "address",
+										"nodeType": "ElementaryTypeName",
+										"src": "320:7:18",
+										"typeDescriptions": {
+											"typeIdentifier": "t_address",
+											"typeString": "address"
+										}
+									},
+									"value": null,
+									"visibility": "internal"
+								}
+							],
+							"src": "319:15:18"
+						},
+						"payable": false,
+						"returnParameters": {
+							"id": 12094,
+							"nodeType": "ParameterList",
+							"parameters": [
+								{
+									"constant": false,
+									"id": 12093,
+									"name": "",
+									"nodeType": "VariableDeclaration",
+									"scope": 12095,
+									"src": "356:4:17",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 12092,
+										"name": "uint",
+										"nodeType": "ElementaryTypeName",
+										"src": "356:4:18",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"value": null,
+									"visibility": "internal"
+								}
+							],
+							"src": "355:6:18"
+						},
+						"scope": 12096,
+						"src": "299:63:17",
+						"stateMutability": "view",
+						"superFunction": null,
+						"visibility": "public"
+					}
+				],
+				"scope": 12097,
+				"src": "26:338:17"
+			}
+		],
+		"src": "0:365:18"
+	},
+	"legacyAST": {
+		"absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol",
+		"exportedSymbols": {
+			"PriceOracleInterface": [12096]
+		},
+		"id": 12097,
+		"nodeType": "SourceUnit",
+		"nodes": [
+			{
+				"id": 12088,
+				"literals": ["solidity", "^", "0.4", ".24"],
+				"nodeType": "PragmaDirective",
+				"src": "0:24:18"
+			},
+			{
+				"baseContracts": [],
+				"contractDependencies": [],
+				"contractKind": "contract",
+				"documentation": null,
+				"fullyImplemented": false,
+				"id": 12096,
+				"linearizedBaseContracts": [12096],
+				"name": "PriceOracleInterface",
+				"nodeType": "ContractDefinition",
+				"nodes": [
+					{
+						"body": null,
+						"documentation": "@notice Gets the price of a given asset\n@dev fetches the price of a given asset\n@param asset Asset to get the price of\n@return the price scaled by 10**18, or zero if the price is not available",
+						"id": 12095,
+						"implemented": false,
+						"isConstructor": false,
+						"isDeclaredConst": true,
+						"modifiers": [],
+						"name": "assetPrices",
+						"nodeType": "FunctionDefinition",
+						"parameters": {
+							"id": 12091,
+							"nodeType": "ParameterList",
+							"parameters": [
+								{
+									"constant": false,
+									"id": 12090,
+									"name": "asset",
+									"nodeType": "VariableDeclaration",
+									"scope": 12095,
+									"src": "320:13:17",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_address",
+										"typeString": "address"
+									},
+									"typeName": {
+										"id": 12089,
+										"name": "address",
+										"nodeType": "ElementaryTypeName",
+										"src": "320:7:18",
+										"typeDescriptions": {
+											"typeIdentifier": "t_address",
+											"typeString": "address"
+										}
+									},
+									"value": null,
+									"visibility": "internal"
+								}
+							],
+							"src": "319:15:18"
+						},
+						"payable": false,
+						"returnParameters": {
+							"id": 12094,
+							"nodeType": "ParameterList",
+							"parameters": [
+								{
+									"constant": false,
+									"id": 12093,
+									"name": "",
+									"nodeType": "VariableDeclaration",
+									"scope": 12095,
+									"src": "356:4:17",
+									"stateVariable": false,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 12092,
+										"name": "uint",
+										"nodeType": "ElementaryTypeName",
+										"src": "356:4:18",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"value": null,
+									"visibility": "internal"
+								}
+							],
+							"src": "355:6:18"
+						},
+						"scope": 12096,
+						"src": "299:63:17",
+						"stateMutability": "view",
+						"superFunction": null,
+						"visibility": "public"
+					}
+				],
+				"scope": 12097,
+				"src": "26:338:17"
+			}
+		],
+		"src": "0:365:18"
+	},
+	"compiler": {
+		"name": "solc",
+		"version": "0.4.24+commit.e67f0147.Emscripten.clang"
+	},
+	"networks": {},
+	"schemaVersion": "3.2.5",
+	"updatedAt": "2021-01-01T03:41:58.491Z",
+	"devdoc": {
+		"methods": {
+			"assetPrices(address)": {
+				"details": "fetches the price of a given asset",
+				"params": {
+					"asset": "Asset to get the price of"
+				},
+				"return": "the price scaled by 10**18, or zero if the price is not available"
+			}
+		}
+	},
+	"userdoc": {
+		"methods": {
+			"assetPrices(address)": {
+				"notice": "Gets the price of a given asset"
+			}
+		}
+	}
 }

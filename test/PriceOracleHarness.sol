@@ -1,8 +1,8 @@
 pragma solidity ^0.4.24;
 
-import "../contracts/ChainLink.sol";
+import "../contracts/PriceOracleInterface.sol";
 
-contract PriceOracleHarness is ChainLink {
+contract PriceOracleHarness is PriceOracleInterface {
 
     mapping(address => uint) prices;
 
@@ -12,7 +12,7 @@ contract PriceOracleHarness is ChainLink {
       * @param asset Asset to get the price of
       * @return the price scaled by 10**18, or zero if the price is not available
       */
-    function getAssetPrice(address asset) public view returns (uint) {
+    function assetPrices(address asset) public view returns (uint) {
         return prices[asset];
     }
 

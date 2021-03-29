@@ -1,8 +1,13 @@
+---
+layout: default
+title: ChainLink
+---
+
 # ChainLink.sol
 
 View Source: [contracts/ChainLink.sol](../contracts/ChainLink.sol)
 
-**ChainLink**
+**{{ContractName}}**
 
 ## Contract Members
 **Constants & Variables**
@@ -12,9 +17,11 @@ View Source: [contracts/ChainLink.sol](../contracts/ChainLink.sol)
 mapping(address => contract AggregatorV3Interface) internal priceContractMapping;
 
 //public members
+mapping(address => bool) public assetsWithPriceFeedBasedOnUSD;
 address public admin;
 bool public paused;
 address public wethAddress;
+contract AggregatorV3Interface public USDETHPriceFeed;
 
 ```
 
@@ -25,6 +32,7 @@ event assetAdded(address  assetAddress, address  priceFeedContract);
 event assetRemoved(address  assetAddress);
 event adminChanged(address  oldAdmin, address  newAdmin);
 event wethAddressSet(address  wethAddress);
+event USDETHPriceFeedSet(address  USDETHPriceFeed);
 event contractPausedOrUnpaused(bool  currentStatus);
 ```
 
@@ -45,10 +53,11 @@ modifier onlyAdmin() internal
 
 ## Functions
 
-- [addAsset(address assetAddress, address priceFeedContract)](#addasset)
+- [addAsset(address assetAddress, address priceFeedContract, bool _assetWithPriceFeedBasedOnUSD)](#addasset)
 - [removeAsset(address assetAddress)](#removeasset)
 - [changeAdmin(address newAdmin)](#changeadmin)
 - [setWethAddress(address _wethAddress)](#setwethaddress)
+- [setUSDETHPriceFeedAddress(AggregatorV3Interface _USDETHPriceFeed)](#setusdethpricefeedaddress)
 - [togglePause()](#togglepause)
 - [getAssetPrice(address asset)](#getassetprice)
 - [fallback()](#fallback)
@@ -56,7 +65,7 @@ modifier onlyAdmin() internal
 ### addAsset
 
 ```js
-function addAsset(address assetAddress, address priceFeedContract) public nonpayable onlyAdmin 
+function addAsset(address assetAddress, address priceFeedContract, bool _assetWithPriceFeedBasedOnUSD) public nonpayable onlyAdmin 
 ```
 
 **Arguments**
@@ -65,6 +74,7 @@ function addAsset(address assetAddress, address priceFeedContract) public nonpay
 | ------------- |------------- | -----|
 | assetAddress | address |  | 
 | priceFeedContract | address |  | 
+| _assetWithPriceFeedBasedOnUSD | bool |  | 
 
 ### removeAsset
 
@@ -102,6 +112,18 @@ function setWethAddress(address _wethAddress) public nonpayable onlyAdmin
 | ------------- |------------- | -----|
 | _wethAddress | address |  | 
 
+### setUSDETHPriceFeedAddress
+
+```js
+function setUSDETHPriceFeedAddress(AggregatorV3Interface _USDETHPriceFeed) public nonpayable onlyAdmin 
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| _USDETHPriceFeed | AggregatorV3Interface |  | 
+
 ### togglePause
 
 ```js
@@ -137,30 +159,3 @@ function fallback() public payable
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
 
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)

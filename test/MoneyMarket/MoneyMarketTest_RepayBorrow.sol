@@ -11,9 +11,6 @@ contract MoneyMarketTest_RepayBorrow is MoneyMarketTest {
     function testRepayBorrow_basicValidations() public {
         address token = address(this); // must be this
         address protocol = address(this); // must be this
-        initializer();
-        addKYCAdmin(msg.sender);
-        addCustomerKYC(msg.sender);
 
         // Set a borrow balance for the user
         markets[token].borrowIndex = 1;

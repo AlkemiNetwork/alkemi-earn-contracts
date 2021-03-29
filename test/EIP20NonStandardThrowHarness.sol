@@ -112,9 +112,10 @@ contract EIP20NonStandardThrowHarness is EIP20NonStandardInterface {
         return balances[_owner];
     }
 
-    function approve(address _spender, uint256 _value) public  {
+    function approve(address _spender, uint256 _value) public returns (bool success) {
         allowed[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
+        return true;
     }
 
     function allowance(address _owner, address _spender) public view returns (uint256 remaining) {

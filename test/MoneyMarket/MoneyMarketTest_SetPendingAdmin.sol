@@ -10,7 +10,6 @@ contract MoneyMarketTest_SetPendingAdmin is MoneyMarketTest {
 
     function testSetPendingAdmin_asAdmin() public {
         address addr1 = nextAddress();
-        initializer();
 
         admin = msg.sender;
 

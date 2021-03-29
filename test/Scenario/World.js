@@ -46,11 +46,7 @@ function getAmount(world, amountArg) {
 
 async function initWorld(accounts) {
 	const priceOracle = await buildPriceOracle(accounts[0]);
-	const moneyMarket = await buildMoneyMarket(
-		accounts[0],
-		accounts,
-		priceOracle
-	);
+	const moneyMarket = await buildMoneyMarket(accounts[0], priceOracle);
 
 	await moneyMarket.methods
 		.setBlockNumber(startingBlockNumber)

@@ -9,7 +9,6 @@ import "./MoneyMarketTest.sol";
 contract MoneyMarketTest_AddCollateralMarket is MoneyMarketTest {
 
     function testAddCollateralMarket() public {
-        initializer();
         address addr1 = nextAddress();
         address addr2 = nextAddress();
         address[] memory empty;

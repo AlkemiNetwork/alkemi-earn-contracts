@@ -1,31 +1,36 @@
+---
+layout: default
+title: EIP20Interface
+---
+
 # EIP20Interface.sol
 
-View Source: [contracts/LiquidationChecker.sol](../contracts/LiquidationChecker.sol)
+View Source: [contracts/EIP20Interface.sol](../contracts/EIP20Interface.sol)
 
-**EIP20Interface**
+**{{ContractName}}**
 
 ## Contract Members
 **Constants & Variables**
 
 ```js
-address public mostRecentCaller;
-uint256 public mostRecentBlock;
-address public oracle;
-contract MoneyMarket public moneyMarket;
-address public liquidator;
-bool public allowLiquidation;
+uint256 public totalSupply;
 
+```
+
+**Events**
+
+```js
+event Transfer(address indexed _from, address indexed _to, uint256  _value);
+event Approval(address indexed _owner, address indexed _spender, uint256  _value);
 ```
 
 ## Functions
 
 - [balanceOf(address _owner)](#balanceof)
-- [assetPrices(address asset)](#assetprices)
-- [isAllowed(address asset, uint256 newCash)](#isallowed)
-- [isLiquidate(address asset, uint256 newCash)](#isliquidate)
-- [cashIsUp(address asset, uint256 newCash)](#cashisup)
-- [oracleTouched()](#oracletouched)
-- [setAllowLiquidation(bool allowLiquidation_)](#setallowliquidation)
+- [transfer(address _to, uint256 _value)](#transfer)
+- [transferFrom(address _from, address _to, uint256 _value)](#transferfrom)
+- [approve(address _spender, uint256 _value)](#approve)
+- [allowance(address _owner, address _spender)](#allowance)
 
 ### balanceOf
 
@@ -34,121 +39,92 @@ function balanceOf(address _owner) public view
 returns(balance uint256)
 ```
 
+**Returns**
+
+The balance
+
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| _owner | address |  | 
+| _owner | address | The address from which the balance will be retrieved | 
 
-### assetPrices
+### transfer
 
-Gets the price of a given asset
+send `_value` token to `_to` from `msg.sender`
 
 ```js
-function assetPrices(address asset) public nonpayable
-returns(uint256)
+function transfer(address _to, uint256 _value) public nonpayable
+returns(success bool)
 ```
 
 **Returns**
 
-the price scaled by 10**18, or zero if the price is not available
+Whether the transfer was successful or not
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| asset | address | Asset to get the price of | 
+| _to | address | The address of the recipient | 
+| _value | uint256 | The amount of token to be transferred | 
 
-### isAllowed
+### transferFrom
+
+send `_value` token to `_to` from `_from` on the condition it is approved by `_from`
 
 ```js
-function isAllowed(address asset, uint256 newCash) internal nonpayable
-returns(bool)
+function transferFrom(address _from, address _to, uint256 _value) public nonpayable
+returns(success bool)
 ```
+
+**Returns**
+
+Whether the transfer was successful or not
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
+| _from | address | The address of the sender | 
+| _to | address | The address of the recipient | 
+| _value | uint256 | The amount of token to be transferred | 
 
-### isLiquidate
+### approve
+
+`msg.sender` approves `_spender` to spend `_value` tokens
 
 ```js
-function isLiquidate(address asset, uint256 newCash) internal nonpayable
-returns(bool)
+function approve(address _spender, uint256 _value) public nonpayable
+returns(success bool)
 ```
+
+**Returns**
+
+Whether the approval was successful or not
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
+| _spender | address | The address of the account able to transfer the tokens | 
+| _value | uint256 | The amount of tokens to be approved for transfer | 
 
-### cashIsUp
+### allowance
 
 ```js
-function cashIsUp(address asset, uint256 newCash) internal view
-returns(bool)
+function allowance(address _owner, address _spender) public view
+returns(remaining uint256)
 ```
+
+**Returns**
+
+Amount of remaining tokens allowed to spent
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| asset | address |  | 
-| newCash | uint256 |  | 
+| _owner | address | The address of the account owning tokens | 
+| _spender | address | The address of the account able to transfer the tokens | 
 
-### oracleTouched
-
-```js
-function oracleTouched() internal nonpayable
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-
-### setAllowLiquidation
-
-```js
-function setAllowLiquidation(bool allowLiquidation_) public nonpayable
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| allowLiquidation_ | bool |  | 
-
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)

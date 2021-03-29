@@ -1,3 +1,8 @@
+---
+layout: default
+title: Exponential
+---
+
 # Exponential.sol
 
 View Source: [contracts/Exponential.sol](../contracts/Exponential.sol)
@@ -5,7 +10,7 @@ View Source: [contracts/Exponential.sol](../contracts/Exponential.sol)
 **↗ Extends: [ErrorReporter](ErrorReporter.md), [CarefulMath](CarefulMath.md)**
 **↘ Derived Contracts: [AlkemiRateModel](AlkemiRateModel.md), [ExchangeRateModel](ExchangeRateModel.md), [MoneyMarket](MoneyMarket.md), [PriceOracle](PriceOracle.md), [StableCoinInterestRateModel](StableCoinInterestRateModel.md), [StandardInterestRateModel](StandardInterestRateModel.md)**
 
-**Exponential**
+**{{ContractName}}**
 
 ## Structs
 ### Exp
@@ -296,30 +301,3 @@ returns(bool)
 | ------------- |------------- | -----|
 | value | struct Exponential.Exp |  | 
 
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)

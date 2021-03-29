@@ -11,9 +11,6 @@ contract MoneyMarketTest_Supply_NonStandard is MoneyMarketNonStandardTest {
     function testSupply_basicValidations() public {
         address token = address(this); // must be this
         address protocol = address(this); // must be this
-        initializer();
-        addKYCAdmin(msg.sender);
-        addCustomerKYC(msg.sender);
 
         uint err = supply(token, 10);
         Assert.equal(uint(Error.MARKET_NOT_SUPPORTED), err, "should have returned Error.MARKET_NOT_SUPPORTED");

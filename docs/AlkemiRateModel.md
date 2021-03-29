@@ -1,10 +1,15 @@
+---
+layout: default
+title: AlkemiRateModel
+---
+
 # AlkemiRateModel.sol
 
 View Source: [contracts/AlkemiRateModel.sol](../contracts/AlkemiRateModel.sol)
 
 **↗ Extends: [Exponential](Exponential.md), [LiquidationChecker](LiquidationChecker.md)**
 
-**AlkemiRateModel**
+**{{ContractName}}**
 
 ## Constructor
 
@@ -83,6 +88,7 @@ modifier onlyOwner() internal
 
 ## Functions
 
+- [changeRates(string _contractName, uint256 MinRate, uint256 HealthyMinUR, uint256 HealthyMinRate, uint256 HealthyMaxUR, uint256 HealthyMaxRate, uint256 MaxRate)](#changerates)
 - [transferOwnership(address newOwner_)](#transferownership)
 - [acceptOwnership()](#acceptownership)
 - [setLiquidator(address _liquidator)](#setliquidator)
@@ -90,6 +96,24 @@ modifier onlyOwner() internal
 - [getUtilizationAndAnnualBorrowRate(uint256 cash, uint256 borrows)](#getutilizationandannualborrowrate)
 - [getSupplyRate(address _asset, uint256 cash, uint256 borrows)](#getsupplyrate)
 - [getBorrowRate(address asset, uint256 cash, uint256 borrows)](#getborrowrate)
+
+### changeRates
+
+```js
+function changeRates(string _contractName, uint256 MinRate, uint256 HealthyMinUR, uint256 HealthyMinRate, uint256 HealthyMaxUR, uint256 HealthyMaxRate, uint256 MaxRate) public nonpayable onlyOwner 
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| _contractName | string |  | 
+| MinRate | uint256 |  | 
+| HealthyMinUR | uint256 |  | 
+| HealthyMinRate | uint256 |  | 
+| HealthyMaxUR | uint256 |  | 
+| HealthyMaxRate | uint256 |  | 
+| MaxRate | uint256 |  | 
 
 ### transferOwnership
 
@@ -196,30 +220,3 @@ Success or failure and the borrow interest rate per block scaled by 10e18
 | cash | uint256 | The total cash of the asset in the market | 
 | borrows | uint256 | The total borrows of the asset in the market | 
 
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)

@@ -3,9 +3,9 @@ pragma solidity ^0.4.24;
 import "truffle/Assert.sol";
 import "./AssertHelpers.sol";
 import "./MathHelpers.sol";
-import "../contracts/AlkemiRateModel.sol";
+import "../contracts/StableCoinInterestRateModel.sol";
 
-contract StableCoinInterestRateModelTest is AlkemiRateModel {
+contract StableCoinInterestRateModelTest is StableCoinInterestRateModel {
 
     // Supply rate = (1 - 0.15) * Ua * ( 10% + (30% * Ua) )
     // C.f. Elixir:
@@ -24,11 +24,11 @@ contract StableCoinInterestRateModelTest is AlkemiRateModel {
     function testGetSupplyRate() public {
         (uint err0, uint rate0) = getSupplyRate(address(this), 500, 100);
         Assert.equal(0, err0, "should be successful");
-        Assert.equal(( 5053748097 ), rate0, "supply rate for 500/100"); // getSupplyRate.(500, 100)
+        Assert.equal(( 10107496194 / 2 ), rate0, "supply rate for 500/100"); // getSupplyRate.(500, 100)
 
         (uint err1, uint rate1) = getSupplyRate(address(this), 3 * 10**18, 5 * 10**18);
         Assert.equal(0, err1, "should be successful");
-        Assert.equal(( 36323814450 ), rate1, "borrow rate for 3e18/5e18"); // getSupplyRate.(3.0e18, 5.0e18)
+        Assert.equal(( 72647628900 / 2 ), rate1, "borrow rate for 3e18/5e18"); // getSupplyRate.(3.0e18, 5.0e18)
 
         // TODO: Handle zero/zero case
         (uint err2, uint rate2) = getSupplyRate(address(this), 0, 0);
@@ -59,11 +59,11 @@ contract StableCoinInterestRateModelTest is AlkemiRateModel {
     */
     function testGetBorrowRate() public {
         (uint err0, uint rate0) = getBorrowRate(address(this), 500, 100);
-        uint expectedRate = ( uint(35673515981) );
+        uint expectedRate = ( uint(71347031963) / uint(2) );
         Assert.equal(0, err0, "should be successful");
         Assert.equal(expectedRate, rate0, "borrow rate for 500/100"); // getBorrowRate.(500, 100)
 
-        uint expectedRate2 = ( uint(68374238964) );
+        uint expectedRate2 = ( uint(136748477929) / uint(2) );
         (uint err1, uint rate1) = getBorrowRate(address(this), 3 * 10**18, 5 * 10**18);
         Assert.equal(0, err1, "should be successful");
         Assert.equal(expectedRate2, rate1, "borrow rate for 3e18/5e18"); // getBorrowRate.(3.0e18, 5.0e18)

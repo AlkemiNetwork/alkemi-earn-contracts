@@ -10,7 +10,6 @@ contract MoneyMarketTest_GetPriceForAssetAmountMulCollatRatio is MoneyMarketWith
 
     function testGetPriceForAssetAmountMulCollatRatio_Success1() public {
         address addr1 = nextAddress();
-        initializer();
 
         (Error err1, Exp memory val1) = getExp(50, 1);
         assertNoError(err1);
@@ -19,7 +18,7 @@ contract MoneyMarketTest_GetPriceForAssetAmountMulCollatRatio is MoneyMarketWith
 
         (Error err2, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(addr1, 1 ether);
         assertNoError(err2);
-        Assert.equal(62.5 ether, truncate(assetValue), "1 ether * 50:1 * 2:1");
+        Assert.equal(100 ether, truncate(assetValue), "1 ether * 50:1 * 2:1");
     }
 
     function testGetPriceForAssetAmountMulCollatRatio_Success2() public {
@@ -32,7 +31,7 @@ contract MoneyMarketTest_GetPriceForAssetAmountMulCollatRatio is MoneyMarketWith
 
         (Error err2, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(addr1, 1 ether);
         assertNoError(err2);
-        Assert.equal(0.25 ether, truncate(assetValue), "1 ether * 1:5 * 2:1");
+        Assert.equal(0.4 ether, truncate(assetValue), "1 ether * 1:5 * 2:1");
     }
 
     function testGetPriceForAssetAmountMulCollatRatio_Overflow() public {

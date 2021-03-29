@@ -3,9 +3,9 @@ pragma solidity ^0.4.24;
 import "truffle/Assert.sol";
 import "./AssertHelpers.sol";
 import "./MathHelpers.sol";
-import "../contracts/AlkemiRateModel.sol";
+import "../contracts/StandardInterestRateModel.sol";
 
-contract StandardInterestRateModelTest is AlkemiRateModel {
+contract StandardInterestRateModelTest is StandardInterestRateModel {
 
     // Supply rate = (1 - 0.1) * Ua * ( 5% + (45% * Ua) )
     // C.f. Elixir:

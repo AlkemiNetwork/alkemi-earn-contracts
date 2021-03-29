@@ -9,7 +9,6 @@ import "./MoneyMarketTest.sol";
 contract MoneyMarketTest_SuspendMarket is MoneyMarketTest {
 
     function testSuspendMarket_NotAdmin() public {
-        initializer();
         address asset = nextAddress();
         markets[asset].blockNumber = 100;
         markets[asset].isSupported = true;
