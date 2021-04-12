@@ -1,16 +1,17 @@
-# The MoneyMarket Contract (MoneyMarket.sol)
+---
+layout: default
+title: MoneyMarket
+---
+
+# MoneyMarket.sol
 
 View Source: [contracts/MoneyMarket.sol](../contracts/MoneyMarket.sol)
 
 **↗ Extends: [Exponential](Exponential.md), [SafeToken](SafeToken.md)**
 
-**MoneyMarket**
-
-The MoneyMarket Contract is the core contract governing
-all accounts
+**{{ContractName}}**
 
 ## Structs
-
 ### Balance
 
 ```js
@@ -169,35 +170,51 @@ struct LiquidateLocalVars {
 ```
 
 ## Contract Members
-
 **Constants & Variables**
 
 ```js
 //internal members
-uint256 internal constant initialInterestIndex;
-uint256 internal constant defaultOriginationFee;
-uint256 internal constant minimumCollateralRatioMantissa;
-uint256 internal constant maximumLiquidationDiscountMantissa;
+uint256 internal initialInterestIndex;
+uint256 internal defaultOriginationFee;
+uint256 internal defaultCollateralRatio;
+uint256 internal defaultLiquidationDiscount;
+uint256 internal minimumCollateralRatioMantissa;
+uint256 internal maximumLiquidationDiscountMantissa;
+contract ChainLink internal priceOracle;
 
 //public members
+bool public initializationDone;
 address public pendingAdmin;
 address public admin;
+mapping(address => bool) public managers;
 address public oracle;
 mapping(address => mapping(address => struct MoneyMarket.Balance)) public supplyBalances;
 mapping(address => mapping(address => struct MoneyMarket.Balance)) public borrowBalances;
+address public wethAddress;
+contract AlkemiWETH public WETHContract;
 mapping(address => struct MoneyMarket.Market) public markets;
 address[] public collateralMarkets;
 struct Exponential.Exp public collateralRatio;
 struct Exponential.Exp public originationFee;
 struct Exponential.Exp public liquidationDiscount;
 bool public paused;
+mapping(address => mapping(address => uint256)) public originationFeeBalance;
+
+//private members
+mapping(address => bool) private KYCAdmins;
+mapping(address => bool) private customersWithKYC;
+mapping(address => bool) private liquidators;
 
 ```
 
 **Events**
 
 ```js
+event WETHAddressSet(address  wethAddress);
+event LiquidatorAdded(address  Liquidator);
+event LiquidatorRemoved(address  Liquidator);
 event SupplyReceived(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
+event SupplyOrgFeeAsAdmin(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
 event SupplyWithdrawn(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
 event BorrowTaken(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  borrowAmountWithFee, uint256  newBalance);
 event BorrowRepaid(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
@@ -206,17 +223,91 @@ event NewPendingAdmin(address  oldPendingAdmin, address  newPendingAdmin);
 event NewAdmin(address  oldAdmin, address  newAdmin);
 event NewOracle(address  oldOracle, address  newOracle);
 event SupportedMarket(address  asset, address  interestRateModel);
-event NewRiskParameters(uint256  oldCollateralRatioMantissa, uint256  newCollateralRatioMantissa, uint256  oldLiquidationDiscountMantissa, uint256  newLiquidationDiscountMantissa);
+event NewRiskParameters(uint256  oldCollateralRatioMantissa, uint256  newCollateralRatioMantissa, uint256  oldLiquidationDiscountMantissa, uint256  newLiquidationDiscountMantissa, uint256  NewMinimumCollateralRatioMantissa, uint256  newMaximumLiquidationDiscountMantissa);
 event NewOriginationFee(uint256  oldOriginationFeeMantissa, uint256  newOriginationFeeMantissa);
 event SetMarketInterestRateModel(address  asset, address  interestRateModel);
 event EquityWithdrawn(address  asset, uint256  equityAvailableBefore, uint256  amount, address  owner);
 event SuspendedMarket(address  asset);
 event SetPaused(bool  newState);
+event KYCAdminAdded(address  KYCAdmin);
+event KYCAdminRemoved(address  KYCAdmin);
+event KYCCustomerAdded(address  KYCCustomer);
+event KYCCustomerRemoved(address  KYCCustomer);
 ```
+
+## Modifiers
+
+- [onlyAdminOrManager](#onlyadminormanager)
+- [isKYCAdmin](#iskycadmin)
+- [isKYCVerifiedCustomer](#iskycverifiedcustomer)
+- [isLiquidator](#isliquidator)
+
+### onlyAdminOrManager
+
+Modifier to check if the caller of the function is a manager or owner
+
+```js
+modifier onlyAdminOrManager() internal
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+
+### isKYCAdmin
+
+Modifier to check if the caller of the function is a KYC Admin
+
+```js
+modifier isKYCAdmin() internal
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+
+### isKYCVerifiedCustomer
+
+Modifier to check if the caller of the function is KYC verified
+
+```js
+modifier isKYCVerifiedCustomer() internal
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+
+### isLiquidator
+
+Modifier to check if the caller of the function is a Liquidator
+
+```js
+modifier isLiquidator() internal
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
 ## Functions
 
+- [initializer()](#initializer)
 - [()](#)
+- [emitError(enum ErrorReporter.Error error, enum ErrorReporter.FailureInfo failure)](#emiterror)
+- [addKYCAdmin(address KYCAdmin)](#addkycadmin)
+- [removeKYCAdmin(address KYCAdmin)](#removekycadmin)
+- [addCustomerKYC(address customer)](#addcustomerkyc)
+- [removeCustomerKYC(address customer)](#removecustomerkyc)
+- [verifyKYC(address customer)](#verifykyc)
+- [checkKYCAdmin(address _KYCAdmin)](#checkkycadmin)
+- [addLiquidator(address liquidator)](#addliquidator)
+- [removeLiquidator(address liquidator)](#removeliquidator)
+- [verifyLiquidator(address liquidator)](#verifyliquidator)
 - [min(uint256 a, uint256 b)](#min)
 - [getBlockNumber()](#getblocknumber)
 - [addCollateralMarket(address asset)](#addcollateralmarket)
@@ -229,20 +320,25 @@ event SetPaused(bool  newState);
 - [fetchAssetPrice(address asset)](#fetchassetprice)
 - [assetPrices(address asset)](#assetprices)
 - [getAssetAmountForValue(address asset, struct Exponential.Exp ethValue)](#getassetamountforvalue)
-- [\_setPendingAdmin(address newPendingAdmin)](#_setpendingadmin)
-- [\_acceptAdmin()](#_acceptadmin)
-- [\_setOracle(address newOracle)](#_setoracle)
-- [\_setPaused(bool requestedState)](#_setpaused)
+- [_setPendingAdmin(address newPendingAdmin)](#_setpendingadmin)
+- [_acceptAdmin()](#_acceptadmin)
+- [_setOracle(address newOracle)](#_setoracle)
+- [_setPaused(bool requestedState)](#_setpaused)
 - [getAccountLiquidity(address account)](#getaccountliquidity)
 - [getSupplyBalance(address account, address asset)](#getsupplybalance)
 - [getBorrowBalance(address account, address asset)](#getborrowbalance)
-- [\_supportMarket(address asset, InterestRateModel interestRateModel)](#_supportmarket)
-- [\_suspendMarket(address asset)](#_suspendmarket)
-- [\_setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa)](#_setriskparameters)
-- [\_setOriginationFee(uint256 originationFeeMantissa)](#_setoriginationfee)
-- [\_setMarketInterestRateModel(address asset, InterestRateModel interestRateModel)](#_setmarketinterestratemodel)
-- [\_withdrawEquity(address asset, uint256 amount)](#_withdrawequity)
+- [_supportMarket(address asset, InterestRateModel interestRateModel)](#_supportmarket)
+- [_suspendMarket(address asset)](#_suspendmarket)
+- [_setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa, uint256 _minimumCollateralRatioMantissa, uint256 _maximumLiquidationDiscountMantissa)](#_setriskparameters)
+- [_setOriginationFee(uint256 originationFeeMantissa)](#_setoriginationfee)
+- [_setMarketInterestRateModel(address asset, InterestRateModel interestRateModel)](#_setmarketinterestratemodel)
+- [_withdrawEquity(address asset, uint256 amount)](#_withdrawequity)
+- [setWethAddress(address wethContractAddress)](#setwethaddress)
+- [supplyEther(address user, uint256 etherAmount)](#supplyether)
+- [revertEtherToUser(address user, uint256 etherAmount)](#revertethertouser)
 - [supply(address asset, uint256 amount)](#supply)
+- [withdrawEther(address user, uint256 etherAmount)](#withdrawether)
+- [sendEtherToUser(address user, uint256 amount)](#sendethertouser)
 - [withdraw(address asset, uint256 requestedAmount)](#withdraw)
 - [calculateAccountLiquidity(address userAddress)](#calculateaccountliquidity)
 - [calculateAccountValuesInternal(address userAddress)](#calculateaccountvaluesinternal)
@@ -254,8 +350,22 @@ event SetPaused(bool  newState);
 - [calculateDiscountedBorrowDenominatedCollateral(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 supplyCurrent_TargetCollateralAsset)](#calculatediscountedborrowdenominatedcollateral)
 - [calculateAmountSeize(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 closeBorrowAmount_TargetUnderwaterAsset)](#calculateamountseize)
 - [borrow(address asset, uint256 amount)](#borrow)
+- [supplyOriginationFeeAsAdmin(address asset, address user, uint256 amount, uint256 newSupplyIndex)](#supplyoriginationfeeasadmin)
 
-###
+### initializer
+
+`MoneyMarket` is the core MoneyMarket contract
+
+```js
+function initializer() public nonpayable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+
+### 
 
 Do not pay directly into MoneyMarket, please use `supply`.
 
@@ -265,9 +375,159 @@ function () public payable
 
 **Arguments**
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
+### emitError
+
+Function to emit fail event to frontend
+
+```js
+function emitError(enum ErrorReporter.Error error, enum ErrorReporter.FailureInfo failure) private nonpayable
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| error | enum ErrorReporter.Error |  | 
+| failure | enum ErrorReporter.FailureInfo |  | 
+
+### addKYCAdmin
+
+Function for use by the admin of the contract to add KYC Admins
+
+```js
+function addKYCAdmin(address KYCAdmin) public nonpayable
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| KYCAdmin | address |  | 
+
+### removeKYCAdmin
+
+Function for use by the admin of the contract to remove KYC Admins
+
+```js
+function removeKYCAdmin(address KYCAdmin) public nonpayable
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| KYCAdmin | address |  | 
+
+### addCustomerKYC
+
+Function for use by the KYC admins to add KYC Customers
+
+```js
+function addCustomerKYC(address customer) public nonpayable isKYCAdmin 
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| customer | address |  | 
+
+### removeCustomerKYC
+
+Function for use by the KYC admins to remove KYC Customers
+
+```js
+function removeCustomerKYC(address customer) public nonpayable isKYCAdmin 
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| customer | address |  | 
+
+### verifyKYC
+
+Function to fetch KYC verification status of a customer
+
+```js
+function verifyKYC(address customer) public view
+returns(bool)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| customer | address |  | 
+
+### checkKYCAdmin
+
+Function to fetch KYC Admin status of an admin
+
+```js
+function checkKYCAdmin(address _KYCAdmin) public view
+returns(bool)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| _KYCAdmin | address |  | 
+
+### addLiquidator
+
+Function for use by the admin of the contract to add Liquidators
+
+```js
+function addLiquidator(address liquidator) public nonpayable
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| liquidator | address |  | 
+
+### removeLiquidator
+
+Function for use by the admin of the contract to remove Liquidators
+
+```js
+function removeLiquidator(address liquidator) public nonpayable
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| liquidator | address |  | 
+
+### verifyLiquidator
+
+Function to fetch Liquidator status of a customer
+
+```js
+function verifyLiquidator(address liquidator) public view
+returns(bool)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| liquidator | address |  | 
 
 ### min
 
@@ -280,15 +540,15 @@ returns(uint256)
 
 **Arguments**
 
-| Name | Type    | Description |
-| ---- | ------- | ----------- |
-| a    | uint256 |             |
-| b    | uint256 |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| a | uint256 |  | 
+| b | uint256 |  | 
 
 ### getBlockNumber
 
 Function to simply retrieve block number
-This exists mainly for inheriting test contracts to stub this result.
+     This exists mainly for inheriting test contracts to stub this result.
 
 ```js
 function getBlockNumber() internal view
@@ -297,14 +557,13 @@ returns(uint256)
 
 **Arguments**
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
 ### addCollateralMarket
 
 Adds a given asset to the list of collateral markets. This operation is impossible to reverse.
-Note: this will not add the asset if it already exists.
+     Note: this will not add the asset if it already exists.
 
 ```js
 function addCollateralMarket(address asset) internal nonpayable
@@ -312,9 +571,9 @@ function addCollateralMarket(address asset) internal nonpayable
 
 **Arguments**
 
-| Name  | Type    | Description |
-| ----- | ------- | ----------- |
-| asset | address |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address |  | 
 
 ### getCollateralMarketsLength
 
@@ -331,14 +590,13 @@ the length of `collateralMarkets`
 
 **Arguments**
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
 ### calculateInterestIndex
 
 Calculates a new supply index based on the prevailing interest rates applied over time
-This is defined as `we multiply the most recent supply index by (1 + blocks times rate)`
+     This is defined as `we multiply the most recent supply index by (1 + blocks times rate)`
 
 ```js
 function calculateInterestIndex(uint256 startingInterestIndex, uint256 interestRateMantissa, uint256 blockStart, uint256 blockEnd) internal pure
@@ -347,17 +605,19 @@ returns(enum ErrorReporter.Error, uint256)
 
 **Arguments**
 
-| Name                  | Type    | Description |
-| --------------------- | ------- | ----------- |
-| startingInterestIndex | uint256 |             |
-| interestRateMantissa  | uint256 |             |
-| blockStart            | uint256 |             |
-| blockEnd              | uint256 |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| startingInterestIndex | uint256 |  | 
+| interestRateMantissa | uint256 |  | 
+| blockStart | uint256 |  | 
+| blockEnd | uint256 |  | 
 
 ### calculateBalance
 
 Calculates a new balance based on a previous balance and a pair of interest indices
-This is defined as: `The user's last balance checkpoint is multiplied by the currentSupplyIndex value and divided by the user's checkpoint index value` \* TODO: Is there a way to handle this that is less likely to overflow?
+     This is defined as: `The user's last balance checkpoint is multiplied by the currentSupplyIndex
+     value and divided by the user's checkpoint index value`
+     *      TODO: Is there a way to handle this that is less likely to overflow?
 
 ```js
 function calculateBalance(uint256 startingBalance, uint256 interestIndexStart, uint256 interestIndexEnd) internal pure
@@ -366,11 +626,11 @@ returns(enum ErrorReporter.Error, uint256)
 
 **Arguments**
 
-| Name               | Type    | Description |
-| ------------------ | ------- | ----------- |
-| startingBalance    | uint256 |             |
-| interestIndexStart | uint256 |             |
-| interestIndexEnd   | uint256 |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| startingBalance | uint256 |  | 
+| interestIndexStart | uint256 |  | 
+| interestIndexEnd | uint256 |  | 
 
 ### getPriceForAssetAmount
 
@@ -383,16 +643,16 @@ returns(enum ErrorReporter.Error, struct Exponential.Exp)
 
 **Arguments**
 
-| Name        | Type    | Description |
-| ----------- | ------- | ----------- |
-| asset       | address |             |
-| assetAmount | uint256 |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address |  | 
+| assetAmount | uint256 |  | 
 
 ### getPriceForAssetAmountMulCollatRatio
 
 Gets the price for the amount specified of the given asset multiplied by the current
-collateral ratio (i.e., assetAmountWei _ collateralRatio _ oraclePrice = totalValueInEth).
-We will group this as `(oraclePrice * collateralRatio) * assetAmountWei`
+     collateral ratio (i.e., assetAmountWei * collateralRatio * oraclePrice = totalValueInEth).
+     We will group this as `(oraclePrice * collateralRatio) * assetAmountWei`
 
 ```js
 function getPriceForAssetAmountMulCollatRatio(address asset, uint256 assetAmount) internal view
@@ -401,15 +661,16 @@ returns(enum ErrorReporter.Error, struct Exponential.Exp)
 
 **Arguments**
 
-| Name        | Type    | Description |
-| ----------- | ------- | ----------- |
-| asset       | address |             |
-| assetAmount | uint256 |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address |  | 
+| assetAmount | uint256 |  | 
 
 ### calculateBorrowAmountWithFee
 
 Calculates the origination fee added to a given borrowAmount
-This is simply `(1 + originationFee) * borrowAmount` \* TODO: Track at what magnitude this fee rounds down to zero?
+     This is simply `(1 + originationFee) * borrowAmount`
+     *      TODO: Track at what magnitude this fee rounds down to zero?
 
 ```js
 function calculateBorrowAmountWithFee(uint256 borrowAmount) internal view
@@ -418,9 +679,9 @@ returns(enum ErrorReporter.Error, uint256)
 
 **Arguments**
 
-| Name         | Type    | Description |
-| ------------ | ------- | ----------- |
-| borrowAmount | uint256 |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| borrowAmount | uint256 |  | 
 
 ### fetchAssetPrice
 
@@ -433,9 +694,9 @@ returns(enum ErrorReporter.Error, struct Exponential.Exp)
 
 **Arguments**
 
-| Name  | Type    | Description                         |
-| ----- | ------- | ----------------------------------- |
-| asset | address | asset whose price should be fetched |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | asset whose price should be fetched | 
 
 ### assetPrices
 
@@ -452,15 +713,15 @@ returns(uint256)
 
 **Arguments**
 
-| Name  | Type    | Description                           |
-| ----- | ------- | ------------------------------------- |
-| asset | address | Asset whose price should be retrieved |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | Asset whose price should be retrieved | 
 
 ### getAssetAmountForValue
 
 Gets the amount of the specified asset given the specified Eth value
-ethValue / oraclePrice = assetAmountWei
-If there's no oraclePrice, this returns (Error.DIVISION_BY_ZERO, 0)
+     ethValue / oraclePrice = assetAmountWei
+     If there's no oraclePrice, this returns (Error.DIVISION_BY_ZERO, 0)
 
 ```js
 function getAssetAmountForValue(address asset, struct Exponential.Exp ethValue) internal view
@@ -469,12 +730,12 @@ returns(enum ErrorReporter.Error, uint256)
 
 **Arguments**
 
-| Name     | Type                   | Description |
-| -------- | ---------------------- | ----------- |
-| asset    | address                |             |
-| ethValue | struct Exponential.Exp |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address |  | 
+| ethValue | struct Exponential.Exp |  | 
 
-### \_setPendingAdmin
+### _setPendingAdmin
 
 Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
 
@@ -485,15 +746,16 @@ returns(uint256)
 
 **Returns**
 
-uint 0=success, otherwise a failure (see ErrorReporter.sol for details) \* TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
+uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+     * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
 
 **Arguments**
 
-| Name            | Type    | Description        |
-| --------------- | ------- | ------------------ |
-| newPendingAdmin | address | New pending admin. |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| newPendingAdmin | address | New pending admin. | 
 
-### \_acceptAdmin
+### _acceptAdmin
 
 Accepts transfer of admin rights. msg.sender must be pendingAdmin
 
@@ -508,11 +770,10 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
 
-
-### \_setOracle
+### _setOracle
 
 Set new oracle, who can set asset prices
 
@@ -527,11 +788,11 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name      | Type    | Description        |
-| --------- | ------- | ------------------ |
-| newOracle | address | New oracle address |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| newOracle | address | New oracle address | 
 
-### \_setPaused
+### _setPaused
 
 set `paused` to the specified state
 
@@ -546,15 +807,15 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name           | Type | Description                 |
-| -------------- | ---- | --------------------------- |
-| requestedState | bool | value to assign to `paused` |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| requestedState | bool | value to assign to `paused` | 
 
 ### getAccountLiquidity
 
 returns the liquidity for given account.
-a positive result indicates ability to borrow, whereas
-a negative result indicates a shortfall which may be liquidated
+        a positive result indicates ability to borrow, whereas
+        a negative result indicates a shortfall which may be liquidated
 
 ```js
 function getAccountLiquidity(address account) public view
@@ -567,9 +828,9 @@ signed integer in terms of eth-wei (negative indicates a shortfall)
 
 **Arguments**
 
-| Name    | Type    | Description            |
-| ------- | ------- | ---------------------- |
-| account | address | the account to examine |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| account | address | the account to examine | 
 
 ### getSupplyBalance
 
@@ -586,10 +847,10 @@ uint supply balance on success, throws on failed assertion otherwise
 
 **Arguments**
 
-| Name    | Type    | Description                                                                    |
-| ------- | ------- | ------------------------------------------------------------------------------ |
-| account | address | the account to examine                                                         |
-| asset   | address | the market asset whose supply balance belonging to `account` should be checked |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| account | address | the account to examine | 
+| asset | address | the market asset whose supply balance belonging to `account` should be checked | 
 
 ### getBorrowBalance
 
@@ -606,12 +867,12 @@ uint borrow balance on success, throws on failed assertion otherwise
 
 **Arguments**
 
-| Name    | Type    | Description                                                                    |
-| ------- | ------- | ------------------------------------------------------------------------------ |
-| account | address | the account to examine                                                         |
-| asset   | address | the market asset whose borrow balance belonging to `account` should be checked |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| account | address | the account to examine | 
+| asset | address | the market asset whose borrow balance belonging to `account` should be checked | 
 
-### \_supportMarket
+### _supportMarket
 
 Supports a given market (asset) for use
 
@@ -626,16 +887,16 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name              | Type              | Description                                              |
-| ----------------- | ----------------- | -------------------------------------------------------- |
-| asset             | address           | Asset to support; MUST already have a non-zero price set |
-| interestRateModel | InterestRateModel | InterestRateModel to use for the asset                   |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | Asset to support; MUST already have a non-zero price set | 
+| interestRateModel | InterestRateModel | InterestRateModel to use for the asset | 
 
-### \_suspendMarket
+### _suspendMarket
 
-Suspends a given _supported_ market (asset) from use.
-Assets in this state do count for collateral, but users may only withdraw, payBorrow,
-and liquidate the asset. The liquidate function no longer checks collateralization.
+Suspends a given *supported* market (asset) from use.
+        Assets in this state do count for collateral, but users may only withdraw, payBorrow,
+        and liquidate the asset. The liquidate function no longer checks collateralization.
 
 ```js
 function _suspendMarket(address asset) public nonpayable
@@ -648,16 +909,16 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name  | Type    | Description      |
-| ----- | ------- | ---------------- |
-| asset | address | Asset to suspend |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | Asset to suspend | 
 
-### \_setRiskParameters
+### _setRiskParameters
 
 Sets the risk parameters: collateral ratio and liquidation discount
 
 ```js
-function _setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa) public nonpayable
+function _setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa, uint256 _minimumCollateralRatioMantissa, uint256 _maximumLiquidationDiscountMantissa) public nonpayable
 returns(uint256)
 ```
 
@@ -667,12 +928,14 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name                        | Type    | Description                                                                                                                                 |
-| --------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| collateralRatioMantissa     | uint256 | rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1                                                               |
-| liquidationDiscountMantissa | uint256 | rational liquidation discount, scaled by 1e18. The de-scaled value must be <= 0.1 and must be less than (descaled collateral ratio minus 1) |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| collateralRatioMantissa | uint256 | rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1 | 
+| liquidationDiscountMantissa | uint256 | rational liquidation discount, scaled by 1e18. The de-scaled value must be <= 0.1 and must be less than (descaled collateral ratio minus 1) | 
+| _minimumCollateralRatioMantissa | uint256 |  | 
+| _maximumLiquidationDiscountMantissa | uint256 |  | 
 
-### \_setOriginationFee
+### _setOriginationFee
 
 Sets the origination fee (which is a multiplier on new borrows)
 
@@ -687,11 +950,11 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name                   | Type    | Description                                                                   |
-| ---------------------- | ------- | ----------------------------------------------------------------------------- |
-| originationFeeMantissa | uint256 | rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1 |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| originationFeeMantissa | uint256 | rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1 | 
 
-### \_setMarketInterestRateModel
+### _setMarketInterestRateModel
 
 Sets the interest rate model for a given market
 
@@ -706,12 +969,12 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name              | Type              | Description      |
-| ----------------- | ----------------- | ---------------- |
-| asset             | address           | Asset to support |
-| interestRateModel | InterestRateModel |                  |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | Asset to support | 
+| interestRateModel | InterestRateModel |  | 
 
-### \_withdrawEquity
+### _withdrawEquity
 
 withdraws `amount` of `asset` from equity for asset, as long as `amount` <= equity. Equity= cash - (supply + borrows)
 
@@ -726,17 +989,67 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name   | Type    | Description                                                    |
-| ------ | ------- | -------------------------------------------------------------- |
-| asset  | address | asset whose equity should be withdrawn                         |
-| amount | uint256 | amount of equity to withdraw; must not exceed equity available |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | asset whose equity should be withdrawn | 
+| amount | uint256 | amount of equity to withdraw; must not exceed equity available | 
+
+### setWethAddress
+
+Set WETH token contract address
+
+```js
+function setWethAddress(address wethContractAddress) public nonpayable
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| wethContractAddress | address | Enter the WETH token address | 
+
+### supplyEther
+
+Convert Ether supplied by user into WETH tokens and then supply corresponding WETH to user
+
+```js
+function supplyEther(address user, uint256 etherAmount) internal nonpayable
+returns(uint256)
+```
+
+**Returns**
+
+errors if any
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| user | address | User account address | 
+| etherAmount | uint256 | Amount of ether to be converted to WETH | 
+
+### revertEtherToUser
+
+Revert Ether paid by user back to user's account in case transaction fails due to some other reason
+
+```js
+function revertEtherToUser(address user, uint256 etherAmount) internal nonpayable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| user | address | User account address | 
+| etherAmount | uint256 | Amount of ether to be sent back to user | 
 
 ### supply
 
 supply `amount` of `asset` (which must be supported) to `msg.sender` in the protocol
 
 ```js
-function supply(address asset, uint256 amount) public nonpayable
+function supply(address asset, uint256 amount) public payable isKYCVerifiedCustomer 
 returns(uint256)
 ```
 
@@ -746,17 +1059,49 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name   | Type    | Description                |
-| ------ | ------- | -------------------------- |
-| asset  | address | The market asset to supply |
-| amount | uint256 | The amount to supply       |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | The market asset to supply | 
+| amount | uint256 | The amount to supply | 
+
+### withdrawEther
+
+withdraw `amount` of `ether` from sender's account to sender's address
+
+```js
+function withdrawEther(address user, uint256 etherAmount) internal nonpayable
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| user | address | User account address | 
+| etherAmount | uint256 | Amount of ether to be converted to WETH | 
+
+### sendEtherToUser
+
+send Ether from contract to a user
+
+```js
+function sendEtherToUser(address user, uint256 amount) public nonpayable
+returns(uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| user | address |  | 
+| amount | uint256 |  | 
 
 ### withdraw
 
 withdraw `amount` of `asset` from sender's account to sender's address
 
 ```js
-function withdraw(address asset, uint256 requestedAmount) public nonpayable
+function withdraw(address asset, uint256 requestedAmount) public nonpayable isKYCVerifiedCustomer 
 returns(uint256)
 ```
 
@@ -766,17 +1111,17 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name            | Type    | Description                            |
-| --------------- | ------- | -------------------------------------- |
-| asset           | address | The market asset to withdraw           |
-| requestedAmount | uint256 | The amount to withdraw (or -1 for max) |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | The market asset to withdraw | 
+| requestedAmount | uint256 | The amount to withdraw (or -1 for max) | 
 
 ### calculateAccountLiquidity
 
 Gets the user's account liquidity and account shortfall balances. This includes
-any accumulated interest thus far but does NOT actually update anything in
-storage, it simply calculates the account liquidity and shortfall with liquidity being
-returned as the first Exp, ie (Error, accountLiquidity, accountShortfall).
+     any accumulated interest thus far but does NOT actually update anything in
+     storage, it simply calculates the account liquidity and shortfall with liquidity being
+     returned as the first Exp, ie (Error, accountLiquidity, accountShortfall).
 
 ```js
 function calculateAccountLiquidity(address userAddress) internal view
@@ -785,15 +1130,15 @@ returns(enum ErrorReporter.Error, struct Exponential.Exp, struct Exponential.Exp
 
 **Arguments**
 
-| Name        | Type    | Description |
-| ----------- | ------- | ----------- |
-| userAddress | address |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| userAddress | address |  | 
 
 ### calculateAccountValuesInternal
 
 Gets the ETH values of the user's accumulated supply and borrow balances, scaled by 10e18.
-This includes any accumulated interest thus far but does NOT actually update anything in
-storage
+        This includes any accumulated interest thus far but does NOT actually update anything in
+        storage
 
 ```js
 function calculateAccountValuesInternal(address userAddress) internal view
@@ -805,19 +1150,19 @@ returns(enum ErrorReporter.Error, uint256, uint256)
 (error code, sum ETH value of supplies scaled by 10e18, sum ETH value of borrows scaled by 10e18)
 TODO: Possibly should add a Min(500, collateralMarkets.length) for extra safety
 TODO: To help save gas we could think about using the current Market.interestIndex
-accumulate interest rather than calculating it
+      accumulate interest rather than calculating it
 
 **Arguments**
 
-| Name        | Type    | Description                     |
-| ----------- | ------- | ------------------------------- |
-| userAddress | address | account for which to sum values |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| userAddress | address | account for which to sum values | 
 
 ### calculateAccountValues
 
 Gets the ETH values of the user's accumulated supply and borrow balances, scaled by 10e18.
-This includes any accumulated interest thus far but does NOT actually update anything in
-storage
+        This includes any accumulated interest thus far but does NOT actually update anything in
+        storage
 
 ```js
 function calculateAccountValues(address userAddress) public view
@@ -827,21 +1172,21 @@ returns(uint256, uint256, uint256)
 **Returns**
 
 (uint 0=success; otherwise a failure (see ErrorReporter.sol for details),
-sum ETH value of supplies scaled by 10e18,
-sum ETH value of borrows scaled by 10e18)
+         sum ETH value of supplies scaled by 10e18,
+         sum ETH value of borrows scaled by 10e18)
 
 **Arguments**
 
-| Name        | Type    | Description                     |
-| ----------- | ------- | ------------------------------- |
-| userAddress | address | account for which to sum values |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| userAddress | address | account for which to sum values | 
 
 ### repayBorrow
 
 Users repay borrowed assets from their own address to the protocol.
 
 ```js
-function repayBorrow(address asset, uint256 amount) public nonpayable
+function repayBorrow(address asset, uint256 amount) public payable isKYCVerifiedCustomer 
 returns(uint256)
 ```
 
@@ -851,17 +1196,17 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name   | Type    | Description                         |
-| ------ | ------- | ----------------------------------- |
-| asset  | address | The market asset to repay           |
-| amount | uint256 | The amount to repay (or -1 for max) |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | The market asset to repay | 
+| amount | uint256 | The amount to repay (or -1 for max) | 
 
 ### liquidateBorrow
 
 users repay all or some of an underwater borrow and receive collateral
 
 ```js
-function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint256 requestedAmountClose) public nonpayable
+function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint256 requestedAmountClose) public nonpayable isKYCVerifiedCustomer isLiquidator 
 returns(uint256)
 ```
 
@@ -871,12 +1216,12 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name                 | Type    | Description                                        |
-| -------------------- | ------- | -------------------------------------------------- |
-| targetAccount        | address | The account whose borrow should be liquidated      |
-| assetBorrow          | address | The market asset to repay                          |
-| assetCollateral      | address | The borrower's market asset to receive in exchange |
-| requestedAmountClose | uint256 | The amount to repay (or -1 for max)                |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| targetAccount | address | The account whose borrow should be liquidated | 
+| assetBorrow | address | The market asset to repay | 
+| assetCollateral | address | The borrower's market asset to receive in exchange | 
+| requestedAmountClose | uint256 | The amount to repay (or -1 for max) | 
 
 ### emitLiquidationEvent
 
@@ -888,15 +1233,15 @@ function emitLiquidationEvent(struct MoneyMarket.LiquidateLocalVars localResults
 
 **Arguments**
 
-| Name         | Type                                  | Description |
-| ------------ | ------------------------------------- | ----------- |
-| localResults | struct MoneyMarket.LiquidateLocalVars |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| localResults | struct MoneyMarket.LiquidateLocalVars |  | 
 
 ### calculateDiscountedRepayToEvenAmount
 
 This should ONLY be called if market is supported. It returns shortfall / [Oracle price for the borrow * (collateralRatio - liquidationDiscount - 1)]
-If the market isn't supported, we support liquidation of asset regardless of shortfall because we want borrows of the unsupported asset to be closed.
-Note that if collateralRatio = liquidationDiscount + 1, then the denominator will be zero and the function will fail with DIVISION_BY_ZERO.
+     If the market isn't supported, we support liquidation of asset regardless of shortfall because we want borrows of the unsupported asset to be closed.
+     Note that if collateralRatio = liquidationDiscount + 1, then the denominator will be zero and the function will fail with DIVISION_BY_ZERO.
 
 ```js
 function calculateDiscountedRepayToEvenAmount(address targetAccount, struct Exponential.Exp underwaterAssetPrice) internal view
@@ -905,14 +1250,14 @@ returns(enum ErrorReporter.Error, uint256)
 
 **Arguments**
 
-| Name                 | Type                   | Description |
-| -------------------- | ---------------------- | ----------- |
-| targetAccount        | address                |             |
-| underwaterAssetPrice | struct Exponential.Exp |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| targetAccount | address |  | 
+| underwaterAssetPrice | struct Exponential.Exp |  | 
 
 ### calculateDiscountedBorrowDenominatedCollateral
 
-discountedBorrowDenominatedCollateral = [supplyCurrent / (1 + liquidationDiscount)] \* (Oracle price for the collateral / Oracle price for the borrow)
+discountedBorrowDenominatedCollateral = [supplyCurrent / (1 + liquidationDiscount)] * (Oracle price for the collateral / Oracle price for the borrow)
 
 ```js
 function calculateDiscountedBorrowDenominatedCollateral(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 supplyCurrent_TargetCollateralAsset) internal view
@@ -921,15 +1266,15 @@ returns(enum ErrorReporter.Error, uint256)
 
 **Arguments**
 
-| Name                                | Type                   | Description |
-| ----------------------------------- | ---------------------- | ----------- |
-| underwaterAssetPrice                | struct Exponential.Exp |             |
-| collateralPrice                     | struct Exponential.Exp |             |
-| supplyCurrent_TargetCollateralAsset | uint256                |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| underwaterAssetPrice | struct Exponential.Exp |  | 
+| collateralPrice | struct Exponential.Exp |  | 
+| supplyCurrent_TargetCollateralAsset | uint256 |  | 
 
 ### calculateAmountSeize
 
-returns closeBorrowAmount*TargetUnderwaterAsset * (1+liquidationDiscount) \_ priceBorrow/priceCollateral
+returns closeBorrowAmount_TargetUnderwaterAsset * (1+liquidationDiscount) * priceBorrow/priceCollateral
 
 ```js
 function calculateAmountSeize(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 closeBorrowAmount_TargetUnderwaterAsset) internal view
@@ -938,18 +1283,18 @@ returns(enum ErrorReporter.Error, uint256)
 
 **Arguments**
 
-| Name                                    | Type                   | Description |
-| --------------------------------------- | ---------------------- | ----------- |
-| underwaterAssetPrice                    | struct Exponential.Exp |             |
-| collateralPrice                         | struct Exponential.Exp |             |
-| closeBorrowAmount_TargetUnderwaterAsset | uint256                |             |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| underwaterAssetPrice | struct Exponential.Exp |  | 
+| collateralPrice | struct Exponential.Exp |  | 
+| closeBorrowAmount_TargetUnderwaterAsset | uint256 |  | 
 
 ### borrow
 
 Users borrow assets from the protocol to their own address
 
 ```js
-function borrow(address asset, uint256 amount) public nonpayable
+function borrow(address asset, uint256 amount) public nonpayable isKYCVerifiedCustomer 
 returns(uint256)
 ```
 
@@ -959,25 +1304,23 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 
 **Arguments**
 
-| Name   | Type    | Description                |
-| ------ | ------- | -------------------------- |
-| asset  | address | The market asset to borrow |
-| amount | uint256 | The amount to borrow       |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address | The market asset to borrow | 
+| amount | uint256 | The amount to borrow | 
 
-## Contracts
+### supplyOriginationFeeAsAdmin
 
-- [CarefulMath](CarefulMath.md)
-- [EIP20Interface](EIP20Interface.md)
-- [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-- [ErrorReporter](ErrorReporter.md)
-- [ExchangeRateModel](ExchangeRateModel.md)
-- [Exponential](Exponential.md)
-- [InterestRateModel](InterestRateModel.md)
-- [LiquidationChecker](LiquidationChecker.md)
-- [Liquidator](Liquidator.md)
-- [Migrations](Migrations.md)
-- [MoneyMarket](MoneyMarket.md)
-- [PriceOracle](PriceOracle.md)
-- [PriceOracleInterface](PriceOracleInterface.md)
-- [PriceOracleProxy](PriceOracleProxy.md)
-- [SafeToken](SafeToken.md)
+```js
+function supplyOriginationFeeAsAdmin(address asset, address user, uint256 amount, uint256 newSupplyIndex) private nonpayable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address |  | 
+| user | address |  | 
+| amount | uint256 |  | 
+| newSupplyIndex | uint256 |  | 
+

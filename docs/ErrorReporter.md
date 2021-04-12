@@ -1,10 +1,15 @@
+---
+layout: default
+title: ErrorReporter
+---
+
 # ErrorReporter.sol
 
 View Source: [contracts/ErrorReporter.sol](../contracts/ErrorReporter.sol)
 
-**↘ Derived Contracts: [CarefulMath](CarefulMath.md), [Exponential](Exponential.md), [LiquidationChecker](LiquidationChecker.md), [Liquidator](Liquidator.md), [SafeToken](SafeToken.md)**
+**↘ Derived Contracts: [CarefulMath](CarefulMath.md), [Exponential](Exponential.md), [Liquidator](Liquidator.md), [SafeToken](SafeToken.md)**
 
-**ErrorReporter**
+**{{ContractName}}**
 
 **Enums**
 ### Error
@@ -36,7 +41,15 @@ enum Error {
  INVALID_LIQUIDATION_DISCOUNT,
  INVALID_COMBINED_RISK_PARAMETERS,
  ZERO_ORACLE_ADDRESS,
- CONTRACT_PAUSED
+ CONTRACT_PAUSED,
+ KYC_ADMIN_CHECK_FAILED,
+ KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+ KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,
+ LIQUIDATOR_CHECK_FAILED,
+ LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+ SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
+ WETH_ADDRESS_NOT_SET_ERROR,
+ ETHER_AMOUNT_MISMATCH_ERROR
 }
 ```
 
@@ -135,7 +148,16 @@ enum FailureInfo {
  WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,
  WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED,
  WITHDRAW_TRANSFER_OUT_FAILED,
- WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE
+ WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE,
+ KYC_ADMIN_CHECK_FAILED,
+ KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+ KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,
+ LIQUIDATOR_CHECK_FAILED,
+ LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+ SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
+ WETH_ADDRESS_NOT_SET_ERROR,
+ SEND_ETHER_ADMIN_CHECK_FAILED,
+ ETHER_AMOUNT_MISMATCH_ERROR
 }
 ```
 
@@ -182,20 +204,3 @@ returns(uint256)
 | info | enum ErrorReporter.FailureInfo |  | 
 | opaqueError | uint256 |  | 
 
-## Contracts
-
-* [CarefulMath](CarefulMath.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [InterestRateModel](InterestRateModel.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [SafeToken](SafeToken.md)
