@@ -3,20 +3,34 @@
  */
 const HDWalletProvider = require("truffle-hdwallet-provider");
 const fs = require("fs");
-const mnemonic = fs.readFileSync(".mnemonic2").toString().trim();
+const mnemonic = fs.readFileSync(".mnemonic").toString().trim();
 const infuraKey = "c92203bc3a4544f28dae1f94627e5367";
+
+let mochaOptions = {
+	// timeout: 100000
+};
+
+if (process.env.SOLIDITY_COVERAGE) {
+	mochaOptions = {
+		enableTimeouts: false,
+		grep: /@gas/,
+		invert: true,
+	};
+}
 
 module.exports = {
 	networks: {
 		development: {
-			// provider: () =>
-			// 	new HDWalletProvider(
-			// 		"stand boy digital govern play draft hard garage remove neglect become slight",
-			// 		`http://127.0.0.1:7545`
-			// 	),
 			host: "127.0.0.1", // Localhost (default: none)
 			port: 8545, // Standard Ethereum port (default: none)
 			network_id: "*", // Any network (default: none)
+		},
+		test: {
+			host: "127.0.0.1", // Localhost (default: none)
+			port: 8545,
+			network_id: "*",
+			gas: 6721975,
+			gasPrice: 1,
 		},
 		ganacheUI: {
 			host: "127.0.0.1", // Localhost (default: none)
@@ -24,7 +38,7 @@ module.exports = {
 			network_id: "*", // Any network (default: none)
 		},
 		coverage: {
-			host: "localhost",
+			host: "127.0.0.1", // Localhost (default: none)
 			network_id: "*",
 			port: 8555, // <-- If you change this, also set the port option in .solcover.js.
 			gas: 0xfffffffffff, // <-- Use this high gas value
@@ -45,7 +59,7 @@ module.exports = {
 					mnemonic,
 					`https://kovan.infura.io/v3/${infuraKey}`
 				),
-			gasPrice: 170000000000,
+			gasPrice: 1000000000,
 			network_id: 42,
 			skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
 		},
@@ -64,7 +78,7 @@ module.exports = {
 					mnemonic,
 					`https://mainnet.infura.io/v3/${infuraKey}`
 				),
-			gasPrice: 100000000000,
+			gasPrice: 60000000000,
 			timeoutBlocks: 4000,
 			network_id: 1,
 			skipDryRun: false, // Skip dry run before migrations? (default: false for public nets )
@@ -73,9 +87,7 @@ module.exports = {
 
 	// Set default mocha options here, use special reporters etc.
 	mocha: {
-		enableTimeouts: false,
-		before_timeout: 0,
-		test_timeout: 0,
+		mochaOptions,
 	},
 
 	compilers: {

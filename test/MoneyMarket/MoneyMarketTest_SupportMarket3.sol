@@ -9,7 +9,6 @@ import "./MoneyMarketWithPriceTest.sol";
 contract MoneyMarketTest_SupportMarket3 is MoneyMarketWithPriceTest {
 
     function testSupportMarket_FailsIfPriceNotAlreadySet() public {
-        initializer();
         clearCollateralMarkets();
 
         // This test is mostly to prove we haven't yet dealt with bad values, or may never

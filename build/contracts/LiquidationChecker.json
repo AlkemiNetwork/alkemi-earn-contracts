@@ -73,17 +73,24 @@
       "type": "function"
     }
   ],
+<<<<<<< HEAD
   "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"allowLiquidation\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"allowLiquidation_\",\"type\":\"bool\"}],\"name\":\"setAllowLiquidation\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"liquidator\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"moneyMarket\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"moneyMarket_\",\"type\":\"address\"},{\"name\":\"liquidator_\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol\":\"LiquidationChecker\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/AggregatorV3Interface.sol\":{\"keccak256\":\"0x161bda2631a82e8bddb0f162e398b80e1f1e07e6bc0ff046e079991821a816d6\",\"urls\":[\"bzzr://7b571243fd9a990c0fa5b6ff21dae0c9c605c11d43745c9f450af73aa44e3ef6\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/AlkemiWETH.sol\":{\"keccak256\":\"0x8a5824e13d8c12db50538e40c59454854db7d11cf17f260a62e4f0ee79d3e6bb\",\"urls\":[\"bzzr://5290a9a302481e76dd07f80b65965b4036694644f15249becbee6eeae00f3875\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x86024d69204156fb3c884eda6b255e580503fd9ce69aabf21f00b719b9545be2\",\"urls\":[\"bzzr://d551339e134215906e14ae33e5f3acf36ec2fb91925b4ee3407a65df4eeb1b32\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ChainLink.sol\":{\"keccak256\":\"0x6a808c6f0203ca4fd7843f2ab12e2821ffc282b01821e325fa92f3c1325a9a7b\",\"urls\":[\"bzzr://eee7801da18d6d5857588d3bd318f424273e07c46fd52e663c7f33c2a6d2240d\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol\":{\"keccak256\":\"0x390e7f7ce830a7d1b64a38b11da61596e99f358c4aab58df06eb917a5da5e9b1\",\"urls\":[\"bzzr://c7d5ad7c74fa0fcb1f142298ab742e5115ad155a61268faf7388c47f551f9c26\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20NonStandardInterface.sol\":{\"keccak256\":\"0xe5e4ca3efdbaa1c2d412c440643fca47e90bda52823c4fcbc3f1a8e34932dc87\",\"urls\":[\"bzzr://cff1295b74931e7d938064bd63e4ddff708a265aee1938df585b4dd8a5475766\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x97359e402ca8c0c3651d5487bb86db6fe95868c587ccbd85e3ca70b3ffbfc6df\",\"urls\":[\"bzzr://c0e4eca77d0205410b7f14ee9a97f358747363a69a5b2fe777547a931a2326f0\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/Exponential.sol\":{\"keccak256\":\"0x3e95266be5188ce593db759f61e351fe91a54194e557147190befb9091ef1b80\",\"urls\":[\"bzzr://5c65af314f8d9c7a7adc63d3791844e781ab0825e2dffcce24a80cc27f7b7d58\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/InterestRateModel.sol\":{\"keccak256\":\"0x2175424303f1087a72c3626a498c47dea6cc38c960aa9cda412dc210eaab2b5b\",\"urls\":[\"bzzr://b9eee55364b4ade7960947e92eed3e43a4ec9ce41860550c0b2ca4d722205d55\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol\":{\"keccak256\":\"0x43cde149b519b34eba8ebdc1c934f044fe11a25c19fc3c84ce5fae2408280079\",\"urls\":[\"bzzr://8a2589afa2b4d03eb08554b0c6c1cf16a3f547e284734a52a73decfe29fa61c0\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/MoneyMarket.sol\":{\"keccak256\":\"0x1b3f8f893b0cd2c47aa77c71e07e106798ece9b247f046d6a583210f1869daa2\",\"urls\":[\"bzzr://683339f53b5b34b9b0be6e2c843653cb10efcd0c3d5e765637ab6a8dc92c5d05\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleInterface.sol\":{\"keccak256\":\"0x76af9cc30659e75f490fd57d2f05b40fbfe57bf407dbdc2e0a28cc1f16869389\",\"urls\":[\"bzzr://4f2505fe2b905f06ac751248077af308e4560ee77f782459132eea6b11f512b9\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleProxy.sol\":{\"keccak256\":\"0xa6324094c4a0c7ca473ad73b5254f6c4183e97dd517b141e30fcecec84b370e7\",\"urls\":[\"bzzr://e0cbe6c59ab6dd443a19c7cdaa6e7e46c136c453a781364405819573c54e9094\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/SafeToken.sol\":{\"keccak256\":\"0x9bf40651ef8ae14a6e45aaef20830ffd35c49acdee54ff0532a2395d5d7ee4ab\",\"urls\":[\"bzzr://b23543739bd11b43f5cf328e6561d9ae163ba41187cfb394584f74a61e06e5e5\"]},\"/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/TestTokens.sol\":{\"keccak256\":\"0xb96d2667396c8f6ea8008c31a05ba99ec639eb5fb1f5e6885b0adef228332993\",\"urls\":[\"bzzr://ab49cb8bfbda895da0360e1be8fd7fe02b0c8b1113ebdd67e364cb7c922e208c\"]}},\"version\":1}",
   "bytecode": "0x608060405234801561001057600080fd5b506040516040806102e083398101604052805160209091015160008054600160a060020a0319908116600160a060020a0394851617825560018054909116939092169290921760a060020a60ff021916905561026e90819061007290396000f3006080604052600436106100605763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416620fba16811461006557806325468f681461008e5780634046ebae146100aa578063d6d75f51146100e8575b600080fd5b34801561007157600080fd5b5061007a6100fd565b604080519115158252519081900360200190f35b34801561009a57600080fd5b506100a8600435151561011e565b005b3480156100b657600080fd5b506100bf61020a565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100f457600080fd5b506100bf610226565b60015474010000000000000000000000000000000000000000900460ff1681565b60015473ffffffffffffffffffffffffffffffffffffffff1633146101ca57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c49515560448201527f494441544f520000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60018054911515740100000000000000000000000000000000000000000274ff000000000000000000000000000000000000000019909216919091179055565b60015473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058203c2ada68caf69f9f0f6cf0a1484182f73d1d99d46bee19808dac3e6045c856000029",
   "deployedBytecode": "0x6080604052600436106100605763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416620fba16811461006557806325468f681461008e5780634046ebae146100aa578063d6d75f51146100e8575b600080fd5b34801561007157600080fd5b5061007a6100fd565b604080519115158252519081900360200190f35b34801561009a57600080fd5b506100a8600435151561011e565b005b3480156100b657600080fd5b506100bf61020a565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100f457600080fd5b506100bf610226565b60015474010000000000000000000000000000000000000000900460ff1681565b60015473ffffffffffffffffffffffffffffffffffffffff1633146101ca57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c49515560448201527f494441544f520000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60018054911515740100000000000000000000000000000000000000000274ff000000000000000000000000000000000000000019909216919091179055565b60015473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058203c2ada68caf69f9f0f6cf0a1484182f73d1d99d46bee19808dac3e6045c856000029",
+=======
+  "metadata": "{\"compiler\":{\"version\":\"0.4.24+commit.e67f0147\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"allowLiquidation\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"allowLiquidation_\",\"type\":\"bool\"}],\"name\":\"setAllowLiquidation\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"liquidator\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"moneyMarket\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"moneyMarket_\",\"type\":\"address\"},{\"name\":\"liquidator_\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/LiquidationChecker.sol\":\"LiquidationChecker\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/AggregatorV3Interface.sol\":{\"keccak256\":\"0x161bda2631a82e8bddb0f162e398b80e1f1e07e6bc0ff046e079991821a816d6\",\"urls\":[\"bzzr://7b571243fd9a990c0fa5b6ff21dae0c9c605c11d43745c9f450af73aa44e3ef6\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/AlkemiWETH.sol\":{\"keccak256\":\"0x8a5824e13d8c12db50538e40c59454854db7d11cf17f260a62e4f0ee79d3e6bb\",\"urls\":[\"bzzr://5290a9a302481e76dd07f80b65965b4036694644f15249becbee6eeae00f3875\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/CarefulMath.sol\":{\"keccak256\":\"0x86024d69204156fb3c884eda6b255e580503fd9ce69aabf21f00b719b9545be2\",\"urls\":[\"bzzr://d551339e134215906e14ae33e5f3acf36ec2fb91925b4ee3407a65df4eeb1b32\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ChainLink.sol\":{\"keccak256\":\"0x6a808c6f0203ca4fd7843f2ab12e2821ffc282b01821e325fa92f3c1325a9a7b\",\"urls\":[\"bzzr://eee7801da18d6d5857588d3bd318f424273e07c46fd52e663c7f33c2a6d2240d\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/EIP20Interface.sol\":{\"keccak256\":\"0x390e7f7ce830a7d1b64a38b11da61596e99f358c4aab58df06eb917a5da5e9b1\",\"urls\":[\"bzzr://c7d5ad7c74fa0fcb1f142298ab742e5115ad155a61268faf7388c47f551f9c26\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/EIP20NonStandardInterface.sol\":{\"keccak256\":\"0x76c6ade91070bb70bbf05bf55fec1d1c49c43764e4ccef26e39401fc4af3f937\",\"urls\":[\"bzzr://ed7e8fee362e6428b871d5564a842fe0ac0edcba7aeb80d532d0b97b0d2260e7\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/ErrorReporter.sol\":{\"keccak256\":\"0x97359e402ca8c0c3651d5487bb86db6fe95868c587ccbd85e3ca70b3ffbfc6df\",\"urls\":[\"bzzr://c0e4eca77d0205410b7f14ee9a97f358747363a69a5b2fe777547a931a2326f0\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/Exponential.sol\":{\"keccak256\":\"0x3e95266be5188ce593db759f61e351fe91a54194e557147190befb9091ef1b80\",\"urls\":[\"bzzr://5c65af314f8d9c7a7adc63d3791844e781ab0825e2dffcce24a80cc27f7b7d58\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/InterestRateModel.sol\":{\"keccak256\":\"0x2175424303f1087a72c3626a498c47dea6cc38c960aa9cda412dc210eaab2b5b\",\"urls\":[\"bzzr://b9eee55364b4ade7960947e92eed3e43a4ec9ce41860550c0b2ca4d722205d55\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/LiquidationChecker.sol\":{\"keccak256\":\"0x43cde149b519b34eba8ebdc1c934f044fe11a25c19fc3c84ce5fae2408280079\",\"urls\":[\"bzzr://8a2589afa2b4d03eb08554b0c6c1cf16a3f547e284734a52a73decfe29fa61c0\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/MoneyMarket.sol\":{\"keccak256\":\"0x1b3f8f893b0cd2c47aa77c71e07e106798ece9b247f046d6a583210f1869daa2\",\"urls\":[\"bzzr://683339f53b5b34b9b0be6e2c843653cb10efcd0c3d5e765637ab6a8dc92c5d05\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleInterface.sol\":{\"keccak256\":\"0x76af9cc30659e75f490fd57d2f05b40fbfe57bf407dbdc2e0a28cc1f16869389\",\"urls\":[\"bzzr://4f2505fe2b905f06ac751248077af308e4560ee77f782459132eea6b11f512b9\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleProxy.sol\":{\"keccak256\":\"0xa6324094c4a0c7ca473ad73b5254f6c4183e97dd517b141e30fcecec84b370e7\",\"urls\":[\"bzzr://e0cbe6c59ab6dd443a19c7cdaa6e7e46c136c453a781364405819573c54e9094\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/SafeToken.sol\":{\"keccak256\":\"0x9bf40651ef8ae14a6e45aaef20830ffd35c49acdee54ff0532a2395d5d7ee4ab\",\"urls\":[\"bzzr://b23543739bd11b43f5cf328e6561d9ae163ba41187cfb394584f74a61e06e5e5\"]},\"/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/TestTokens.sol\":{\"keccak256\":\"0xb96d2667396c8f6ea8008c31a05ba99ec639eb5fb1f5e6885b0adef228332993\",\"urls\":[\"bzzr://ab49cb8bfbda895da0360e1be8fd7fe02b0c8b1113ebdd67e364cb7c922e208c\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516040806102e083398101604052805160209091015160008054600160a060020a0319908116600160a060020a0394851617825560018054909116939092169290921760a060020a60ff021916905561026e90819061007290396000f3006080604052600436106100605763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416620fba16811461006557806325468f681461008e5780634046ebae146100aa578063d6d75f51146100e8575b600080fd5b34801561007157600080fd5b5061007a6100fd565b604080519115158252519081900360200190f35b34801561009a57600080fd5b506100a8600435151561011e565b005b3480156100b657600080fd5b506100bf61020a565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100f457600080fd5b506100bf610226565b60015474010000000000000000000000000000000000000000900460ff1681565b60015473ffffffffffffffffffffffffffffffffffffffff1633146101ca57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c49515560448201527f494441544f520000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60018054911515740100000000000000000000000000000000000000000274ff000000000000000000000000000000000000000019909216919091179055565b60015473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058200dfbbd794682cfbba4ddb411ec00ddec2245c918da3dfdaaabef1b2adf33f5650029",
+  "deployedBytecode": "0x6080604052600436106100605763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416620fba16811461006557806325468f681461008e5780634046ebae146100aa578063d6d75f51146100e8575b600080fd5b34801561007157600080fd5b5061007a6100fd565b604080519115158252519081900360200190f35b34801561009a57600080fd5b506100a8600435151561011e565b005b3480156100b657600080fd5b506100bf61020a565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100f457600080fd5b506100bf610226565b60015474010000000000000000000000000000000000000000900460ff1681565b60015473ffffffffffffffffffffffffffffffffffffffff1633146101ca57604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c49515560448201527f494441544f520000000000000000000000000000000000000000000000000000606482015290519081900360840190fd5b60018054911515740100000000000000000000000000000000000000000274ff000000000000000000000000000000000000000019909216919091179055565b60015473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058200dfbbd794682cfbba4ddb411ec00ddec2245c918da3dfdaaabef1b2adf33f5650029",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
   "sourceMap": "119:1342:12:-;;;255:186;8:9:-1;5:2;;;30:1;27;20:12;5:2;255:186:12;;;;;;;;;;;;;;;;;;;327:11;:39;;-1:-1:-1;;;;;;327:39:12;;;-1:-1:-1;;;;;327:39:12;;;;;;-1:-1:-1;376:24:12;;;;;;;;;;;;;-1:-1:-1;;;;;;410:24:12;;;119:1342;;;;;;;;",
   "deployedSourceMap": "119:1342:12:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;220:28;;8:9:-1;5:2;;;30:1;27;20:12;5:2;220:28:12;;;;;;;;;;;;;;;;;;;;;;1260:199;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;1260:199:12;;;;;;;;;189:25;;8:9:-1;5:2;;;30:1;27;20:12;5:2;189:25:12;;;;;;;;;;;;;;;;;;;;;;;153:30;;8:9:-1;5:2;;;30:1;27;20:12;5:2;153:30:12;;;;220:28;;;;;;;;;:::o;1260:199::-;1352:10;;;;1338;:24;1330:75;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1416:16;:36;;;;;;;-1:-1:-1;;1416:36:12;;;;;;;;;1260:199::o;189:25::-;;;;;;:::o;153:30::-;;;;;;:::o",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./EIP20Interface.sol\";\nimport \"./PriceOracleProxy.sol\";\nimport \"./MoneyMarket.sol\";\n\ncontract LiquidationChecker {\n    MoneyMarket public moneyMarket;\n    address public liquidator;\n    bool public allowLiquidation;\n\n    constructor(address moneyMarket_, address liquidator_) public {\n        moneyMarket = MoneyMarket(moneyMarket_);\n        liquidator = liquidator_;\n        allowLiquidation = false;\n    }\n\n    function isAllowed(address asset, uint newCash) internal view returns(bool) {\n        return allowLiquidation || !isLiquidate(asset, newCash);\n    }\n\n    function isLiquidate(address asset, uint newCash) internal view returns(bool) {\n        return cashIsUp(asset, newCash) && oracleTouched();\n    }\n\n    function cashIsUp(address asset, uint newCash) internal view returns(bool) {\n        uint oldCash = EIP20Interface(asset).balanceOf(moneyMarket);\n\n        return newCash >= oldCash;\n    }\n\n    function oracleTouched() internal view returns(bool) {\n        PriceOracleProxy oracle = PriceOracleProxy(moneyMarket.oracle());\n\n        bool sameOrigin = oracle.mostRecentCaller() == tx.origin;\n        bool sameBlock = oracle.mostRecentBlock() == block.number;\n\n        return sameOrigin && sameBlock;\n    }\n\n    function setAllowLiquidation(bool allowLiquidation_) public {\n        require(msg.sender == liquidator, \"LIQUIDATION_CHECKER_INVALID_LIQUIDATOR\");\n\n        allowLiquidation = allowLiquidation_;\n    }\n}\n",
-  "sourcePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol",
+  "sourcePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/LiquidationChecker.sol",
   "ast": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/LiquidationChecker.sol",
     "exportedSymbols": {
       "LiquidationChecker": [
+<<<<<<< HEAD
         3494
       ]
     },
@@ -92,6 +99,16 @@
     "nodes": [
       {
         "id": 3349,
+=======
+        3496
+      ]
+    },
+    "id": 3497,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3351,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         "literals": [
           "solidity",
           "^",
@@ -102,34 +119,58 @@
         "src": "0:24:12"
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/EIP20Interface.sol",
         "file": "./EIP20Interface.sol",
+<<<<<<< HEAD
         "id": 3350,
         "nodeType": "ImportDirective",
         "scope": 3495,
+=======
+        "id": 3352,
+        "nodeType": "ImportDirective",
+        "scope": 3497,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         "sourceUnit": 2033,
         "src": "26:30:12",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleProxy.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleProxy.sol",
         "file": "./PriceOracleProxy.sol",
+<<<<<<< HEAD
         "id": 3351,
         "nodeType": "ImportDirective",
         "scope": 3495,
+<<<<<<< HEAD
         "sourceUnit": 25532,
+=======
+        "sourceUnit": 18836,
+=======
+        "id": 3353,
+        "nodeType": "ImportDirective",
+        "scope": 3497,
+        "sourceUnit": 12142,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
         "src": "57:32:12",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/MoneyMarket.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/MoneyMarket.sol",
         "file": "./MoneyMarket.sol",
+<<<<<<< HEAD
         "id": 3352,
         "nodeType": "ImportDirective",
         "scope": 3495,
         "sourceUnit": 10459,
+=======
+        "id": 3354,
+        "nodeType": "ImportDirective",
+        "scope": 3497,
+        "sourceUnit": 10461,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         "src": "90:27:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -140,28 +181,46 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
+<<<<<<< HEAD
         "id": 3494,
         "linearizedBaseContracts": [
           3494
+=======
+        "id": 3496,
+        "linearizedBaseContracts": [
+          3496
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         ],
         "name": "LiquidationChecker",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
+<<<<<<< HEAD
             "id": 3354,
             "name": "moneyMarket",
             "nodeType": "VariableDeclaration",
             "scope": 3494,
+=======
+            "id": 3356,
+            "name": "moneyMarket",
+            "nodeType": "VariableDeclaration",
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "153:30:12",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
+<<<<<<< HEAD
               "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+              "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "typeString": "contract MoneyMarket"
             },
             "typeName": {
               "contractScope": null,
+<<<<<<< HEAD
               "id": 3353,
               "name": "MoneyMarket",
               "nodeType": "UserDefinedTypeName",
@@ -169,6 +228,15 @@
               "src": "153:11:12",
               "typeDescriptions": {
                 "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+              "id": 3355,
+              "name": "MoneyMarket",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 10460,
+              "src": "153:11:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                 "typeString": "contract MoneyMarket"
               }
             },
@@ -177,10 +245,17 @@
           },
           {
             "constant": false,
+<<<<<<< HEAD
             "id": 3356,
             "name": "liquidator",
             "nodeType": "VariableDeclaration",
             "scope": 3494,
+=======
+            "id": 3358,
+            "name": "liquidator",
+            "nodeType": "VariableDeclaration",
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "189:25:12",
             "stateVariable": true,
             "storageLocation": "default",
@@ -189,7 +264,11 @@
               "typeString": "address"
             },
             "typeName": {
+<<<<<<< HEAD
               "id": 3355,
+=======
+              "id": 3357,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "189:7:12",
@@ -203,10 +282,17 @@
           },
           {
             "constant": false,
+<<<<<<< HEAD
             "id": 3358,
             "name": "allowLiquidation",
             "nodeType": "VariableDeclaration",
             "scope": 3494,
+=======
+            "id": 3360,
+            "name": "allowLiquidation",
+            "nodeType": "VariableDeclaration",
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "220:28:12",
             "stateVariable": true,
             "storageLocation": "default",
@@ -215,7 +301,11 @@
               "typeString": "bool"
             },
             "typeName": {
+<<<<<<< HEAD
               "id": 3357,
+=======
+              "id": 3359,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "name": "bool",
               "nodeType": "ElementaryTypeName",
               "src": "220:4:12",
@@ -229,20 +319,29 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3379,
+=======
+              "id": 3381,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "317:124:12",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
+<<<<<<< HEAD
                     "id": 3369,
+=======
+                    "id": 3371,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3365,
                       "name": "moneyMarket",
                       "nodeType": "Identifier",
@@ -251,6 +350,16 @@
                       "src": "327:11:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+                      "id": 3367,
+                      "name": "moneyMarket",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3356,
+                      "src": "327:11:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "typeString": "contract MoneyMarket"
                       }
                     },
@@ -261,11 +370,19 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3367,
                           "name": "moneyMarket_",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3360,
+=======
+                          "id": 3369,
+                          "name": "moneyMarket_",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3362,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "353:12:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -280,6 +397,7 @@
                             "typeString": "address"
                           }
                         ],
+<<<<<<< HEAD
                         "id": 3366,
                         "name": "MoneyMarket",
                         "nodeType": "Identifier",
@@ -292,6 +410,20 @@
                         }
                       },
                       "id": 3368,
+=======
+                        "id": 3368,
+                        "name": "MoneyMarket",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 10460,
+                        "src": "341:11:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_MoneyMarket_$10460_$",
+                          "typeString": "type(contract MoneyMarket)"
+                        }
+                      },
+                      "id": 3370,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -301,35 +433,59 @@
                       "nodeType": "FunctionCall",
                       "src": "341:25:12",
                       "typeDescriptions": {
+<<<<<<< HEAD
                         "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+                        "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "typeString": "contract MoneyMarket"
                       }
                     },
                     "src": "327:39:12",
                     "typeDescriptions": {
+<<<<<<< HEAD
                       "typeIdentifier": "t_contract$_MoneyMarket_$10458",
                       "typeString": "contract MoneyMarket"
                     }
                   },
                   "id": 3370,
+=======
+                      "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+                      "typeString": "contract MoneyMarket"
+                    }
+                  },
+                  "id": 3372,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "327:39:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
+<<<<<<< HEAD
                     "id": 3373,
+=======
+                    "id": 3375,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3371,
                       "name": "liquidator",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3356,
+=======
+                      "id": 3373,
+                      "name": "liquidator",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3358,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "376:10:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -340,11 +496,19 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3372,
                       "name": "liquidator_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3362,
+=======
+                      "id": 3374,
+                      "name": "liquidator_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3364,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "389:11:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -357,25 +521,41 @@
                       "typeString": "address"
                     }
                   },
+<<<<<<< HEAD
                   "id": 3374,
+=======
+                  "id": 3376,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "376:24:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
+<<<<<<< HEAD
                     "id": 3377,
+=======
+                    "id": 3379,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3375,
                       "name": "allowLiquidation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3358,
+=======
+                      "id": 3377,
+                      "name": "allowLiquidation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3360,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "410:16:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -387,7 +567,11 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "66616c7365",
+<<<<<<< HEAD
                       "id": 3376,
+=======
+                      "id": 3378,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -408,14 +592,22 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "id": 3378,
+=======
+                  "id": 3380,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "410:24:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3380,
+=======
+            "id": 3382,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -423,15 +615,26 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3363,
+=======
+              "id": 3365,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3360,
                   "name": "moneyMarket_",
                   "nodeType": "VariableDeclaration",
                   "scope": 3380,
+=======
+                  "id": 3362,
+                  "name": "moneyMarket_",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3382,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "267:20:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -440,7 +643,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3359,
+=======
+                    "id": 3361,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "267:7:12",
@@ -454,10 +661,17 @@
                 },
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3362,
                   "name": "liquidator_",
                   "nodeType": "VariableDeclaration",
                   "scope": 3380,
+=======
+                  "id": 3364,
+                  "name": "liquidator_",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3382,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "289:19:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -466,7 +680,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3361,
+=======
+                    "id": 3363,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "289:7:12",
@@ -483,12 +701,20 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3364,
+=======
+              "id": 3366,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "317:0:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "255:186:12",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -496,7 +722,11 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3397,
+=======
+              "id": 3399,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "523:72:12",
               "statements": [
@@ -507,18 +737,30 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
+<<<<<<< HEAD
                     "id": 3395,
+=======
+                    "id": 3397,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3389,
                       "name": "allowLiquidation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3358,
+=======
+                      "id": 3391,
+                      "name": "allowLiquidation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3360,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "540:16:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -529,7 +771,11 @@
                     "operator": "||",
                     "rightExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3394,
+=======
+                      "id": 3396,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -543,11 +789,19 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3391,
                             "name": "asset",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 3382,
+=======
+                            "id": 3393,
+                            "name": "asset",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3384,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                             "src": "573:5:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -556,11 +810,19 @@
                           },
                           {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3392,
                             "name": "newCash",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 3384,
+=======
+                            "id": 3394,
+                            "name": "newCash",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3386,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                             "src": "580:7:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -579,18 +841,30 @@
                               "typeString": "uint256"
                             }
                           ],
+<<<<<<< HEAD
                           "id": 3390,
                           "name": "isLiquidate",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3416,
+=======
+                          "id": 3392,
+                          "name": "isLiquidate",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "561:11:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_address_$_t_uint256_$returns$_t_bool_$",
                             "typeString": "function (address,uint256) view returns (bool)"
                           }
                         },
+<<<<<<< HEAD
                         "id": 3393,
+=======
+                        "id": 3395,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -615,15 +889,24 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "functionReturnParameters": 3388,
                   "id": 3396,
+=======
+                  "functionReturnParameters": 3390,
+                  "id": 3398,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "Return",
                   "src": "533:55:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3398,
+=======
+            "id": 3400,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -631,15 +914,26 @@
             "name": "isAllowed",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3385,
+=======
+              "id": 3387,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3382,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
                   "scope": 3398,
+=======
+                  "id": 3384,
+                  "name": "asset",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3400,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "466:13:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -648,7 +942,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3381,
+=======
+                    "id": 3383,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "466:7:12",
@@ -662,10 +960,17 @@
                 },
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3384,
                   "name": "newCash",
                   "nodeType": "VariableDeclaration",
                   "scope": 3398,
+=======
+                  "id": 3386,
+                  "name": "newCash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3400,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "481:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -674,7 +979,11 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3383,
+=======
+                    "id": 3385,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "481:4:12",
@@ -691,15 +1000,26 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3388,
+=======
+              "id": 3390,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3387,
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 3398,
+=======
+                  "id": 3389,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3400,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "517:4:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -708,7 +1028,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3386,
+=======
+                    "id": 3388,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "517:4:12",
@@ -723,7 +1047,11 @@
               ],
               "src": "516:6:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "447:148:12",
             "stateMutability": "view",
             "superFunction": null,
@@ -731,7 +1059,11 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3415,
+=======
+              "id": 3417,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "679:67:12",
               "statements": [
@@ -742,7 +1074,11 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
+<<<<<<< HEAD
                     "id": 3413,
+=======
+                    "id": 3415,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -752,11 +1088,19 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3408,
                           "name": "asset",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3400,
+=======
+                          "id": 3410,
+                          "name": "asset",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3402,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "705:5:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -765,11 +1109,19 @@
                         },
                         {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3409,
                           "name": "newCash",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3402,
+=======
+                          "id": 3411,
+                          "name": "newCash",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3404,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "712:7:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -788,18 +1140,30 @@
                             "typeString": "uint256"
                           }
                         ],
+<<<<<<< HEAD
                         "id": 3407,
                         "name": "cashIsUp",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 3439,
+=======
+                        "id": 3409,
+                        "name": "cashIsUp",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "src": "696:8:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$_t_uint256_$returns$_t_bool_$",
                           "typeString": "function (address,uint256) view returns (bool)"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3410,
+=======
+                      "id": 3412,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -820,18 +1184,30 @@
                       "arguments": [],
                       "expression": {
                         "argumentTypes": [],
+<<<<<<< HEAD
                         "id": 3411,
                         "name": "oracleTouched",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 3475,
+=======
+                        "id": 3413,
+                        "name": "oracleTouched",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "src": "724:13:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$__$returns$_t_bool_$",
                           "typeString": "function () view returns (bool)"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3412,
+=======
+                      "id": 3414,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -851,15 +1227,24 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "functionReturnParameters": 3406,
                   "id": 3414,
+=======
+                  "functionReturnParameters": 3408,
+                  "id": 3416,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "Return",
                   "src": "689:50:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3416,
+=======
+            "id": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -867,15 +1252,26 @@
             "name": "isLiquidate",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3403,
+=======
+              "id": 3405,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3400,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
                   "scope": 3416,
+=======
+                  "id": 3402,
+                  "name": "asset",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "622:13:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -884,7 +1280,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3399,
+=======
+                    "id": 3401,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "622:7:12",
@@ -898,10 +1298,17 @@
                 },
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3402,
                   "name": "newCash",
                   "nodeType": "VariableDeclaration",
                   "scope": 3416,
+=======
+                  "id": 3404,
+                  "name": "newCash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "637:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -910,7 +1317,11 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3401,
+=======
+                    "id": 3403,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "637:4:12",
@@ -927,15 +1338,26 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3406,
+=======
+              "id": 3408,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3405,
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 3416,
+=======
+                  "id": 3407,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "673:4:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -944,7 +1366,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3404,
+=======
+                    "id": 3406,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "673:4:12",
@@ -959,7 +1385,11 @@
               ],
               "src": "672:6:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "601:145:12",
             "stateMutability": "view",
             "superFunction": null,
@@ -967,21 +1397,36 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3438,
+=======
+              "id": 3440,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "827:112:12",
               "statements": [
                 {
                   "assignments": [
+<<<<<<< HEAD
                     3426
+=======
+                    3428
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   ],
                   "declarations": [
                     {
                       "constant": false,
+<<<<<<< HEAD
                       "id": 3426,
                       "name": "oldCash",
                       "nodeType": "VariableDeclaration",
                       "scope": 3439,
+=======
+                      "id": 3428,
+                      "name": "oldCash",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "837:12:12",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -990,7 +1435,11 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
+<<<<<<< HEAD
                         "id": 3425,
+=======
+                        "id": 3427,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "name": "uint",
                         "nodeType": "ElementaryTypeName",
                         "src": "837:4:12",
@@ -1003,12 +1452,17 @@
                       "visibility": "internal"
                     }
                   ],
+<<<<<<< HEAD
                   "id": 3433,
+=======
+                  "id": 3435,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
+<<<<<<< HEAD
                         "id": 3431,
                         "name": "moneyMarket",
                         "nodeType": "Identifier",
@@ -1017,6 +1471,16 @@
                         "src": "884:11:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+                        "id": 3433,
+                        "name": "moneyMarket",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3356,
+                        "src": "884:11:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "typeString": "contract MoneyMarket"
                         }
                       }
@@ -1024,7 +1488,11 @@
                     "expression": {
                       "argumentTypes": [
                         {
+<<<<<<< HEAD
                           "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+                          "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "typeString": "contract MoneyMarket"
                         }
                       ],
@@ -1033,11 +1501,19 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3428,
                             "name": "asset",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 3418,
+=======
+                            "id": 3430,
+                            "name": "asset",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3420,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                             "src": "867:5:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -1052,7 +1528,11 @@
                               "typeString": "address"
                             }
                           ],
+<<<<<<< HEAD
                           "id": 3427,
+=======
+                          "id": 3429,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "name": "EIP20Interface",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -1063,7 +1543,11 @@
                             "typeString": "type(contract EIP20Interface)"
                           }
                         },
+<<<<<<< HEAD
                         "id": 3429,
+=======
+                        "id": 3431,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1077,7 +1561,11 @@
                           "typeString": "contract EIP20Interface"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3430,
+=======
+                      "id": 3432,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1091,7 +1579,11 @@
                         "typeString": "function (address) view external returns (uint256)"
                       }
                     },
+<<<<<<< HEAD
                     "id": 3432,
+=======
+                    "id": 3434,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1115,18 +1607,30 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
+<<<<<<< HEAD
                     "id": 3436,
+=======
+                    "id": 3438,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3434,
                       "name": "newCash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3420,
+=======
+                      "id": 3436,
+                      "name": "newCash",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3422,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "914:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1137,11 +1641,19 @@
                     "operator": ">=",
                     "rightExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3435,
                       "name": "oldCash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3426,
+=======
+                      "id": 3437,
+                      "name": "oldCash",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3428,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "925:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1154,15 +1666,24 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "functionReturnParameters": 3424,
                   "id": 3437,
+=======
+                  "functionReturnParameters": 3426,
+                  "id": 3439,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "Return",
                   "src": "907:25:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3439,
+=======
+            "id": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1170,15 +1691,26 @@
             "name": "cashIsUp",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3421,
+=======
+              "id": 3423,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3418,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
                   "scope": 3439,
+=======
+                  "id": 3420,
+                  "name": "asset",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "770:13:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1187,7 +1719,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3417,
+=======
+                    "id": 3419,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "770:7:12",
@@ -1201,10 +1737,17 @@
                 },
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3420,
                   "name": "newCash",
                   "nodeType": "VariableDeclaration",
                   "scope": 3439,
+=======
+                  "id": 3422,
+                  "name": "newCash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "785:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1213,7 +1756,11 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3419,
+=======
+                    "id": 3421,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "785:4:12",
@@ -1230,15 +1777,26 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3424,
+=======
+              "id": 3426,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3423,
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 3439,
+=======
+                  "id": 3425,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "821:4:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1247,7 +1805,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3422,
+=======
+                    "id": 3424,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "821:4:12",
@@ -1262,7 +1824,11 @@
               ],
               "src": "820:6:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "752:187:12",
             "stateMutability": "view",
             "superFunction": null,
@@ -1270,37 +1836,74 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3474,
+=======
+              "id": 3476,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "998:256:12",
               "statements": [
                 {
                   "assignments": [
+<<<<<<< HEAD
                     3445
+=======
+                    3447
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   ],
                   "declarations": [
                     {
                       "constant": false,
+<<<<<<< HEAD
                       "id": 3445,
                       "name": "oracle",
                       "nodeType": "VariableDeclaration",
                       "scope": 3475,
+=======
+                      "id": 3447,
+                      "name": "oracle",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1008:23:12",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
+<<<<<<< HEAD
                         "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
+=======
+<<<<<<< HEAD
+                        "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+=======
+                        "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "typeString": "contract PriceOracleProxy"
                       },
                       "typeName": {
                         "contractScope": null,
+<<<<<<< HEAD
                         "id": 3444,
                         "name": "PriceOracleProxy",
                         "nodeType": "UserDefinedTypeName",
                         "referencedDeclaration": 25531,
                         "src": "1008:16:12",
                         "typeDescriptions": {
+<<<<<<< HEAD
                           "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
+=======
+                          "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+=======
+                        "id": 3446,
+                        "name": "PriceOracleProxy",
+                        "nodeType": "UserDefinedTypeName",
+                        "referencedDeclaration": 12141,
+                        "src": "1008:16:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                           "typeString": "contract PriceOracleProxy"
                         }
                       },
@@ -1308,7 +1911,11 @@
                       "visibility": "internal"
                     }
                   ],
+<<<<<<< HEAD
                   "id": 3451,
+=======
+                  "id": 3453,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
@@ -1319,6 +1926,7 @@
                           "argumentTypes": [],
                           "expression": {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3447,
                             "name": "moneyMarket",
                             "nodeType": "Identifier",
@@ -1331,20 +1939,42 @@
                             }
                           },
                           "id": 3448,
+=======
+                            "id": 3449,
+                            "name": "moneyMarket",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3356,
+                            "src": "1051:11:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+                              "typeString": "contract MoneyMarket"
+                            }
+                          },
+                          "id": 3450,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "oracle",
                           "nodeType": "MemberAccess",
+<<<<<<< HEAD
                           "referencedDeclaration": 4012,
+=======
+                          "referencedDeclaration": 4014,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "1051:18:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
                             "typeString": "function () view external returns (address)"
                           }
                         },
+<<<<<<< HEAD
                         "id": 3449,
+=======
+                        "id": 3451,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1366,6 +1996,7 @@
                           "typeString": "address"
                         }
                       ],
+<<<<<<< HEAD
                       "id": 3446,
                       "name": "PriceOracleProxy",
                       "nodeType": "Identifier",
@@ -1378,6 +2009,20 @@
                       }
                     },
                     "id": 3450,
+=======
+                      "id": 3448,
+                      "name": "PriceOracleProxy",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 12141,
+                      "src": "1034:16:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$12141_$",
+                        "typeString": "type(contract PriceOracleProxy)"
+                      }
+                    },
+                    "id": 3452,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1387,7 +2032,15 @@
                     "nodeType": "FunctionCall",
                     "src": "1034:38:12",
                     "typeDescriptions": {
+<<<<<<< HEAD
                       "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
+=======
+<<<<<<< HEAD
+                      "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+=======
+                      "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                       "typeString": "contract PriceOracleProxy"
                     }
                   },
@@ -1396,15 +2049,26 @@
                 },
                 {
                   "assignments": [
+<<<<<<< HEAD
                     3453
+=======
+                    3455
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   ],
                   "declarations": [
                     {
                       "constant": false,
+<<<<<<< HEAD
                       "id": 3453,
                       "name": "sameOrigin",
                       "nodeType": "VariableDeclaration",
                       "scope": 3475,
+=======
+                      "id": 3455,
+                      "name": "sameOrigin",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1083:15:12",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -1413,7 +2077,11 @@
                         "typeString": "bool"
                       },
                       "typeName": {
+<<<<<<< HEAD
                         "id": 3452,
+=======
+                        "id": 3454,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "1083:4:12",
@@ -1426,14 +2094,22 @@
                       "visibility": "internal"
                     }
                   ],
+<<<<<<< HEAD
                   "id": 3460,
+=======
+                  "id": 3462,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "initialValue": {
                     "argumentTypes": null,
                     "commonType": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     },
+<<<<<<< HEAD
                     "id": 3459,
+=======
+                    "id": 3461,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1445,6 +2121,7 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3454,
                           "name": "oracle",
                           "nodeType": "Identifier",
@@ -1457,20 +2134,46 @@
                           }
                         },
                         "id": 3455,
+=======
+                          "id": 3456,
+                          "name": "oracle",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3447,
+                          "src": "1101:6:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+                            "typeString": "contract PriceOracleProxy"
+                          }
+                        },
+                        "id": 3457,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "mostRecentCaller",
                         "nodeType": "MemberAccess",
+<<<<<<< HEAD
                         "referencedDeclaration": 25491,
+=======
+<<<<<<< HEAD
+                        "referencedDeclaration": 18795,
+=======
+                        "referencedDeclaration": 12101,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "src": "1101:23:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
                           "typeString": "function () view external returns (address)"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3456,
+=======
+                      "id": 3458,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1490,18 +2193,34 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
+<<<<<<< HEAD
                         "id": 3457,
                         "name": "tx",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
+<<<<<<< HEAD
                         "referencedDeclaration": 27058,
+=======
+                        "referencedDeclaration": 20362,
+=======
+                        "id": 3459,
+                        "name": "tx",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13668,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "src": "1130:2:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_transaction",
                           "typeString": "tx"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3458,
+=======
+                      "id": 3460,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1526,15 +2245,26 @@
                 },
                 {
                   "assignments": [
+<<<<<<< HEAD
                     3462
+=======
+                    3464
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   ],
                   "declarations": [
                     {
                       "constant": false,
+<<<<<<< HEAD
                       "id": 3462,
                       "name": "sameBlock",
                       "nodeType": "VariableDeclaration",
                       "scope": 3475,
+=======
+                      "id": 3464,
+                      "name": "sameBlock",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1149:14:12",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -1543,7 +2273,11 @@
                         "typeString": "bool"
                       },
                       "typeName": {
+<<<<<<< HEAD
                         "id": 3461,
+=======
+                        "id": 3463,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "1149:4:12",
@@ -1556,14 +2290,22 @@
                       "visibility": "internal"
                     }
                   ],
+<<<<<<< HEAD
                   "id": 3469,
+=======
+                  "id": 3471,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "initialValue": {
                     "argumentTypes": null,
                     "commonType": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
+<<<<<<< HEAD
                     "id": 3468,
+=======
+                    "id": 3470,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1575,6 +2317,7 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3463,
                           "name": "oracle",
                           "nodeType": "Identifier",
@@ -1587,20 +2330,46 @@
                           }
                         },
                         "id": 3464,
+=======
+                          "id": 3465,
+                          "name": "oracle",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3447,
+                          "src": "1166:6:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+                            "typeString": "contract PriceOracleProxy"
+                          }
+                        },
+                        "id": 3466,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "mostRecentBlock",
                         "nodeType": "MemberAccess",
+<<<<<<< HEAD
                         "referencedDeclaration": 25493,
+=======
+<<<<<<< HEAD
+                        "referencedDeclaration": 18797,
+=======
+                        "referencedDeclaration": 12103,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "src": "1166:22:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
                           "typeString": "function () view external returns (uint256)"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3465,
+=======
+                      "id": 3467,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1620,18 +2389,34 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
+<<<<<<< HEAD
                         "id": 3466,
                         "name": "block",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
+<<<<<<< HEAD
                         "referencedDeclaration": 27036,
+=======
+                        "referencedDeclaration": 20340,
+=======
+                        "id": 3468,
+                        "name": "block",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13646,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "src": "1194:5:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_block",
                           "typeString": "block"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3467,
+=======
+                      "id": 3469,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1661,18 +2446,30 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
+<<<<<<< HEAD
                     "id": 3472,
+=======
+                    "id": 3474,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3470,
                       "name": "sameOrigin",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3453,
+=======
+                      "id": 3472,
+                      "name": "sameOrigin",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3455,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1224:10:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -1683,11 +2480,19 @@
                     "operator": "&&",
                     "rightExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3471,
                       "name": "sameBlock",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3462,
+=======
+                      "id": 3473,
+                      "name": "sameBlock",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3464,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1238:9:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -1700,15 +2505,24 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "functionReturnParameters": 3443,
                   "id": 3473,
+=======
+                  "functionReturnParameters": 3445,
+                  "id": 3475,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "Return",
                   "src": "1217:30:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3475,
+=======
+            "id": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1716,22 +2530,37 @@
             "name": "oracleTouched",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3440,
+=======
+              "id": 3442,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "967:2:12"
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3443,
+=======
+              "id": 3445,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3442,
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 3475,
+=======
+                  "id": 3444,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "992:4:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1740,7 +2569,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3441,
+=======
+                    "id": 3443,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "992:4:12",
@@ -1755,7 +2588,11 @@
               ],
               "src": "991:6:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "945:309:12",
             "stateMutability": "view",
             "superFunction": null,
@@ -1763,7 +2600,11 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3492,
+=======
+              "id": 3494,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "1320:139:12",
               "statements": [
@@ -1777,7 +2618,11 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
+<<<<<<< HEAD
                         "id": 3484,
+=======
+                        "id": 3486,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1786,18 +2631,34 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3481,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
+<<<<<<< HEAD
                             "referencedDeclaration": 27046,
+=======
+                            "referencedDeclaration": 20350,
+=======
+                            "id": 3483,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 13656,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                             "src": "1338:3:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
+<<<<<<< HEAD
                           "id": 3482,
+=======
+                          "id": 3484,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1815,11 +2676,19 @@
                         "operator": "==",
                         "rightExpression": {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3483,
                           "name": "liquidator",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3356,
+=======
+                          "id": 3485,
+                          "name": "liquidator",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3358,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "1352:10:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1835,7 +2704,11 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c495155494441544f52",
+<<<<<<< HEAD
                         "id": 3485,
+=======
+                        "id": 3487,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1862,6 +2735,7 @@
                           "typeString": "literal_string \"LIQUIDATION_CHECKER_INVALID_LIQUIDATOR\""
                         }
                       ],
+<<<<<<< HEAD
                       "id": 3480,
                       "name": "require",
                       "nodeType": "Identifier",
@@ -1869,14 +2743,32 @@
                         27049,
                         27050
                       ],
+<<<<<<< HEAD
                       "referencedDeclaration": 27050,
+=======
+                      "referencedDeclaration": 20354,
+=======
+                      "id": 3482,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        13659,
+                        13660
+                      ],
+                      "referencedDeclaration": 13660,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                       "src": "1330:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
+<<<<<<< HEAD
                     "id": 3486,
+=======
+                    "id": 3488,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1890,25 +2782,41 @@
                       "typeString": "tuple()"
                     }
                   },
+<<<<<<< HEAD
                   "id": 3487,
+=======
+                  "id": 3489,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "1330:75:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
+<<<<<<< HEAD
                     "id": 3490,
+=======
+                    "id": 3492,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3488,
                       "name": "allowLiquidation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3358,
+=======
+                      "id": 3490,
+                      "name": "allowLiquidation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3360,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1416:16:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -1919,11 +2827,19 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3489,
                       "name": "allowLiquidation_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3477,
+=======
+                      "id": 3491,
+                      "name": "allowLiquidation_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3479,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1435:17:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -1936,14 +2852,22 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "id": 3491,
+=======
+                  "id": 3493,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "1416:36:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3493,
+=======
+            "id": 3495,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1951,15 +2875,26 @@
             "name": "setAllowLiquidation",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3478,
+=======
+              "id": 3480,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3477,
                   "name": "allowLiquidation_",
                   "nodeType": "VariableDeclaration",
                   "scope": 3493,
+=======
+                  "id": 3479,
+                  "name": "allowLiquidation_",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3495,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "1289:22:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1968,7 +2903,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3476,
+=======
+                    "id": 3478,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1289:4:12",
@@ -1985,28 +2924,41 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3479,
+=======
+              "id": 3481,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1320:0:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "1260:199:12",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
+<<<<<<< HEAD
         "scope": 3495,
+=======
+        "scope": 3497,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         "src": "119:1342:12"
       }
     ],
     "src": "0:1462:12"
   },
   "legacyAST": {
-    "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/LiquidationChecker.sol",
+    "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/LiquidationChecker.sol",
     "exportedSymbols": {
       "LiquidationChecker": [
+<<<<<<< HEAD
         3494
       ]
     },
@@ -2015,6 +2967,16 @@
     "nodes": [
       {
         "id": 3349,
+=======
+        3496
+      ]
+    },
+    "id": 3497,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3351,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         "literals": [
           "solidity",
           "^",
@@ -2025,34 +2987,58 @@
         "src": "0:24:12"
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/EIP20Interface.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/EIP20Interface.sol",
         "file": "./EIP20Interface.sol",
+<<<<<<< HEAD
         "id": 3350,
         "nodeType": "ImportDirective",
         "scope": 3495,
+=======
+        "id": 3352,
+        "nodeType": "ImportDirective",
+        "scope": 3497,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         "sourceUnit": 2033,
         "src": "26:30:12",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/PriceOracleProxy.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/PriceOracleProxy.sol",
         "file": "./PriceOracleProxy.sol",
+<<<<<<< HEAD
         "id": 3351,
         "nodeType": "ImportDirective",
         "scope": 3495,
+<<<<<<< HEAD
         "sourceUnit": 25532,
+=======
+        "sourceUnit": 18836,
+=======
+        "id": 3353,
+        "nodeType": "ImportDirective",
+        "scope": 3497,
+        "sourceUnit": 12142,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
         "src": "57:32:12",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/raghu/Alkemi/alkemi-earn-protocol/contracts/MoneyMarket.sol",
+        "absolutePath": "/Users/ryanbreen/Workspace/Alkemi/alkemi-earn/alkemi-earn-protocol/contracts/MoneyMarket.sol",
         "file": "./MoneyMarket.sol",
+<<<<<<< HEAD
         "id": 3352,
         "nodeType": "ImportDirective",
         "scope": 3495,
         "sourceUnit": 10459,
+=======
+        "id": 3354,
+        "nodeType": "ImportDirective",
+        "scope": 3497,
+        "sourceUnit": 10461,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         "src": "90:27:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2063,28 +3049,46 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
+<<<<<<< HEAD
         "id": 3494,
         "linearizedBaseContracts": [
           3494
+=======
+        "id": 3496,
+        "linearizedBaseContracts": [
+          3496
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         ],
         "name": "LiquidationChecker",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
+<<<<<<< HEAD
             "id": 3354,
             "name": "moneyMarket",
             "nodeType": "VariableDeclaration",
             "scope": 3494,
+=======
+            "id": 3356,
+            "name": "moneyMarket",
+            "nodeType": "VariableDeclaration",
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "153:30:12",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
+<<<<<<< HEAD
               "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+              "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "typeString": "contract MoneyMarket"
             },
             "typeName": {
               "contractScope": null,
+<<<<<<< HEAD
               "id": 3353,
               "name": "MoneyMarket",
               "nodeType": "UserDefinedTypeName",
@@ -2092,6 +3096,15 @@
               "src": "153:11:12",
               "typeDescriptions": {
                 "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+              "id": 3355,
+              "name": "MoneyMarket",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 10460,
+              "src": "153:11:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                 "typeString": "contract MoneyMarket"
               }
             },
@@ -2100,10 +3113,17 @@
           },
           {
             "constant": false,
+<<<<<<< HEAD
             "id": 3356,
             "name": "liquidator",
             "nodeType": "VariableDeclaration",
             "scope": 3494,
+=======
+            "id": 3358,
+            "name": "liquidator",
+            "nodeType": "VariableDeclaration",
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "189:25:12",
             "stateVariable": true,
             "storageLocation": "default",
@@ -2112,7 +3132,11 @@
               "typeString": "address"
             },
             "typeName": {
+<<<<<<< HEAD
               "id": 3355,
+=======
+              "id": 3357,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "189:7:12",
@@ -2126,10 +3150,17 @@
           },
           {
             "constant": false,
+<<<<<<< HEAD
             "id": 3358,
             "name": "allowLiquidation",
             "nodeType": "VariableDeclaration",
             "scope": 3494,
+=======
+            "id": 3360,
+            "name": "allowLiquidation",
+            "nodeType": "VariableDeclaration",
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "220:28:12",
             "stateVariable": true,
             "storageLocation": "default",
@@ -2138,7 +3169,11 @@
               "typeString": "bool"
             },
             "typeName": {
+<<<<<<< HEAD
               "id": 3357,
+=======
+              "id": 3359,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "name": "bool",
               "nodeType": "ElementaryTypeName",
               "src": "220:4:12",
@@ -2152,20 +3187,29 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3379,
+=======
+              "id": 3381,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "317:124:12",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
+<<<<<<< HEAD
                     "id": 3369,
+=======
+                    "id": 3371,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3365,
                       "name": "moneyMarket",
                       "nodeType": "Identifier",
@@ -2174,6 +3218,16 @@
                       "src": "327:11:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+                      "id": 3367,
+                      "name": "moneyMarket",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3356,
+                      "src": "327:11:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "typeString": "contract MoneyMarket"
                       }
                     },
@@ -2184,11 +3238,19 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3367,
                           "name": "moneyMarket_",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3360,
+=======
+                          "id": 3369,
+                          "name": "moneyMarket_",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3362,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "353:12:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2203,6 +3265,7 @@
                             "typeString": "address"
                           }
                         ],
+<<<<<<< HEAD
                         "id": 3366,
                         "name": "MoneyMarket",
                         "nodeType": "Identifier",
@@ -2215,6 +3278,20 @@
                         }
                       },
                       "id": 3368,
+=======
+                        "id": 3368,
+                        "name": "MoneyMarket",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 10460,
+                        "src": "341:11:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_MoneyMarket_$10460_$",
+                          "typeString": "type(contract MoneyMarket)"
+                        }
+                      },
+                      "id": 3370,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2224,35 +3301,59 @@
                       "nodeType": "FunctionCall",
                       "src": "341:25:12",
                       "typeDescriptions": {
+<<<<<<< HEAD
                         "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+                        "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "typeString": "contract MoneyMarket"
                       }
                     },
                     "src": "327:39:12",
                     "typeDescriptions": {
+<<<<<<< HEAD
                       "typeIdentifier": "t_contract$_MoneyMarket_$10458",
                       "typeString": "contract MoneyMarket"
                     }
                   },
                   "id": 3370,
+=======
+                      "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+                      "typeString": "contract MoneyMarket"
+                    }
+                  },
+                  "id": 3372,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "327:39:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
+<<<<<<< HEAD
                     "id": 3373,
+=======
+                    "id": 3375,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3371,
                       "name": "liquidator",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3356,
+=======
+                      "id": 3373,
+                      "name": "liquidator",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3358,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "376:10:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2263,11 +3364,19 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3372,
                       "name": "liquidator_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3362,
+=======
+                      "id": 3374,
+                      "name": "liquidator_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3364,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "389:11:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2280,25 +3389,41 @@
                       "typeString": "address"
                     }
                   },
+<<<<<<< HEAD
                   "id": 3374,
+=======
+                  "id": 3376,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "376:24:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
+<<<<<<< HEAD
                     "id": 3377,
+=======
+                    "id": 3379,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3375,
                       "name": "allowLiquidation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3358,
+=======
+                      "id": 3377,
+                      "name": "allowLiquidation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3360,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "410:16:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -2310,7 +3435,11 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "66616c7365",
+<<<<<<< HEAD
                       "id": 3376,
+=======
+                      "id": 3378,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2331,14 +3460,22 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "id": 3378,
+=======
+                  "id": 3380,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "410:24:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3380,
+=======
+            "id": 3382,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -2346,15 +3483,26 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3363,
+=======
+              "id": 3365,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3360,
                   "name": "moneyMarket_",
                   "nodeType": "VariableDeclaration",
                   "scope": 3380,
+=======
+                  "id": 3362,
+                  "name": "moneyMarket_",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3382,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "267:20:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2363,7 +3511,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3359,
+=======
+                    "id": 3361,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "267:7:12",
@@ -2377,10 +3529,17 @@
                 },
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3362,
                   "name": "liquidator_",
                   "nodeType": "VariableDeclaration",
                   "scope": 3380,
+=======
+                  "id": 3364,
+                  "name": "liquidator_",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3382,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "289:19:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2389,7 +3548,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3361,
+=======
+                    "id": 3363,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "289:7:12",
@@ -2406,12 +3569,20 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3364,
+=======
+              "id": 3366,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "317:0:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "255:186:12",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2419,7 +3590,11 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3397,
+=======
+              "id": 3399,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "523:72:12",
               "statements": [
@@ -2430,18 +3605,30 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
+<<<<<<< HEAD
                     "id": 3395,
+=======
+                    "id": 3397,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3389,
                       "name": "allowLiquidation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3358,
+=======
+                      "id": 3391,
+                      "name": "allowLiquidation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3360,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "540:16:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -2452,7 +3639,11 @@
                     "operator": "||",
                     "rightExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3394,
+=======
+                      "id": 3396,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2466,11 +3657,19 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3391,
                             "name": "asset",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 3382,
+=======
+                            "id": 3393,
+                            "name": "asset",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3384,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                             "src": "573:5:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -2479,11 +3678,19 @@
                           },
                           {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3392,
                             "name": "newCash",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 3384,
+=======
+                            "id": 3394,
+                            "name": "newCash",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3386,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                             "src": "580:7:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -2502,18 +3709,30 @@
                               "typeString": "uint256"
                             }
                           ],
+<<<<<<< HEAD
                           "id": 3390,
                           "name": "isLiquidate",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3416,
+=======
+                          "id": 3392,
+                          "name": "isLiquidate",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "561:11:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_address_$_t_uint256_$returns$_t_bool_$",
                             "typeString": "function (address,uint256) view returns (bool)"
                           }
                         },
+<<<<<<< HEAD
                         "id": 3393,
+=======
+                        "id": 3395,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2538,15 +3757,24 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "functionReturnParameters": 3388,
                   "id": 3396,
+=======
+                  "functionReturnParameters": 3390,
+                  "id": 3398,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "Return",
                   "src": "533:55:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3398,
+=======
+            "id": 3400,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -2554,15 +3782,26 @@
             "name": "isAllowed",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3385,
+=======
+              "id": 3387,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3382,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
                   "scope": 3398,
+=======
+                  "id": 3384,
+                  "name": "asset",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3400,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "466:13:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2571,7 +3810,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3381,
+=======
+                    "id": 3383,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "466:7:12",
@@ -2585,10 +3828,17 @@
                 },
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3384,
                   "name": "newCash",
                   "nodeType": "VariableDeclaration",
                   "scope": 3398,
+=======
+                  "id": 3386,
+                  "name": "newCash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3400,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "481:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2597,7 +3847,11 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3383,
+=======
+                    "id": 3385,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "481:4:12",
@@ -2614,15 +3868,26 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3388,
+=======
+              "id": 3390,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3387,
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 3398,
+=======
+                  "id": 3389,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3400,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "517:4:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2631,7 +3896,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3386,
+=======
+                    "id": 3388,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "517:4:12",
@@ -2646,7 +3915,11 @@
               ],
               "src": "516:6:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "447:148:12",
             "stateMutability": "view",
             "superFunction": null,
@@ -2654,7 +3927,11 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3415,
+=======
+              "id": 3417,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "679:67:12",
               "statements": [
@@ -2665,7 +3942,11 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
+<<<<<<< HEAD
                     "id": 3413,
+=======
+                    "id": 3415,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2675,11 +3956,19 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3408,
                           "name": "asset",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3400,
+=======
+                          "id": 3410,
+                          "name": "asset",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3402,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "705:5:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2688,11 +3977,19 @@
                         },
                         {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3409,
                           "name": "newCash",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3402,
+=======
+                          "id": 3411,
+                          "name": "newCash",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3404,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "712:7:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2711,18 +4008,30 @@
                             "typeString": "uint256"
                           }
                         ],
+<<<<<<< HEAD
                         "id": 3407,
                         "name": "cashIsUp",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 3439,
+=======
+                        "id": 3409,
+                        "name": "cashIsUp",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "src": "696:8:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$_t_uint256_$returns$_t_bool_$",
                           "typeString": "function (address,uint256) view returns (bool)"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3410,
+=======
+                      "id": 3412,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2743,18 +4052,30 @@
                       "arguments": [],
                       "expression": {
                         "argumentTypes": [],
+<<<<<<< HEAD
                         "id": 3411,
                         "name": "oracleTouched",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 3475,
+=======
+                        "id": 3413,
+                        "name": "oracleTouched",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "src": "724:13:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$__$returns$_t_bool_$",
                           "typeString": "function () view returns (bool)"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3412,
+=======
+                      "id": 3414,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2774,15 +4095,24 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "functionReturnParameters": 3406,
                   "id": 3414,
+=======
+                  "functionReturnParameters": 3408,
+                  "id": 3416,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "Return",
                   "src": "689:50:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3416,
+=======
+            "id": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -2790,15 +4120,26 @@
             "name": "isLiquidate",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3403,
+=======
+              "id": 3405,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3400,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
                   "scope": 3416,
+=======
+                  "id": 3402,
+                  "name": "asset",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "622:13:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2807,7 +4148,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3399,
+=======
+                    "id": 3401,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "622:7:12",
@@ -2821,10 +4166,17 @@
                 },
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3402,
                   "name": "newCash",
                   "nodeType": "VariableDeclaration",
                   "scope": 3416,
+=======
+                  "id": 3404,
+                  "name": "newCash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "637:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2833,7 +4185,11 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3401,
+=======
+                    "id": 3403,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "637:4:12",
@@ -2850,15 +4206,26 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3406,
+=======
+              "id": 3408,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3405,
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 3416,
+=======
+                  "id": 3407,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3418,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "673:4:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2867,7 +4234,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3404,
+=======
+                    "id": 3406,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "673:4:12",
@@ -2882,7 +4253,11 @@
               ],
               "src": "672:6:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "601:145:12",
             "stateMutability": "view",
             "superFunction": null,
@@ -2890,21 +4265,36 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3438,
+=======
+              "id": 3440,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "827:112:12",
               "statements": [
                 {
                   "assignments": [
+<<<<<<< HEAD
                     3426
+=======
+                    3428
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   ],
                   "declarations": [
                     {
                       "constant": false,
+<<<<<<< HEAD
                       "id": 3426,
                       "name": "oldCash",
                       "nodeType": "VariableDeclaration",
                       "scope": 3439,
+=======
+                      "id": 3428,
+                      "name": "oldCash",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "837:12:12",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -2913,7 +4303,11 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
+<<<<<<< HEAD
                         "id": 3425,
+=======
+                        "id": 3427,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "name": "uint",
                         "nodeType": "ElementaryTypeName",
                         "src": "837:4:12",
@@ -2926,12 +4320,17 @@
                       "visibility": "internal"
                     }
                   ],
+<<<<<<< HEAD
                   "id": 3433,
+=======
+                  "id": 3435,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
+<<<<<<< HEAD
                         "id": 3431,
                         "name": "moneyMarket",
                         "nodeType": "Identifier",
@@ -2940,6 +4339,16 @@
                         "src": "884:11:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+                        "id": 3433,
+                        "name": "moneyMarket",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3356,
+                        "src": "884:11:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "typeString": "contract MoneyMarket"
                         }
                       }
@@ -2947,7 +4356,11 @@
                     "expression": {
                       "argumentTypes": [
                         {
+<<<<<<< HEAD
                           "typeIdentifier": "t_contract$_MoneyMarket_$10458",
+=======
+                          "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "typeString": "contract MoneyMarket"
                         }
                       ],
@@ -2956,11 +4369,19 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3428,
                             "name": "asset",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 3418,
+=======
+                            "id": 3430,
+                            "name": "asset",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3420,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                             "src": "867:5:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -2975,7 +4396,11 @@
                               "typeString": "address"
                             }
                           ],
+<<<<<<< HEAD
                           "id": 3427,
+=======
+                          "id": 3429,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "name": "EIP20Interface",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -2986,7 +4411,11 @@
                             "typeString": "type(contract EIP20Interface)"
                           }
                         },
+<<<<<<< HEAD
                         "id": 3429,
+=======
+                        "id": 3431,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3000,7 +4429,11 @@
                           "typeString": "contract EIP20Interface"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3430,
+=======
+                      "id": 3432,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3014,7 +4447,11 @@
                         "typeString": "function (address) view external returns (uint256)"
                       }
                     },
+<<<<<<< HEAD
                     "id": 3432,
+=======
+                    "id": 3434,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3038,18 +4475,30 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
+<<<<<<< HEAD
                     "id": 3436,
+=======
+                    "id": 3438,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3434,
                       "name": "newCash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3420,
+=======
+                      "id": 3436,
+                      "name": "newCash",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3422,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "914:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3060,11 +4509,19 @@
                     "operator": ">=",
                     "rightExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3435,
                       "name": "oldCash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3426,
+=======
+                      "id": 3437,
+                      "name": "oldCash",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3428,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "925:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3077,15 +4534,24 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "functionReturnParameters": 3424,
                   "id": 3437,
+=======
+                  "functionReturnParameters": 3426,
+                  "id": 3439,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "Return",
                   "src": "907:25:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3439,
+=======
+            "id": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -3093,15 +4559,26 @@
             "name": "cashIsUp",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3421,
+=======
+              "id": 3423,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3418,
                   "name": "asset",
                   "nodeType": "VariableDeclaration",
                   "scope": 3439,
+=======
+                  "id": 3420,
+                  "name": "asset",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "770:13:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3110,7 +4587,11 @@
                     "typeString": "address"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3417,
+=======
+                    "id": 3419,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "770:7:12",
@@ -3124,10 +4605,17 @@
                 },
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3420,
                   "name": "newCash",
                   "nodeType": "VariableDeclaration",
                   "scope": 3439,
+=======
+                  "id": 3422,
+                  "name": "newCash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "785:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3136,7 +4624,11 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3419,
+=======
+                    "id": 3421,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "785:4:12",
@@ -3153,15 +4645,26 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3424,
+=======
+              "id": 3426,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3423,
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 3439,
+=======
+                  "id": 3425,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3441,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "821:4:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3170,7 +4673,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3422,
+=======
+                    "id": 3424,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "821:4:12",
@@ -3185,7 +4692,11 @@
               ],
               "src": "820:6:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "752:187:12",
             "stateMutability": "view",
             "superFunction": null,
@@ -3193,37 +4704,74 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3474,
+=======
+              "id": 3476,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "998:256:12",
               "statements": [
                 {
                   "assignments": [
+<<<<<<< HEAD
                     3445
+=======
+                    3447
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   ],
                   "declarations": [
                     {
                       "constant": false,
+<<<<<<< HEAD
                       "id": 3445,
                       "name": "oracle",
                       "nodeType": "VariableDeclaration",
                       "scope": 3475,
+=======
+                      "id": 3447,
+                      "name": "oracle",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1008:23:12",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
+<<<<<<< HEAD
                         "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
+=======
+<<<<<<< HEAD
+                        "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+=======
+                        "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "typeString": "contract PriceOracleProxy"
                       },
                       "typeName": {
                         "contractScope": null,
+<<<<<<< HEAD
                         "id": 3444,
                         "name": "PriceOracleProxy",
                         "nodeType": "UserDefinedTypeName",
                         "referencedDeclaration": 25531,
                         "src": "1008:16:12",
                         "typeDescriptions": {
+<<<<<<< HEAD
                           "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
+=======
+                          "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+=======
+                        "id": 3446,
+                        "name": "PriceOracleProxy",
+                        "nodeType": "UserDefinedTypeName",
+                        "referencedDeclaration": 12141,
+                        "src": "1008:16:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                           "typeString": "contract PriceOracleProxy"
                         }
                       },
@@ -3231,7 +4779,11 @@
                       "visibility": "internal"
                     }
                   ],
+<<<<<<< HEAD
                   "id": 3451,
+=======
+                  "id": 3453,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
@@ -3242,6 +4794,7 @@
                           "argumentTypes": [],
                           "expression": {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3447,
                             "name": "moneyMarket",
                             "nodeType": "Identifier",
@@ -3254,20 +4807,42 @@
                             }
                           },
                           "id": 3448,
+=======
+                            "id": 3449,
+                            "name": "moneyMarket",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3356,
+                            "src": "1051:11:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_contract$_MoneyMarket_$10460",
+                              "typeString": "contract MoneyMarket"
+                            }
+                          },
+                          "id": 3450,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "oracle",
                           "nodeType": "MemberAccess",
+<<<<<<< HEAD
                           "referencedDeclaration": 4012,
+=======
+                          "referencedDeclaration": 4014,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "1051:18:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
                             "typeString": "function () view external returns (address)"
                           }
                         },
+<<<<<<< HEAD
                         "id": 3449,
+=======
+                        "id": 3451,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3289,6 +4864,7 @@
                           "typeString": "address"
                         }
                       ],
+<<<<<<< HEAD
                       "id": 3446,
                       "name": "PriceOracleProxy",
                       "nodeType": "Identifier",
@@ -3301,6 +4877,20 @@
                       }
                     },
                     "id": 3450,
+=======
+                      "id": 3448,
+                      "name": "PriceOracleProxy",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 12141,
+                      "src": "1034:16:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$12141_$",
+                        "typeString": "type(contract PriceOracleProxy)"
+                      }
+                    },
+                    "id": 3452,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3310,7 +4900,15 @@
                     "nodeType": "FunctionCall",
                     "src": "1034:38:12",
                     "typeDescriptions": {
+<<<<<<< HEAD
                       "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
+=======
+<<<<<<< HEAD
+                      "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+=======
+                      "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                       "typeString": "contract PriceOracleProxy"
                     }
                   },
@@ -3319,15 +4917,26 @@
                 },
                 {
                   "assignments": [
+<<<<<<< HEAD
                     3453
+=======
+                    3455
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   ],
                   "declarations": [
                     {
                       "constant": false,
+<<<<<<< HEAD
                       "id": 3453,
                       "name": "sameOrigin",
                       "nodeType": "VariableDeclaration",
                       "scope": 3475,
+=======
+                      "id": 3455,
+                      "name": "sameOrigin",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1083:15:12",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -3336,7 +4945,11 @@
                         "typeString": "bool"
                       },
                       "typeName": {
+<<<<<<< HEAD
                         "id": 3452,
+=======
+                        "id": 3454,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "1083:4:12",
@@ -3349,14 +4962,22 @@
                       "visibility": "internal"
                     }
                   ],
+<<<<<<< HEAD
                   "id": 3460,
+=======
+                  "id": 3462,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "initialValue": {
                     "argumentTypes": null,
                     "commonType": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     },
+<<<<<<< HEAD
                     "id": 3459,
+=======
+                    "id": 3461,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3368,6 +4989,7 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3454,
                           "name": "oracle",
                           "nodeType": "Identifier",
@@ -3380,20 +5002,46 @@
                           }
                         },
                         "id": 3455,
+=======
+                          "id": 3456,
+                          "name": "oracle",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3447,
+                          "src": "1101:6:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+                            "typeString": "contract PriceOracleProxy"
+                          }
+                        },
+                        "id": 3457,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "mostRecentCaller",
                         "nodeType": "MemberAccess",
+<<<<<<< HEAD
                         "referencedDeclaration": 25491,
+=======
+<<<<<<< HEAD
+                        "referencedDeclaration": 18795,
+=======
+                        "referencedDeclaration": 12101,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "src": "1101:23:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
                           "typeString": "function () view external returns (address)"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3456,
+=======
+                      "id": 3458,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3413,18 +5061,34 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
+<<<<<<< HEAD
                         "id": 3457,
                         "name": "tx",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
+<<<<<<< HEAD
                         "referencedDeclaration": 27058,
+=======
+                        "referencedDeclaration": 20362,
+=======
+                        "id": 3459,
+                        "name": "tx",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13668,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "src": "1130:2:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_transaction",
                           "typeString": "tx"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3458,
+=======
+                      "id": 3460,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3449,15 +5113,26 @@
                 },
                 {
                   "assignments": [
+<<<<<<< HEAD
                     3462
+=======
+                    3464
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   ],
                   "declarations": [
                     {
                       "constant": false,
+<<<<<<< HEAD
                       "id": 3462,
                       "name": "sameBlock",
                       "nodeType": "VariableDeclaration",
                       "scope": 3475,
+=======
+                      "id": 3464,
+                      "name": "sameBlock",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1149:14:12",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -3466,7 +5141,11 @@
                         "typeString": "bool"
                       },
                       "typeName": {
+<<<<<<< HEAD
                         "id": 3461,
+=======
+                        "id": 3463,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "1149:4:12",
@@ -3479,14 +5158,22 @@
                       "visibility": "internal"
                     }
                   ],
+<<<<<<< HEAD
                   "id": 3469,
+=======
+                  "id": 3471,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "initialValue": {
                     "argumentTypes": null,
                     "commonType": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
+<<<<<<< HEAD
                     "id": 3468,
+=======
+                    "id": 3470,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3498,6 +5185,7 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3463,
                           "name": "oracle",
                           "nodeType": "Identifier",
@@ -3510,20 +5198,46 @@
                           }
                         },
                         "id": 3464,
+=======
+                          "id": 3465,
+                          "name": "oracle",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3447,
+                          "src": "1166:6:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$12141",
+                            "typeString": "contract PriceOracleProxy"
+                          }
+                        },
+                        "id": 3466,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "mostRecentBlock",
                         "nodeType": "MemberAccess",
+<<<<<<< HEAD
                         "referencedDeclaration": 25493,
+=======
+<<<<<<< HEAD
+                        "referencedDeclaration": 18797,
+=======
+                        "referencedDeclaration": 12103,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "src": "1166:22:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
                           "typeString": "function () view external returns (uint256)"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3465,
+=======
+                      "id": 3467,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3543,18 +5257,34 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
+<<<<<<< HEAD
                         "id": 3466,
                         "name": "block",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
+<<<<<<< HEAD
                         "referencedDeclaration": 27036,
+=======
+                        "referencedDeclaration": 20340,
+=======
+                        "id": 3468,
+                        "name": "block",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 13646,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                         "src": "1194:5:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_block",
                           "typeString": "block"
                         }
                       },
+<<<<<<< HEAD
                       "id": 3467,
+=======
+                      "id": 3469,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3584,18 +5314,30 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
+<<<<<<< HEAD
                     "id": 3472,
+=======
+                    "id": 3474,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3470,
                       "name": "sameOrigin",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3453,
+=======
+                      "id": 3472,
+                      "name": "sameOrigin",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3455,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1224:10:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -3606,11 +5348,19 @@
                     "operator": "&&",
                     "rightExpression": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3471,
                       "name": "sameBlock",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3462,
+=======
+                      "id": 3473,
+                      "name": "sameBlock",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3464,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1238:9:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -3623,15 +5373,24 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "functionReturnParameters": 3443,
                   "id": 3473,
+=======
+                  "functionReturnParameters": 3445,
+                  "id": 3475,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "Return",
                   "src": "1217:30:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3475,
+=======
+            "id": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -3639,22 +5398,37 @@
             "name": "oracleTouched",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3440,
+=======
+              "id": 3442,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "967:2:12"
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3443,
+=======
+              "id": 3445,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3442,
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 3475,
+=======
+                  "id": 3444,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3477,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "992:4:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3663,7 +5437,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3441,
+=======
+                    "id": 3443,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "992:4:12",
@@ -3678,7 +5456,11 @@
               ],
               "src": "991:6:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "945:309:12",
             "stateMutability": "view",
             "superFunction": null,
@@ -3686,7 +5468,11 @@
           },
           {
             "body": {
+<<<<<<< HEAD
               "id": 3492,
+=======
+              "id": 3494,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "Block",
               "src": "1320:139:12",
               "statements": [
@@ -3700,7 +5486,11 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
+<<<<<<< HEAD
                         "id": 3484,
+=======
+                        "id": 3486,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3709,18 +5499,34 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
+<<<<<<< HEAD
                             "id": 3481,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
+<<<<<<< HEAD
                             "referencedDeclaration": 27046,
+=======
+                            "referencedDeclaration": 20350,
+=======
+                            "id": 3483,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 13656,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                             "src": "1338:3:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
+<<<<<<< HEAD
                           "id": 3482,
+=======
+                          "id": 3484,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3738,11 +5544,19 @@
                         "operator": "==",
                         "rightExpression": {
                           "argumentTypes": null,
+<<<<<<< HEAD
                           "id": 3483,
                           "name": "liquidator",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 3356,
+=======
+                          "id": 3485,
+                          "name": "liquidator",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3358,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                           "src": "1352:10:12",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -3758,7 +5572,11 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "4c49515549444154494f4e5f434845434b45525f494e56414c49445f4c495155494441544f52",
+<<<<<<< HEAD
                         "id": 3485,
+=======
+                        "id": 3487,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3785,6 +5603,7 @@
                           "typeString": "literal_string \"LIQUIDATION_CHECKER_INVALID_LIQUIDATOR\""
                         }
                       ],
+<<<<<<< HEAD
                       "id": 3480,
                       "name": "require",
                       "nodeType": "Identifier",
@@ -3792,14 +5611,32 @@
                         27049,
                         27050
                       ],
+<<<<<<< HEAD
                       "referencedDeclaration": 27050,
+=======
+                      "referencedDeclaration": 20354,
+=======
+                      "id": 3482,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        13659,
+                        13660
+                      ],
+                      "referencedDeclaration": 13660,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
                       "src": "1330:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
+<<<<<<< HEAD
                     "id": 3486,
+=======
+                    "id": 3488,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3813,25 +5650,41 @@
                       "typeString": "tuple()"
                     }
                   },
+<<<<<<< HEAD
                   "id": 3487,
+=======
+                  "id": 3489,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "1330:75:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
+<<<<<<< HEAD
                     "id": 3490,
+=======
+                    "id": 3492,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3488,
                       "name": "allowLiquidation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3358,
+=======
+                      "id": 3490,
+                      "name": "allowLiquidation",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3360,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1416:16:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -3842,11 +5695,19 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
+<<<<<<< HEAD
                       "id": 3489,
                       "name": "allowLiquidation_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 3477,
+=======
+                      "id": 3491,
+                      "name": "allowLiquidation_",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3479,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                       "src": "1435:17:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -3859,14 +5720,22 @@
                       "typeString": "bool"
                     }
                   },
+<<<<<<< HEAD
                   "id": 3491,
+=======
+                  "id": 3493,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "nodeType": "ExpressionStatement",
                   "src": "1416:36:12"
                 }
               ]
             },
             "documentation": null,
+<<<<<<< HEAD
             "id": 3493,
+=======
+            "id": 3495,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3874,15 +5743,26 @@
             "name": "setAllowLiquidation",
             "nodeType": "FunctionDefinition",
             "parameters": {
+<<<<<<< HEAD
               "id": 3478,
+=======
+              "id": 3480,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
+<<<<<<< HEAD
                   "id": 3477,
                   "name": "allowLiquidation_",
                   "nodeType": "VariableDeclaration",
                   "scope": 3493,
+=======
+                  "id": 3479,
+                  "name": "allowLiquidation_",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3495,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                   "src": "1289:22:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3891,7 +5771,11 @@
                     "typeString": "bool"
                   },
                   "typeName": {
+<<<<<<< HEAD
                     "id": 3476,
+=======
+                    "id": 3478,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1289:4:12",
@@ -3908,19 +5792,31 @@
             },
             "payable": false,
             "returnParameters": {
+<<<<<<< HEAD
               "id": 3479,
+=======
+              "id": 3481,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1320:0:12"
             },
+<<<<<<< HEAD
             "scope": 3494,
+=======
+            "scope": 3496,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
             "src": "1260:199:12",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
+<<<<<<< HEAD
         "scope": 3495,
+=======
+        "scope": 3497,
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
         "src": "119:1342:12"
       }
     ],
@@ -3931,8 +5827,17 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
+<<<<<<< HEAD
   "schemaVersion": "3.2.3",
+<<<<<<< HEAD
   "updatedAt": "2021-04-13T21:12:22.499Z",
+=======
+  "updatedAt": "2021-02-19T22:18:53.131Z",
+=======
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2021-01-01T03:41:58.289Z",
+>>>>>>> dbd3523d8a3c5434e6e25135dbc2e1bcef978187
+>>>>>>> 84dec8606bbc4da60012af0a9ae22bdfeec5c4d2
   "devdoc": {
     "methods": {}
   },

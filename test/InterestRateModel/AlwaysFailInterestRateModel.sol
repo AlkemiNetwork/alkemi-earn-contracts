@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-import "../../contracts/AlkemiRateModel.sol";
+import "../../contracts/InterestRateModel.sol";
 
 /**
   * @title An Interest Rate Model that always fails for tests

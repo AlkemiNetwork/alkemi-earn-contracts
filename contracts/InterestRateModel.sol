@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
 /**
- * @title The Lendf.Me InterestRateModel Interface
+ * @title InterestRateModel Interface
  * @notice Any interest rate model should derive from this contract.
  * @dev These functions are specifically not marked `pure` as implementations of this
  *      contract may read from storage variables.
