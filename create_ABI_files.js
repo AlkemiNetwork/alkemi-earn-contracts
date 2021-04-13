@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 let contract = JSON.parse(
-	fs.readFileSync("./build/contracts/MoneyMarketV11.json", "utf8")
+	fs.readFileSync("./build/contracts/MoneyMarketV12.json", "utf8")
 );
 fs.writeFile(
 	"./ABI/MoneyMarket_ABI.json",

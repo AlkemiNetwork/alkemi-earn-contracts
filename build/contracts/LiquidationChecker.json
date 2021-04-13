@@ -118,7 +118,7 @@
         "id": 3351,
         "nodeType": "ImportDirective",
         "scope": 3495,
-        "sourceUnit": 18836,
+        "sourceUnit": 25532,
         "src": "57:32:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1289,7 +1289,7 @@
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                        "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                         "typeString": "contract PriceOracleProxy"
                       },
                       "typeName": {
@@ -1297,10 +1297,10 @@
                         "id": 3444,
                         "name": "PriceOracleProxy",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 18835,
+                        "referencedDeclaration": 25531,
                         "src": "1008:16:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                          "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                           "typeString": "contract PriceOracleProxy"
                         }
                       },
@@ -1370,10 +1370,10 @@
                       "name": "PriceOracleProxy",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18835,
+                      "referencedDeclaration": 25531,
                       "src": "1034:16:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$18835_$",
+                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$25531_$",
                         "typeString": "type(contract PriceOracleProxy)"
                       }
                     },
@@ -1387,7 +1387,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1034:38:12",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                      "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                       "typeString": "contract PriceOracleProxy"
                     }
                   },
@@ -1452,7 +1452,7 @@
                           "referencedDeclaration": 3445,
                           "src": "1101:6:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                             "typeString": "contract PriceOracleProxy"
                           }
                         },
@@ -1463,7 +1463,7 @@
                         "lValueRequested": false,
                         "memberName": "mostRecentCaller",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 18795,
+                        "referencedDeclaration": 25491,
                         "src": "1101:23:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -1494,7 +1494,7 @@
                         "name": "tx",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 20362,
+                        "referencedDeclaration": 27058,
                         "src": "1130:2:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_transaction",
@@ -1582,7 +1582,7 @@
                           "referencedDeclaration": 3445,
                           "src": "1166:6:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                             "typeString": "contract PriceOracleProxy"
                           }
                         },
@@ -1593,7 +1593,7 @@
                         "lValueRequested": false,
                         "memberName": "mostRecentBlock",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 18797,
+                        "referencedDeclaration": 25493,
                         "src": "1166:22:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
@@ -1624,7 +1624,7 @@
                         "name": "block",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 20340,
+                        "referencedDeclaration": 27036,
                         "src": "1194:5:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_block",
@@ -1790,7 +1790,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 20350,
+                            "referencedDeclaration": 27046,
                             "src": "1338:3:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -1866,10 +1866,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        20353,
-                        20354
+                        27049,
+                        27050
                       ],
-                      "referencedDeclaration": 20354,
+                      "referencedDeclaration": 27050,
                       "src": "1330:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2041,7 +2041,7 @@
         "id": 3351,
         "nodeType": "ImportDirective",
         "scope": 3495,
-        "sourceUnit": 18836,
+        "sourceUnit": 25532,
         "src": "57:32:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -3212,7 +3212,7 @@
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                        "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                         "typeString": "contract PriceOracleProxy"
                       },
                       "typeName": {
@@ -3220,10 +3220,10 @@
                         "id": 3444,
                         "name": "PriceOracleProxy",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 18835,
+                        "referencedDeclaration": 25531,
                         "src": "1008:16:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                          "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                           "typeString": "contract PriceOracleProxy"
                         }
                       },
@@ -3293,10 +3293,10 @@
                       "name": "PriceOracleProxy",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18835,
+                      "referencedDeclaration": 25531,
                       "src": "1034:16:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$18835_$",
+                        "typeIdentifier": "t_type$_t_contract$_PriceOracleProxy_$25531_$",
                         "typeString": "type(contract PriceOracleProxy)"
                       }
                     },
@@ -3310,7 +3310,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1034:38:12",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                      "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                       "typeString": "contract PriceOracleProxy"
                     }
                   },
@@ -3375,7 +3375,7 @@
                           "referencedDeclaration": 3445,
                           "src": "1101:6:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                             "typeString": "contract PriceOracleProxy"
                           }
                         },
@@ -3386,7 +3386,7 @@
                         "lValueRequested": false,
                         "memberName": "mostRecentCaller",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 18795,
+                        "referencedDeclaration": 25491,
                         "src": "1101:23:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -3417,7 +3417,7 @@
                         "name": "tx",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 20362,
+                        "referencedDeclaration": 27058,
                         "src": "1130:2:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_transaction",
@@ -3505,7 +3505,7 @@
                           "referencedDeclaration": 3445,
                           "src": "1166:6:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_PriceOracleProxy_$18835",
+                            "typeIdentifier": "t_contract$_PriceOracleProxy_$25531",
                             "typeString": "contract PriceOracleProxy"
                           }
                         },
@@ -3516,7 +3516,7 @@
                         "lValueRequested": false,
                         "memberName": "mostRecentBlock",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 18797,
+                        "referencedDeclaration": 25493,
                         "src": "1166:22:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
@@ -3547,7 +3547,7 @@
                         "name": "block",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 20340,
+                        "referencedDeclaration": 27036,
                         "src": "1194:5:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_block",
@@ -3713,7 +3713,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 20350,
+                            "referencedDeclaration": 27046,
                             "src": "1338:3:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -3789,10 +3789,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        20353,
-                        20354
+                        27049,
+                        27050
                       ],
-                      "referencedDeclaration": 20354,
+                      "referencedDeclaration": 27050,
                       "src": "1330:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -3932,7 +3932,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2021-02-19T22:18:53.131Z",
+  "updatedAt": "2021-04-13T21:12:22.499Z",
   "devdoc": {
     "methods": {}
   },
