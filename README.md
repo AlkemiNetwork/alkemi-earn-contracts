@@ -70,6 +70,12 @@ $ npm run deploy
 
 ## Testing
 
+In a new terminal window, run Ganache CLI using the command below:
+
+```text
+$ ganache-cli --allowUnlimitedContractSize
+```
+
 Run tests with:
 
 ```text
