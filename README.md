@@ -23,7 +23,7 @@
     * [Ropsten Testnet](./#ropsten-testnet)
 * [Documentation](./#documentation)
 * [Issues](./#issues)
-* [License](./#license)
+* [License](./#license)[Deployment](https://app.gitbook.com/@alkemi-network/s/earn-contracts/~/drafts/-MYgT4d3sDab675bXliK/#deployment)
 
 ## Get Started
 
@@ -95,6 +95,38 @@ $ npm run lint:tests
 ```
 
 Code style is enforced through the CI test process, builds will fail if there're any linting errors.
+
+## Deployment
+
+### Standalone contract deployment
+
+* Make sure Truffle config file has the right options including mnemonic from .mnemonic file
+* Standalone migration scripts are in 2\_deploy contracts.js file under migrations folder. Uncomment required lines of code under corresponding network section
+* Run the below code to deploy contracts to the required network from 2nd file under migrations folder
+
+```text
+$ truffle migrate --network <network> -f 2 --to 2
+```
+
+### Upgradeable contract deployment
+
+To deploy an upgradeable Moneymarket contract as per Open Zeppelin's Upgrades plugin, use file "7 deploy money market.js" under migrations folder
+
+```text
+$ truffle migrate --network <network> -f 7 --to 7
+```
+
+To upgrade the contract to a newer version, change contents of file "8 upgrade money market.js" under migrations folder and include the new contract name in the code
+
+Then run the below code in terminal to deploy new version of the contract
+
+```text
+$ truffle migrate --network <network> -f 8 --to 8
+```
+
+Once new version of the contract is deployed, use the Open Zeppelin app on Gnosis Safe to upgrade the contract as shown below
+
+![](.gitbook/assets/image.png)
 
 ## Networks
 
