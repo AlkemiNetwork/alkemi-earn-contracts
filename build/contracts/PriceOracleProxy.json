@@ -1214,8 +1214,7 @@
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2021-04-20T00:59:13.435Z",
-  "networkType": "ethereum",
+  "updatedAt": "2021-04-28T11:55:19.594Z",
   "devdoc": {
     "methods": {
       "assetPrices(address)": {

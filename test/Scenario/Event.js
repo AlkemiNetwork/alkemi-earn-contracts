@@ -155,7 +155,7 @@ async function setAssetValue(world, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		world.priceOracle,
 		"harnessSetAssetPrice",
-		[token._address, getExpMantissa(amount)],
+		[token._address, getExpMantissa(amount).toString()],
 		{ from: getUser(world, "root") }
 	);
 
@@ -174,7 +174,7 @@ async function approve(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		token,
 		"approve",
-		[world.moneyMarket._address, amount],
+		[world.moneyMarket._address, amount.toString()],
 		{ from: user }
 	);
 
@@ -193,7 +193,7 @@ async function faucet(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		token,
 		"allocateTo",
-		[user, amount],
+		[user, amount.toString()],
 		{ from: getUser(world, "root") }
 	);
 
@@ -212,7 +212,7 @@ async function supply(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		world.moneyMarket,
 		"supply",
-		[token._address, amount],
+		[token._address, amount.toString()],
 		{ gas: 1000000, from: user }
 	);
 
@@ -232,7 +232,7 @@ async function withdraw(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		world.moneyMarket,
 		"withdraw",
-		[token._address, amount],
+		[token._address, amount.toString()],
 		{ from: user }
 	);
 
@@ -252,7 +252,7 @@ async function borrow(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		world.moneyMarket,
 		"borrow",
-		[token._address, amount],
+		[token._address, amount.toString()],
 		{ from: user }
 	);
 
@@ -272,7 +272,7 @@ async function repayBorrow(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		world.moneyMarket,
 		"repayBorrow",
-		[token._address, amount],
+		[token._address, amount.toString()],
 		{ from: user }
 	);
 
@@ -303,7 +303,7 @@ async function liquidateBorrow(
 			targetAccount,
 			assetBorrow._address,
 			assetCollateral._address,
-			requestedAmountClose,
+			requestedAmountClose.toString(),
 		],
 		{ from: liquidator }
 	);
@@ -360,8 +360,8 @@ async function setInterestRate(world, token, interestRateArg) {
 			}%`;
 
 			interestModel = await FixedInterestRateModel.new(
-				supplyInterestRateScaled,
-				borrowInterestRateScaled
+				supplyInterestRateScaled.toString(),
+				borrowInterestRateScaled.toString()
 			).send({ from: getUser(world, "root") });
 
 			break;
@@ -476,7 +476,7 @@ async function processEvent(world, event) {
 				return await addCash(
 					world,
 					getToken(world, tokenArg),
-					getAmount(world, amountArg)
+					getAmount(world, amountArg).toString()
 				);
 			})();
 		case "AddSupportedAsset":
@@ -595,7 +595,7 @@ async function processEvent(world, event) {
 				return await setAssetValue(
 					world,
 					getToken(world, tokenArg),
-					getAmount(world, amountArg)
+					getAmount(world, amountArg).toString()
 				);
 			})();
 		case "SetInterestRate":
@@ -618,7 +618,7 @@ async function processEvent(world, event) {
 			return await (async () => {
 				let [ratio] = args;
 
-				return await setRiskParameters(world, Number(ratio), 0);
+				return await setRiskParameters(world, Number(ratio).toString(), 0);
 			})();
 		case "SetPaused":
 			return await (async () => {

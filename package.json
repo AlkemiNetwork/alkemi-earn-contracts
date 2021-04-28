@@ -1,57 +1,56 @@
 {
-  "name": "alkemi-earn-protocol",
-  "version": "0.0.1",
-  "description": "Alkemi Earn Protocol",
-  "homepage": "https://docs.alkemi.network/",
-  "main": "index.js",
-  "directories": {
-    "test": "test",
-    "docs": "docs"
-  },
-  "author": "Raghu <raghu@alkemi.ai>",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://bitbucket.org/project-alkemi/alkemi-earn-protocol/issues"
-  },
-  "keywords": [
-    "Alkemi",
-    "DeFi",
-    "Lending",
-    "Solidity"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://bitbucket.org/project-alkemi/alkemi-earn-protocol"
-  },
-  "scripts": {
-    "ganache": "ganache-cli --port 8545",
-    "ganache-ci": "ganache-cli --port 8545 > /dev/null &",
-    "compile": "truffle compile --all",
-    "deploy": "truffle deploy",
-    "migrate:development": "truffle migrate --network development",
-    "migrate:rinkeby": "truffle migrate --network rinkeby",
-    "migrate:kovan": "truffle migrate --network kovan",
-    "migrate:mainnet": "truffle migrate --network mainnet",
-    "coverage": "./scripts/coverage",
-    "lint": "./scripts/lint",
-    "test": "./scripts/test",
-    "generate:doc": "truffle compile && solidoc ./ ./docs true"
-  },
-  "dependencies": {
-    "@chainlink/contracts": "0.0.8",
-    "@openzeppelin/truffle-upgrades": "^1.2.2",
-    "solidoc": "^1.0.5",
-    "truffle": "^5.1.46",
-    "truffle-hdwallet-provider": "^1.0.17"
-  },
-  "devDependencies": {
-    "bignumber.js": "^7.2.1",
-    "ganache-cli": "^6.7.0",
-    "seamless-immutable": "^7.1.3",
-    "solc": "^0.4.24",
-    "solidity-coverage": "https://github.com/compound-finance/solidity-coverage.git#25fc59d2be6739d6cfe5475e33be67f7b6d57c51",
-    "solium": "^1.1.7",
-    "truffle": "^4.1.11",
-    "web3": "^1.0.0-beta.34"
-  }
+	"name": "alkemi-earn-protocol",
+	"version": "0.0.1",
+	"description": "Alkemi Earn Protocol",
+	"homepage": "https://docs.alkemi.network/",
+	"main": "index.js",
+	"directories": {
+		"test": "test",
+		"docs": "docs"
+	},
+	"author": "Raghu <raghu@alkemi.ai>",
+	"license": "UNLICENSED",
+	"bugs": {
+		"url": "https://bitbucket.org/project-alkemi/alkemi-earn-protocol/issues"
+	},
+	"keywords": [
+		"Alkemi",
+		"DeFi",
+		"Lending",
+		"Solidity"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://bitbucket.org/project-alkemi/alkemi-earn-protocol"
+	},
+	"scripts": {
+		"ganache": "ganache-cli --port 8545",
+		"ganache-ci": "ganache-cli --port 8545 > /dev/null &",
+		"compile": "truffle compile --all",
+		"deploy": "truffle deploy",
+		"migrate:development": "truffle migrate --network development",
+		"migrate:rinkeby": "truffle migrate --network rinkeby",
+		"migrate:kovan": "truffle migrate --network kovan",
+		"migrate:mainnet": "truffle migrate --network mainnet",
+		"coverage": "./scripts/coverage",
+		"lint": "./scripts/lint",
+		"test": "./scripts/test",
+		"generate:doc": "truffle compile && solidoc ./ ./docs true"
+	},
+	"dependencies": {
+		"@chainlink/contracts": "0.0.8",
+		"@openzeppelin/truffle-upgrades": "^1.2.2",
+		"solidoc": "^1.0.5",
+		"truffle": "^5.1.10",
+		"truffle-hdwallet-provider": "^1.0.17"
+	},
+	"devDependencies": {
+		"bignumber.js": "^7.2.1",
+		"ganache-cli": "^6.7.0",
+		"seamless-immutable": "^7.1.3",
+		"solc": "^0.4.24",
+		"solidity-coverage": "https://github.com/compound-finance/solidity-coverage.git#25fc59d2be6739d6cfe5475e33be67f7b6d57c51",
+		"solium": "^1.1.7",
+		"web3": "^1.0.0-beta.34"
+	}
 }

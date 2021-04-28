@@ -3,11 +3,14 @@
  */
 const HDWalletProvider = require("truffle-hdwallet-provider");
 const fs = require("fs");
-const mnemonic = fs.readFileSync(".mnemonic").toString().trim();
+const mnemonic = fs
+	.readFileSync(".mnemonic")
+	.toString()
+	.trim();
 const infuraKey = "c92203bc3a4544f28dae1f94627e5367";
 
 let mochaOptions = {
-	// timeout: 100000
+	// timeout: 200000,
 };
 
 if (process.env.SOLIDITY_COVERAGE) {
@@ -24,6 +27,8 @@ module.exports = {
 			host: "127.0.0.1", // Localhost (default: none)
 			port: 8545, // Standard Ethereum port (default: none)
 			network_id: "*", // Any network (default: none)
+			gas: 6721975,
+			gasPrice: 1,
 		},
 		test: {
 			host: "127.0.0.1", // Localhost (default: none)
