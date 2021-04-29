@@ -9,7 +9,7 @@ import "./MoneyMarketTest.sol";
 contract MoneyMarketTest_WithdrawEquity2 is MoneyMarketTest {
 
     function testWithdrawEquity_SuccessAllEquity() public {
-      initializer();
+        initializer();
         addKYCAdmin(msg.sender);
         addCustomerKYC(msg.sender);
         address asset = address(this);

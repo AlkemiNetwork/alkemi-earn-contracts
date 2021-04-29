@@ -76,7 +76,7 @@ contract EIP20NonStandardReturnHarness is EIP20NonStandardInterface {
     }
 
     function transfer(address _to, uint256 _value) public {
-        require(balances[msg.sender] >= _value);
+        require(balances[msg.sender] >= _value,"Balance < value");
 
         // Added for testing purposes
         if (failTransferToAddresses[_to]) {
@@ -100,7 +100,7 @@ contract EIP20NonStandardReturnHarness is EIP20NonStandardInterface {
         }
 
         uint256 allowance = allowed[_from][msg.sender];
-        require(balances[_from] >= _value && allowance >= _value);
+        require(balances[_from] >= _value && allowance >= _value,"Balance or allowance < value");
         balances[_to] += _value;
         balances[_from] -= _value;
         if (allowance < MAX_UINT256) {

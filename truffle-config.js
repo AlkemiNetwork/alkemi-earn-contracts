@@ -10,7 +10,9 @@ const mnemonic = fs
 const infuraKey = "c92203bc3a4544f28dae1f94627e5367";
 
 let mochaOptions = {
-	// timeout: 200000,
+	enableTimeouts: false,
+	before_timeout: 0,
+	test_timeout: 0,
 };
 
 if (process.env.SOLIDITY_COVERAGE) {
@@ -18,6 +20,8 @@ if (process.env.SOLIDITY_COVERAGE) {
 		enableTimeouts: false,
 		grep: /@gas/,
 		invert: true,
+		before_timeout: 0,
+		test_timeout: 0,
 	};
 }
 
@@ -27,15 +31,18 @@ module.exports = {
 			host: "127.0.0.1", // Localhost (default: none)
 			port: 8545, // Standard Ethereum port (default: none)
 			network_id: "*", // Any network (default: none)
-			gas: 6721975,
-			gasPrice: 1,
 		},
 		test: {
 			host: "127.0.0.1", // Localhost (default: none)
 			port: 8545,
 			network_id: "*",
-			gas: 6721975,
-			gasPrice: 1,
+		},
+		coverage: {
+			host: "localhost",
+			network_id: "*",
+			gas: 0xfffffffffff,
+			gasPrice: 0x01,
+			port: 8555,
 		},
 		ganacheUI: {
 			host: "127.0.0.1", // Localhost (default: none)
@@ -91,9 +98,7 @@ module.exports = {
 	},
 
 	// Set default mocha options here, use special reporters etc.
-	mocha: {
-		mochaOptions,
-	},
+	mocha: mochaOptions,
 
 	compilers: {
 		solc: {
@@ -107,4 +112,5 @@ module.exports = {
 			},
 		},
 	},
+	plugins: ["solidity-coverage"],
 };

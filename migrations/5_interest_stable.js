@@ -3,7 +3,7 @@ var StableCoinInterestRateModel = artifacts.require(
 );
 
 module.exports = async (deployer, network, accounts) => {
-	if (network == "rinkeby") {
+	if (network == "rinkeby" || network == "development") {
 		await deployer.deploy(StableCoinInterestRateModel);
 	}
 	if (network == "kovan") {

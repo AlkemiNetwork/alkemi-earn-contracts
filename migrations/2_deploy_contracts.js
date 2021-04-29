@@ -1,10 +1,11 @@
 var PriceOracle = artifacts.require("PriceOracle.sol");
 var PriceOracleProxy = artifacts.require("PriceOracleProxy.sol");
-var MoneyMarket = artifacts.require("./MoneyMarket.sol");
-var Liquidator = artifacts.require("./Liquidator.sol");
-var LiquidationChecker = artifacts.require("./LiquidationChecker.sol");
+var MoneyMarket = artifacts.require("MoneyMarket.sol");
+var Liquidator = artifacts.require("Liquidator.sol");
+var LiquidationChecker = artifacts.require("LiquidationChecker.sol");
 var ChainLink = artifacts.require("ChainLink.sol");
 var AlkemiWETH = artifacts.require("AlkemiWETH.sol");
+var AlkemiRateModel = artifacts.require("AlkemiRateModel.sol");
 var StandardInterestRateModel = artifacts.require(
 	"./StandardInterestRateModel.sol"
 );
@@ -13,13 +14,35 @@ var TestTokens = artifacts.require("TestTokens.sol");
 const deploymentConfig = require("./deployment-config.json");
 
 module.exports = async (deployer, network, accounts) => {
-	if (network == "development" || network == "ganacheUI") {
+	if (
+		network == "development" ||
+		network == "ganacheUI" ||
+		network == "coverage"
+	) {
 		await deployer.deploy(PriceOracle, deploymentConfig.DEVCHAIN.POSTER);
 		await deployer.deploy(PriceOracleProxy, PriceOracle.address);
 		await deployer.deploy(MoneyMarket);
 		await deployer.deploy(ChainLink);
 		await deployer.deploy(AlkemiWETH);
+
 		await deployer.deploy(Liquidator, MoneyMarket.address);
+		const priceOracle = await PriceOracle.deployed();
+		const moneyMarket = await MoneyMarket.deployed();
+		const liquidator = await MoneyMarket.deployed();
+
+		await deployer.deploy(
+			AlkemiRateModel,
+			"Rate Model",
+			50,
+			2000,
+			100,
+			8000,
+			400,
+			3000,
+			moneyMarket.address,
+			liquidator.address
+		);
+		await moneyMarket._setOracle(priceOracle.address);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
 		// 	MoneyMarket.address,

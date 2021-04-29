@@ -5,7 +5,18 @@ import "./AssertHelpers.sol";
 import "./MathHelpers.sol";
 import "../contracts/AlkemiRateModel.sol";
 
-contract StableCoinInterestRateModelTest is AlkemiRateModel {
+contract StableCoinInterestRateModelTest is AlkemiRateModel
+            (
+                "Stable Rate Model",
+                50,
+                2000,
+                100,
+                8000,
+                400,
+                3000,
+                0x0000000000000000000000000000000000000000,
+                0x0000000000000000000000000000000000000000
+            ) {
 
     // Supply rate = (1 - 0.15) * Ua * ( 10% + (30% * Ua) )
     // C.f. Elixir:

@@ -17,7 +17,7 @@ contract PriceOracleHarness is ChainLink {
     }
 
     function harnessSetAssetPrice(address asset, uint assetPriceMantissa) public {
-        prices[asset] =  assetPriceMantissa;
+        prices[asset] = assetPriceMantissa;
     }
 
 }

@@ -33,7 +33,6 @@ contract MoneyMarketTest_SetRiskParameters4 is MoneyMarketTest {
 // uint _minimumCollateralRatioMantissa = minimumCollateralRatioMantissa;
 // uint _maximumLiquidationDiscountMantissa = maximumLiquidationDiscountMantissa;
 
-        
 //         assertError(Error.INVALID_LIQUIDATION_DISCOUNT, Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)), "operation not should have succeeded");
 
 //         Assert.equal(collateralRatio.mantissa, oldRatio.mantissa, "collateral ratio should retain previous value");
@@ -51,9 +50,14 @@ contract MoneyMarketTest_SetRiskParameters4 is MoneyMarketTest {
         Exp memory oldDiscount = liquidationDiscount;
         Exp memory newDiscount = getExpFromRational(9, 100);
         Assert.notEqual(newDiscount.mantissa, oldDiscount.mantissa, "setup failed; choose a different newDiscount");
-uint _minimumCollateralRatioMantissa = minimumCollateralRatioMantissa;
-uint _maximumLiquidationDiscountMantissa = maximumLiquidationDiscountMantissa;
-        assertError(Error.NO_ERROR, Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)), "operation not should have succeeded");
+        uint _minimumCollateralRatioMantissa = minimumCollateralRatioMantissa;
+        uint _maximumLiquidationDiscountMantissa = maximumLiquidationDiscountMantissa;
+        assertError(
+            Error.NO_ERROR,
+            Error(
+                _setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)),
+                "operation not should have succeeded"
+            );
 
         // Assert.equal(collateralRatio.mantissa, oldRatio.mantissa, "collateral ratio should retain previous value");
         // Assert.equal(liquidationDiscount.mantissa, oldDiscount.mantissa, "liquidation discount should retain previous value");

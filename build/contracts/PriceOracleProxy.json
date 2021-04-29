@@ -1211,10 +1211,16 @@
       "links": {},
       "address": "0xA1D45F336f8B3c595AEFb1dE69DDe992C6238373",
       "transactionHash": "0x3a610881676a82c62911d187471c9d333e2e195c02572dd16f1c874d47ce2cf0"
+    },
+    "1619660997212": {
+      "events": {},
+      "links": {},
+      "address": "0x25eC6f263581a50f98fdF9156d6A16d2743D13b1",
+      "transactionHash": "0x45535fd02b55b894a760d7ac8120cacdb0321def0080caa23e17b574f641b039"
     }
   },
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2021-04-28T11:55:19.594Z",
+  "schemaVersion": "3.0.22",
+  "updatedAt": "2021-04-29T20:46:38.822Z",
   "devdoc": {
     "methods": {
       "assetPrices(address)": {

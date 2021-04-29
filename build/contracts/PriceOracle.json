@@ -44530,10 +44530,291 @@
       "links": {},
       "address": "0xCEcb628eC11381E69B9f7B95Af4E5678F332dfb5",
       "transactionHash": "0xb164c058bf2209948a65b9694ec44500b4747a9f4443d3e1e29e2a4072660596"
+    },
+    "1619660997212": {
+      "events": {
+        "0x96f29b65cebbd6816352fb242b6af7180b49e8a09e19e589225d35bc8444f0b7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "msgSender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "error",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "info",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "detail",
+              "type": "uint256"
+            }
+          ],
+          "name": "OracleFailure",
+          "type": "event",
+          "signature": "0x96f29b65cebbd6816352fb242b6af7180b49e8a09e19e589225d35bc8444f0b7"
+        },
+        "0xf0aa20c29c1f8e751bfe0a78bc49a520ed14f2dab274087d90d1341d8b76af5c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "anchorAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "oldScaledPrice",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "newScaledPrice",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewPendingAnchor",
+          "type": "event",
+          "signature": "0xf0aa20c29c1f8e751bfe0a78bc49a520ed14f2dab274087d90d1341d8b76af5c"
+        },
+        "0x8f040edee3352bd667ecb467e130dd5c5f9cdf6db626ea8dcaf4ff0a1fcbb787": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "exchangeRateModel",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "exchangeRate",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "maxSwingRate",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "maxSwingDuration",
+              "type": "uint256"
+            }
+          ],
+          "name": "SetExchangeRate",
+          "type": "event",
+          "signature": "0x8f040edee3352bd667ecb467e130dd5c5f9cdf6db626ea8dcaf4ff0a1fcbb787"
+        },
+        "0x83aca13f288f7821e1417b0ba093f7efd9a1ed6dc3036ddbfcd09f54c78a8104": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "oldMaxSwingRate",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "newMaxSwingRate",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "maxSwingDuration",
+              "type": "uint256"
+            }
+          ],
+          "name": "SetMaxSwingRate",
+          "type": "event",
+          "signature": "0x83aca13f288f7821e1417b0ba093f7efd9a1ed6dc3036ddbfcd09f54c78a8104"
+        },
+        "0xdd71a1d19fcba687442a1d5c58578f1e409af71a79d10fd95a4d66efd8fa9ae7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "previousPriceMantissa",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "requestedPriceMantissa",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "newPriceMantissa",
+              "type": "uint256"
+            }
+          ],
+          "name": "PricePosted",
+          "type": "event",
+          "signature": "0xdd71a1d19fcba687442a1d5c58578f1e409af71a79d10fd95a4d66efd8fa9ae7"
+        },
+        "0x7221f7a2708437039cc63319145b6b873a40594b9782a3bee45b975e2f3b0f68": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "requestedPriceMantissa",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "anchorPriceMantissa",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "cappedPriceMantissa",
+              "type": "uint256"
+            }
+          ],
+          "name": "CappedPricePosted",
+          "type": "event",
+          "signature": "0x7221f7a2708437039cc63319145b6b873a40594b9782a3bee45b975e2f3b0f68"
+        },
+        "0x3c70af01296aef045b2f5c9d3c30b05d4428fd257145b9c7fcd76418e65b5980": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newState",
+              "type": "bool"
+            }
+          ],
+          "name": "SetPaused",
+          "type": "event",
+          "signature": "0x3c70af01296aef045b2f5c9d3c30b05d4428fd257145b9c7fcd76418e65b5980"
+        },
+        "0x6c773973d5bcf264b509f4194ceb99e891251f6aabb325523a863c282958b13e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "oldPendingAnchorAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "newPendingAnchorAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "NewPendingAnchorAdmin",
+          "type": "event",
+          "signature": "0x6c773973d5bcf264b509f4194ceb99e891251f6aabb325523a863c282958b13e"
+        },
+        "0xbef9248fe57ae972dd47833f68c43f0b3b2d14217612dfbc804a520a23730d46": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "oldAnchorAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "newAnchorAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "NewAnchorAdmin",
+          "type": "event",
+          "signature": "0xbef9248fe57ae972dd47833f68c43f0b3b2d14217612dfbc804a520a23730d46"
+        },
+        "0xd8209502cb6dab3843acd5ce51ae027a6f3488c57c2d4aedac2d94501dfcfc8d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "oldPoster",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "newPoster",
+              "type": "address"
+            }
+          ],
+          "name": "NewPoster",
+          "type": "event",
+          "signature": "0xd8209502cb6dab3843acd5ce51ae027a6f3488c57c2d4aedac2d94501dfcfc8d"
+        },
+        "0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "error",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "info",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "detail",
+              "type": "uint256"
+            }
+          ],
+          "name": "Failure",
+          "type": "event",
+          "signature": "0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0"
+        }
+      },
+      "links": {},
+      "address": "0xd062ab5b6eFED0dA26a403fdef8919655EbE34E6",
+      "transactionHash": "0x64d8228461b4733ab9b5c00f93a3ff74ba7b14b34094b775e40507e0966188a3"
+    },
+    "1619693932754": {
+      "events": {},
+      "links": {},
+      "address": "0x773ff5eb2f72e329b5c872d381457858c24c81aa",
+      "transactionHash": "0xc3470dd3666c8a2ff7f9f47e6707fd7238401a0cb80e58a121e21dafbedf91ae"
     }
   },
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2021-04-28T11:55:19.550Z",
+  "schemaVersion": "3.0.22",
+  "updatedAt": "2021-04-29T20:46:38.800Z",
   "devdoc": {
     "methods": {
       "_acceptAnchorAdmin()": {

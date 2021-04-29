@@ -16,7 +16,7 @@ const SimpleInterestRateModel = getContract(
 	"./test/InterestRateModel/SimpleInterestRateModel.sol"
 );
 
-contract("MoneyMarketHarness", function ([root, ...accounts]) {
+contract("MoneyMarketHarness", function([root, ...accounts]) {
 	describe("_supportMarket", async () => {
 		it("fails if not called by admin", async () => {
 			const moneyMarket = await MoneyMarketHarness.new().send({ from: root });
@@ -2724,7 +2724,7 @@ contract("MoneyMarketHarness", function ([root, ...accounts]) {
 
 			// Set up FailingInterestModel for OMG market
 			const FailableInterestRateModel = getContract(
-				"./test/FailableInterestRateModel.sol"
+				"./test/InterestRateModel/FailableInterestRateModel.sol"
 			);
 			const failableInterestRateModel = await FailableInterestRateModel.new(
 				true,
@@ -2906,7 +2906,7 @@ contract("MoneyMarketHarness", function ([root, ...accounts]) {
 
 			// Set up FailingInterestModel for OMG market
 			const FailableInterestRateModel = getContract(
-				"./test/FailableInterestRateModel.sol"
+				"./test/InterestRateModel/FailableInterestRateModel.sol"
 			);
 			const failableInterestRateModel = await FailableInterestRateModel.new(
 				false,

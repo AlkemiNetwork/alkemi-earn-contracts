@@ -38,7 +38,7 @@ contract FailableInterestRateModel is InterestRateModel {
       * @notice if failBorrowRate is true, returns (opaqueBorrowFailureCode, 0) (so it can be distinguished from a failing call to getSupplyRate)
       *         else returns 50% per block
       */
-    function getBorrowRate(address _asset, uint _cash, uint _borrows) view public returns (uint, uint) {
+    function getBorrowRate(address _asset, uint _cash, uint _borrows) public view returns (uint, uint) {
         uint(_asset) + _cash + _borrows; // pragma ignore unused variables?
 
         if (failBorrowRate) {

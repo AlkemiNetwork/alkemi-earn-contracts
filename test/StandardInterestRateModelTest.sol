@@ -5,7 +5,18 @@ import "./AssertHelpers.sol";
 import "./MathHelpers.sol";
 import "../contracts/AlkemiRateModel.sol";
 
-contract StandardInterestRateModelTest is AlkemiRateModel {
+contract StandardInterestRateModelTest is AlkemiRateModel
+            (
+                "Standard Rate Model",
+                50,
+                200,
+                250,
+                8000,
+                3000,
+                5000,
+                0x0000000000000000000000000000000000000000,
+                0x0000000000000000000000000000000000000000
+            ) {
 
     // Supply rate = (1 - 0.1) * Ua * ( 5% + (45% * Ua) )
     // C.f. Elixir:
@@ -23,7 +34,7 @@ contract StandardInterestRateModelTest is AlkemiRateModel {
     function testGetSupplyRate() public {
         (uint err0, uint rate0) = getSupplyRate(address(this), 500, 100);
         Assert.equal(0, err0, "should be successful");
-        Assert.equal(8918378995, rate0, "supply rate for 500/100"); // getSupplyRate.(500, 100)
+        Assert.equal(6050692438, rate0, "supply rate for 500/100"); // getSupplyRate.(500, 100)
 
         (uint err1, uint rate1) = getSupplyRate(address(this), 3 * 10**18, 5 * 10**18);
         Assert.equal(0, err1, "should be successful");
@@ -58,7 +69,7 @@ contract StandardInterestRateModelTest is AlkemiRateModel {
     function testGetBorrowRate() public {
         (uint err0, uint rate0) = getBorrowRate(address(this), 500, 100);
         Assert.equal(0, err0, "should be successful");
-        Assert.equal(59455859969, rate0, "borrow rate for 500/100"); // getBorrowRate.(500, 100)
+        Assert.equal(36486587571, rate0, "borrow rate for 500/100"); // getBorrowRate.(500, 100)
 
         (uint err1, uint rate1) = getBorrowRate(address(this), 3 * 10**18, 5 * 10**18);
         Assert.equal(0, err1, "should be successful");

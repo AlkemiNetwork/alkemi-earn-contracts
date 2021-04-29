@@ -297,7 +297,7 @@ contract ExponentialTest is Exponential, AssertHelpers {
         // Simple division
         Exp memory left = getExpFromRational(1, 1);
         Exp memory right = getExpFromRational(3, 1);
-        (err, result)= divExp(left, right);
+        (err, result) = divExp(left, right);
         assertNoError(err);
 
         Assert.equal(result.mantissa, 333333333333333333, "Exp division failed- result.mantissa not 333333333333333333");
@@ -306,7 +306,7 @@ contract ExponentialTest is Exponential, AssertHelpers {
         // Divide by 1
         left = getExpFromRational(3, 1);
         right = getExpFromRational(1, 1);
-        (err, result)= divExp(left, right);
+        (err, result) = divExp(left, right);
         assertNoError(err);
 
         Assert.equal(result.mantissa, left.mantissa, "Exp division by 1 failed- result.mantissa not left.mantissa");

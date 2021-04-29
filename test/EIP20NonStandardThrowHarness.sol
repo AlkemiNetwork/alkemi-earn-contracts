@@ -75,11 +75,11 @@ contract EIP20NonStandardThrowHarness is EIP20NonStandardInterface {
     }
 
     function transfer(address _to, uint256 _value) public {
-        require(balances[msg.sender] >= _value);
+        require(balances[msg.sender] >= _value,"Balance < value");
 
         // Added for testing purposes
         if (failTransferToAddresses[_to]) {
-            revert();
+            revert("");
         }
 
         balances[msg.sender] -= _value;
@@ -90,16 +90,16 @@ contract EIP20NonStandardThrowHarness is EIP20NonStandardInterface {
     function transferFrom(address _from, address _to, uint256 _value) public {
         // Added for testing purposes
         if (_from == address(0)) {
-            revert();
+            revert("Null address");
         }
 
         // Added for testing purposes
         if (failTransferFromAddresses[_from]) {
-            revert();
+            revert("");
         }
 
         uint256 allowance = allowed[_from][msg.sender];
-        require(balances[_from] >= _value && allowance >= _value);
+        require(balances[_from] >= _value && allowance >= _value,"Balance or allowance < value");
         balances[_to] += _value;
         balances[_from] -= _value;
         if (allowance < MAX_UINT256) {
