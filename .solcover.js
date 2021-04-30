@@ -1,4 +1,6 @@
 module.exports = {
+	port: 8555,
+	// testCommand: "npm run test",
 	skipFiles: [
 		"ChainLink.sol",
 		"PriceOracle.sol",
@@ -6,7 +8,7 @@ module.exports = {
 		"AggregatorV3Interface.sol",
 		"JumpRateModel.sol",
 		"JumpRateModelV2.sol",
-		"PriceOracleProxy.sol",
+		"PriceOracleInterface.sol",
 		"LiquidationChecker.sol",
 		"Liquidator.sol",
 	],

@@ -1217,10 +1217,17 @@
       "links": {},
       "address": "0x25eC6f263581a50f98fdF9156d6A16d2743D13b1",
       "transactionHash": "0x45535fd02b55b894a760d7ac8120cacdb0321def0080caa23e17b574f641b039"
+    },
+    "1619737787771": {
+      "events": {},
+      "links": {},
+      "address": "0xd8928BF9d45c5927501D60c6d9C9172aF2B926a3",
+      "transactionHash": "0x759ee3f022ca0b362df07d29dda206c563b3e3693c79f5305e90dc963cdf02b5"
     }
   },
   "schemaVersion": "3.0.22",
-  "updatedAt": "2021-04-29T20:46:38.822Z",
+  "updatedAt": "2021-04-29T23:10:10.891Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {
       "assetPrices(address)": {

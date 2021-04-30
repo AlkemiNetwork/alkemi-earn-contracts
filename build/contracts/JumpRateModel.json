@@ -6704,7 +6704,8 @@
   },
   "networks": {},
   "schemaVersion": "3.0.22",
-  "updatedAt": "2021-04-29T20:46:37.707Z",
+  "updatedAt": "2021-04-29T23:10:16.857Z",
+  "networkType": "ethereum",
   "devdoc": {
     "author": "Compound",
     "methods": {

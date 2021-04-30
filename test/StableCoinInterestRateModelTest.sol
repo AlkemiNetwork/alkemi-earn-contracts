@@ -35,7 +35,7 @@ contract StableCoinInterestRateModelTest is AlkemiRateModel
     function testGetSupplyRate() public {
         (uint err0, uint rate0) = getSupplyRate(address(this), 500, 100);
         Assert.equal(0, err0, "should be successful");
-        Assert.equal(( 5053748097 ), rate0, "supply rate for 500/100"); // getSupplyRate.(500, 100)
+        Assert.equal(( 723049319 ), rate0, "supply rate for 500/100"); // getSupplyRate.(500, 100)
 
         (uint err1, uint rate1) = getSupplyRate(address(this), 3 * 10**18, 5 * 10**18);
         Assert.equal(0, err1, "should be successful");

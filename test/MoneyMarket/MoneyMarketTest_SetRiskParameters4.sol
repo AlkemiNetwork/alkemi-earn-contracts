@@ -52,12 +52,7 @@ contract MoneyMarketTest_SetRiskParameters4 is MoneyMarketTest {
         Assert.notEqual(newDiscount.mantissa, oldDiscount.mantissa, "setup failed; choose a different newDiscount");
         uint _minimumCollateralRatioMantissa = minimumCollateralRatioMantissa;
         uint _maximumLiquidationDiscountMantissa = maximumLiquidationDiscountMantissa;
-        assertError(
-            Error.NO_ERROR,
-            Error(
-                _setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)),
-                "operation not should have succeeded"
-            );
+        assertError(Error.NO_ERROR,Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)),"operation not should have succeeded");
 
         // Assert.equal(collateralRatio.mantissa, oldRatio.mantissa, "collateral ratio should retain previous value");
         // Assert.equal(liquidationDiscount.mantissa, oldDiscount.mantissa, "liquidation discount should retain previous value");

@@ -30460,9 +30460,82 @@
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "1619737787771": {
+      "events": {
+        "0x343765429aea5a34b3ff6a3785a98a5abb2597aca87bfbb58632c173d585373a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnerUpdate",
+          "type": "event",
+          "signature": "0x343765429aea5a34b3ff6a3785a98a5abb2597aca87bfbb58632c173d585373a"
+        },
+        "0x46b013dada1d335383b9d3190f25cb26c7bb71745f2d274203a6088c3c5b2ff5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newLiquidator",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "oldLiquidator",
+              "type": "address"
+            }
+          ],
+          "name": "LiquidatorUpdate",
+          "type": "event",
+          "signature": "0x46b013dada1d335383b9d3190f25cb26c7bb71745f2d274203a6088c3c5b2ff5"
+        },
+        "0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "error",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "info",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "detail",
+              "type": "uint256"
+            }
+          ],
+          "name": "Failure",
+          "type": "event",
+          "signature": "0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0"
+        }
+      },
+      "links": {},
+      "address": "0xaAFf28A6A6bE2b8b2D06cC2A107cc2d1005A5DDe",
+      "transactionHash": "0x53cd6a05f635b173daa243a33da7610df1431468355c1cdb400e799f975d9110"
+    }
+  },
   "schemaVersion": "3.0.22",
-  "updatedAt": "2021-04-29T21:34:07.431Z",
+  "updatedAt": "2021-04-29T23:10:06.878Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {
       "getBorrowRate(address,uint256,uint256)": {

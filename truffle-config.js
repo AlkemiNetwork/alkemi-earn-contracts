@@ -37,13 +37,6 @@ module.exports = {
 			port: 8545,
 			network_id: "*",
 		},
-		coverage: {
-			host: "localhost",
-			network_id: "*",
-			gas: 0xfffffffffff,
-			gasPrice: 0x01,
-			port: 8555,
-		},
 		ganacheUI: {
 			host: "127.0.0.1", // Localhost (default: none)
 			port: 7545, // Standard Ethereum port (default: none)

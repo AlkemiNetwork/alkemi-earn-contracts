@@ -9683,10 +9683,106 @@
       "links": {},
       "address": "0xd99A39f004351cab3d4671D27EDC7001B7C4A025",
       "transactionHash": "0x7c09151c9614a08d5f94dc2852894f29dd4c3e2146b0556566a83f3f086778f8"
+    },
+    "1619737787771": {
+      "events": {
+        "0x5760e73aa1540f0e1b7caf958cf3b63a02ed643843163081214586096289d71b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "assetAddress",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "priceFeedContract",
+              "type": "address"
+            }
+          ],
+          "name": "assetAdded",
+          "type": "event",
+          "signature": "0x5760e73aa1540f0e1b7caf958cf3b63a02ed643843163081214586096289d71b"
+        },
+        "0xeb869716e6e4df646fa6f9580b7ce838674d58ef768d9ec740785cb0c971d695": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "assetAddress",
+              "type": "address"
+            }
+          ],
+          "name": "assetRemoved",
+          "type": "event",
+          "signature": "0xeb869716e6e4df646fa6f9580b7ce838674d58ef768d9ec740785cb0c971d695"
+        },
+        "0xbadc9a52979e89f78b7c58309537410c5e51d0f63a0a455efe8d61d2b474e698": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "adminChanged",
+          "type": "event",
+          "signature": "0xbadc9a52979e89f78b7c58309537410c5e51d0f63a0a455efe8d61d2b474e698"
+        },
+        "0xcadfaf2b661f9e923b6415473af2ea89dae35c4745102596106d4660833f2371": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "wethAddress",
+              "type": "address"
+            }
+          ],
+          "name": "wethAddressSet",
+          "type": "event",
+          "signature": "0xcadfaf2b661f9e923b6415473af2ea89dae35c4745102596106d4660833f2371"
+        },
+        "0x8fc6f8583f30a4b5f6434c2ff1c21bfa93afda6c44786ee42b33fd7e09cc532c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "USDETHPriceFeed",
+              "type": "address"
+            }
+          ],
+          "name": "USDETHPriceFeedSet",
+          "type": "event",
+          "signature": "0x8fc6f8583f30a4b5f6434c2ff1c21bfa93afda6c44786ee42b33fd7e09cc532c"
+        },
+        "0xc8bba866518ae9aa8da197216b6c4650cc7e794e25ba3db8367d55bff5200a3c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "currentStatus",
+              "type": "bool"
+            }
+          ],
+          "name": "contractPausedOrUnpaused",
+          "type": "event",
+          "signature": "0xc8bba866518ae9aa8da197216b6c4650cc7e794e25ba3db8367d55bff5200a3c"
+        }
+      },
+      "links": {},
+      "address": "0xA685a27cCCf3925002D8391002f60192DcaA6973",
+      "transactionHash": "0xb5d165fc73d1d31632f521bc178fb6d81c9aff69f235becb21e70c486e3acf0d"
     }
   },
   "schemaVersion": "3.0.22",
-  "updatedAt": "2021-04-29T21:34:07.453Z",
+  "updatedAt": "2021-04-29T23:10:06.859Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },

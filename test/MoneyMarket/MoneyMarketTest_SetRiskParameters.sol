@@ -34,11 +34,7 @@ contract MoneyMarketTest_SetRiskParameters is MoneyMarketTest {
         uint _minimumCollateralRatioMantissa = minimumCollateralRatioMantissa;
         uint _maximumLiquidationDiscountMantissa = maximumLiquidationDiscountMantissa;
 
-        assertError(Error.UNAUTHORIZED,
-        Error(
-                _setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)
-            ),
-        "should require admin rights");
+        assertError(Error.UNAUTHORIZED,Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)),"should require admin rights");
 
         Assert.equal(collateralRatio.mantissa, oldRatio.mantissa, "collateral ratio should retain initial default value");
         Assert.equal(liquidationDiscount.mantissa, oldDiscount.mantissa, "liquidation discount should retain initial default value");
@@ -56,11 +52,7 @@ contract MoneyMarketTest_SetRiskParameters is MoneyMarketTest {
         Assert.notEqual(newDiscount.mantissa, oldDiscount.mantissa, "setup failed; choose a different newDiscount");
         uint _minimumCollateralRatioMantissa = minimumCollateralRatioMantissa;
         uint _maximumLiquidationDiscountMantissa = maximumLiquidationDiscountMantissa;
-        assertNoError(
-            Error(
-                    _setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)
-                )
-            );
+        assertNoError(Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)));
 
         Assert.equal(collateralRatio.mantissa, newRatio.mantissa, "collateral ratio should have been updated");
         Assert.equal(liquidationDiscount.mantissa, newDiscount.mantissa, "liquidation discount should have been updated");

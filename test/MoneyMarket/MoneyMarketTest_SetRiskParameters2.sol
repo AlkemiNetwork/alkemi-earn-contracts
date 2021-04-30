@@ -32,12 +32,7 @@ contract MoneyMarketTest_SetRiskParameters2 is MoneyMarketTest {
         uint _minimumCollateralRatioMantissa = minimumCollateralRatioMantissa;
         uint _maximumLiquidationDiscountMantissa = maximumLiquidationDiscountMantissa;
 
-        
-        assertNoError(
-            Error(
-                    _setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)
-                )
-            );
+        assertNoError(Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)));
 
         Assert.equal(collateralRatio.mantissa, newRatio.mantissa, "collateral ratio should have been updated");
         Assert.equal(liquidationDiscount.mantissa, newDiscount.mantissa, "liquidation discount should have been updated");
@@ -56,12 +51,7 @@ contract MoneyMarketTest_SetRiskParameters2 is MoneyMarketTest {
         Assert.notEqual(newDiscount.mantissa, oldDiscount.mantissa, "setup failed; choose a different newDiscount");
         uint _minimumCollateralRatioMantissa = minimumCollateralRatioMantissa;
         uint _maximumLiquidationDiscountMantissa = maximumLiquidationDiscountMantissa;
-        assertError(
-            Error.INVALID_COLLATERAL_RATIO,
-            Error(
-                    _setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)),
-                    "operation not should have succeeded"
-                );
+        assertError(Error.INVALID_COLLATERAL_RATIO,Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa, _minimumCollateralRatioMantissa, _maximumLiquidationDiscountMantissa)),"operation not should have succeeded");
 
         Assert.equal(collateralRatio.mantissa, oldRatio.mantissa, "collateral ratio should retain previous value");
         Assert.equal(liquidationDiscount.mantissa, oldDiscount.mantissa, "liquidation discount should retain previous value");

@@ -38,7 +38,7 @@ contract StandardInterestRateModelTest is AlkemiRateModel
 
         (uint err1, uint rate1) = getSupplyRate(address(this), 3 * 10**18, 5 * 10**18);
         Assert.equal(0, err1, "should be successful");
-        Assert.equal(88626391267, rate1, "borrow rate for 3e18/5e18"); // getSupplyRate.(3.0e18, 5.0e18)
+        Assert.equal(70487828089, rate1, "borrow rate for 3e18/5e18"); // getSupplyRate.(3.0e18, 5.0e18)
 
         // TODO: Handle zero/zero case
         (uint err2, uint rate2) = getSupplyRate(address(this), 0, 0);
@@ -73,7 +73,7 @@ contract StandardInterestRateModelTest is AlkemiRateModel
 
         (uint err1, uint rate1) = getBorrowRate(address(this), 3 * 10**18, 5 * 10**18);
         Assert.equal(0, err1, "should be successful");
-        Assert.equal(157558028919, rate1, "borrow rate for 3e18/5e18"); // getBorrowRate.(3.0e18, 5.0e18)
+        Assert.equal(113347261249, rate1, "borrow rate for 3e18/5e18"); // getBorrowRate.(3.0e18, 5.0e18)
     }
 
     function testGetBorrowRate_FAILED_TO_ADD_CASH_PLUS_BORROWS() public {

@@ -17,16 +17,17 @@ module.exports = async (deployer, network, accounts) => {
 	if (
 		network == "development" ||
 		network == "ganacheUI" ||
-		network == "coverage"
+		network == "coverage" ||
+		network == "soliditycoverage"
 	) {
 		await deployer.deploy(PriceOracle, deploymentConfig.DEVCHAIN.POSTER);
-		await deployer.deploy(PriceOracleProxy, PriceOracle.address);
+		const priceOracle = await PriceOracle.deployed();
+		await deployer.deploy(PriceOracleProxy, priceOracle.address);
 		await deployer.deploy(MoneyMarket);
 		await deployer.deploy(ChainLink);
 		await deployer.deploy(AlkemiWETH);
 
 		await deployer.deploy(Liquidator, MoneyMarket.address);
-		const priceOracle = await PriceOracle.deployed();
 		const moneyMarket = await MoneyMarket.deployed();
 		const liquidator = await MoneyMarket.deployed();
 

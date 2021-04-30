@@ -10606,10 +10606,109 @@
       "links": {},
       "address": "0xF53cA7B8867b6fF297DAbB809FFE7461Ed2F7c70",
       "transactionHash": "0x248b5eab20afdee10d65876524b5936d05f8d87a6c6af5a8f4190d19d1b23078"
+    },
+    "1619737787771": {
+      "events": {
+        "0x0938b1e79e1fd5816573487e5bd6a1e1329ec26f94f401a7b49d4b71d479657a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "targetAccount",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "assetBorrow",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "borrowBalanceBefore",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "borrowBalanceAccumulated",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "amountRepaid",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "borrowBalanceAfter",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "liquidator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "assetCollateral",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "collateralBalanceBefore",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "collateralBalanceAccumulated",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "amountSeized",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "collateralBalanceAfter",
+              "type": "uint256"
+            }
+          ],
+          "name": "BorrowLiquidated",
+          "type": "event",
+          "signature": "0x0938b1e79e1fd5816573487e5bd6a1e1329ec26f94f401a7b49d4b71d479657a"
+        },
+        "0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "error",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "info",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "detail",
+              "type": "uint256"
+            }
+          ],
+          "name": "Failure",
+          "type": "event",
+          "signature": "0x45b96fe442630264581b197e84bbada861235052c5a1aadfff9ea4e40a969aa0"
+        }
+      },
+      "links": {},
+      "address": "0xE3e6001AB4eC4656A9D8a6bd166f28d94d985Ad7",
+      "transactionHash": "0x3bb734ed19cd59be1707556b9a269893dde90aacf591a7fd32bd947c22325f61"
     }
   },
   "schemaVersion": "3.0.22",
-  "updatedAt": "2021-04-29T21:34:07.471Z",
+  "updatedAt": "2021-04-29T23:10:06.844Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },
