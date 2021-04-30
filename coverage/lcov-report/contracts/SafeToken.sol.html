@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/SafeToken.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> SafeToken.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/31</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity ^0.4.24;
+&nbsp;
+import "./EIP20Interface.sol";
+import "./EIP20NonStandardInterface.sol";
+import "./ErrorReporter.sol";
+&nbsp;
+contract SafeToken is ErrorReporter {
+&nbsp;
+    /**
+     * @dev Checks whether or not there is sufficient allowance for this contract to move amount from `from` and
+     *      whether or not `from` has a balance of at least `amount`. Does NOT do a transfer.
+     */
+<span class="fstat-no" title="function not covered" >    function checkTransferIn(address asset, address from, uint amount) internal view returns (Error) {</span>
+<span class="cstat-no" title="statement not covered" >        EIP20Interface token = EIP20Interface(asset);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (token.allowance(from, address(this)) &lt; amount) {</span>
+<span class="cstat-no" title="statement not covered" >            return Error.TOKEN_INSUFFICIENT_ALLOWANCE;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (token.balanceOf(from) &lt; amount) {</span>
+<span class="cstat-no" title="statement not covered" >            return Error.TOKEN_INSUFFICIENT_BALANCE;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return Error.NO_ERROR;</span>
+    }
+&nbsp;
+    /**
+     * @dev Similar to EIP20 transfer, except it handles a False result from `transferFrom` and returns an explanatory
+     *      error code rather than reverting.  If caller has not called `checkTransferIn`, this may revert due to
+     *      insufficient balance or insufficient allowance. If caller has called `checkTransferIn` prior to this call,
+     *      and it returned Error.NO_ERROR, this should not revert in normal conditions.
+     *
+     *      Note: This wrapper safely handles non-standard ERC-20 tokens that do not return a value.
+     *            See here: https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
+     */
+<span class="fstat-no" title="function not covered" >    function doTransferIn(address asset, address from, uint amount) internal returns (Error) {</span>
+<span class="cstat-no" title="statement not covered" >        EIP20NonStandardInterface token = EIP20NonStandardInterface(asset);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        bool result;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        token.transferFrom(from, address(this), amount)</span>;
+&nbsp;
+        assembly {
+            switch returndatasize()
+                case 0 {                      // This is a non-standard ERC-20
+                    result := not(0)          // set result to true
+                }
+                case 32 {                     // This is a complaint ERC-20
+                    returndatacopy(0, 0, 32)
+                    result := mload(0)        // Set `result = returndata` of external call
+                }
+                default {                     // This is an excessively non-compliant ERC-20, revert.
+                    revert(0, 0)
+                }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (!result) {</span>
+<span class="cstat-no" title="statement not covered" >            return Error.TOKEN_TRANSFER_FAILED;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return Error.NO_ERROR;</span>
+    }
+&nbsp;
+    /**
+     * @dev Checks balance of this contract in asset
+     */
+<span class="fstat-no" title="function not covered" >    function getCash(address asset) internal view returns (uint) {</span>
+<span class="cstat-no" title="statement not covered" >        EIP20Interface token = EIP20Interface(asset);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return token.balanceOf(address(this));</span>
+    }
+&nbsp;
+    /**
+     * @dev Checks balance of `from` in `asset`
+     */
+<span class="fstat-no" title="function not covered" >    function getBalanceOf(address asset, address from) internal view returns (uint) {</span>
+<span class="cstat-no" title="statement not covered" >        EIP20Interface token = EIP20Interface(asset);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return token.balanceOf(from);</span>
+    }
+&nbsp;
+    /**
+     * @dev Similar to EIP20 transfer, except it handles a False result from `transfer` and returns an explanatory
+     *      error code rather than reverting. If caller has not called checked protocol's balance, this may revert due to
+     *      insufficient cash held in this contract. If caller has checked protocol's balance prior to this call, and verified
+     *      it is &gt;= amount, this should not revert in normal conditions.
+     *
+     *      Note: This wrapper safely handles non-standard ERC-20 tokens that do not return a value.
+     *            See here: https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
+     */
+<span class="fstat-no" title="function not covered" >    function doTransferOut(address asset, address to, uint amount) internal returns (Error) {</span>
+<span class="cstat-no" title="statement not covered" >        EIP20NonStandardInterface token = EIP20NonStandardInterface(asset);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        bool result;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        token.transfer(to, amount)</span>;
+&nbsp;
+        assembly {
+            switch returndatasize()
+                case 0 {                      // This is a non-standard ERC-20
+                    result := not(0)          // set result to true
+                }
+                case 32 {                     // This is a complaint ERC-20
+                    returndatacopy(0, 0, 32)
+                    result := mload(0)        // Set `result = returndata` of external call
+                }
+                default {                     // This is an excessively non-compliant ERC-20, revert.
+                    revert(0, 0)
+                }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (!result) {</span>
+<span class="cstat-no" title="statement not covered" >            return Error.TOKEN_TRANSFER_OUT_FAILED;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return Error.NO_ERROR;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function doApprove(address asset, address to, uint amount) internal returns (Error) {</span>
+<span class="cstat-no" title="statement not covered" >        EIP20NonStandardInterface token = EIP20NonStandardInterface(asset);</span>
+<span class="cstat-no" title="statement not covered" >        bool result;</span>
+<span class="cstat-no" title="statement not covered" >        token.approve(to, amount)</span>;
+        assembly {
+            switch returndatasize()
+                case 0 {                      // This is a non-standard ERC-20
+                    result := not(0)          // set result to true
+                }
+                case 32 {                     // This is a complaint ERC-20
+                    returndatacopy(0, 0, 32)
+                    result := mload(0)        // Set `result = returndata` of external call
+                }
+                default {                     // This is an excessively non-compliant ERC-20, revert.
+                    revert(0, 0)
+                }
+        }
+<span class="cstat-no" title="statement not covered" >        if (!result) {</span>
+<span class="cstat-no" title="statement not covered" >            return Error.TOKEN_TRANSFER_OUT_FAILED;</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return Error.NO_ERROR;</span>
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 29 2021 19:45:33 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

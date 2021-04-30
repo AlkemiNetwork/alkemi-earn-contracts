@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/StableCoinInterestRateModel.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> StableCoinInterestRateModel.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/39</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/42</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity ^0.4.24;
+&nbsp;
+import "./Exponential.sol";
+import "./ErrorReporter.sol";
+import "./CarefulMath.sol";
+import "./InterestRateModel.sol";
+&nbsp;
+/**
+  * @title The Compound Stable Coin Interest Rate Model
+  * @author Compound
+  * @notice See Section 2.4 of the Compound Whitepaper
+  */
+contract StableCoinInterestRateModel is Exponential {
+&nbsp;
+    uint constant oneMinusSpreadBasisPoints = 8500;
+    uint constant blocksPerYear = 2102400;
+&nbsp;
+    enum IRError {
+        NO_ERROR,
+        FAILED_TO_ADD_CASH_PLUS_BORROWS,
+        FAILED_TO_GET_EXP,
+        FAILED_TO_MUL_PRODUCT_TIMES_BORROW_RATE
+    }
+&nbsp;
+    /*
+     * @dev Calculates the utilization rate (borrows / (cash + borrows)) as an Exp
+     */
+<span class="fstat-no" title="function not covered" >    function getUtilizationRate(uint cash, uint borrows) pure internal returns (IRError, Exp memory) {</span>
+<span class="cstat-no" title="statement not covered" >        if (borrows == 0) {</span>
+            // Utilization rate is zero when there's no borrows
+<span class="cstat-no" title="statement not covered" >            return (IRError.NO_ERROR, Exp({mantissa: 0}));</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        (Error err0, uint cashPlusBorrows) = add(cash, borrows);</span>
+<span class="cstat-no" title="statement not covered" >        if (err0 != Error.NO_ERROR) {</span>
+<span class="cstat-no" title="statement not covered" >            return (IRError.FAILED_TO_ADD_CASH_PLUS_BORROWS, Exp({mantissa: 0}));</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        (Error err1, Exp memory utilizationRate) = getExp(borrows, cashPlusBorrows);</span>
+<span class="cstat-no" title="statement not covered" >        if (err1 != Error.NO_ERROR) {</span>
+<span class="cstat-no" title="statement not covered" >            return (IRError.FAILED_TO_GET_EXP, Exp({mantissa: 0}));</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return (IRError.NO_ERROR, utilizationRate);</span>
+    }
+&nbsp;
+    /*
+     * @dev Calculates the utilization and borrow rates for use by get{Supply,Borrow}Rate functions
+     */
+<span class="fstat-no" title="function not covered" >    function getUtilizationAndAnnualBorrowRate(uint cash, uint borrows) pure internal returns (IRError, Exp memory, Exp memory) {</span>
+<span class="cstat-no" title="statement not covered" >        (IRError err0, Exp memory utilizationRate) = getUtilizationRate(cash, borrows);</span>
+<span class="cstat-no" title="statement not covered" >        if (err0 != IRError.NO_ERROR) {</span>
+<span class="cstat-no" title="statement not covered" >            return (err0, Exp({mantissa: 0}), Exp({mantissa: 0}));</span>
+        }
+&nbsp;
+        // utilizationRate * 0.3 (30%), which is `rate * 3 / 10`
+<span class="cstat-no" title="statement not covered" >        (Error err1, Exp memory utilizationRateMuled) = mulScalar(utilizationRate, 3);</span>
+        // `mulScalar` only overflows when the product is &gt;= 2^256.
+        // utilizationRate is a real number on the interval [0,1], which means that
+        // utilizationRate.mantissa is in the interval [0e18,1e18], which means that three times
+        // that is in the interval [0e18,3e18]. That interval has no intersection with 2^256, and therefore
+        // this can never overflow. As such, we assert.
+<span class="cstat-no" title="statement not covered" >        assert(err1 == Error.NO_ERROR)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        (Error err2, Exp memory utilizationRateScaled) = divScalar(utilizationRateMuled, 10);</span>
+        // 10 is a constant, and therefore cannot be zero, which is the only error case of divScalar.
+<span class="cstat-no" title="statement not covered" >        assert(err2 == Error.NO_ERROR)</span>;
+&nbsp;
+        // Add the 10% for (10% + 30% * Ua)
+<span class="cstat-no" title="statement not covered" >        (Error err3, Exp memory annualBorrowRate) = addExp(utilizationRateScaled, Exp({mantissa: mantissaOneTenth}));</span>
+        // `addExp` only fails when the addition of mantissas overflow.
+        // As per above, utilizationRateMuled is capped at 3e18 and when divided by 10,
+        // utilizationRateScaled is capped at 3e17. mantissaOneTenth = 1e17, and thus the addition
+        // is capped at 4e17, which is less than 2^256.
+<span class="cstat-no" title="statement not covered" >        assert(err3 == Error.NO_ERROR)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return (IRError.NO_ERROR, utilizationRate, annualBorrowRate);</span>
+    }
+&nbsp;
+    /**
+      * @notice Gets the current supply interest rate based on the given asset, total cash and total borrows
+      * @dev The return value should be scaled by 1e18, thus a return value of
+      *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.
+      * @param _asset The asset to get the interest rate of
+      * @param cash The total cash of the asset in the market
+      * @param borrows The total borrows of the asset in the market
+      * @return Success or failure and the supply interest rate per block scaled by 10e18
+      */
+<span class="fstat-no" title="function not covered" >    function getSupplyRate(address _asset, uint cash, uint borrows) public pure returns (uint, uint) {</span>
+        _asset; // pragma ignore unused argument
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        (IRError err0, Exp memory utilizationRate0, Exp memory annualBorrowRate) = getUtilizationAndAnnualBorrowRate(cash, borrows);</span>
+<span class="cstat-no" title="statement not covered" >        if (err0 != IRError.NO_ERROR) {</span>
+<span class="cstat-no" title="statement not covered" >            return (uint(err0), 0);</span>
+        }
+&nbsp;
+        // We're going to multiply the utilization rate by the spread's numerator
+<span class="cstat-no" title="statement not covered" >        (Error err1, Exp memory utilizationRate1) = mulScalar(utilizationRate0, oneMinusSpreadBasisPoints);</span>
+        // mulScalar only overflows when product is greater than or equal to 2^256.
+        // utilization rate's mantissa is a number between [0e18,1e18]. That means that
+        // utilizationRate1 is a value between [0e18,8.5e21]. This is strictly less than 2^256.
+<span class="cstat-no" title="statement not covered" >        assert(err1 == Error.NO_ERROR)</span>;
+&nbsp;
+        // Next multiply this product times the borrow rate
+<span class="cstat-no" title="statement not covered" >        (Error err2, Exp memory supplyRate0) = mulExp(utilizationRate1, annualBorrowRate);</span>
+        // If the product of the mantissas for mulExp are both less than 2^256,
+        // then this operation will never fail. TODO: Verify.
+        // We know that borrow rate is in the interval [0, 4e17] from above.
+        // We know that utilizationRate1 is in the interval [0, 8.5e21] from directly above.
+        // As such, the multiplication is in the interval of [0, 3.4e39]. This is strictly
+        // less than 2^256 (which is about 10e77).
+<span class="cstat-no" title="statement not covered" >        assert(err2 == Error.NO_ERROR)</span>;
+&nbsp;
+        // And then divide down by the spread's denominator (basis points divisor)
+        // as well as by blocks per year.
+<span class="cstat-no" title="statement not covered" >        (Error err3, Exp memory standardSupplyRate) = divScalar(supplyRate0, 10000 * blocksPerYear);</span> // basis points * blocks per year
+        // divScalar only fails when divisor is zero. This is clearly not the case.
+<span class="cstat-no" title="statement not covered" >        assert(err3 == Error.NO_ERROR)</span>;
+&nbsp;
+        // Note: StableCoins interest rate should be much less than the standard rate for other tokens
+<span class="cstat-no" title="statement not covered" >        (Error err4, uint finalSupplyRate) = div(standardSupplyRate.mantissa, 2);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        assert(err4 == Error.NO_ERROR)</span>;
+<span class="cstat-no" title="statement not covered" >        return (uint(IRError.NO_ERROR), finalSupplyRate);</span>
+    }
+&nbsp;
+    /**
+      * @notice Gets the current borrow interest rate based on the given asset, total cash and total borrows
+      * @dev The return value should be scaled by 1e18, thus a return value of
+      *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.
+      * @param _asset The asset to get the interest rate of
+      * @param cash The total cash of the asset in the market
+      * @param borrows The total borrows of the asset in the market
+      * @return Success or failure and the borrow interest rate per block scaled by 10e18
+      */
+<span class="fstat-no" title="function not covered" >    function getBorrowRate(address _asset, uint cash, uint borrows) public pure returns (uint, uint) {</span>
+        _asset; // pragma ignore unused argument
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        (IRError err0, Exp memory _utilizationRate, Exp memory annualBorrowRate) = getUtilizationAndAnnualBorrowRate(cash, borrows);</span>
+<span class="cstat-no" title="statement not covered" >        if (err0 != IRError.NO_ERROR) {</span>
+<span class="cstat-no" title="statement not covered" >            return (uint(err0), 0);</span>
+        }
+&nbsp;
+        // And then divide down by blocks per year.
+<span class="cstat-no" title="statement not covered" >        (Error err1, Exp memory standardBorrowRate) = divScalar(annualBorrowRate, blocksPerYear);</span> // basis points * blocks per year
+        // divScalar only fails when divisor is zero. This is clearly not the case.
+<span class="cstat-no" title="statement not covered" >        assert(err1 == Error.NO_ERROR)</span>;
+&nbsp;
+        _utilizationRate; // pragma ignore unused variable
+&nbsp;
+        // Note: StableCoins interest rate should be much less than the standard rate for other tokens
+<span class="cstat-no" title="statement not covered" >        (Error err2, uint finalBorrowRate) = div(standardBorrowRate.mantissa, 2);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        assert(err2 == Error.NO_ERROR)</span>;
+<span class="cstat-no" title="statement not covered" >        return (uint(IRError.NO_ERROR), finalBorrowRate);</span>
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 29 2021 19:45:33 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

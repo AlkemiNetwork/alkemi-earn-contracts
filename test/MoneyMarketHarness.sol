@@ -66,7 +66,7 @@ contract MoneyMarketHarness is MoneyMarket {
         return super.calculateAccountLiquidity(account);
     }
 
-    function calculateDiscountedBorrowDenominatedCollateral(Exp memory underwaterAssetPrice, Exp memory collateralPrice, uint supplyCurrentCollateral) view internal returns (Error, uint) {
+    function calculateDiscountedBorrowDenominatedCollateral(Exp memory underwaterAssetPrice, Exp memory collateralPrice, uint supplyCurrentCollateral) internal view returns (Error, uint) {
         if (failBorrowDenominatedCollateralCalculation) {
             return (Error.INTEGER_OVERFLOW, 0);
         } else {

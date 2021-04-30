@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/JumpRateModel.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> JumpRateModel.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/18</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/18</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity ^0.4.24;
+&nbsp;
+import "./InterestRateModel.sol";
+import "./SafeMath.sol";
+&nbsp;
+/**
+  * @title Compound's JumpRateModel Contract
+  * @author Compound
+  */
+contract JumpRateModel is InterestRateModel {
+    using SafeMath for uint;
+&nbsp;
+    event NewInterestParams(uint baseRatePerBlock, uint multiplierPerBlock, uint jumpMultiplierPerBlock, uint kink);
+&nbsp;
+    /**
+     * @notice The approximate number of blocks per year that is assumed by the interest rate model
+     */
+    uint public constant blocksPerYear = 2102400;
+&nbsp;
+    /**
+     * @notice The multiplier of utilization rate that gives the slope of the interest rate
+     */
+    uint public multiplierPerBlock;
+&nbsp;
+    /**
+     * @notice The base interest rate which is the y-intercept when utilization rate is 0
+     */
+    uint public baseRatePerBlock;
+&nbsp;
+    /**
+     * @notice The multiplierPerBlock after hitting a specified utilization point
+     */
+    uint public jumpMultiplierPerBlock;
+&nbsp;
+    /**
+     * @notice The utilization point at which the jump multiplier is applied
+     */
+    uint public kink;
+&nbsp;
+    /**
+     * @notice Construct an interest rate model
+     * @param baseRatePerYear The approximate target base APR, as a mantissa (scaled by 1e18)
+     * @param multiplierPerYear The rate of increase in interest rate wrt utilization (scaled by 1e18)
+     * @param jumpMultiplierPerYear The multiplierPerBlock after hitting a specified utilization point
+     * @param kink_ The utilization point at which the jump multiplier is applied
+     */
+<span class="fstat-no" title="function not covered" >    constructor(uint baseRatePerYear, uint multiplierPerYear, uint jumpMultiplierPerYear, uint kink_) public {</span>
+<span class="cstat-no" title="statement not covered" >        baseRatePerBlock = baseRatePerYear.div(blocksPerYear)</span>;
+<span class="cstat-no" title="statement not covered" >        multiplierPerBlock = multiplierPerYear.div(blocksPerYear)</span>;
+<span class="cstat-no" title="statement not covered" >        jumpMultiplierPerBlock = jumpMultiplierPerYear.div(blocksPerYear)</span>;
+<span class="cstat-no" title="statement not covered" >        kink = kink_</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        emit NewInterestParams(baseRatePerBlock, multiplierPerBlock, jumpMultiplierPerBlock, kink);</span>
+    }
+&nbsp;
+    /**
+     * @notice Calculates the utilization rate of the market: `borrows / (cash + borrows - reserves)`
+     * @param cash The amount of cash in the market
+     * @param borrows The amount of borrows in the market
+     * @param reserves The amount of reserves in the market (currently unused)
+     * @return The utilization rate as a mantissa between [0, 1e18]
+     */
+<span class="fstat-no" title="function not covered" >    function utilizationRate(uint cash, uint borrows, uint reserves) public pure returns (uint) {</span>
+        // Utilization rate is 0 when there are no borrows
+<span class="cstat-no" title="statement not covered" >        if (borrows == 0) {</span>
+<span class="cstat-no" title="statement not covered" >            return 0;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return borrows.mul(1e18).div(cash.add(borrows).sub(reserves));</span>
+    }
+&nbsp;
+    /**
+     * @notice Calculates the current borrow rate per block, with the error code expected by the market
+     * @param cash The amount of cash in the market
+     * @param borrows The amount of borrows in the market
+     * @param reserves The amount of reserves in the market
+     * @return The borrow rate percentage per block as a mantissa (scaled by 1e18)
+     */
+<span class="fstat-no" title="function not covered" >    function getBorrowRate(uint cash, uint borrows, uint reserves) public view returns (uint) {</span>
+<span class="cstat-no" title="statement not covered" >        uint util = utilizationRate(cash, borrows, reserves);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (util &lt;= kink) {</span>
+<span class="cstat-no" title="statement not covered" >            return util.mul(multiplierPerBlock).div(1e18).add(baseRatePerBlock);</span>
+        } else {
+<span class="cstat-no" title="statement not covered" >            uint normalRate = kink.mul(multiplierPerBlock).div(1e18).add(baseRatePerBlock);</span>
+<span class="cstat-no" title="statement not covered" >            uint excessUtil = util.sub(kink);</span>
+<span class="cstat-no" title="statement not covered" >            return excessUtil.mul(jumpMultiplierPerBlock).div(1e18).add(normalRate);</span>
+        }
+    }
+&nbsp;
+    /**
+     * @notice Calculates the current supply rate per block
+     * @param cash The amount of cash in the market
+     * @param borrows The amount of borrows in the market
+     * @param reserves The amount of reserves in the market
+     * @param reserveFactorMantissa The current reserve factor for the market
+     * @return The supply rate percentage per block as a mantissa (scaled by 1e18)
+     */
+<span class="fstat-no" title="function not covered" >    function getSupplyRate(uint cash, uint borrows, uint reserves, uint reserveFactorMantissa) public view returns (uint) {</span>
+<span class="cstat-no" title="statement not covered" >        uint oneMinusReserveFactor = uint(1e18).sub(reserveFactorMantissa);</span>
+<span class="cstat-no" title="statement not covered" >        uint borrowRate = getBorrowRate(cash, borrows, reserves);</span>
+<span class="cstat-no" title="statement not covered" >        uint rateToPool = borrowRate.mul(oneMinusReserveFactor).div(1e18);</span>
+<span class="cstat-no" title="statement not covered" >        return utilizationRate(cash, borrows, reserves).mul(rateToPool).div(1e18);</span>
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 29 2021 17:13:05 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
