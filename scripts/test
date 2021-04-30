@@ -15,7 +15,7 @@ TRUFFLE_DIR="$PROJ_ROOT/node_modules/truffle/build/cli.bundled.js"
 
 # StableCoinInterestRateModelTest
 # StandardInterestRateModelTest
-"$TRUFFLE_DIR" test ./test/StableCoinInterestRateModelTest.sol ./test/StableCoinInterestRateModelTest.js ./test/StandardInterestRateModelTest.sol ./test/StandardInterestRateModelTest.js ./test/AssertHelpers.sol ./test/MathHelpers.sol --network development $@
+"$TRUFFLE_DIR" test ./test/StableCoinInterestRateModelTest.js ./test/StandardInterestRateModelTest.js ./test/AssertHelpers.sol ./test/MathHelpers.sol --network development $@
 
 # MoneyMarketTest_AddCollateralMarket
 # MoneyMarketTest_AssetPrices
