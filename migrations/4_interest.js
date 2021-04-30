@@ -3,7 +3,12 @@ var StandardInterestRateModel = artifacts.require(
 );
 
 module.exports = async (deployer, network, accounts) => {
-	if (network == "rinkeby") {
+	if (
+		network == "rinkeby" ||
+		network == "development" ||
+		network == "coverage" ||
+		network == "soliditycoverage"
+	) {
 		await deployer.deploy(StandardInterestRateModel);
 	}
 	if (network == "kovan") {

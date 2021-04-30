@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-import "../../contracts/InterestRateModel.sol";
+import "../../contracts/AlkemiRateModel.sol";
 
 /**
   * @title A Fixed Interest Rate Model for tests
@@ -26,7 +26,7 @@ contract FixedInterestRateModel is InterestRateModel {
       * @param _borrows The total borrows of the asset in the market
       * @return Success or failure and the supply interest rate per block scaled by 10e18
       */
-    function getSupplyRate(address _asset, uint _cash, uint _borrows) view public returns (uint, uint) {
+    function getSupplyRate(address _asset, uint _cash, uint _borrows) public view returns (uint, uint) {
         uint(_asset) + _cash + _borrows; // pragma ignore unused variables?
 
         return (0, supplyRate);
@@ -41,7 +41,7 @@ contract FixedInterestRateModel is InterestRateModel {
       * @param _borrows The total borrows of the asset in the market
       * @return Success or failure and the borrow interest rate per block scaled by 10e18
       */
-    function getBorrowRate(address _asset, uint _cash, uint _borrows) view public returns (uint, uint) {
+    function getBorrowRate(address _asset, uint _cash, uint _borrows) public view returns (uint, uint) {
         uint(_asset) + _cash + _borrows; // pragma ignore unused variables?
 
         return (0, borrowRate);

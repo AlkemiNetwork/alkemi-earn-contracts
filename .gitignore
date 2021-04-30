@@ -14,10 +14,6 @@ npm-debug.log
 .mnemonic
 .mnemonic2
 
-# Truffle build directory
-build
-.openzeppelin
-
 # misc
 .DS_Store
 */.DS_Store

@@ -158,7 +158,7 @@
 	</tr>
 	<tr>
 		<td> MoneyMarket Implementation</td>
-		<td> 0x0AB49DbDD28Caa20Cdafbc09763Dc2B2F85c7A3B </td>
+		<td> 0xebBC2cd4b29c41a94E14f43260Fc20C44315bd5C </td>
 	</tr>
 	<tr>
 		<td> Liquidator </td>

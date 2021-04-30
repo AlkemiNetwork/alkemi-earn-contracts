@@ -30,8 +30,8 @@ contract BasicTokenNS is ERC20BasicNS {
     * @param _value The amount to be transferred.
     */
     function transfer(address _to, uint256 _value) public {
-        require(_to != address(0));
-        require(_value <= balances[msg.sender]);
+        require(_to != address(0),"Null address");
+        require(_value <= balances[msg.sender],"Value > balance");
 
         balances[msg.sender] = balances[msg.sender].sub(_value);
         balances[_to] = balances[_to].add(_value);
