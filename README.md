@@ -161,6 +161,14 @@
 		<td> 0xebBC2cd4b29c41a94E14f43260Fc20C44315bd5C </td>
 	</tr>
 	<tr>
+		<td> AlkemiEarnPublic Upgrade Proxy </td>
+		<td> 0x2C8855503F7fd914815E57b620Af1130a42C5636 </td>
+	</tr>
+	<tr>
+		<td> AlkemiEarnPublic Implementation</td>
+		<td> 0x6b91d7cce78B592Fd31D311966C5160672BF1497 </td>
+	</tr>
+	<tr>
 		<td> Liquidator </td>
 		<td> 0xC5D133281F66041f6c5330c72ce696D9A847EC0F </td>
 	</tr>
