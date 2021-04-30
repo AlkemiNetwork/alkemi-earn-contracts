@@ -1,6 +1,6 @@
 // migrations/4_prepare_upgrade_boxv2.js
 const AlkemiEarnPublicV10 = artifacts.require("AlkemiEarnPublicV10");
-const AlkemiEarnPublicV11 = artifacts.require("AlkemiEarnPublicV11");
+// const AlkemiEarnPublicV11 = artifacts.require("AlkemiEarnPublicV11");
 
 const { prepareUpgrade } = require("@openzeppelin/truffle-upgrades");
 
