@@ -1348,6 +1348,178 @@
           }
         }
       }
+    },
+    "0e3990c9c1261d0fb2caa969a36a64ad00e9506fb7b4151c32674b1c1065905f": {
+      "address": "0x6b91d7cce78B592Fd31D311966C5160672BF1497",
+      "txHash": "0x0ea443bfe171a62034ea268a143b1786e20b977846fb03dbb17be2f7a0fb75eb",
+      "layout": {
+        "storage": [
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "initialInterestIndex",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublicV10.sol:11"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "defaultOriginationFee",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublicV10.sol:12"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "defaultCollateralRatio",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublicV10.sol:13"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "defaultLiquidationDiscount",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublicV10.sol:14"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "minimumCollateralRatioMantissa",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublicV10.sol:16"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "maximumLiquidationDiscountMantissa",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublicV10.sol:17"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "initializationDone",
+            "type": "t_bool",
+            "src": "AlkemiEarnPublicV10.sol:18"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "pendingAdmin",
+            "type": "t_address",
+            "src": "AlkemiEarnPublicV10.sol:54"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "admin",
+            "type": "t_address",
+            "src": "AlkemiEarnPublicV10.sol:60"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "oracle",
+            "type": "t_address",
+            "src": "AlkemiEarnPublicV10.sol:66"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "priceOracle",
+            "type": "t_contract(ChainLink)8281",
+            "src": "AlkemiEarnPublicV10.sol:71"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "supplyBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)171_storage))",
+            "src": "AlkemiEarnPublicV10.sol:89"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "borrowBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)171_storage))",
+            "src": "AlkemiEarnPublicV10.sol:95"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "wethAddress",
+            "type": "t_address",
+            "src": "AlkemiEarnPublicV10.sol:130"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "WETHContract",
+            "type": "t_contract(AlkemiWETH)7696",
+            "src": "AlkemiEarnPublicV10.sol:135"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "markets",
+            "type": "t_mapping(t_address,t_struct(Market)202_storage)",
+            "src": "AlkemiEarnPublicV10.sol:140"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "collateralMarkets",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "AlkemiEarnPublicV10.sol:145"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "collateralRatio",
+            "type": "t_struct(Exp)8628_storage",
+            "src": "AlkemiEarnPublicV10.sol:151"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "originationFee",
+            "type": "t_struct(Exp)8628_storage",
+            "src": "AlkemiEarnPublicV10.sol:157"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "liquidationDiscount",
+            "type": "t_struct(Exp)8628_storage",
+            "src": "AlkemiEarnPublicV10.sol:163"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "paused",
+            "type": "t_bool",
+            "src": "AlkemiEarnPublicV10.sol:169"
+          },
+          {
+            "contract": "AlkemiEarnPublicV10",
+            "label": "originationFeeBalance",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "AlkemiEarnPublicV10.sol:342"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_contract(ChainLink)8281": {
+            "label": "contract ChainLink"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)171_storage))": {
+            "label": "mapping(address => mapping(address => struct AlkemiEarnPublicV10.Balance))"
+          },
+          "t_contract(AlkemiWETH)7696": {
+            "label": "contract AlkemiWETH"
+          },
+          "t_mapping(t_address,t_struct(Market)202_storage)": {
+            "label": "mapping(address => struct AlkemiEarnPublicV10.Market)"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_struct(Exp)8628_storage": {
+            "label": "struct Exponential.Exp"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          }
+        }
+      }
     }
   },
   "admin": {
