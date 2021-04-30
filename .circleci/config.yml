@@ -9,8 +9,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v2-dependencies-{{ checksum "package.json" }}
-          - v2-dependencies-
+            - v2-dependencies-{{ checksum "package.json" }}
+            - v2-dependencies-
       - run: npm install
       - save_cache:
           paths:
@@ -19,34 +19,6 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run: npm run test
-
-  code_coverage:
-    docker:
-      - image: circleci/node:10.9.0
-      - image: trufflesuite/ganache-cli:v6.1.8
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - v2-dependencies-{{ checksum "package.json" }}
-          - v2-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v2-dependencies-{{ checksum "package.json" }}
-      - attach_workspace:
-          at: ~/repo
-      - run:
-          command: npm run coverage
-          no_output_timeout: 20m
-      - store_artifacts:
-          path: ~/repo/coverage.json
-          destination: coverage.json
-      - store_artifacts:
-          path: ~/repo/coverage
-          destination: coverage
 
   lint:
     docker:
@@ -57,8 +29,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v2-dependencies-{{ checksum "package.json" }}
-          - v2-dependencies-
+            - v2-dependencies-{{ checksum "package.json" }}
+            - v2-dependencies-
       - run: npm install
       - save_cache:
           paths:
@@ -73,5 +45,4 @@ workflows:
   build-test-and-deploy:
     jobs:
       - test
-      - code_coverage
       - lint
