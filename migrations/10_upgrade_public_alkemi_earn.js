@@ -5,9 +5,9 @@ const AlkemiEarnPublicV11 = artifacts.require("AlkemiEarnPublicV11");
 const { prepareUpgrade } = require("@openzeppelin/truffle-upgrades");
 
 module.exports = async function(deployer) {
-	const alkemiEarnPublic = await AlkemiEarnPublicV10.deployed();
-	await prepareUpgrade(alkemiEarnPublic.address, AlkemiEarnPublicV11, {
-		deployer,
-		unsafeAllowCustomTypes: true,
-	});
+	// const alkemiEarnPublic = await AlkemiEarnPublicV10.deployed();
+	// await prepareUpgrade(alkemiEarnPublic.address, AlkemiEarnPublicV11, {
+	// 	deployer,
+	// 	unsafeAllowCustomTypes: true,
+	// });
 };
