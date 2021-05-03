@@ -330,11 +330,7 @@
             "documentation": "@notice send `_value` token to `_to` from `msg.sender`\n@param _to The address of the recipient\n@param _value The amount of token to be transferred\n@return Whether the transfer was successful or not",
             "id": 8301,
             "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": false,
-            "modifiers": [],
-            "name": "transfer",
-            "nodeType": "FunctionDefinition",
+            "name": "transfepe": "FunctionDefinition",
             "parameters": {
               "id": 8297,
               "nodeType": "ParameterList",
@@ -604,11 +600,7 @@
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
+                   },
                 {
                   "constant": false,
                   "id": 8316,
@@ -787,7 +779,6 @@
             "superFunction": null,
             "visibility": "public"
           },
-          {
             "anonymous": false,
             "documentation": null,
             "id": 8338,
@@ -1303,7 +1294,6 @@
                   },
                   "value": null,
                   "visibility": "internal"
-                },
                 {
                   "constant": false,
                   "id": 8307,

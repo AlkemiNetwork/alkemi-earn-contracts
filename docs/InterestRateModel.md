@@ -3,11 +3,9 @@ layout: default
 title: InterestRateModel
 ---
 
-# The Lendf.Me InterestRateModel Interface (InterestRateModel.sol)
+# InterestRateModel Interface (InterestRateModel.sol)
 
 View Source: [contracts/InterestRateModel.sol](../contracts/InterestRateModel.sol)
-
-**↘ Derived Contracts: [JumpRateModel](JumpRateModel.md), [JumpRateModelV2](JumpRateModelV2.md)**
 
 **{{ContractName}}**
 
