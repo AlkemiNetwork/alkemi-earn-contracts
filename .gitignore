@@ -27,6 +27,8 @@ logs
 
 .vscode
 
+build/
 build/*
+
 
 package-lock.json
