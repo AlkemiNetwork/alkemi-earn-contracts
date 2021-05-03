@@ -8,37 +8,34 @@ jobs:
     steps:
       - checkout
       - restore_cache:
+          name: Restore NPM Package Cache
           keys:
             - v2-dependencies-{{ checksum "package.json" }}
             - v2-dependencies-
-      - run: npm install
+      - run:
+          name: Install Dependencies
+          command: npm install
       - save_cache:
+          name: Save NPM Package Cache
           paths:
             - node_modules
           key: v2-dependencies-{{ checksum "package.json" }}
       - attach_workspace:
           at: ~/repo
-      - run: npm run test
-
-  compile:
-    docker:
-      - image: circleci/node:10.9.0
-      - image: trufflesuite/ganache-cli:v6.1.8
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v2-dependencies-{{ checksum "package.json" }}
-            - v2-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v2-dependencies-{{ checksum "package.json" }}
-      - attach_workspace:
-          at: ~/repo
-      - run: npm run compile
+      - run:
+        name: Compile contracts
+        command: npm run compile
+      - run:
+        name: Test contracts
+        command: npm run test
+      - store_artifacts:
+          path: test-results.xml
+          prefix: tests
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
+      - store_test_results:
+          path: test-results.xml
 
   lint:
     docker:
@@ -65,5 +62,4 @@ workflows:
   build-test-and-deploy:
     jobs:
       - lint
-      - compile
       - test
