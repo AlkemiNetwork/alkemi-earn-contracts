@@ -20,11 +20,11 @@ jobs:
           paths:
             - node_modules
           key: v2-dependencies-{{ checksum "package.json" }}
-      - attach_workspace:
-          at: ~/repo
       - run:
           name: Compile contracts
           command: npm run compile
+      - attach_workspace:
+          at: ~/repo
       - run:
           name: Test contracts
           command: npm run test
