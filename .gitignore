@@ -11,7 +11,8 @@ npm-debug.log
 
 # Local env variables
 .env
-
+.mnemonic
+.DS_Store
 
 # misc
 .DS_Store
