@@ -1,13 +1,11 @@
 # Alkemi Earn Protocol
 
-![GitHub](https://img.shields.io/github/license/project-alkemi/alkemi-earn-protocol) [![Build Status](https://travis-ci.com/project-alkemi/alkemi-earn-protocol.svg?branch=master)](https://travis-ci.com/project-alkemi/alkemi-earn-protocol) [![CircleCI](https://circleci.com/bb/project-alkemi/alkemi-earn-protocol/tree/master.svg?style=svg)](https://app.circleci.com/pipelines/bitbucket/project-alkemi/alkemi-earn-protocol/tree/master)[![MythXBadge](https://badgen.net/https/api.mythx.io/v1/projects/bdc732b7-27d2-4a17-be68-0a1f842ed64b/badge/data?cache=300&icon=https://raw.githubusercontent.com/ConsenSys/mythx-github-badge/main/logo_white.svg)](https://docs.mythx.io/dashboard/github-badges)
+[![MythXBadge](https://badgen.net/https/api.mythx.io/v1/projects/bdc732b7-27d2-4a17-be68-0a1f842ed64b/badge/data?cache=300&icon=https://raw.githubusercontent.com/ConsenSys/mythx-github-badge/main/logo_white.svg)](https://docs.mythx.io/dashboard/github-badges)
 
-![GitHub stars](https://img.shields.io/github/stars/project-alkemi/alkemi-earn-protocol?style=social&label=star) ![GitHub forks](https://img.shields.io/github/forks/project-alkemi/alkemi-earn-protocol?style=social&label=fork) ![GitHub watchers](https://img.shields.io/github/watchers/project-alkemi/alkemi-earn-protocol?style=social&label=watch) ![GitHub followers](https://img.shields.io/github/followers/project-alkemi?label=follow&style=social)
+![GitHub stars](https://img.shields.io/github/stars/AlkemiNetwork/alkemi-earn-protocol?style=social&label=star) ![GitHub forks](https://img.shields.io/github/forks/AlkemiNetwork/alkemi-earn-protocol?style=social&label=fork) ![GitHub watchers](https://img.shields.io/github/watchers/AlkemiNetwork/alkemi-earn-protocol?style=social&label=watch) ![GitHub followers](https://img.shields.io/github/followers/AlkemiNetwork?label=follow&style=social)
 
 > Implementation of Alkemi Earn Protocol in Solidity.
 > [earn.alkemi.network](https://earn.alkemi.network/)
-
-![Liquidity Dashboard](https://raw.githubusercontent.com/project-alkemi/alkemi-reserve-contracts/master/docs/assets/liquidity-dashboard2.gif)
 
 ## Table of Contents
 
@@ -24,7 +22,6 @@
     - [Ropsten Testnet](#ropsten-testnet)
 - [Documentation](#documentation)
 - [Issues](#issues)
-- [License](#license)
 
 ---
 
@@ -43,7 +40,7 @@ As a pre-requisite, you need:
 
 Clone the project and install all dependencies:
 
-    git clone git@github.com:project-alkemi/alkemi-earn-protocol.git
+    git clone git@github.com:AlkemiNetwork/alkemi-earn-protocol.git
     cd alkemi-earn-protocol/
 
     # install project dependencies
@@ -53,7 +50,7 @@ Compile the solidity contracts:
 
     $ npm run compile
 
-![](https://raw.githubusercontent.com/project-alkemi/alkemi-earn-contracts/master/docs/assets/alk-compile.gif)
+![](https://raw.githubusercontent.com/AlkemiNetwork/alkemi-earn-contracts/master/docs/assets/alk-compile.gif)
 
 In a new terminal, launch an Ethereum RPC client, we use the default ganache-cli command to configure and run a local development ganache:
 
@@ -416,34 +413,12 @@ Code style is enforced through the CI test process, builds will fail if there're
 
 ## Documentation
 
-- [Contracts Documentation](https://docs.alkemi.network/)
+- [Contracts Documentation](https://docs.alkemi.network/earn-contracts)
 
 ## Issues
 
-If you come across an issue with Alkemi Protocol contracts, do a search in the [Issues](https://github.com/project-alkemi/alkemi-earn-protocol/issues) tab of this repo to make sure it hasn't been reported before. Follow these steps to help us prevent duplicate issues and unnecessary notifications going to the many people watching this repo:
+If you come across an issue with Alkemi Protocol contracts, do a search in the [Issues](https://github.com/AlkemiNetwork/alkemi-earn-protocol/issues) tab of this repo to make sure it hasn't been reported before. Follow these steps to help us prevent duplicate issues and unnecessary notifications going to the many people watching this repo:
 
 - If the issue you found has been reported and is still open, and the details match your issue, give a "thumbs up" to the relevant posts in the issue thread to signal that you have the same issue. No further action is required on your part.
 - If the issue you found has been reported and is still open, but the issue is missing some details, you can add a comment to the issue thread describing the additional details.
 - If the issue you found has been reported but has been closed, you can comment on the closed issue thread and ask to have the issue reopened because you are still experiencing the issue. Alternatively, you can open a new issue, reference the closed issue by number or link, and state that you are still experiencing the issue. Provide any additional details in your post so we can better understand the issue and how to fix it.
-
-## License
-
-    Copyright (c) 2020 Alkemi
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.

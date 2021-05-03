@@ -12,7 +12,7 @@ npm-debug.log
 # Local env variables
 .env
 .mnemonic
-.mnemonic2
+.DS_Store
 
 # misc
 .DS_Store
@@ -27,6 +27,8 @@ logs
 
 .vscode
 
+build
 build/*
+
 
 package-lock.json
