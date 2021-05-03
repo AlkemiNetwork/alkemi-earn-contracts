@@ -2,8 +2,6 @@
 
 [![MythXBadge](https://badgen.net/https/api.mythx.io/v1/projects/bdc732b7-27d2-4a17-be68-0a1f842ed64b/badge/data?cache=300&icon=https://raw.githubusercontent.com/ConsenSys/mythx-github-badge/main/logo_white.svg)](https://docs.mythx.io/dashboard/github-badges)
 
-![GitHub stars](https://img.shields.io/github/stars/AlkemiNetwork/alkemi-earn-protocol?style=social&label=star) ![GitHub forks](https://img.shields.io/github/forks/AlkemiNetwork/alkemi-earn-protocol?style=social&label=fork) ![GitHub watchers](https://img.shields.io/github/watchers/AlkemiNetwork/alkemi-earn-protocol?style=social&label=watch) ![GitHub followers](https://img.shields.io/github/followers/AlkemiNetwork?label=follow&style=social)
-
 > Implementation of Alkemi Earn Protocol in Solidity.
 > [earn.alkemi.network](https://earn.alkemi.network/)
 
