@@ -20,6 +20,26 @@ jobs:
           at: ~/repo
       - run: npm run test
 
+  compile:
+    docker:
+      - image: circleci/node:10.9.0
+      - image: trufflesuite/ganache-cli:v6.1.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-dependencies-{{ checksum "package.json" }}
+            - v2-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v2-dependencies-{{ checksum "package.json" }}
+      - attach_workspace:
+          at: ~/repo
+      - run: npm run compile
+
   lint:
     docker:
       - image: circleci/node:10.9.0
@@ -44,5 +64,6 @@ workflows:
   version: 2
   build-test-and-deploy:
     jobs:
-      - test
       - lint
+      - compile
+      - test
