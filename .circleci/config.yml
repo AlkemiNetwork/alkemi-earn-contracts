@@ -23,11 +23,11 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run:
-        name: Compile contracts
-        command: npm run compile
+          name: Compile contracts
+          command: npm run compile
       - run:
-        name: Test contracts
-        command: npm run test
+          name: Test contracts
+          command: npm run test
       - store_artifacts:
           path: test-results.xml
           prefix: tests
