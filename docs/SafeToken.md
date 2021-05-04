@@ -8,7 +8,7 @@ title: SafeToken
 View Source: [contracts/SafeToken.sol](../contracts/SafeToken.sol)
 
 **↗ Extends: [ErrorReporter](ErrorReporter.md)**
-**↘ Derived Contracts: [Liquidator](Liquidator.md), [MoneyMarket](MoneyMarket.md)**
+**↘ Derived Contracts: [AlkemiEarnPublicV10](AlkemiEarnPublicV10.md), [Liquidator](Liquidator.md), [MoneyMarket](MoneyMarket.md), [MoneyMarketV11](MoneyMarketV11.md), [MoneyMarketV12](MoneyMarketV12.md)**
 
 **{{ContractName}}**
 
