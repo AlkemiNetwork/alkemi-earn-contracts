@@ -1,10 +1,12 @@
 pragma solidity ^0.4.24;
 
 import "./RewardControlStorage.sol";
+import "./RewardControlInterface.sol";
+import "./ExponentialNoError.sol";
 
-contract RewardControl is RewardControlStorage {
+contract RewardControl is RewardControlStorage, RewardControlInterface, ExponentialNoError {
 
-    /** updateCompSupplyIndex usage
+    /** usage
      * mintAllowed --> supply
      * redeemAllowed --> withdraw
      * seizeAllowed --> liquidateBorrow
@@ -14,10 +16,10 @@ contract RewardControl is RewardControlStorage {
      * borrowAllowed --> borrow
      * repayBorrowAllowed --> repayBorrow
      */
-    function refreshAlkIndexForSupplier(address market, address supplier) public {
+    function refreshAlkIndex(address market, address supplier) public {
         refreshAlkSpeeds();
-        updateAlkSupplyIndex(market);
-        distributeSupplierAlk(market, supplier);
+        updateAlkIndex(market);
+        distributeAlk(market, supplier);
     }
 
     /**
@@ -38,7 +40,7 @@ contract RewardControl is RewardControlStorage {
      * Accrue ALK to the market by updating the supply index
      * @param market The market whose supply index to update
      */
-    function updateAlkSupplyIndex(address market) internal {
+    function updateAlkIndex(address market) internal {
         // Get current market state of the given market
         supply_state = alkSupplyState[market]
         // Get current market supply speed
@@ -66,7 +68,7 @@ contract RewardControl is RewardControlStorage {
      * @param market The market in which the supplier is interacting
      * @param supplier The address of the supplier to distribute ALK to
      */
-    function distributeSupplierAlk(address market, address supplier) internal {
+    function distributeAlk(address market, address supplier) internal {
         // Get current market state of the given market
         supply_state = alkSupplyState[market]
         supply_index = supply_state.index
@@ -97,7 +99,7 @@ contract RewardControl is RewardControlStorage {
      * @param holder The address to claim ALK for
      */
     function claimAlk(address holder) public {
-        return claimAlk(holder, allMarkets);
+        claimAlk(holder, allMarkets);
     }
 
     /**
@@ -110,8 +112,8 @@ contract RewardControl is RewardControlStorage {
         for (uint i = 0; i < markets.length; i++) {
             address market = markets[i];
 
-            updateAlkSupplyIndex(market);
-            distributeSupplierAlk(market, holder);
+            updateAlkIndex(market);
+            distributeAlk(market, holder);
 
             updateAlkBorrowIndex(market);
             distributeBorrowerAlk(market, holder);
