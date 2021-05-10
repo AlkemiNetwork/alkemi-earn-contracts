@@ -17,6 +17,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * repayBorrowAllowed --> repayBorrow
      */
     function refreshAlkIndex(address market, address supplier) public {
+        // @TODO
         refreshAlkSpeeds();
         updateAlkIndex(market);
         distributeAlk(market, supplier);
@@ -26,6 +27,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Recalculate and update ALK speeds for all ALK markets
      */
     function refreshAlkSpeeds() internal {
+        // @TODO
         // Loop through each market to sum total_liquidity
         total_liquidity = 0
         foreach market in allMarkets:
@@ -41,6 +43,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param market The market whose supply index to update
      */
     function updateAlkIndex(address market) internal {
+        // @TODO
         // Get current market state of the given market
         supply_state = alkSupplyState[market]
         // Get current market supply speed
@@ -69,6 +72,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param supplier The address of the supplier to distribute ALK to
      */
     function distributeAlk(address market, address supplier) internal {
+        // @TODO
         // Get current market state of the given market
         supply_state = alkSupplyState[market]
         supply_index = supply_state.index
@@ -108,6 +112,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param markets The list of markets to claim ALK in
      */
     function claimAlk(address holder, address[] memory markets) internal {
+        // @TODO
         // loop through each market
         for (uint i = 0; i < markets.length; i++) {
             address market = markets[i];
@@ -129,7 +134,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param amount The amount of ALK to (possibly) transfer
      * @return The amount of ALK which was NOT transferred to the user
      */
-    function transferAlkInternal(address user, uint amount) internal returns (uint) {}
+    function transferAlkInternal(address user, uint amount) internal returns (uint) {
+        // @TODO
+    }
 
     function getCurrentBlockNumber() public view returns (uint) {
         return block.number;
@@ -144,6 +151,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @return The address of ALK
      */
     function getAlkAddress() public view returns (address) {
+        // @TODO
         return 0xc00e94Cb662C3520282E6f5717214004A7f26888;
     }
 
