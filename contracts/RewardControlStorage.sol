@@ -17,7 +17,7 @@ contract RewardControlStorage {
     mapping(address => bool) allMarketsIndex;
 
     /// The rate at which the flywheel distributes ALK, per block
-    uint public alkRate; // 4.16191 = 8.323820396 / 2
+    uint public alkRate = 8.323820396;
 
     /// The portion of alkRate that each market currently receives
     mapping(address => uint) public alkSpeeds;

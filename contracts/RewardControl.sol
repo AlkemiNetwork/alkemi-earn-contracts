@@ -12,6 +12,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Events
      */
 
+    /// @notice Emitted when a new ALK speed is calculated for a market
+    event AlkSpeedUpdated(address indexed market, uint newSpeed);
+
     /// @notice Emitted when ALK is distributed to a participant
     event DistributedAlk(address market, address participant, uint participantDelta, uint marketIndexMantissa);
 
@@ -77,15 +80,23 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Recalculate and update ALK speeds for all ALK markets
      */
     function refreshAlkSpeeds() internal {
-        // @TODO
-        // Loop through each market to sum total_liquidity
-        total_liquidity = 0
-        foreach market in allMarkets:
-            total_liquidity = total_liquidity + MoneyMarket:market.totalSupply + MoneyMarket:market.totalBorrow
-        // For each market calculate reward_allocation_ratio and then multiply it with alkRate to store it in alkSpeeds mapping
-        foreach market in allMarkets:
-            reward_allocation_ratio = (MoneyMarket:market.totalSupply + MoneyMarket:market.totalBorrow) / total_liquidity
-            alkSpeeds[market] = alkRate * reward_allocation_ratio
+        Exp memory totalLiquidity = Exp({mantissa : 0});
+        Exp[] memory marketTotalLiquidity = new Exp[](allMarkets.length);
+        for (uint i = 0; i < allMarkets.length; i++) {
+            address currentMarket = allMarkets[i];
+            uint currentMarketTotalSupply = getMarketTotalSupply(currentMarket);
+            uint currentMarketTotalBorrows = getMarketTotalBorrows(currentMarket);
+            Exp memory currentMarketTotalLiquidity = Exp({mantissa : add_(currentMarketTotalSupply, currentMarketTotalBorrows)});
+            marketTotalLiquidity[i] = currentMarketTotalLiquidity;
+            totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
+        }
+
+        for (uint i = 0; i < allMarkets.length; i++) {
+            address currentMarket = allMarkets[i];
+            uint newSpeed = totalLiquidity.mantissa > 0 ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity)) : 0;
+            alkSpeeds[currentMarket] = newSpeed;
+            emit AlkSpeedUpdated(market, newSpeed);
+        }
     }
 
     /**
@@ -99,13 +110,14 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         uint deltaBlocks = sub_(blockNumber, uint(marketState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
             (isSupported, blockNumber, interestRateModel, totalSupply, supplyRateMantissa, supplyIndex, totalBorrows, borrowRateMantissa, borrowIndex) = getMarketStats(market);
-            uint totalNetLiquidity = add_(totalSupply, totalBorrows); // @TODO get actual total net liquidity
+            uint totalNetLiquidity = add_(totalSupply, totalBorrows);
+            // @TODO get actual total net liquidity
             uint alkAccrued = mul_(deltaBlocks, marketSpeed);
-            Double memory ratio = totalNetLiquidity > 0 ? fraction(alkAccrued, totalNetLiquidity) : Double({mantissa: 0});
-            Double memory index = add_(Double({mantissa: marketState.index}), ratio);
+            Double memory ratio = totalNetLiquidity > 0 ? fraction(alkAccrued, totalNetLiquidity) : Double({mantissa : 0});
+            Double memory index = add_(Double({mantissa : marketState.index}), ratio);
             alkMarketState[market] = MarketState({
-                index: safe224(index.mantissa, "new index exceeds 224 bits"),
-                block: safe32(blockNumber, "block number exceeds 32 bits")
+            index : safe224(index.mantissa, "new index exceeds 224 bits"),
+            block : safe32(blockNumber, "block number exceeds 32 bits")
             });
         } else if (deltaBlocks > 0) {
             marketState.block = safe32(blockNumber, "block number exceeds 32 bits");
@@ -119,8 +131,8 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
     function distributeAlk(address market, address participant) internal {
         MarketState storage marketState = alkMarketState[market];
-        Double memory marketIndex = Double({mantissa: marketState.index});
-        Double memory participantIndex = Double({mantissa: alkParticipantIndex[market][participant]});
+        Double memory marketIndex = Double({mantissa : marketState.index});
+        Double memory participantIndex = Double({mantissa : alkParticipantIndex[market][participant]});
         alkParticipantIndex[market][participant] = marketIndex.mantissa;
 
         if (participantIndex.mantissa == 0 && marketIndex.mantissa > 0) {
@@ -128,7 +140,8 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         }
 
         Double memory deltaIndex = sub_(marketIndex, participantIndex);
-        uint participantNetLiquidity = getParticipantNetLiquidity(participant, market); // @TODO make sure it's correct source
+        uint participantNetLiquidity = getParticipantNetLiquidity(participant, market);
+        // @TODO make sure it's correct source
         uint participantDelta = mul_(participantNetLiquidity, deltaIndex);
         alkAccrued[participant] = add_(alkAccrued[participant], participantDelta);
         emit DistributedAlk(market, participant, participantDelta, marketIndex.mantissa);
@@ -158,7 +171,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @return The amount of ALK which was NOT transferred to the participant
      */
     function transferAlk(address participant, uint participantAccrued) internal returns (uint) {
-         if (participantAccrued > 0) {
+        if (participantAccrued > 0) {
             EIP20Interface alk = EIP20Interface(getAlkAddress());
             uint alkRemaining = alk.balanceOf(address(this));
             if (participantAccrued <= alkRemaining) {
@@ -189,8 +202,18 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         return alkAddress;
     }
 
-    function getMarketStats(address market) constant returns(bool isSupported, int256 blockNumber, address interestRateModel, uint256 totalSupply, uint256 supplyRateMantissa, uint256 supplyIndex, uint256 totalBorrows, uint256 borrowRateMantissa, uint256 borrowIndex) {
+    function getMarketStats(address market) constant returns (bool isSupported, int256 blockNumber, address interestRateModel, uint256 totalSupply, uint256 supplyRateMantissa, uint256 supplyIndex, uint256 totalBorrows, uint256 borrowRateMantissa, uint256 borrowIndex) {
         return (moneyMarket.markets(market));
+    }
+
+    function getMarketTotalSupply(address market) public view returns () {
+        (isSupported, blockNumber, interestRateModel, totalSupply, supplyRateMantissa, supplyIndex, totalBorrows, borrowRateMantissa, borrowIndex) = getMarketStats(market);
+        return totalSupply;
+    }
+
+    function getMarketTotalBorrows(address market) public view returns () {
+        (isSupported, blockNumber, interestRateModel, totalSupply, supplyRateMantissa, supplyIndex, totalBorrows, borrowRateMantissa, borrowIndex) = getMarketStats(market);
+        return totalBorrows;
     }
 
     function getParticipantNetLiquidity(address participant, address market) public view returns (uint) {
