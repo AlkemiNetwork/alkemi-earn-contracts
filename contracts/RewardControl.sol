@@ -3,7 +3,6 @@ pragma solidity ^0.4.24;
 import "./RewardControlStorage.sol";
 import "./RewardControlInterface.sol";
 import "./ExponentialNoError.sol";
-import "./MoneyMarket.sol";
 import "./EIP20Interface.sol";
 
 contract RewardControl is RewardControlStorage, RewardControlInterface, ExponentialNoError {
@@ -24,6 +23,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
 
     /// @notice The initial ALK index for a market
     uint224 public constant alkInitialIndex = 1e36;
+
+    /// The rate at which the flywheel distributes ALK, per block
+    uint public alkRate = 8323820396000000000;
 
     /**
      * Constructor
@@ -58,10 +60,10 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * borrowAllowed --> borrow
      * repayBorrowAllowed --> repayBorrow
      */
-    function refreshAlkIndex(address market, address supplier) public {
+    function refreshAlkIndex(address market, address participant) public {
         refreshAlkSpeeds();
         updateAlkIndex(market);
-        distributeAlk(market, supplier);
+        distributeAlk(market, participant);
     }
 
     /**
@@ -82,8 +84,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     function refreshAlkSpeeds() internal {
         Exp memory totalLiquidity = Exp({mantissa : 0});
         Exp[] memory marketTotalLiquidity = new Exp[](allMarkets.length);
+        address currentMarket;
         for (uint i = 0; i < allMarkets.length; i++) {
-            address currentMarket = allMarkets[i];
+            currentMarket = allMarkets[i];
             uint currentMarketTotalSupply = getMarketTotalSupply(currentMarket);
             uint currentMarketTotalBorrows = getMarketTotalBorrows(currentMarket);
             Exp memory currentMarketTotalLiquidity = Exp({mantissa : add_(currentMarketTotalSupply, currentMarketTotalBorrows)});
@@ -91,11 +94,11 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
             totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
         }
 
-        for (uint i = 0; i < allMarkets.length; i++) {
-            address currentMarket = allMarkets[i];
-            uint newSpeed = totalLiquidity.mantissa > 0 ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity)) : 0;
+        for (uint j = 0; j < allMarkets.length; j++) {
+            currentMarket = allMarkets[j];
+            uint newSpeed = totalLiquidity.mantissa > 0 ? mul_(alkRate, div_(marketTotalLiquidity[j], totalLiquidity)) : 0;
             alkSpeeds[currentMarket] = newSpeed;
-            emit AlkSpeedUpdated(market, newSpeed);
+            emit AlkSpeedUpdated(currentMarket, newSpeed);
         }
     }
 
@@ -109,9 +112,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         uint blockNumber = getBlockNumber();
         uint deltaBlocks = sub_(blockNumber, uint(marketState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
-            (isSupported, blockNumber, interestRateModel, totalSupply, supplyRateMantissa, supplyIndex, totalBorrows, borrowRateMantissa, borrowIndex) = getMarketStats(market);
-            uint totalNetLiquidity = add_(totalSupply, totalBorrows);
-            // @TODO get actual total net liquidity
+            uint totalNetLiquidity = getTotalNetLiquidity(market);
             uint alkAccrued = mul_(deltaBlocks, marketSpeed);
             Double memory ratio = totalNetLiquidity > 0 ? fraction(alkAccrued, totalNetLiquidity) : Double({mantissa : 0});
             Double memory index = add_(Double({mantissa : marketState.index}), ratio);
@@ -125,9 +126,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     /**
-     * Calculate ALK accrued by a supplier and add it on top of alkAccrued[supplier]
-     * @param market The market in which the supplier is interacting
-     * @param supplier The address of the supplier to distribute ALK to
+     * Calculate ALK accrued by a participant and add it on top of alkAccrued[participant]
+     * @param market The market in which the participant is interacting
+     * @param participant The address of the participant to distribute ALK to
      */
     function distributeAlk(address market, address participant) internal {
         MarketState storage marketState = alkMarketState[market];
@@ -202,17 +203,27 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         return alkAddress;
     }
 
-    function getMarketStats(address market) constant returns (bool isSupported, int256 blockNumber, address interestRateModel, uint256 totalSupply, uint256 supplyRateMantissa, uint256 supplyIndex, uint256 totalBorrows, uint256 borrowRateMantissa, uint256 borrowIndex) {
+    function getMarketStats(address market) public constant returns (bool isSupported, uint blockNumber, address interestRateModel, uint totalSupply, uint supplyRateMantissa, uint supplyIndex, uint totalBorrows, uint borrowRateMantissa, uint borrowIndex) {
         return (moneyMarket.markets(market));
     }
 
-    function getMarketTotalSupply(address market) public view returns () {
-        (isSupported, blockNumber, interestRateModel, totalSupply, supplyRateMantissa, supplyIndex, totalBorrows, borrowRateMantissa, borrowIndex) = getMarketStats(market);
+    // @TODO get actual total net liquidity
+    function getTotalNetLiquidity(address market) public view returns (uint) {
+        uint totalSupply;
+        uint totalBorrows;
+        (, , , totalSupply, , , totalBorrows, , ) = getMarketStats(market);
+        return add_(totalSupply, totalBorrows);
+    }
+
+    function getMarketTotalSupply(address market) public view returns (uint) {
+        uint totalSupply;
+        (, , , totalSupply, , , , , ) = getMarketStats(market);
         return totalSupply;
     }
 
-    function getMarketTotalBorrows(address market) public view returns () {
-        (isSupported, blockNumber, interestRateModel, totalSupply, supplyRateMantissa, supplyIndex, totalBorrows, borrowRateMantissa, borrowIndex) = getMarketStats(market);
+    function getMarketTotalBorrows(address market) public view returns (uint) {
+        uint totalBorrows;
+        (, , , , , , totalBorrows, , ) = getMarketStats(market);
         return totalBorrows;
     }
 
@@ -236,7 +247,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     function removeMarket(uint id) public onlyOwner {
-        require(allMarkets[id].exists, "Market does not exist");
+        require(allMarkets[id] != address(0), "Market does not exist");
         allMarketsIndex[allMarkets[id]] = false;
         delete allMarkets[id];
     }

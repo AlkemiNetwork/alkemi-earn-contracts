@@ -1,5 +1,7 @@
 pragma solidity ^0.4.24;
 
+import "./MoneyMarket.sol";
+
 contract RewardControlStorage {
 
     struct MarketState {
@@ -15,9 +17,6 @@ contract RewardControlStorage {
 
     // The index for all markets, to check for its existence
     mapping(address => bool) allMarketsIndex;
-
-    /// The rate at which the flywheel distributes ALK, per block
-    uint public alkRate = 8.323820396;
 
     /// The portion of alkRate that each market currently receives
     mapping(address => uint) public alkSpeeds;
