@@ -31,8 +31,8 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Constructor
      */
 
-    constructor(address _moneyMarket, address _alkAddress) public {
-        owner = msg.sender;
+    function initialize(address _owner, address _moneyMarket, address _alkAddress) public {
+        owner = _owner;
         moneyMarket = MoneyMarket(_moneyMarket);
         alkAddress = _alkAddress;
     }
