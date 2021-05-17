@@ -222,6 +222,14 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         return alkAddress;
     }
 
+    /**
+     * Return the address of the underlying Money Market contract
+     * @return The address of the underlying Money Market contract
+     */
+    function getMoneyMarketAddress() public view returns (address) {
+        return address(moneyMarket);
+    }
+
     function getMarketStats(address market) public constant returns (bool isSupported, uint blockNumber, address interestRateModel, uint totalSupply, uint supplyRateMantissa, uint supplyIndex, uint totalBorrows, uint borrowRateMantissa, uint borrowIndex) {
         return (moneyMarket.markets(market));
     }
@@ -284,6 +292,18 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         address removedMarket = allMarkets[id];
         delete allMarkets[id];
         emit MarketRemoved(removedMarket, allMarkets.length);
+    }
+
+    function setAlkAddress(address _alkAddress) external onlyOwner {
+        require(alkAddress != _alkAddress, "The same ALK address");
+        require(_alkAddress != address(0), "ALK address cannot be empty");
+        alkAddress = _alkAddress;
+    }
+
+    function setMoneyMarketAddress(address _moneyMarket) external onlyOwner {
+        require(address(moneyMarket) != _moneyMarket, "The same Money Market address");
+        require(_moneyMarket != address(0), "MoneyMarket address cannot be empty");
+        moneyMarket = MoneyMarket(_moneyMarket);
     }
 
 }
