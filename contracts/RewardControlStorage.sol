@@ -30,7 +30,12 @@ contract RewardControlStorage {
     /// The ALK accrued but not yet transferred to each user
     mapping(address => uint) public alkAccrued;
 
+    // To make sure initializer is called only once
+    bool public initializationDone;
+
     address public owner;
+
+    address public newOwner;
 
     MoneyMarket public moneyMarket;
 

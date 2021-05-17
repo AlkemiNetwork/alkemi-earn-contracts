@@ -15,7 +15,15 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     event AlkSpeedUpdated(address indexed market, uint newSpeed);
 
     /// @notice Emitted when ALK is distributed to a participant
-    event DistributedAlk(address market, address participant, uint participantDelta, uint marketIndexMantissa);
+    event DistributedAlk(address indexed market, address indexed participant, uint participantDelta, uint marketIndexMantissa);
+
+    event TransferredAlk(address indexed participant, uint participantAccrued);
+
+    event OwnerUpdate(address indexed owner, address indexed newOwner);
+
+    event MarketAdded(address indexed market, uint numberOfMarkets);
+
+    event MarketRemoved(address indexed market, uint numberOfMarkets);
 
     /**
      * Constants
@@ -31,10 +39,20 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Constructor
      */
 
-    function initialize(address _owner, address _moneyMarket, address _alkAddress) public {
-        owner = _owner;
-        moneyMarket = MoneyMarket(_moneyMarket);
-        alkAddress = _alkAddress;
+    /**
+     * @notice `RewardControl` is the contract to calculate and distribute reward tokens
+     * @notice This contract uses Openzeppelin Upgrades plugin to make use of the upgradeability functionality using proxies
+     * @notice Hence this contract has an 'initializer' in place of a 'constructor'
+     * @notice Make sure to add new global variables only at the bottom of all the existing global variables i.e., line #344
+     * @notice Also make sure to do extensive testing while modifying any structs and enums during an upgrade
+     */
+    function initializer(address _owner, address _moneyMarket, address _alkAddress) public {
+        if(initializationDone == false) {
+            initializationDone = true;
+            owner = _owner;
+            moneyMarket = MoneyMarket(_moneyMarket);
+            alkAddress = _alkAddress;
+        }
     }
 
     /**
@@ -60,7 +78,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * borrowAllowed --> borrow
      * repayBorrowAllowed --> repayBorrow
      */
-    function refreshAlkIndex(address market, address participant) public {
+    function refreshAlkIndex(address market, address participant) external {
         refreshAlkSpeeds();
         updateAlkIndex(market);
         distributeAlk(market, participant);
@@ -70,7 +88,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Claim all the ALK accrued by holder in all markets
      * @param holder The address to claim ALK for
      */
-    function claimAlk(address holder) public {
+    function claimAlk(address holder) external {
         claimAlk(holder, allMarkets);
     }
 
@@ -141,8 +159,8 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         }
 
         Double memory deltaIndex = sub_(marketIndex, participantIndex);
+        // @TODO make sure it's correct source of data, and it might need to be across all markets instead
         uint participantNetLiquidity = getParticipantNetLiquidity(participant, market);
-        // @TODO make sure it's correct source
         uint participantDelta = mul_(participantNetLiquidity, deltaIndex);
         alkAccrued[participant] = add_(alkAccrued[participant], participantDelta);
         emit DistributedAlk(market, participant, participantDelta, marketIndex.mantissa);
@@ -177,6 +195,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
             uint alkRemaining = alk.balanceOf(address(this));
             if (participantAccrued <= alkRemaining) {
                 alk.transfer(participant, participantAccrued);
+                emit TransferredAlk(participant, participantAccrued);
                 return 0;
             }
         }
@@ -240,16 +259,31 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Admin functions
      */
 
-    function addMarket(address market) public onlyOwner {
-        require(!allMarketsIndex[market], "Market address already exists");
-        allMarketsIndex[market] = true;
-        allMarkets.push(market);
+    function transferOwnership(address _newOwner) external onlyOwner {
+        require(_newOwner != owner, "TransferOwnership: the same owner.");
+        newOwner = _newOwner;
     }
 
-    function removeMarket(uint id) public onlyOwner {
+    function acceptOwnership() external {
+        require(msg.sender == newOwner, "AcceptOwnership: only new owner do this.");
+        emit OwnerUpdate(owner, newOwner);
+        owner = newOwner;
+        newOwner = address(0);
+    }
+
+    function addMarket(address market) external onlyOwner {
+        require(!allMarketsIndex[market], "Market already exists");
+        allMarketsIndex[market] = true;
+        allMarkets.push(market);
+        emit MarketAdded(market, allMarkets.length);
+    }
+
+    function removeMarket(uint id) external onlyOwner {
         require(allMarkets[id] != address(0), "Market does not exist");
         allMarketsIndex[allMarkets[id]] = false;
+        address removedMarket = allMarkets[id];
         delete allMarkets[id];
+        emit MarketRemoved(removedMarket, allMarkets.length);
     }
 
 }
