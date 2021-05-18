@@ -48,6 +48,7 @@
     "bignumber.js": "^7.2.1",
     "chai": "^4.3.4",
     "ethereum-waffle": "^3.3.0",
+    "ethers": "^5.1.4",
     "ganache-cli": "^6.7.0",
     "mocha": "^8.4.0",
     "seamless-immutable": "^7.1.3",
