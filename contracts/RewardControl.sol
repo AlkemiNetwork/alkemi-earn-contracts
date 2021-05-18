@@ -33,7 +33,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     uint224 public constant alkInitialIndex = 1e36;
 
     /// The rate at which the flywheel distributes ALK, per block
-    uint public alkRate = 8323820396000000000;
+    uint public constant alkRate = 8323820396000000000;
 
     /**
      * Constructor
@@ -126,7 +126,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
     function updateAlkIndex(address market) internal {
         MarketState storage marketState = alkMarketState[market];
-        uint marketSpeed = alkSpeeds[market];
+        uint marketSpeed = alkSpeeds[market]; // @TODO handle when market speed == 0
         uint blockNumber = getBlockNumber();
         uint deltaBlocks = sub_(blockNumber, uint(marketState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
