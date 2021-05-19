@@ -5,6 +5,7 @@ import "./InterestRateModel.sol";
 import "./SafeToken.sol";
 import "./ChainLink.sol";
 import "./AlkemiWETH.sol";
+import "./RewardControlInterface.sol";
 
 contract MoneyMarket is Exponential, SafeToken {
 
@@ -16,6 +17,7 @@ contract MoneyMarket is Exponential, SafeToken {
     uint internal minimumCollateralRatioMantissa;
     uint internal maximumLiquidationDiscountMantissa;
     bool public initializationDone; // To make sure initializer is called only once
+    RewardControlInterface public rewardControl;
 
     /**
      * @notice `MoneyMarket` is the core MoneyMarket contract
@@ -1306,6 +1308,8 @@ contract MoneyMarket is Exponential, SafeToken {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
 
+        refreshAlkSupplyIndex(asset, msg.sender);
+
         Market storage market = markets[asset];
         Balance storage balance = supplyBalances[msg.sender][asset];
 
@@ -1460,6 +1464,8 @@ contract MoneyMarket is Exponential, SafeToken {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.WITHDRAW_CONTRACT_PAUSED);
         }
+
+        refreshAlkSupplyIndex(asset, msg.sender);
 
         Market storage market = markets[asset];
         Balance storage supplyBalance = supplyBalances[msg.sender][asset];
@@ -1751,6 +1757,9 @@ contract MoneyMarket is Exponential, SafeToken {
             revertEtherToUser(msg.sender,msg.value);
             return fail(Error.CONTRACT_PAUSED, FailureInfo.REPAY_BORROW_CONTRACT_PAUSED);
         }
+
+        refreshAlkBorrowIndex(asset, msg.sender);
+
         PayBorrowLocalVars memory localResults;
         Market storage market = markets[asset];
         Balance storage borrowBalance = borrowBalances[msg.sender][asset];
@@ -1892,6 +1901,10 @@ contract MoneyMarket is Exponential, SafeToken {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.LIQUIDATE_CONTRACT_PAUSED);
         }
+
+        refreshAlkSupplyIndex(assetCollateral, targetAccount);
+        refreshAlkSupplyIndex(assetCollateral, msg.sender);
+
         LiquidateLocalVars memory localResults;
         // Copy these addresses into the struct for use with `emitLiquidationEvent`
         // We'll use localResults.liquidator inside this function for clarity vs using msg.sender.
@@ -2312,6 +2325,9 @@ contract MoneyMarket is Exponential, SafeToken {
         if (paused) {
             return fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
         }
+
+        refreshAlkBorrowIndex(asset, msg.sender);
+
         BorrowLocalVars memory localResults;
         Market storage market = markets[asset];
         Balance storage borrowBalance = borrowBalances[msg.sender][asset];
@@ -2473,5 +2489,30 @@ contract MoneyMarket is Exponential, SafeToken {
 
             emit SupplyOrgFeeAsAdmin(admin, asset, originationFeeRepaid, localResults.startingBalance, localResults.userSupplyUpdated);
         }
+    }
+
+    function setRewardControlAddress(address _rewardControl) external returns (uint) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return fail(Error.SET_REWARD_CONTROL_ADDRESS_ADMIN_CHECK_FAILED, FailureInfo.SET_REWARD_CONTROL_ADDRESS_ADMIN_CHECK_FAILED);
+        }
+        require(address(rewardControl) != _rewardControl, "The same Reward Control address");
+        require(_rewardControl != address(0), "RewardControl address cannot be empty");
+        rewardControl = RewardControlInterface(_rewardControl);
+        return uint(Error.NO_ERROR); // success
+    }
+
+    function refreshAlkSupplyIndex(address market, address supplier) internal {
+        if (address(rewardControl) == address(0)) {
+            return;
+        }
+        rewardControl.refreshAlkSupplyIndex(market, supplier);
+    }
+
+    function refreshAlkBorrowIndex(address market, address borrower) internal {
+        if (address(rewardControl) == address(0)) {
+            return;
+        }
+        rewardControl.refreshAlkBorrowIndex(market, borrower);
     }
 }
