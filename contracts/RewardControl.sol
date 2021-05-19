@@ -14,8 +14,11 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     /// @notice Emitted when a new ALK speed is calculated for a market
     event AlkSpeedUpdated(address indexed market, uint newSpeed);
 
-    /// @notice Emitted when ALK is distributed to a participant
-    event DistributedAlk(address indexed market, address indexed participant, uint participantDelta, uint marketIndexMantissa);
+    /// @notice Emitted when ALK is distributed to a supplier
+    event DistributedSupplierAlk(address indexed market, address indexed supplier, uint supplierDelta, uint supplierAccruedAlk, uint supplyIndexMantissa);
+
+    /// @notice Emitted when ALK is distributed to a borrower
+    event DistributedBorrowerAlk(address indexed market, address indexed borrower, uint borrowerDelta, uint borrowerAccruedAlk, uint borrowIndexMantissa);
 
     event TransferredAlk(address indexed participant, uint participantAccrued);
 
@@ -29,12 +32,6 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Constants
      */
 
-    /// @notice The initial ALK index for a market
-    uint224 public constant alkInitialIndex = 1e36;
-
-    /// The rate at which the flywheel distributes ALK, per block
-    uint public constant alkRate = 8323820396000000000;
-
     /**
      * Constructor
      */
@@ -47,11 +44,13 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Also make sure to do extensive testing while modifying any structs and enums during an upgrade
      */
     function initializer(address _owner, address _moneyMarket, address _alkAddress) public {
-        if(initializationDone == false) {
+        if (initializationDone == false) {
             initializationDone = true;
             owner = _owner;
             moneyMarket = MoneyMarket(_moneyMarket);
             alkAddress = _alkAddress;
+            alkRate = 4161910200000000000;
+            // 8323820396000000000 divided by 2 (for lending and borrowing separately)
         }
     }
 
@@ -78,10 +77,22 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * borrowAllowed --> borrow
      * repayBorrowAllowed --> repayBorrow
      */
-    function refreshAlkIndex(address market, address participant) external {
+    function refreshAlkSupplyIndex(address market, address supplier) external {
         refreshAlkSpeeds();
-        updateAlkIndex(market);
-        distributeAlk(market, participant);
+        updateAlkSupplyIndex(market);
+        distributeSupplierAlk(market, supplier);
+    }
+
+    /** usage
+     * borrowAllowed --> borrow
+     * repayBorrowAllowed --> repayBorrow
+     * refreshCompSpeedsInternal (used by refreshCompSpeeds)
+     * claimComp --> claimAlk
+     */
+    function refreshAlkBorrowIndex(address market, address borrower) external {
+        refreshAlkSpeeds();
+        updateAlkBorrowIndex(market);
+        distributeBorrowerAlk(market, borrower);
     }
 
     /**
@@ -121,49 +132,89 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     /**
-     * Accrue ALK to the market by updating the index
-     * @param market The market whose index to update
+     * Accrue ALK to the market by updating the supply index
+     * @param market The market whose supply index to update
      */
-    function updateAlkIndex(address market) internal {
-        MarketState storage marketState = alkMarketState[market];
-        uint marketSpeed = alkSpeeds[market]; // @TODO handle when market speed == 0
+    function updateAlkSupplyIndex(address market) internal {
+        MarketState storage supplyState = alkSupplyState[market];
+        uint marketSpeed = alkSpeeds[market];
         uint blockNumber = getBlockNumber();
-        uint deltaBlocks = sub_(blockNumber, uint(marketState.block));
+        uint deltaBlocks = sub_(blockNumber, uint(supplyState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
-            uint totalNetLiquidity = getTotalNetLiquidity(market);
+            uint marketTotalSupply = getMarketTotalSupply(market);
             uint alkAccrued = mul_(deltaBlocks, marketSpeed);
-            Double memory ratio = totalNetLiquidity > 0 ? fraction(alkAccrued, totalNetLiquidity) : Double({mantissa : 0});
-            Double memory index = add_(Double({mantissa : marketState.index}), ratio);
-            alkMarketState[market] = MarketState({
+            Double memory ratio = marketTotalSupply > 0 ? fraction(alkAccrued, marketTotalSupply) : Double({mantissa : 0});
+            Double memory index = add_(Double({mantissa : supplyState.index}), ratio);
+            alkSupplyState[market] = MarketState({
             index : safe224(index.mantissa, "new index exceeds 224 bits"),
             block : safe32(blockNumber, "block number exceeds 32 bits")
             });
         } else if (deltaBlocks > 0) {
-            marketState.block = safe32(blockNumber, "block number exceeds 32 bits");
+            supplyState.block = safe32(blockNumber, "block number exceeds 32 bits");
         }
     }
 
     /**
-     * Calculate ALK accrued by a participant and add it on top of alkAccrued[participant]
-     * @param market The market in which the participant is interacting
-     * @param participant The address of the participant to distribute ALK to
+     * Accrue ALK to the market by updating the borrow index
+     * @param market The market whose borrow index to update
      */
-    function distributeAlk(address market, address participant) internal {
-        MarketState storage marketState = alkMarketState[market];
-        Double memory marketIndex = Double({mantissa : marketState.index});
-        Double memory participantIndex = Double({mantissa : alkParticipantIndex[market][participant]});
-        alkParticipantIndex[market][participant] = marketIndex.mantissa;
-
-        if (participantIndex.mantissa == 0 && marketIndex.mantissa > 0) {
-            participantIndex.mantissa = alkInitialIndex;
+    function updateAlkBorrowIndex(address market) internal {
+        MarketState storage borrowState = alkBorrowState[market];
+        uint marketSpeed = alkSpeeds[market];
+        uint blockNumber = getBlockNumber();
+        uint deltaBlocks = sub_(blockNumber, uint(borrowState.block));
+        if (deltaBlocks > 0 && marketSpeed > 0) {
+            uint marketTotalBorrows = getMarketTotalBorrows(market);
+            uint alkAccrued = mul_(deltaBlocks, marketSpeed);
+            Double memory ratio = marketTotalBorrows > 0 ? fraction(alkAccrued, marketTotalBorrows) : Double({mantissa : 0});
+            Double memory index = add_(Double({mantissa : borrowState.index}), ratio);
+            alkBorrowState[market] = MarketState({
+            index : safe224(index.mantissa, "new index exceeds 224 bits"),
+            block : safe32(blockNumber, "block number exceeds 32 bits")
+            });
+        } else if (deltaBlocks > 0) {
+            borrowState.block = safe32(blockNumber, "block number exceeds 32 bits");
         }
+    }
 
-        Double memory deltaIndex = sub_(marketIndex, participantIndex);
-        // @TODO make sure it's correct source of data, and it might need to be across all markets instead
-        uint participantNetLiquidity = getParticipantNetLiquidity(participant, market);
-        uint participantDelta = mul_(participantNetLiquidity, deltaIndex);
-        alkAccrued[participant] = add_(alkAccrued[participant], participantDelta);
-        emit DistributedAlk(market, participant, participantDelta, marketIndex.mantissa);
+    /**
+     * Calculate ALK accrued by a supplier and add it on top of alkAccrued[supplier]
+     * @param market The market in which the supplier is interacting
+     * @param supplier The address of the supplier to distribute ALK to
+     */
+    function distributeSupplierAlk(address market, address supplier) internal {
+        MarketState storage supplyState = alkSupplyState[market];
+        Double memory supplyIndex = Double({mantissa : supplyState.index});
+        Double memory supplierIndex = Double({mantissa : alkSupplierIndex[market][supplier]});
+        alkSupplierIndex[market][supplier] = supplyIndex.mantissa;
+
+        if (supplierIndex.mantissa > 0) {
+            Double memory deltaIndex = sub_(supplyIndex, supplierIndex);
+            uint supplierBalance = moneyMarket.getSupplyBalance(supplier, market);
+            uint supplierDelta = mul_(supplierBalance, deltaIndex);
+            alkAccrued[supplier] = add_(alkAccrued[supplier], supplierDelta);
+            emit DistributedSupplierAlk(market, supplier, supplierDelta, alkAccrued[supplier], supplyIndex.mantissa);
+        }
+    }
+
+    /**
+     * Calculate ALK accrued by a borrower and add it on top of alkAccrued[borrower]
+     * @param market The market in which the borrower is interacting
+     * @param borrower The address of the borrower to distribute ALK to
+     */
+    function distributeBorrowerAlk(address market, address borrower) internal {
+        MarketState storage borrowState = alkBorrowState[market];
+        Double memory borrowIndex = Double({mantissa : borrowState.index});
+        Double memory borrowerIndex = Double({mantissa : alkBorrowerIndex[market][borrower]});
+        alkBorrowerIndex[market][borrower] = borrowIndex.mantissa;
+
+        if (borrowerIndex.mantissa > 0) {
+            Double memory deltaIndex = sub_(borrowIndex, borrowerIndex);
+            uint borrowerBalance = moneyMarket.getBorrowBalance(borrower, market);
+            uint borrowerDelta = mul_(borrowerBalance, deltaIndex);
+            alkAccrued[borrower] = add_(alkAccrued[borrower], borrowerDelta);
+            emit DistributedBorrowerAlk(market, borrower, borrowerDelta, alkAccrued[borrower], borrowIndex.mantissa);
+        }
     }
 
     /**
@@ -175,8 +226,11 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         for (uint i = 0; i < markets.length; i++) {
             address market = markets[i];
 
-            updateAlkIndex(market);
-            distributeAlk(market, holder);
+            updateAlkSupplyIndex(market);
+            distributeSupplierAlk(market, holder);
+
+            updateAlkBorrowIndex(market);
+            distributeBorrowerAlk(market, holder);
 
             alkAccrued[holder] = transferAlk(holder, alkAccrued[holder]);
         }
@@ -234,33 +288,16 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         return (moneyMarket.markets(market));
     }
 
-    // @TODO get actual total net liquidity
-    function getTotalNetLiquidity(address market) public view returns (uint) {
-        uint totalSupply;
-        uint totalBorrows;
-        (, , , totalSupply, , , totalBorrows, , ) = getMarketStats(market);
-        return add_(totalSupply, totalBorrows);
-    }
-
     function getMarketTotalSupply(address market) public view returns (uint) {
         uint totalSupply;
-        (, , , totalSupply, , , , , ) = getMarketStats(market);
+        (,,, totalSupply,,,,,) = getMarketStats(market);
         return totalSupply;
     }
 
     function getMarketTotalBorrows(address market) public view returns (uint) {
         uint totalBorrows;
-        (, , , , , , totalBorrows, , ) = getMarketStats(market);
+        (,,,,,, totalBorrows,,) = getMarketStats(market);
         return totalBorrows;
-    }
-
-    function getParticipantNetLiquidity(address participant, address market) public view returns (uint) {
-        uint supplyBalance = moneyMarket.getSupplyBalance(participant, market);
-        uint borrowBalance = moneyMarket.getBorrowBalance(participant, market);
-        if (supplyBalance > borrowBalance) {
-            return sub_(supplyBalance, borrowBalance);
-        }
-        return sub_(borrowBalance, supplyBalance);
     }
 
     /**
@@ -304,6 +341,10 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         require(address(moneyMarket) != _moneyMarket, "The same Money Market address");
         require(_moneyMarket != address(0), "MoneyMarket address cannot be empty");
         moneyMarket = MoneyMarket(_moneyMarket);
+    }
+
+    function setAlkRate(uint _alkRate) external onlyOwner {
+        alkRate = _alkRate;
     }
 
 }
