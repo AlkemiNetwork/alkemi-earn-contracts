@@ -76,6 +76,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * claimComp --> claimAlk
      */
     function refreshAlkSupplyIndex(address market, address supplier) external {
+        if (!allMarketsIndex[market]) {
+            return;
+        }
         refreshAlkSpeeds();
         updateAlkSupplyIndex(market);
         distributeSupplierAlk(market, supplier);
@@ -88,6 +91,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * claimComp --> claimAlk
      */
     function refreshAlkBorrowIndex(address market, address borrower) external {
+        if (!allMarketsIndex[market]) {
+            return;
+        }
         refreshAlkSpeeds();
         updateAlkBorrowIndex(market);
         distributeBorrowerAlk(market, borrower);
