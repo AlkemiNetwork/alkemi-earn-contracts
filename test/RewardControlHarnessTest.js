@@ -20,7 +20,7 @@ contract('RewardControl', function ([root, ...accounts]) {
             await rewardControl.addMarket(d.address, {gasPrice: GAS_PRICE});
             await rewardControl.harnessRefreshAlkSpeeds({gasPrice: GAS_PRICE});
             let alkSpeed = await rewardControl.alkSpeeds(d.address, {gasPrice: GAS_PRICE});
-            expect(alkSpeed.toString()).to.equals("8323820396000000000", "ALK speed of a solely market should be according to ALK rate");
+            expect(alkSpeed.toString()).to.equals("4161910200000000000", "ALK speed of a solely market should be according to ALK rate");
         });
 
         it("refresh ALK speeds when there are two markets with the same alloc", async () => {
@@ -34,9 +34,9 @@ contract('RewardControl', function ([root, ...accounts]) {
             await rewardControl.addMarket(e.address, {gasPrice: GAS_PRICE});
             await rewardControl.harnessRefreshAlkSpeeds({gasPrice: GAS_PRICE});
             let dAlkSpeed = await rewardControl.alkSpeeds(d.address, {gasPrice: GAS_PRICE});
-            expect(dAlkSpeed.toString()).to.equals("4161910198000000000", "ALK speed of market d should be half of ALK rate");
+            expect(dAlkSpeed.toString()).to.equals("2080955100000000000", "ALK speed of market d should be half of ALK rate");
             let eAlkSpeed = await rewardControl.alkSpeeds(e.address, {gasPrice: GAS_PRICE});
-            expect(eAlkSpeed.toString()).to.equals("4161910198000000000", "ALK speed of market e should be half of ALK rate");
+            expect(eAlkSpeed.toString()).to.equals("2080955100000000000", "ALK speed of market e should be half of ALK rate");
         });
 
         it("refresh ALK speeds when there are two markets with different alloc", async () => {
@@ -50,9 +50,9 @@ contract('RewardControl', function ([root, ...accounts]) {
             await rewardControl.addMarket(e.address, {gasPrice: GAS_PRICE});
             await rewardControl.harnessRefreshAlkSpeeds({gasPrice: GAS_PRICE});
             let dAlkSpeed = await rewardControl.alkSpeeds(d.address, {gasPrice: GAS_PRICE});
-            expect(dAlkSpeed.toString()).to.equals("3329528158400000000", "ALK speed of market d should be half of ALK rate");
+            expect(dAlkSpeed.toString()).to.equals("1664764080000000000", "ALK speed of market d should be half of ALK rate");
             let eAlkSpeed = await rewardControl.alkSpeeds(e.address, {gasPrice: GAS_PRICE});
-            expect(eAlkSpeed.toString()).to.equals("4994292237600000000", "ALK speed of market e should be half of ALK rate");
+            expect(eAlkSpeed.toString()).to.equals("2497146120000000000", "ALK speed of market e should be half of ALK rate");
         });
     });
 
