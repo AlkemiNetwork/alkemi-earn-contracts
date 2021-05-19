@@ -74,8 +74,6 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * transferAllowed --> ???
      * refreshCompSpeedsInternal (used by refreshCompSpeeds)
      * claimComp --> claimAlk
-     * borrowAllowed --> borrow
-     * repayBorrowAllowed --> repayBorrow
      */
     function refreshAlkSupplyIndex(address market, address supplier) external {
         refreshAlkSpeeds();
