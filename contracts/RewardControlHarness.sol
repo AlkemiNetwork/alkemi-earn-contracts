@@ -93,4 +93,8 @@ contract RewardControlHarness is RewardControl {
         alkBorrowerIndex[market][borrower] = index;
     }
 
+    function harnessTransferAlk(address participant, uint participantAccrued) public returns (uint) {
+        transferAlk(participant, participantAccrued);
+    }
+
 }
