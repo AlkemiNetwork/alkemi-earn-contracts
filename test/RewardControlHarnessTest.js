@@ -148,7 +148,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe("#updateAlkBorrowIndex", async () => {
+    describe.skip("#updateAlkBorrowIndex", async () => {
         it("update borrow state on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
@@ -215,7 +215,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe("#distributeSupplierAlk", async () => {
+    describe.skip("#distributeSupplierAlk", async () => {
         it("update accrued alk for a supplier on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), BigInt("1")).send({
@@ -255,9 +255,55 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
                 from: root
             });
             let alkAccrued = await rewardControl.methods.alkAccrued(accounts[2]).call();
-            assert.equal(alkAccrued.toString(), "1040477550000000000");
+            assert.equal(alkAccrued.toString(), "1040477550000000000"); // 1/4 of 4161910200000000000
             let alkSupplierIndex = await rewardControl.methods.alkSupplierIndex(accounts[1], accounts[2]).call();
             assert.equal(alkSupplierIndex.toString(), "83238204000000000000000000000000000000000000000000000");
+        });
+    });
+
+    describe("#distributeBorrowerAlk", async () => {
+        it("update accrued alk for a borrower on the first time successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), BigInt("1")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessSetBorrowBalance(accounts[1], accounts[2], BigInt("25")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessDistributeBorrowerAlk(accounts[1], accounts[2]).send({
+                gas: 1000000,
+                from: root
+            });
+            let alkAccrued = await rewardControl.methods.alkAccrued(accounts[2]).call();
+            assert.equal(alkAccrued.toString(), "0");
+            let alkBorrowerIndex = await rewardControl.methods.alkBorrowerIndex(accounts[1], accounts[2]).call();
+            assert.equal(alkBorrowerIndex.toString(), "41619102000000000000000000000000000000000000000000000");
+        });
+
+        it("update accrued alk for a borrower on the second time successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], BigInt("83238204000000000000000000000000000000000000000000000"), BigInt("1")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessSetAlkBorrowerIndex(accounts[1], accounts[2], BigInt("41619102000000000000000000000000000000000000000000000")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessSetBorrowBalance(accounts[1], accounts[2], BigInt("25")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessDistributeBorrowerAlk(accounts[1], accounts[2]).send({
+                gas: 1000000,
+                from: root
+            });
+            let alkAccrued = await rewardControl.methods.alkAccrued(accounts[2]).call();
+            assert.equal(alkAccrued.toString(), "1040477550000000000"); // 1/4 of 4161910200000000000
+            let alkBorrowerIndex = await rewardControl.methods.alkBorrowerIndex(accounts[1], accounts[2]).call();
+            assert.equal(alkBorrowerIndex.toString(), "83238204000000000000000000000000000000000000000000000");
         });
     });
 
