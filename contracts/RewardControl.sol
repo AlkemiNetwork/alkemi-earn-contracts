@@ -194,7 +194,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
 
         if (supplierIndex.mantissa > 0) {
             Double memory deltaIndex = sub_(supplyIndex, supplierIndex);
-            uint supplierBalance = moneyMarket.getSupplyBalance(supplier, market);
+            uint supplierBalance = getSupplyBalance(market, supplier);
             uint supplierDelta = mul_(supplierBalance, deltaIndex);
             alkAccrued[supplier] = add_(alkAccrued[supplier], supplierDelta);
             emit DistributedSupplierAlk(market, supplier, supplierDelta, alkAccrued[supplier], supplyIndex.mantissa);
@@ -214,7 +214,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
 
         if (borrowerIndex.mantissa > 0) {
             Double memory deltaIndex = sub_(borrowIndex, borrowerIndex);
-            uint borrowerBalance = moneyMarket.getBorrowBalance(borrower, market);
+            uint borrowerBalance = getBorrowBalance(market, borrower);
             uint borrowerDelta = mul_(borrowerBalance, deltaIndex);
             alkAccrued[borrower] = add_(alkAccrued[borrower], borrowerDelta);
             emit DistributedBorrowerAlk(market, borrower, borrowerDelta, alkAccrued[borrower], borrowIndex.mantissa);
@@ -302,6 +302,14 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         uint totalBorrows;
         (,,,,,, totalBorrows,,) = getMarketStats(market);
         return totalBorrows;
+    }
+
+    function getSupplyBalance(address market, address supplier) public view returns (uint) {
+        return moneyMarket.getSupplyBalance(supplier, market);
+    }
+
+    function getBorrowBalance(address market, address borrower) public view returns (uint) {
+        return moneyMarket.getBorrowBalance(borrower, market);
     }
 
     /**

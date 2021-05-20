@@ -215,5 +215,51 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
+    describe("#distributeSupplierAlk", async () => {
+        it("update accrued alk for a supplier on the first time successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), BigInt("1")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessSetSupplyBalance(accounts[1], accounts[2], BigInt("25")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessDistributeSupplierAlk(accounts[1], accounts[2]).send({
+                gas: 1000000,
+                from: root
+            });
+            let alkAccrued = await rewardControl.methods.alkAccrued(accounts[2]).call();
+            assert.equal(alkAccrued.toString(), "0");
+            let alkSupplierIndex = await rewardControl.methods.alkSupplierIndex(accounts[1], accounts[2]).call();
+            assert.equal(alkSupplierIndex.toString(), "41619102000000000000000000000000000000000000000000000");
+        });
+
+        it("update accrued alk for a supplier on the second time successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], BigInt("83238204000000000000000000000000000000000000000000000"), BigInt("1")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessSetAlkSupplierIndex(accounts[1], accounts[2], BigInt("41619102000000000000000000000000000000000000000000000")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessSetSupplyBalance(accounts[1], accounts[2], BigInt("25")).send({
+                gas: 1000000,
+                from: root
+            });
+            await rewardControl.methods.harnessDistributeSupplierAlk(accounts[1], accounts[2]).send({
+                gas: 1000000,
+                from: root
+            });
+            let alkAccrued = await rewardControl.methods.alkAccrued(accounts[2]).call();
+            assert.equal(alkAccrued.toString(), "1040477550000000000");
+            let alkSupplierIndex = await rewardControl.methods.alkSupplierIndex(accounts[1], accounts[2]).call();
+            assert.equal(alkSupplierIndex.toString(), "83238204000000000000000000000000000000000000000000000");
+        });
+    });
+
 
 });
