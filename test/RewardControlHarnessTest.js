@@ -561,4 +561,33 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
             assert.equal(await rewardControl.methods.alkRate().call(), 0);
         });
     });
+
+    describe("#{set|get}MoneyMarketAddress", async () => {
+        it("set/get MoneyMarket address successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.getMoneyMarketAddress().call(), accounts[2]);
+
+            await rewardControl.methods.setMoneyMarketAddress(accounts[4]).send({from: root});
+            assert.equal(await rewardControl.methods.getMoneyMarketAddress().call(), accounts[4]);
+        });
+
+        it("set the same MoneyMarket address failed", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.getMoneyMarketAddress().call(), accounts[2]);
+
+            await assert.revert(rewardControl.methods.setMoneyMarketAddress(accounts[2]).send({from: root}), "revert The same Money Market address");
+            assert.equal(await rewardControl.methods.getMoneyMarketAddress().call(), accounts[2]);
+        });
+
+        it("set empty MoneyMarket address failed", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.getMoneyMarketAddress().call(), accounts[2]);
+
+            await assert.revert(rewardControl.methods.setMoneyMarketAddress("0x0000000000000000000000000000000000000000").send({from: root}), "revert MoneyMarket address cannot be empty");
+            assert.equal(await rewardControl.methods.getMoneyMarketAddress().call(), accounts[2]);
+        });
+    });
 });
