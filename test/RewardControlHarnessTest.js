@@ -2,12 +2,12 @@
 
 const {gas} = require('./Utils');
 const {getContract} = require('./Contract');
-const RewardControl = getContract("./RewardControlHarness.sol");
+const RewardControl = getContract("./test/RewardControlHarness.sol");
 const EIP20 = getContract("./test/EIP20Harness.sol");
 
 contract('RewardControlHarness', function ([root, ...accounts]) {
 
-    describe.skip("#refreshAlkSpeeds", async () => {
+    describe("#refreshAlkSpeeds", async () => {
         it("refresh ALK speeds when there is a single market", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
@@ -82,7 +82,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#updateAlkSupplyIndex", async () => {
+    describe("#updateAlkSupplyIndex", async () => {
         it("update supply state on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
@@ -149,7 +149,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#updateAlkBorrowIndex", async () => {
+    describe("#updateAlkBorrowIndex", async () => {
         it("update borrow state on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
@@ -216,7 +216,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#distributeSupplierAlk", async () => {
+    describe("#distributeSupplierAlk", async () => {
         it("update accrued alk for a supplier on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), BigInt("1")).send({
@@ -262,7 +262,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#distributeBorrowerAlk", async () => {
+    describe("#distributeBorrowerAlk", async () => {
         it("update accrued alk for a borrower on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), BigInt("1")).send({
@@ -308,7 +308,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#transferAlk", async () => {
+    describe("#transferAlk", async () => {
         it("transfer ALK when RewardControl has no balance", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
@@ -357,7 +357,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#transferOwnership", async () => {
+    describe("#transferOwnership", async () => {
         it("transfer OwnerShip successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
@@ -385,7 +385,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#{add|remove}Market", async () => {
+    describe("#{add|remove}Market", async () => {
         it("add/remove market successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
@@ -504,7 +504,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#{set|get}AlkAddress", async () => {
+    describe("#{set|get}AlkAddress", async () => {
         it("set/get alk address successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
@@ -542,7 +542,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe.skip("#setAlkRate", async () => {
+    describe("#setAlkRate", async () => {
         it("set alk rate successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
