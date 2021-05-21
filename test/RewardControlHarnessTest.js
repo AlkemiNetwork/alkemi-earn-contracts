@@ -385,7 +385,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe("#{add|remove}Market", async () => {
+    describe.skip("#{add|remove}Market", async () => {
         it("add/remove market successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
@@ -501,6 +501,64 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
             assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
             assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
             assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+        });
+    });
+
+    describe.skip("#{set|get}AlkAddress", async () => {
+        it("set/get alk address successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.getAlkAddress().call(), accounts[3]);
+
+            await rewardControl.methods.setAlkAddress(accounts[4]).send({from: root});
+            assert.equal(await rewardControl.methods.getAlkAddress().call(), accounts[4]);
+        });
+
+        it("set alk address failed with permission", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.getAlkAddress().call(), accounts[3]);
+
+            await assert.revert(rewardControl.methods.setAlkAddress(accounts[4]).send({from: accounts[5]}), "revert non-owner");
+            assert.equal(await rewardControl.methods.getAlkAddress().call(), accounts[3]); // alk address stays the same.
+        });
+
+        it("set the same alk address failed ", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.getAlkAddress().call(), accounts[3]);
+
+            await assert.revert(rewardControl.methods.setAlkAddress(accounts[3]).send({from: root}), "revert The same ALK address");
+            assert.equal(await rewardControl.methods.getAlkAddress().call(), accounts[3]); // alk address stays the same.
+        });
+
+        it("set empty alk address failed ", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.getAlkAddress().call(), accounts[3]);
+
+            await assert.revert(rewardControl.methods.setAlkAddress("0x0000000000000000000000000000000000000000").send({from: root}), "revert ALK address cannot be empty");
+            assert.equal(await rewardControl.methods.getAlkAddress().call(), accounts[3]); // alk address stays the same.
+        });
+    });
+
+    describe.skip("#setAlkRate", async () => {
+        it("set alk rate successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.alkRate().call(), 4161910200000000000);
+
+            await rewardControl.methods.setAlkRate(100).send({from: root});
+            assert.equal(await rewardControl.methods.alkRate().call(), 100);
+
+            await rewardControl.methods.setAlkRate(100).send({from: root});
+            assert.equal(await rewardControl.methods.alkRate().call(), 100);
+
+            await assert.revert(rewardControl.methods.setAlkRate(200).send({from: accounts[4]}), "revert non-owner");
+            assert.equal(await rewardControl.methods.alkRate().call(), 100);
+
+            await rewardControl.methods.setAlkRate(0).send({from: root});
+            assert.equal(await rewardControl.methods.alkRate().call(), 0);
         });
     });
 });
