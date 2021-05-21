@@ -3,7 +3,7 @@
 const {gas} = require('./Utils');
 const {getContract} = require('./Contract');
 const RewardControl = getContract("./RewardControlHarness.sol");
-const EIP20 = getContract("./EIP20Harness.sol");
+const EIP20 = getContract("./test/EIP20Harness.sol");
 
 contract('RewardControlHarness', function ([root, ...accounts]) {
 
@@ -308,7 +308,7 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
-    describe("#transferAlk", async () => {
+    describe.skip("#transferAlk", async () => {
         it("transfer ALK when RewardControl has no balance", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
@@ -357,5 +357,31 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
         });
     });
 
+    describe.skip("#transferOwnership", async () => {
+        it("transfer OwnerShip successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            let owner_1 = await rewardControl.methods.owner().call();
+            assert.equal(owner_1.toString(), root.toString());
+            await rewardControl.methods.transferOwnership(accounts[1]).send({from: root});
+            let owner_2 = await rewardControl.methods.owner().call();
+            assert.equal(owner_2.toString(), root.toString());
+            await rewardControl.methods.acceptOwnership().send({from: accounts[1]});
+            let owner_3 = await rewardControl.methods.owner().call();
+            assert.equal(owner_3.toString(), accounts[1].toString());
+        });
 
+        it("transfer OwnerShip failed without permission", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            let owner_1 = await rewardControl.methods.owner().call();
+            assert.equal(owner_1.toString(), root.toString());
+            await assert.revert(rewardControl.methods.transferOwnership(accounts[1]).send({from: accounts[1]}), "revert non-owner"); // accounts[1] is not the owner at this moment
+            let owner_2 = await rewardControl.methods.owner().call();
+            assert.equal(owner_2.toString(), root.toString());
+            await assert.revert(rewardControl.methods.acceptOwnership().send({from: accounts[1]}), "revert AcceptOwnership: only new owner do this.");
+            let owner_3 = await rewardControl.methods.owner().call();
+            assert.equal(owner_3.toString(), root.toString());
+        });
+    });
 });
