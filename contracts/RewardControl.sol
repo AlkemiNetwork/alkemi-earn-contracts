@@ -336,10 +336,16 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     function removeMarket(uint id) external onlyOwner {
-        require(allMarkets[id] != address(0), "Market does not exist");
+        if (id >= allMarkets.length) {
+            return;
+        }
         allMarketsIndex[allMarkets[id]] = false;
         address removedMarket = allMarkets[id];
-        delete allMarkets[id];
+
+        for (uint i = id; i < allMarkets.length - 1; i++) {
+            allMarkets[i] = allMarkets[i + 1];
+        }
+        allMarkets.length--;
         emit MarketRemoved(removedMarket, allMarkets.length);
     }
 

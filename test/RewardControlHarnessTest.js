@@ -384,4 +384,123 @@ contract('RewardControlHarness', function ([root, ...accounts]) {
             assert.equal(owner_3.toString(), root.toString());
         });
     });
+
+    describe("#{add|remove}Market", async () => {
+        it("add/remove market successfully", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 0);
+
+            await rewardControl.methods.addMarket(accounts[4]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 1);
+
+            await rewardControl.methods.addMarket(accounts[5]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+
+            await rewardControl.methods.addMarket(accounts[6]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal((await rewardControl.methods.allMarkets(2).call()).toString(), accounts[6].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 3);
+
+            await rewardControl.methods.addMarket(accounts[7]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal((await rewardControl.methods.allMarkets(2).call()).toString(), accounts[6].toString());
+            assert.equal((await rewardControl.methods.allMarkets(3).call()).toString(), accounts[7].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 4);
+
+            await rewardControl.methods.removeMarket(1).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[6].toString());
+            assert.equal((await rewardControl.methods.allMarkets(2).call()).toString(), accounts[7].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 3);
+
+            await rewardControl.methods.removeMarket(10).send({from: root}); // the index doesn't exist, nothing happens.
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[6].toString());
+            assert.equal((await rewardControl.methods.allMarkets(2).call()).toString(), accounts[7].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 3);
+
+            await rewardControl.methods.removeMarket(0).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[6].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[7].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+
+            await rewardControl.methods.removeMarket(1).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[6].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 1);
+
+            await rewardControl.methods.removeMarket(0).send({from: root});
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 0);
+
+            await rewardControl.methods.addMarket(accounts[1]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[1].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 1);
+
+            await rewardControl.methods.addMarket(accounts[2]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[1].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[2].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+
+            await rewardControl.methods.addMarket(accounts[3]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[1].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[2].toString());
+            assert.equal((await rewardControl.methods.allMarkets(2).call()).toString(), accounts[3].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 3);
+        });
+
+        it("add/remove market failed without permission", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 0);
+
+            await rewardControl.methods.addMarket(accounts[4]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 1);
+
+            await rewardControl.methods.addMarket(accounts[5]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+
+            await assert.revert(rewardControl.methods.addMarket(accounts[6]).send({from: accounts[1]}), "revert non-owner");
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+
+            await assert.revert(rewardControl.methods.removeMarket(0).send({from: accounts[1]}), "revert non-owner");
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+        });
+
+        it("add existing market failed", async () => {
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 0);
+
+            await rewardControl.methods.addMarket(accounts[4]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 1);
+
+            await rewardControl.methods.addMarket(accounts[5]).send({from: root});
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+
+            await assert.revert(rewardControl.methods.addMarket(accounts[4]).send({from: root}), "revert Market already exists");
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+
+            await assert.revert(rewardControl.methods.addMarket(accounts[5]).send({from: root}), "revert Market already exists");
+            assert.equal((await rewardControl.methods.allMarkets(0).call()).toString(), accounts[4].toString());
+            assert.equal((await rewardControl.methods.allMarkets(1).call()).toString(), accounts[5].toString());
+            assert.equal(await rewardControl.methods.harnessGetNumberOfMarkets().call(), 2);
+        });
+    });
 });

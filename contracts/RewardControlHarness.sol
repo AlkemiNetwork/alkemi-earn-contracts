@@ -97,4 +97,8 @@ contract RewardControlHarness is RewardControl {
         transferAlk(participant, participantAccrued);
     }
 
+    function harnessGetNumberOfMarkets() public view returns (uint) {
+        return allMarkets.length;
+    }
+
 }
