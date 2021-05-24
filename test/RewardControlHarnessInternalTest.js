@@ -5,7 +5,7 @@ const {getContract} = require('./Contract');
 const RewardControl = getContract("./test/RewardControlHarness.sol");
 const EIP20 = getContract("./test/EIP20Harness.sol");
 
-contract('RewardControlHarness', function ([root, ...accounts]) {
+contract('RewardControl internal functions test', function ([root, ...accounts]) {
 
     describe("#refreshAlkSpeeds", async () => {
         it("refresh ALK speeds when there is a single market", async () => {
