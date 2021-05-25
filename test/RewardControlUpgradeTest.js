@@ -3,6 +3,7 @@
 const {gas} = require('./Utils');
 const {getContract} = require('./Contract');
 const RewardControl = getContract("./test/RewardControlHarness.sol");
+const RewardControlV2 = getContract("./test/RewardControlHarnessV2.sol");
 const EIP20 = getContract("./test/EIP20Harness.sol");
 
 contract('RewardControl upgrade test', function ([root, ...accounts]) {
