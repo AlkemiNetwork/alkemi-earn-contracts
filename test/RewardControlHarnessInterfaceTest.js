@@ -655,6 +655,68 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "499429224000000000000000000000000000000000000000000000",
                 "0"); // 0 ALK
         });
+
+        it("claimAlk when RewardControl has not enough balance", async () => {
+            // given
+            const rewardControl = await RewardControl.new().send({from: root});
+            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
+            let marketA = accounts[1];
+            let supplier = accounts[4];
+            let borrower = supplier;
+            await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
+            await mockMarketLiquidity(rewardControl, marketA, "100", "100");
+            await mockSupplyBalance(rewardControl, marketA, supplier, "0");
+            await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
+
+            // when #1 refresh supply index
+            await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
+            await mockSupplyBalance(rewardControl, marketA, supplier, "25");
+
+            // then
+            await assertSupplyResults("1", rewardControl, marketA, supplier,
+                "4161910200000000000",
+                "41619102000000000000000000000000000000000000000000000",
+                "0"); // 0 ALK
+
+            // when #2 refresh supply index
+            await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
+            await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
+            await mockSupplyBalance(rewardControl, marketA, supplier, "50");
+
+            // then
+            await assertSupplyResults("2", rewardControl, marketA, supplier,
+                "4161910200000000000",
+                "83238204000000000000000000000000000000000000000000000",
+                "1040477550000000000"); // 1.040477550000000000 ALK
+
+            // when claim with not enough balance
+            await rewardControl.methods.claimAlk(supplier).send({gas: 1000000, from: root});
+
+            // then
+            let participantAlkBalance = await ALK.methods.balanceOf(supplier).call();
+            assert.equal(participantAlkBalance.toString(), "0");
+            let rewardControlAlkBalance = await ALK.methods.balanceOf(rewardControl._address).call();
+            assert.equal(rewardControlAlkBalance.toString(), "0");
+            await assertSupplyResults("3", rewardControl, marketA, supplier,
+                "4161910200000000000",
+                "83238204000000000000000000000000000000000000000000000",
+                "1040477550000000000"); // 1.040477550000000000 ALK
+
+            // when claim again with enough balance
+            await ALK.methods.transfer(rewardControl._address, BigInt("70000000000000000000000000")).send({from: root});
+            await rewardControl.methods.claimAlk(supplier).send({gas: 1000000, from: root});
+
+            // then ALK accrued is not changed
+            let participantAlkBalance_2 = await ALK.methods.balanceOf(supplier).call();
+            assert.equal(participantAlkBalance_2.toString(), "1040477550000000000");
+            let rewardControlAlkBalance_2 = await ALK.methods.balanceOf(rewardControl._address).call();
+            assert.equal(rewardControlAlkBalance_2.toString(), "69999998959522450000000000");
+            await assertSupplyResults("5", rewardControl, marketA, supplier,
+                "4161910200000000000",
+                "83238204000000000000000000000000000000000000000000000",
+                "0"); // 0 ALK
+        });
     });
 
     async function mockMarketLiquidity(rewardControl, market, totalSupply, totalBorrows) {
