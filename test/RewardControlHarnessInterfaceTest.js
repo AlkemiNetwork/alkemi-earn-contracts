@@ -135,6 +135,134 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
 
     });
 
+    describe("#refreshAlkBorrowIndex", async () => {
+        it("refreshAlkBorrowIndex when there is one market and one borrower", async () => {
+            // given
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            let marketA = accounts[1];
+            let borrower = accounts[4];
+            await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
+            await mockMarketLiquidity(rewardControl, marketA, "200", "100");
+            await mockBorrowBalance(rewardControl, marketA, borrower, "0");
+            await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
+
+            // when #1 refresh
+            await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrower).send({gas: 1000000, from: root});
+            await mockBorrowBalance(rewardControl, marketA, borrower, "25");
+
+            // then
+            await assertBorrowResults("1", rewardControl, marketA, borrower,
+                "4161910200000000000",
+                "41619102000000000000000000000000000000000000000000000",
+                "0"); // 0 ALK
+
+            // when #2 refresh
+            await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
+            await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrower).send({gas: 1000000, from: root});
+            await mockBorrowBalance(rewardControl, marketA, borrower, "50");
+
+            // then
+            await assertBorrowResults("2", rewardControl, marketA, borrower,
+                "4161910200000000000",
+                "83238204000000000000000000000000000000000000000000000",
+                "1040477550000000000"); // 1.040477550000000000 ALK
+
+            // when #3 refresh
+            await rewardControl.methods.harnessFastForward(3).send({gas: 1000000, from: root});
+            await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrower).send({gas: 1000000, from: root});
+
+            // then
+            await assertBorrowResults("3", rewardControl, marketA, borrower,
+                "4161910200000000000",
+                "208095510000000000000000000000000000000000000000000000",
+                "7283342850000000000"); // 7.283342850000000000 ALK
+        });
+
+        it("refreshAlkBorrowIndex when there are multiple markets and multiple borrowers", async () => {
+            // given
+            const rewardControl = await RewardControl.new().send({from: root});
+            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
+            let marketA = accounts[1];
+            let marketB = accounts[4];
+            let marketC = accounts[5];
+            let marketD = accounts[6];
+            let borrowerA = accounts[7];
+            let borrowerB = accounts[8];
+            await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
+            await rewardControl.methods.addMarket(marketB).send({gas: 1000000, from: root});
+            await rewardControl.methods.addMarket(marketC).send({gas: 1000000, from: root});
+            await rewardControl.methods.addMarket(marketD).send({gas: 1000000, from: root});
+            await mockMarketLiquidity(rewardControl, marketA, 100, 100);
+            await mockMarketLiquidity(rewardControl, marketB, 100, 100);
+            await mockMarketLiquidity(rewardControl, marketC, 100, 100);
+            await mockMarketLiquidity(rewardControl, marketD, 100, 100);
+            await mockBorrowBalance(rewardControl, marketA, borrowerA, "0");
+            await mockBorrowBalance(rewardControl, marketA, borrowerB, "0");
+            await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
+
+            // when #1 refresh borrow index for borrowerA
+            await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrowerA).send({gas: 1000000, from: root});
+            await mockBorrowBalance(rewardControl, marketA, borrowerA, "50");
+
+            // then
+            await assertBorrowResults("1.1", rewardControl, marketA, borrowerA,
+                "1040477550000000000",
+                "10404775500000000000000000000000000000000000000000000",
+                "0"); // 0 ALK
+
+            // when #2 refresh borrow index for borrowerA and borrowerB
+            await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
+            await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrowerA).send({gas: 1000000, from: root});
+            await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrowerB).send({gas: 1000000, from: root});
+            await mockBorrowBalance(rewardControl, marketA, borrowerA, "25");
+            await mockBorrowBalance(rewardControl, marketA, borrowerB, "50");
+
+            // then
+            await assertBorrowResults("2.1", rewardControl, marketA, borrowerA,
+                "1040477550000000000",
+                "20809551000000000000000000000000000000000000000000000",
+                "520238775000000000"); // 0.520238775000000000 ALK
+            await assertBorrowResults("2.2", rewardControl, marketA, borrowerB,
+                "1040477550000000000",
+                "20809551000000000000000000000000000000000000000000000",
+                "0"); // 0 ALK
+
+            // when #3 refresh borrow index for borrowerB
+            await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
+            await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrowerB).send({gas: 1000000, from: root});
+            await mockBorrowBalance(rewardControl, marketA, borrowerB, "75");
+
+            // then
+            await assertBorrowResults("3.1", rewardControl, marketA, borrowerA,
+                "1040477550000000000",
+                "20809551000000000000000000000000000000000000000000000",
+                "520238775000000000"); // 0.520238775000000000 ALK
+            await assertBorrowResults("3.2", rewardControl, marketA, borrowerB,
+                "1040477550000000000",
+                "31214326500000000000000000000000000000000000000000000",
+                "520238775000000000"); // 0.520238775000000000 ALK
+
+            // when #4 refresh borrow index for borrowerA
+            await mockMarketLiquidity(rewardControl, marketA, 100, 125);
+            await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
+            await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrowerA).send({gas: 1000000, from: root});
+            await mockBorrowBalance(rewardControl, marketA, borrowerA, "50");
+
+            // then
+            await assertBorrowResults("4.1", rewardControl, marketA, borrowerA,
+                "1135066418181818180",
+                "40294857845454545440000000000000000000000000000000000",
+
+                "1007371446136363636"); // 1.007371446136363636 ALK
+            await assertBorrowResults("4.2", rewardControl, marketA, borrowerB,
+                "1135066418181818180",
+                "31214326500000000000000000000000000000000000000000000",
+                "520238775000000000"); // 5.20238775000000000 ALK
+        });
+
+    });
+
     async function mockMarketLiquidity(rewardControl, market, totalSupply, totalBorrows) {
         await rewardControl.methods.harnessSetMarketTotalSupply(market, BigInt(totalSupply)).send({
             gas: 1000000,
@@ -153,6 +281,13 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         });
     }
 
+    async function mockBorrowBalance(rewardControl, market, borrower, borrowBalance) {
+        await rewardControl.methods.harnessSetBorrowBalance(market, borrower, BigInt(borrowBalance)).send({
+            gas: 1000000,
+            from: root
+        });
+    }
+
     async function assertSupplyResults(label, rewardControl, market, supplier, expectedAlkSpeed, expectedSupplierIndex, expectedAlkAccrued) {
         let speed = await rewardControl.methods.alkSpeeds(market).call();
         let alkSupplierIndex = await rewardControl.methods.alkSupplierIndex(market, supplier).call();
@@ -162,6 +297,18 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         console.log(`${label}: ALK accrued  = ${alkAccrued}`);
         assert.equal(speed.toString(), expectedAlkSpeed, label);
         assert.equal(alkSupplierIndex.toString(), expectedSupplierIndex, label);
+        assert.equal(alkAccrued.toString(), expectedAlkAccrued, label);
+    }
+
+    async function assertBorrowResults(label, rewardControl, market, borrower, expectedAlkSpeed, expectedBorrowerIndex, expectedAlkAccrued) {
+        let speed = await rewardControl.methods.alkSpeeds(market).call();
+        let alkBorrowerIndex = await rewardControl.methods.alkBorrowerIndex(market, borrower).call();
+        let alkAccrued = await rewardControl.methods.alkAccrued(borrower).call();
+        console.log(`${label}: actual speed = ${speed}`);
+        console.log(`${label}: ALK borrower index = ${alkBorrowerIndex}`);
+        console.log(`${label}: ALK accrued  = ${alkAccrued}`);
+        assert.equal(speed.toString(), expectedAlkSpeed, label);
+        assert.equal(alkBorrowerIndex.toString(), expectedBorrowerIndex, label);
         assert.equal(alkAccrued.toString(), expectedAlkAccrued, label);
     }
 
