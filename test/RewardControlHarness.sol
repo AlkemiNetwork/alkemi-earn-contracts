@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "../contracts/RewardControl.sol";
 
 contract RewardControlHarness is RewardControl {
-    uint blockNumber = 100000;
+    uint blockNumber;
     mapping(address => uint) mockedMarketTotalSupply;
     mapping(address => uint) mockedMarketTotalBorrows;
     mapping(address => mapping(address => uint)) mockedSupplyBalance;
