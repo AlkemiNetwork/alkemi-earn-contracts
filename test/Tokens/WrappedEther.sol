@@ -32,7 +32,7 @@ contract WrappedEther is StandardToken {
       * @dev Withdraw tokens as ether
       */
     function withdraw(uint amount) public {
-        require(balances[msg.sender] >= amount);
+        require(balances[msg.sender] >= amount,"amount > balance");
         balances[msg.sender] -= amount;
         totalSupply_ -= amount;
         msg.sender.transfer(amount);

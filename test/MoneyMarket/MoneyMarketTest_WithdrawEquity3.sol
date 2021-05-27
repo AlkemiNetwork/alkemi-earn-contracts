@@ -9,6 +9,9 @@ import "./MoneyMarketTest.sol";
 contract MoneyMarketTest_WithdrawEquity3 is MoneyMarketTest {
 
     function testWithdrawEquity_SuccessPartialEquity() public {
+        initializer();
+        addKYCAdmin(msg.sender);
+        addCustomerKYC(msg.sender);
         address asset = address(this);
         address protocol = address(this);
         balances[protocol] = 10000;

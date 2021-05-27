@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/Liquidator.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> Liquidator.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/32</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/28</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity ^0.4.24;
+&nbsp;
+import "./EIP20Interface.sol";
+import "./EIP20NonStandardInterface.sol";
+import "./ErrorReporter.sol";
+import "./InterestRateModel.sol";
+import "./SafeToken.sol";
+import "./MoneyMarket.sol";
+import "./LiquidationChecker.sol";
+&nbsp;
+contract Liquidator is ErrorReporter, SafeToken {
+    MoneyMarket public moneyMarket;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    constructor(address moneyMarket_) public {</span>
+<span class="cstat-no" title="statement not covered" >        moneyMarket = MoneyMarket(moneyMarket_)</span>;
+    }
+&nbsp;
+    event BorrowLiquidated(address targetAccount,
+        address assetBorrow,
+        uint borrowBalanceBefore,
+        uint borrowBalanceAccumulated,
+        uint amountRepaid,
+        uint borrowBalanceAfter,
+        address liquidator,
+        address assetCollateral,
+        uint collateralBalanceBefore,
+        uint collateralBalanceAccumulated,
+        uint amountSeized,
+        uint collateralBalanceAfter);
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint requestedAmountClose) public returns (uint) {</span>
+<span class="cstat-no" title="statement not covered" >        require(targetAccount != address(this), "FAILED_LIQUIDATE_LIQUIDATOR")</span>;
+<span class="cstat-no" title="statement not covered" >        require(targetAccount != msg.sender, "FAILED_LIQUIDATE_SELF")</span>;
+<span class="cstat-no" title="statement not covered" >        require(msg.sender != address(this), "FAILED_LIQUIDATE_RECURSIVE")</span>;
+<span class="cstat-no" title="statement not covered" >        require(assetBorrow != assetCollateral, "FAILED_LIQUIDATE_IN_KIND")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        InterestRateModel interestRateModel;</span>
+<span class="cstat-no" title="statement not covered" >        (,,interestRateModel,,,,,,) = moneyMarket.markets(assetBorrow)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        require(interestRateModel != address(0), "FAILED_LIQUIDATE_NO_INTEREST_RATE_MODEL")</span>;
+<span class="cstat-no" title="statement not covered" >        require(checkTransferIn(assetBorrow, msg.sender, requestedAmountClose) == Error.NO_ERROR, "FAILED_LIQUIDATE_TRANSFER_IN_INVALID")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        require(doTransferIn(assetBorrow, msg.sender, requestedAmountClose) == Error.NO_ERROR, "FAILED_LIQUIDATE_TRANSFER_IN_FAILED")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        tokenAllowAll(assetBorrow, moneyMarket)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        LiquidationChecker(interestRateModel).setAllowLiquidation(true)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        uint result = moneyMarket.liquidateBorrow(targetAccount, assetBorrow, assetCollateral, requestedAmountClose);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        require(moneyMarket.withdraw(assetCollateral, uint(-1)) == uint(Error.NO_ERROR), "FAILED_LIQUIDATE_WITHDRAW_FAILED")</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        LiquidationChecker(interestRateModel).setAllowLiquidation(false)</span>;
+&nbsp;
+        // Ensure there's no remaining balances here
+<span class="cstat-no" title="statement not covered" >        require(moneyMarket.getSupplyBalance(address(this), assetCollateral) == 0, "FAILED_LIQUIDATE_REMAINING_SUPPLY_COLLATERAL")</span>; // just to be sure
+<span class="cstat-no" title="statement not covered" >        require(moneyMarket.getSupplyBalance(address(this), assetBorrow) == 0, "FAILED_LIQUIDATE_REMAINING_SUPPLY_BORROW")</span>; // just to be sure
+<span class="cstat-no" title="statement not covered" >        require(moneyMarket.getBorrowBalance(address(this), assetCollateral) == 0, "FAILED_LIQUIDATE_REMAINING_BORROW_COLLATERAL")</span>; // just to be sure
+<span class="cstat-no" title="statement not covered" >        require(moneyMarket.getBorrowBalance(address(this), assetBorrow) == 0, "FAILED_LIQUIDATE_REMAINING_BORROW_BORROW")</span>; // just to be sure
+&nbsp;
+        // Transfer out everything remaining
+<span class="cstat-no" title="statement not covered" >        tokenTransferAll(assetCollateral, msg.sender)</span>;
+<span class="cstat-no" title="statement not covered" >        tokenTransferAll(assetBorrow, msg.sender)</span>;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return uint(result);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function tokenAllowAll(address asset, address allowee) internal {</span>
+<span class="cstat-no" title="statement not covered" >        EIP20Interface token = EIP20Interface(asset);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (token.allowance(address(this), allowee) != uint(-1))</span>
+            // require(token.approve(allowee, uint(-1)), "FAILED_LIQUIDATE_ASSET_ALLOWANCE_FAILED");
+<span class="cstat-no" title="statement not covered" >            require(doApprove(asset, allowee, uint(-1)) == Error.NO_ERROR, "FAILED_LIQUIDATE_ASSET_ALLOWANCE_FAILED")</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function tokenTransferAll(address asset, address recipient) internal {</span>
+<span class="cstat-no" title="statement not covered" >        uint balance = getBalanceOf(asset, address(this));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (balance &gt; 0){</span>
+<span class="cstat-no" title="statement not covered" >            require(doTransferOut(asset, recipient, balance) == Error.NO_ERROR, "FAILED_LIQUIDATE_TRANSFER_OUT_FAILED")</span>;
+        }
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 29 2021 17:21:41 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

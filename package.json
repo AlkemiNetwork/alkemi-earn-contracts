@@ -1,8 +1,8 @@
 {
   "name": "alkemi-earn-protocol",
-  "version": "0.0.1",
+  "version": "1.2.0",
   "description": "Alkemi Earn Protocol",
-  "homepage": "https://docs.alkemi.network/",
+  "homepage": "https://docs.alkemi.network/earn-contracts",
   "main": "index.js",
   "directories": {
     "test": "test",
@@ -11,7 +11,7 @@
   "author": "Raghu <raghu@alkemi.ai>",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://bitbucket.org/project-alkemi/alkemi-earn-protocol/issues"
+    "url": "https://github.com/AlkemiNetwork/alkemi-earn-protocol/issues"
   },
   "keywords": [
     "Alkemi",
@@ -24,9 +24,9 @@
     "url": "git+https://bitbucket.org/project-alkemi/alkemi-earn-protocol"
   },
   "scripts": {
-    "ganache": "ganache-cli --port 8545",
-    "ganache-ci": "ganache-cli --port 8545 > /dev/null &",
-    "compile": "truffle compile --all",
+    "ganache": "ganache-cli --port 8545 --allowUnlimitedContractSize",
+    "ganache-ci": "ganache-cli --port 8545 --allowUnlimitedContractSize > /dev/null &",
+    "compile": "truffle compile --all && node create_ABI_files.js",
     "deploy": "truffle deploy",
     "migrate:development": "truffle migrate --network development",
     "migrate:rinkeby": "truffle migrate --network rinkeby",
@@ -41,7 +41,7 @@
     "@chainlink/contracts": "0.0.8",
     "@openzeppelin/truffle-upgrades": "^1.2.2",
     "solidoc": "^1.0.5",
-    "truffle": "^5.1.46",
+    "truffle": "^5.3.4",
     "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
@@ -49,9 +49,8 @@
     "ganache-cli": "^6.7.0",
     "seamless-immutable": "^7.1.3",
     "solc": "^0.4.24",
-    "solidity-coverage": "https://github.com/compound-finance/solidity-coverage.git#25fc59d2be6739d6cfe5475e33be67f7b6d57c51",
+    "solidity-coverage": "^0.5.4",
     "solium": "^1.1.7",
-    "truffle": "^4.1.11",
     "web3": "^1.0.0-beta.34"
   }
 }

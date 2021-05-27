@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/ErrorReporter.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> ErrorReporter.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>2/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>2/4</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity ^0.4.24;
+&nbsp;
+contract ErrorReporter {
+    /**
+     * @dev `error` corresponds to enum Error; `info` corresponds to enum FailureInfo, and `detail` is an arbitrary
+     * contract-specific code that enables us to report opaque error codes from upgradeable contracts.
+     */
+    event Failure(uint error, uint info, uint detail);
+&nbsp;
+    enum Error {
+        NO_ERROR,
+        OPAQUE_ERROR, // To be used when reporting errors from upgradeable contracts; the opaque code should be given as `detail` in the `Failure` event
+        UNAUTHORIZED,
+        INTEGER_OVERFLOW,
+        INTEGER_UNDERFLOW,
+        DIVISION_BY_ZERO,
+        BAD_INPUT,
+        TOKEN_INSUFFICIENT_ALLOWANCE,
+        TOKEN_INSUFFICIENT_BALANCE,
+        TOKEN_TRANSFER_FAILED,
+        MARKET_NOT_SUPPORTED,
+        SUPPLY_RATE_CALCULATION_FAILED,
+        BORROW_RATE_CALCULATION_FAILED,
+        TOKEN_INSUFFICIENT_CASH,
+        TOKEN_TRANSFER_OUT_FAILED,
+        INSUFFICIENT_LIQUIDITY,
+        INSUFFICIENT_BALANCE,
+        INVALID_COLLATERAL_RATIO,
+        MISSING_ASSET_PRICE,
+        EQUITY_INSUFFICIENT_BALANCE,
+        INVALID_CLOSE_AMOUNT_REQUESTED,
+        ASSET_NOT_PRICED,
+        INVALID_LIQUIDATION_DISCOUNT,
+        INVALID_COMBINED_RISK_PARAMETERS,
+        ZERO_ORACLE_ADDRESS,
+        CONTRACT_PAUSED,
+        KYC_ADMIN_CHECK_FAILED,
+        KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+        KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,
+        LIQUIDATOR_CHECK_FAILED,
+        LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+        SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
+        WETH_ADDRESS_NOT_SET_ERROR,
+        ETHER_AMOUNT_MISMATCH_ERROR
+    }
+&nbsp;
+    /**
+     * Note: FailureInfo (but not Error) is kept in alphabetical order
+     *       This is because FailureInfo grows significantly faster, and
+     *       the order of Error has some meaning, while the order of FailureInfo
+     *       is entirely arbitrary.
+     */
+    enum FailureInfo {
+        ACCEPT_ADMIN_PENDING_ADMIN_CHECK,
+        BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED,
+        BORROW_ACCOUNT_SHORTFALL_PRESENT,
+        BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED,
+        BORROW_AMOUNT_LIQUIDITY_SHORTFALL,
+        BORROW_AMOUNT_VALUE_CALCULATION_FAILED,
+        BORROW_CONTRACT_PAUSED,
+        BORROW_MARKET_NOT_SUPPORTED,
+        BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED,
+        BORROW_NEW_BORROW_RATE_CALCULATION_FAILED,
+        BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,
+        BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED,
+        BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,
+        BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED,
+        BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED,
+        BORROW_ORIGINATION_FEE_CALCULATION_FAILED,
+        BORROW_TRANSFER_OUT_FAILED,
+        EQUITY_WITHDRAWAL_AMOUNT_VALIDATION,
+        EQUITY_WITHDRAWAL_CALCULATE_EQUITY,
+        EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK,
+        EQUITY_WITHDRAWAL_TRANSFER_OUT_FAILED,
+        LIQUIDATE_ACCUMULATED_BORROW_BALANCE_CALCULATION_FAILED,
+        LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET,
+        LIQUIDATE_ACCUMULATED_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET,
+        LIQUIDATE_AMOUNT_SEIZE_CALCULATION_FAILED,
+        LIQUIDATE_BORROW_DENOMINATED_COLLATERAL_CALCULATION_FAILED,
+        LIQUIDATE_CLOSE_AMOUNT_TOO_HIGH,
+        LIQUIDATE_CONTRACT_PAUSED,
+        LIQUIDATE_DISCOUNTED_REPAY_TO_EVEN_AMOUNT_CALCULATION_FAILED,
+        LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_BORROWED_ASSET,
+        LIQUIDATE_NEW_BORROW_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET,
+        LIQUIDATE_NEW_BORROW_RATE_CALCULATION_FAILED_BORROWED_ASSET,
+        LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_BORROWED_ASSET,
+        LIQUIDATE_NEW_SUPPLY_INDEX_CALCULATION_FAILED_COLLATERAL_ASSET,
+        LIQUIDATE_NEW_SUPPLY_RATE_CALCULATION_FAILED_BORROWED_ASSET,
+        LIQUIDATE_NEW_TOTAL_BORROW_CALCULATION_FAILED_BORROWED_ASSET,
+        LIQUIDATE_NEW_TOTAL_CASH_CALCULATION_FAILED_BORROWED_ASSET,
+        LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_BORROWER_COLLATERAL_ASSET,
+        LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET,
+        LIQUIDATE_FETCH_ASSET_PRICE_FAILED,
+        LIQUIDATE_TRANSFER_IN_FAILED,
+        LIQUIDATE_TRANSFER_IN_NOT_POSSIBLE,
+        REPAY_BORROW_ACCUMULATED_BALANCE_CALCULATION_FAILED,
+        REPAY_BORROW_CONTRACT_PAUSED,
+        REPAY_BORROW_NEW_BORROW_INDEX_CALCULATION_FAILED,
+        REPAY_BORROW_NEW_BORROW_RATE_CALCULATION_FAILED,
+        REPAY_BORROW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,
+        REPAY_BORROW_NEW_SUPPLY_RATE_CALCULATION_FAILED,
+        REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,
+        REPAY_BORROW_NEW_TOTAL_BORROW_CALCULATION_FAILED,
+        REPAY_BORROW_NEW_TOTAL_CASH_CALCULATION_FAILED,
+        REPAY_BORROW_TRANSFER_IN_FAILED,
+        REPAY_BORROW_TRANSFER_IN_NOT_POSSIBLE,
+        SET_ASSET_PRICE_CHECK_ORACLE,
+        SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK,
+        SET_ORACLE_OWNER_CHECK,
+        SET_ORIGINATION_FEE_OWNER_CHECK,
+        SET_PAUSED_OWNER_CHECK,
+        SET_PENDING_ADMIN_OWNER_CHECK,
+        SET_RISK_PARAMETERS_OWNER_CHECK,
+        SET_RISK_PARAMETERS_VALIDATION,
+        SUPPLY_ACCUMULATED_BALANCE_CALCULATION_FAILED,
+        SUPPLY_CONTRACT_PAUSED,
+        SUPPLY_MARKET_NOT_SUPPORTED,
+        SUPPLY_NEW_BORROW_INDEX_CALCULATION_FAILED,
+        SUPPLY_NEW_BORROW_RATE_CALCULATION_FAILED,
+        SUPPLY_NEW_SUPPLY_INDEX_CALCULATION_FAILED,
+        SUPPLY_NEW_SUPPLY_RATE_CALCULATION_FAILED,
+        SUPPLY_NEW_TOTAL_BALANCE_CALCULATION_FAILED,
+        SUPPLY_NEW_TOTAL_CASH_CALCULATION_FAILED,
+        SUPPLY_NEW_TOTAL_SUPPLY_CALCULATION_FAILED,
+        SUPPLY_TRANSFER_IN_FAILED,
+        SUPPLY_TRANSFER_IN_NOT_POSSIBLE,
+        SUPPORT_MARKET_FETCH_PRICE_FAILED,
+        SUPPORT_MARKET_OWNER_CHECK,
+        SUPPORT_MARKET_PRICE_CHECK,
+        SUSPEND_MARKET_OWNER_CHECK,
+        WITHDRAW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED,
+        WITHDRAW_ACCOUNT_SHORTFALL_PRESENT,
+        WITHDRAW_ACCUMULATED_BALANCE_CALCULATION_FAILED,
+        WITHDRAW_AMOUNT_LIQUIDITY_SHORTFALL,
+        WITHDRAW_AMOUNT_VALUE_CALCULATION_FAILED,
+        WITHDRAW_CAPACITY_CALCULATION_FAILED,
+        WITHDRAW_CONTRACT_PAUSED,
+        WITHDRAW_NEW_BORROW_INDEX_CALCULATION_FAILED,
+        WITHDRAW_NEW_BORROW_RATE_CALCULATION_FAILED,
+        WITHDRAW_NEW_SUPPLY_INDEX_CALCULATION_FAILED,
+        WITHDRAW_NEW_SUPPLY_RATE_CALCULATION_FAILED,
+        WITHDRAW_NEW_TOTAL_BALANCE_CALCULATION_FAILED,
+        WITHDRAW_NEW_TOTAL_SUPPLY_CALCULATION_FAILED,
+        WITHDRAW_TRANSFER_OUT_FAILED,
+        WITHDRAW_TRANSFER_OUT_NOT_POSSIBLE,
+        KYC_ADMIN_CHECK_FAILED,
+        KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+        KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,
+        LIQUIDATOR_CHECK_FAILED,
+        LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+        SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
+        WETH_ADDRESS_NOT_SET_ERROR,
+        SEND_ETHER_ADMIN_CHECK_FAILED,
+        ETHER_AMOUNT_MISMATCH_ERROR
+    }
+&nbsp;
+    /**
+     * @dev use this when reporting a known error from the money market or a non-upgradeable collaborator
+     */
+    function fail(Error err, FailureInfo info) internal returns (uint) {
+        emit Failure(uint(err), uint(info), 0);
+&nbsp;
+        return uint(err);
+    }
+&nbsp;
+    /**
+     * @dev use this when reporting an opaque error from an upgradeable collaborator contract
+     */
+<span class="fstat-no" title="function not covered" >    function failOpaque(FailureInfo info, uint opaqueError) internal returns (uint) {</span>
+<span class="cstat-no" title="statement not covered" >        emit Failure(uint(Error.OPAQUE_ERROR), uint(info), opaqueError);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return uint(Error.OPAQUE_ERROR);</span>
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 29 2021 19:45:33 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

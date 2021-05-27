@@ -10,6 +10,9 @@ import "./MoneyMarketTest.sol";
 contract MoneyMarketTest_Withdraw is MoneyMarketTest {
 
     function testBasicValidations() public {
+        initializer();
+        addKYCAdmin(msg.sender);
+        addCustomerKYC(msg.sender);
         address token = address(this);
 
         uint err = withdraw(token, 10);
