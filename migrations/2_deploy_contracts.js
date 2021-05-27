@@ -7,9 +7,9 @@ var LiquidationChecker = artifacts.require("LiquidationChecker.sol");
 var ChainLink = artifacts.require("ChainLink.sol");
 var AlkemiWETH = artifacts.require("AlkemiWETH.sol");
 var AlkemiRateModel = artifacts.require("AlkemiRateModel.sol");
-var StandardInterestRateModel = artifacts.require(
-	"./StandardInterestRateModel.sol"
-);
+// var StandardInterestRateModel = artifacts.require(
+// 	"./StandardInterestRateModel.sol"
+// );
 var TestTokens = artifacts.require("TestTokens.sol");
 
 const deploymentConfig = require("./deployment-config.json");
