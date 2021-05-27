@@ -1,6 +1,7 @@
 var PriceOracle = artifacts.require("PriceOracle.sol");
 var PriceOracleProxy = artifacts.require("PriceOracleProxy.sol");
-var MoneyMarket = artifacts.require("MoneyMarket.sol");
+var MoneyMarket = artifacts.require("MoneyMarketV12.sol");
+var RewardControl = artifacts.require("RewardControl.sol");
 var Liquidator = artifacts.require("Liquidator.sol");
 var LiquidationChecker = artifacts.require("LiquidationChecker.sol");
 var ChainLink = artifacts.require("ChainLink.sol");
@@ -51,21 +52,22 @@ module.exports = async (deployer, network, accounts) => {
 		// 	true
 		// );
 	} else if (network == "rinkeby") {
-		await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
-		await deployer.deploy(
-			PriceOracleProxy,
-			deploymentConfig.RINKEBY.PriceOracle
-		);
+		// await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
+		// await deployer.deploy(
+		// 	PriceOracleProxy,
+		// 	deploymentConfig.RINKEBY.PriceOracle
+		// );
 		await deployer.deploy(MoneyMarket);
-		await deployer.deploy(ChainLink);
-		await deployer.deploy(AlkemiWETH);
-		await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
-		await deployer.deploy(
-			LiquidationChecker,
-			deploymentConfig.RINKEBY.MoneyMarket,
-			deploymentConfig.RINKEBY.Liquidator,
-			true
-		);
+		await deployer.deploy(RewardControl);
+		// await deployer.deploy(ChainLink);
+		// await deployer.deploy(AlkemiWETH);
+		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
+		// await deployer.deploy(
+		// 	LiquidationChecker,
+		// 	deploymentConfig.RINKEBY.MoneyMarket,
+		// 	deploymentConfig.RINKEBY.Liquidator,
+		// 	true
+		// );
 	} else if (network == "ropsten") {
 		// await deployer.deploy(PriceOracle, deploymentConfig.ROPSTEN.POSTER);
 		// await deployer.deploy(
