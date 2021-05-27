@@ -24,7 +24,7 @@ contract MoneyMarketTest_CalculateAmountSeize2 is MoneyMarketWithPriceTest {
         liquidationDiscount = Exp({mantissa: 0}); // 0% discount
 
         Exp memory underwaterAssetPrice = Exp({mantissa: mantissaOne});
-        Exp memory collateralPrice =  Exp({mantissa: mantissaOne});
+        Exp memory collateralPrice = Exp({mantissa: mantissaOne});
 
         (Error err, uint result) = calculateAmountSeize(underwaterAssetPrice, collateralPrice, 2**256 - 1);
         Assert.equal(0, result, "default value");

@@ -14,7 +14,7 @@ definitions:
     - step: &github
         name: "Mirror to Github"
         script:
-          - git push --mirror git@github.com:project-alkemi/alkemi-earn-protocol.git
+          - git push --mirror git@github.com:AlkemiNetwork/alkemi-earn-contracts.git
 
 pipelines:
   branches:

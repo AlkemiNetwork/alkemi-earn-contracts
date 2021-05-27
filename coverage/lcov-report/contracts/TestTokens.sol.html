@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/TestTokens.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> TestTokens.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/29</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/29</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity 0.4.24;
+&nbsp;
+contract TestTokens {
+//Variables
+string public name;
+string public symbol; // Usually is 3 or 4 letters long
+uint8 public decimals; // maximum is 18 decimals
+uint256 public supply;
+&nbsp;
+mapping(address =&gt; uint) public balances;
+mapping(address =&gt; mapping(address =&gt; uint)) public allowed;
+//Events
+event Transfer(address sender, address receiver, uint256 tokens);
+event Approval(address sender, address delegate, uint256 tokens);
+//constructor
+<span class="fstat-no" title="function not covered" >constructor (string memory _name, string memory _symbol, uint8 _decimals, uint256 _supply) public {</span>
+<span class="cstat-no" title="statement not covered" >    name = _name</span>;
+<span class="cstat-no" title="statement not covered" >    symbol = _symbol</span>;
+<span class="cstat-no" title="statement not covered" >    decimals = _decimals</span>;
+<span class="cstat-no" title="statement not covered" >    supply = _supply * 10**18</span>;
+<span class="cstat-no" title="statement not covered" >    balances[msg.sender] = _supply * 10**18</span>;
+}
+//Functions
+//return the total number of tokens that you have
+<span class="fstat-no" title="function not covered" >function totalSupply() external view returns (uint256){</span>
+<span class="cstat-no" title="statement not covered" >    return supply;</span>
+} 
+&nbsp;
+//How many tokens does this person have
+<span class="fstat-no" title="function not covered" >function balanceOf(address tokenOwner) external view returns (uint){</span>
+<span class="cstat-no" title="statement not covered" >    return balances[tokenOwner];</span>
+} 
+&nbsp;
+//helps in transferring from your account to another person
+<span class="fstat-no" title="function not covered" >function transfer(address receiver, uint numTokens) external returns (bool){</span>
+<span class="cstat-no" title="statement not covered" >    require(msg.sender != receiver,"Sender and receiver can't be the same")</span>;
+<span class="cstat-no" title="statement not covered" >    require(balances[msg.sender] &gt;= numTokens,"Not enough balance")</span>;
+<span class="cstat-no" title="statement not covered" >    balances[msg.sender] -= numTokens</span>;
+<span class="cstat-no" title="statement not covered" >    balances[receiver] += numTokens</span>;
+<span class="cstat-no" title="statement not covered" >    emit Transfer(msg.sender,receiver,numTokens);</span>
+<span class="cstat-no" title="statement not covered" >    return true;</span>
+} 
+&nbsp;
+// Used to delegate authority to send tokens without my approval
+<span class="fstat-no" title="function not covered" >function approve(address delegate, uint numTokens) external returns (bool){</span>
+<span class="cstat-no" title="statement not covered" >    require(msg.sender != delegate,"Sender and delegate can't be the same")</span>;
+<span class="cstat-no" title="statement not covered" >    allowed[msg.sender][delegate] = numTokens</span>;
+<span class="cstat-no" title="statement not covered" >    emit Approval(msg.sender,delegate,numTokens);</span>
+<span class="cstat-no" title="statement not covered" >    return true;</span>
+} 
+&nbsp;
+// How much has the owner delegated/approved to the delegate
+<span class="fstat-no" title="function not covered" >function allowance(address owner, address delegate) external view returns (uint){</span>
+<span class="cstat-no" title="statement not covered" >    return allowed[owner][delegate];</span>
+} 
+&nbsp;
+// Used by exchanges to send money from owner to buyer
+<span class="fstat-no" title="function not covered" >function transferFrom(address owner, address buyer, uint numTokens) external returns (bool){</span>
+<span class="cstat-no" title="statement not covered" >    require(owner != buyer,"Owner and Buyer can't be the same")</span>;
+<span class="cstat-no" title="statement not covered" >    require(balances[owner] &gt;= numTokens,"Not enough balance")</span>;
+<span class="cstat-no" title="statement not covered" >    require(allowed[owner][msg.sender] &gt;= numTokens,"Not enough allowance")</span>;
+<span class="cstat-no" title="statement not covered" >    balances[owner] -= numTokens</span>;
+<span class="cstat-no" title="statement not covered" >    balances[buyer] += numTokens</span>;
+<span class="cstat-no" title="statement not covered" >    allowed[owner][msg.sender] -= numTokens</span>;
+<span class="cstat-no" title="statement not covered" >    emit Transfer(owner,buyer,numTokens);</span>
+<span class="cstat-no" title="statement not covered" >    return true;</span>
+}
+&nbsp;
+// Should not be used in production
+// Only to allocate testnet tokens to user for testing purposes
+<span class="fstat-no" title="function not covered" >function allocateTo(address _owner, uint256 value) public {</span>
+<span class="cstat-no" title="statement not covered" >        balances[_owner] += value</span>;
+<span class="cstat-no" title="statement not covered" >        supply += value</span>;
+<span class="cstat-no" title="statement not covered" >        emit Transfer(address(this), _owner, value);</span>
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 29 2021 19:45:33 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

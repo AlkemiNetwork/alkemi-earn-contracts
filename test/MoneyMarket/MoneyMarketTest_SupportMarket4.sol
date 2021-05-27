@@ -9,6 +9,7 @@ import "./MoneyMarketWithPriceTest.sol";
 contract MoneyMarketTest_SupportMarket4 is MoneyMarketWithPriceTest {
 
     function testSupportMarket_Suspended() public {
+        initializer();
         collateralMarkets = new address[](0); // clear collateral markets
 
         address asset = nextAddress();

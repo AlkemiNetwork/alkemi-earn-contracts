@@ -1,0 +1,383 @@
+{
+	"Excel: Excel Scenario 1 https://docs.google.com/spreadsheets/d/14kRju5M3t0wL-OPSNPV-j1raXgArb0IdsL7hMqKQuyI/edit#gid=1178589286": [
+		["SetOriginationFee", "0"],
+		["SetCollateralRatio", "1.1"],
+		["AddToken", "Ether"],
+		["SetAssetValue", "Ether", "1.0"],
+		["AddSupportedAsset", "Ether"],
+		["SetInterestRate", "Ether", ["WhitepaperRate"]],
+		["AddToken", "OMG"],
+		["SetAssetValue", "OMG", "0.05"],
+		["AddSupportedAsset", "OMG"],
+		["SetInterestRate", "OMG", ["WhitepaperRate"]],
+		["Approve", "Bank", "Ether", "1e30"],
+		["Approve", "Bank", "OMG", "1e30"],
+		["Approve", "Geoff", "Ether", "1e30"],
+		["Approve", "Geoff", "OMG", "1e30"],
+		["Approve", "Torrey", "Ether", "1e30"],
+		["Approve", "Torrey", "OMG", "1e30"],
+		["Approve", "Robert", "Ether", "1e30"],
+		["Approve", "Robert", "OMG", "1e30"],
+		["Faucet", "Bank", "Ether", "1e30"],
+		["Faucet", "Bank", "OMG", "1e30"],
+		["Faucet", "Geoff", "Ether", "1e30"],
+		["Faucet", "Geoff", "OMG", "1e30"],
+		["Faucet", "Torrey", "Ether", "1e30"],
+		["Faucet", "Torrey", "OMG", "1e30"],
+		["Faucet", "Robert", "Ether", "1e30"],
+		["Faucet", "Robert", "OMG", "1e30"],
+		["Supply", "Bank", "Ether", "1000.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Bank", "Ether"],
+				["Precisely", "1000.00000000e18"]
+			]
+		],
+		["Supply", "Bank", "OMG", "3000.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Bank", "OMG"],
+				["Precisely", "3000.00000000e18"]
+			]
+		],
+		["FastForward", 20, "blocks"],
+		["Supply", "Geoff", "Ether", "200.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Geoff", "Ether"],
+				["Precisely", "200.00000000e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["Borrow", "Geoff", "OMG", "2500.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["BorrowBalance", "Geoff", "OMG"],
+				["Precisely", "2500.00000000e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["Supply", "Torrey", "OMG", "2500.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Torrey", "OMG"],
+				["Precisely", "2500.00000000e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["Borrow", "Torrey", "Ether", "97.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["BorrowBalance", "Torrey", "Ether"],
+				["Precisely", "97.00000000e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["Withdraw", "Bank", "Ether", "780.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Bank", "Ether"],
+				["Precisely", "220.00002988e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["Withdraw", "Bank", "OMG", "2000.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Bank", "OMG"],
+				["Precisely", "1000.00900609e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["Supply", "Robert", "OMG", "5000.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Robert", "OMG"],
+				["Precisely", "5000.00000000e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["Borrow", "Robert", "Ether", "115.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["BorrowBalance", "Robert", "Ether"],
+				["Precisely", "115.00000000e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["PayBorrow", "Geoff", "OMG", "2000.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["BorrowBalance", "Geoff", "OMG"],
+				["Precisely", "500.02288785e18"]
+			]
+		],
+		["FastForward", 10, "blocks"],
+		["Withdraw", "Geoff", "Ether", "30.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Geoff", "Ether"],
+				["Precisely", "170.00033682e18"]
+			]
+		],
+		["FastForward", 40, "blocks"],
+		["Withdraw", "Robert", "OMG", "1000.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Robert", "OMG"],
+				["Precisely", "4000.00277737e18"]
+			]
+		]
+	],
+	"Excel: Excel Scenario 2 https://docs.google.com/spreadsheets/d/14kRju5M3t0wL-OPSNPV-j1raXgArb0IdsL7hMqKQuyI/edit#gid=585013245": [
+		["SetOriginationFee", "0"],
+		["SetCollateralRatio", "1.1"],
+		["AddToken", "Ether"],
+		["SetAssetValue", "Ether", "1.0"],
+		["AddSupportedAsset", "Ether"],
+		["SetInterestRate", "Ether", ["WhitepaperRate"]],
+		["AddToken", "OMG"],
+		["SetAssetValue", "OMG", "0.05"],
+		["AddSupportedAsset", "OMG"],
+		["SetInterestRate", "OMG", ["WhitepaperRate"]],
+		["Approve", "Bank", "Ether", "1e30"],
+		["Approve", "Bank", "OMG", "1e30"],
+		["Approve", "Geoff", "Ether", "1e30"],
+		["Approve", "Geoff", "OMG", "1e30"],
+		["Approve", "Torrey", "Ether", "1e30"],
+		["Approve", "Torrey", "OMG", "1e30"],
+		["Approve", "Robert", "Ether", "1e30"],
+		["Approve", "Robert", "OMG", "1e30"],
+		["Faucet", "Bank", "Ether", "1e30"],
+		["Faucet", "Bank", "OMG", "1e30"],
+		["Faucet", "Geoff", "Ether", "1e30"],
+		["Faucet", "Geoff", "OMG", "1e30"],
+		["Faucet", "Torrey", "Ether", "1e30"],
+		["Faucet", "Torrey", "OMG", "1e30"],
+		["Faucet", "Robert", "Ether", "1e30"],
+		["Faucet", "Robert", "OMG", "1e30"],
+		["Supply", "Geoff", "Ether", "1000.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Geoff", "Ether"],
+				["Precisely", "1000.00000000e18"]
+			]
+		],
+		["Borrow", "Geoff", "Ether", "310.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["BorrowBalance", "Geoff", "Ether"],
+				["Precisely", "310.00000000e18"]
+			]
+		],
+		["FastForward", 40, "blocks"],
+		["Supply", "Geoff", "Ether", "0.00000000e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			[
+				"Equal",
+				["SupplyBalance", "Geoff", "Ether"],
+				["Precisely", "1000.00100590e18"]
+			]
+		]
+	],
+	"Liquidate: Supply OMG, Borrow Ether, OMG price crashes, Liquidate Ether": [
+		["AddToken", "OMG"],
+		["SetAssetValue", "OMG", "1.0"],
+		["AddSupportedAsset", "OMG"],
+		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
+		["Approve", "Geoff", "OMG", "2.1e18"],
+		["Faucet", "Geoff", "OMG", "2.1e18"],
+		["Supply", "Geoff", "OMG", "2.1e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Geoff", "OMG"], ["Exactly", "2.1e18"]]
+		],
+		["AddToken", "Ether"],
+		["SetAssetValue", "Ether", "1.0"],
+		["AddSupportedAsset", "Ether"],
+		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
+		["Approve", "Torrey", "Ether", "5.0e18"],
+		["Faucet", "Torrey", "Ether", "5.0e18"],
+		["Supply", "Torrey", "Ether", "2.0e18"],
+		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "2.1e18"]]],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "0.0e18"]]
+		],
+		["Borrow", "Geoff", "Ether", "1e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.001e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.001e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "1e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetSupply", "Ether"], ["Exactly", "2.0e18"]]
+		],
+		["SetAssetValue", "OMG", "0.5"],
+		["Liquidate", "Torrey", "Geoff", "Ether", "-1", "OMG"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "0.05e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "0.05e18"]]
+		],
+		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "2.1e18"]]],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Geoff", "OMG"], ["Exactly", "0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Torrey", "Ether"], ["Exactly", "2.0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Torrey", "OMG"], ["Exactly", "0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Torrey", "OMG"], ["Exactly", "2.1e18"]]
+		]
+	],
+	"Liquidate: Supply OMG, Borrow Ether, gain interest, OMG price crashes, Liquidate Ether": [
+		["AddToken", "OMG"],
+		["SetAssetValue", "OMG", "1.0"],
+		["AddSupportedAsset", "OMG"],
+		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
+		["Approve", "Geoff", "OMG", "2.1e18"],
+		["Faucet", "Geoff", "OMG", "2.1e18"],
+		["Supply", "Geoff", "OMG", "2.1e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Geoff", "OMG"], ["Exactly", "2.1e18"]]
+		],
+		["AddToken", "Ether"],
+		["SetAssetValue", "Ether", "1.0"],
+		["AddSupportedAsset", "Ether"],
+		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
+		["Approve", "Torrey", "Ether", "20.0e18"],
+		["Faucet", "Torrey", "Ether", "20.0e18"],
+		["Supply", "Torrey", "Ether", "10.0e18"],
+		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "2.1e18"]]],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "0.0e18"]]
+		],
+		["Borrow", "Geoff", "Ether", "1e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.001e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.001e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "1e18"]]
+		],
+		["FastForward", 2, "blocks"],
+		["SetAssetValue", "OMG", "0.8"],
+		["Liquidate", "Torrey", "Geoff", "Ether", "2e18", "OMG"],
+		[
+			"Assert",
+			[
+				"Failure",
+				"desired liquidation amount is greater than max closable amount"
+			]
+		],
+		["Liquidate", "Torrey", "Geoff", "Ether", "1.5e18", "OMG"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.125e18"]]
+		],
+		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "4.2e18"]]],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.125e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Geoff", "OMG"], ["Exactly", "2.23125e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Torrey", "Ether"], ["Exactly", "8.5e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Torrey", "Ether"], ["Exactly", "20e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Torrey", "OMG"], ["Exactly", "0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Torrey", "OMG"], ["Exactly", "1.96875e18"]]
+		]
+	]
+}

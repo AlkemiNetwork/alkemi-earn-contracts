@@ -9,6 +9,9 @@ import "./MoneyMarketTest.sol";
 contract MoneyMarketTest_WithdrawEquity is MoneyMarketTest {
 
     function testWithdrawEquity_NotAdmin() public {
+        initializer();
+        addKYCAdmin(msg.sender);
+        addCustomerKYC(msg.sender);
         address asset = address(this);
         balances[asset] = 10000;
 
