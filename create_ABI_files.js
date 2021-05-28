@@ -1,14 +1,14 @@
 const fs = require("fs");
 
 let contract = JSON.parse(
-	fs.readFileSync("./build/contracts/MoneyMarket.json", "utf8")
+	fs.readFileSync("./build/contracts/AlkemiEarnVerified.json", "utf8")
 );
 fs.writeFile(
-	"./ABI/MoneyMarket_ABI.json",
+	"./ABI/AlkemiEarnVerified_ABI.json",
 	JSON.stringify(contract.abi),
 	function(err) {
 		if (err) throw err;
-		console.log("Money Market ABI Saved!");
+		console.log("Alkemi Earn Verified ABI Saved!");
 	}
 );
 contract = JSON.parse(
@@ -40,5 +40,16 @@ fs.writeFile(
 	function(err) {
 		if (err) throw err;
 		console.log("Alkemi WETH ABI Saved!");
+	}
+);
+contract = JSON.parse(
+	fs.readFileSync("./build/contracts/AlkemiRateModel.json", "utf8")
+);
+fs.writeFile(
+	"./ABI/AlkemiRateModel_ABI.json",
+	JSON.stringify(JSON.parse(JSON.stringify(contract.abi))),
+	function(err) {
+		if (err) throw err;
+		console.log("Alkemi Rate Model ABI Saved!");
 	}
 );

@@ -1,4 +1,4 @@
-var MoneyMarket = artifacts.require("MoneyMarket.sol");
+var MoneyMarket = artifacts.require("AlkemiEarnPublicV10.sol");
 
 const { deployProxy } = require("@openzeppelin/truffle-upgrades");
 

@@ -92,6 +92,7 @@ Code style is enforced through the CI test process, builds will fail if there're
 		<td> 0x397c315d64D74d82A731d656f9C4D586D200F90A </td>
 		<!-- Money market: 0x3c6513d4d0de82d42ea30593a86273e9607f66a0
 		Money Market V1.1: 0x8770B2a109AEE8CDbe278FaE6CaE5Aa4Bcd13E1c
+		Alkemi Earn Verified: 0x847e3e4d335f118c8aed9a09c15261581e1a01ad
 		Admin Upgradeability Proxy: 0x397c315d64D74d82A731d656f9C4D586D200F90A
 		Proxy Admin: 0x94dB9B9d725a39F01816987deDC6fd00d58DcE65 -->
 	</tr>

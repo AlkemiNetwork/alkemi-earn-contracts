@@ -83,7 +83,7 @@ module.exports = {
 					mnemonic,
 					`https://mainnet.infura.io/v3/${infuraKey}`
 				),
-			gasPrice: 60000000000,
+			gasPrice: 150000000000,
 			timeoutBlocks: 4000,
 			network_id: 1,
 			skipDryRun: false, // Skip dry run before migrations? (default: false for public nets )

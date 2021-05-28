@@ -1,7 +1,7 @@
 # Coverage directory
 
 coverage.json
-coverageEnv
+# coverageEnv
 
 # Dependency directory
 node_modules
