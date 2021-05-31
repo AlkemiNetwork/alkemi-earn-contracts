@@ -281,7 +281,7 @@ Code style is enforced through the CI test process, builds will fail if there're
     </tr>
     <tr>
     	<td> WETH </td>
-    	<td> 0x9e3865F0A681F2356BcF5Cf6b978F0a773716886 </td>
+    	<td> 0xf7c05cfc2e060dc2e8abfcc334eab420d6455fe6 </td>
     </tr>
     <tr>
     	<td> WETHRateModel </td>
@@ -289,7 +289,7 @@ Code style is enforced through the CI test process, builds will fail if there're
     </tr>
     <tr>
     	<td> WETHPriceFeed </td>
-    	<td> 0x9e3865F0A681F2356BcF5Cf6b978F0a773716886 </td>
+    	<td> 0xf7c05cfc2e060dc2e8abfcc334eab420d6455fe6 </td>
     </tr>
     <tr>
     	<td> DAI </td>
