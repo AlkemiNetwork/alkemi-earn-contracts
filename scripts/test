@@ -7,8 +7,8 @@ TRUFFLE_DIR="$PROJ_ROOT/node_modules/truffle/build/cli.bundled.js"
 # CarefulMathTest
 # ErrorReporterTest
 # ExponentialTest
-"$TRUFFLE_DIR" test ./test/CarefulMathTest.sol ./test/ErrorReporterTest.sol ./test/ExponentialTest.sol ./test/AssertHelpers.sol --network development $@
-
+#"$TRUFFLE_DIR" test ./test/CarefulMathTest.sol ./test/ErrorReporterTest.sol ./test/ExponentialTest.sol ./test/AssertHelpers.sol --network development $@
+#
 ## SafeTokenNonStandardTest
 ## SafeTokenTest
 #"$TRUFFLE_DIR" test ./test/SafeTokenNonStandardTest.sol ./test/SafeTokenTest.sol ./test/AssertHelpers.sol ./test/EIP20NonStandardReturnHarness.sol ./test/EIP20Harness.sol ./test/AddressGenerator.sol --network development $@
@@ -102,3 +102,8 @@ TRUFFLE_DIR="$PROJ_ROOT/node_modules/truffle/build/cli.bundled.js"
 #
 ## TestKYC
 #"$TRUFFLE_DIR" test ./test/testKYC.js --network development $@
+
+# RewardControl
+"$TRUFFLE_DIR" test ./test/RewardControlInterfaceTest.js ./test/RewardControlHarness.sol ./test/EIP20Harness.sol --network development $@
+"$TRUFFLE_DIR" test ./test/RewardControlInternalTest.js ./test/RewardControlHarness.sol ./test/EIP20Harness.sol --network development $@
+"$TRUFFLE_DIR" test ./test/RewardControlUpgradeTest.js ./test/RewardControlHarness.sol ./test/EIP20Harness.sol ./test/RewardControlHarnessV2.sol --network development $@
