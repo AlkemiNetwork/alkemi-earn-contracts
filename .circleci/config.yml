@@ -4,6 +4,7 @@ jobs:
     docker:
       - image: circleci/node:10.9.0
       - image: trufflesuite/ganache-cli:v6.1.8
+        command: ganache-cli --allowUnlimitedContractSize
     working_directory: ~/repo
     steps:
       - checkout
@@ -20,9 +21,9 @@ jobs:
           paths:
             - node_modules
           key: v2-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: Compile contracts
-          command: npm run compile
+#      - run:
+#          name: Compile contracts
+#          command: npm run compile
       - attach_workspace:
           at: ~/repo
       - run:
