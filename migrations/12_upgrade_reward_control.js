@@ -4,9 +4,9 @@ const RewardControl = artifacts.require("RewardControl");
 const { prepareUpgrade } = require("@openzeppelin/truffle-upgrades");
 
 module.exports = async function (deployer) {
-	const rewardControl = await RewardControl.deployed();
-	await prepareUpgrade(rewardControl.address, RewardControl, {
-		deployer,
-		unsafeAllowCustomTypes: true,
-	});
+	// const rewardControl = await RewardControl.deployed();
+	// await prepareUpgrade(rewardControl.address, RewardControl, {
+	// 	deployer,
+	// 	unsafeAllowCustomTypes: true,
+	// });
 };
