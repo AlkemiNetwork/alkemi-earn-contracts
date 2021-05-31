@@ -12,11 +12,11 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
             await rewardControl.methods.addMarket(accounts[1]).send({gas: 1000000, from: root});
-            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], "100").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], BigInt("200")).send({
+            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1],"200").send({
                 gas: 1000000,
                 from: root
             });
@@ -30,19 +30,19 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
             await rewardControl.methods.addMarket(accounts[1]).send({gas: 1000000, from: root});
             await rewardControl.methods.addMarket(accounts[2]).send({gas: 1000000, from: root});
-            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], "100").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], BigInt("200")).send({
+            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], "200").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[2], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[2], "100").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[2], BigInt("200")).send({
+            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[2], "200").send({
                 gas: 1000000,
                 from: root
             });
@@ -58,19 +58,19 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
             await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
             await rewardControl.methods.addMarket(accounts[1]).send({gas: 1000000, from: root});
             await rewardControl.methods.addMarket(accounts[2]).send({gas: 1000000, from: root});
-            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], BigInt("50")).send({
+            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], "50").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], BigInt("150")).send({
+            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], "150").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[2], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[2], "100").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[2], BigInt("200")).send({
+            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[2], "200").send({
                 gas: 1000000,
                 from: root
             });
@@ -86,11 +86,11 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
         it("update supply state on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
-            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], BigInt("4161910200000000000")).send({
+            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], "4161910200000000000").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], "100").send({
                 gas: 1000000,
                 from: root
             });
@@ -105,15 +105,15 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
         it("update supply state on the second time on the next block successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(2).send({gas: 1000000, from: root}); // last block is #1, current block is #2
-            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], BigInt("4161910200000000000")).send({
+            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], "4161910200000000000").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), 1).send({
+            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], "41619102000000000000000000000000000000000000000000000", 1).send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], "100").send({
                 gas: 1000000,
                 from: root
             });
@@ -128,15 +128,15 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
         it("update supply state on the second time with multiple block gap successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(3).send({gas: 1000000, from: root}); // last block is #1, current block is #3
-            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], BigInt("4161910200000000000")).send({
+            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], "4161910200000000000").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), 1).send({
+            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], "41619102000000000000000000000000000000000000000000000", 1).send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalSupply(accounts[1], "100").send({
                 gas: 1000000,
                 from: root
             });
@@ -153,11 +153,11 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
         it("update borrow state on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
-            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], BigInt("4161910200000000000")).send({
+            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], "4161910200000000000").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], "100").send({
                 gas: 1000000,
                 from: root
             });
@@ -172,15 +172,15 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
         it("update borrow state on the second time on the next block successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(2).send({gas: 1000000, from: root}); // last block is #1, current block is #2
-            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], BigInt("4161910200000000000")).send({
+            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], "4161910200000000000").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), 1).send({
+            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], "41619102000000000000000000000000000000000000000000000", 1).send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], "100").send({
                 gas: 1000000,
                 from: root
             });
@@ -195,15 +195,15 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
         it("update borrow state on the second time with multiple block gap successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
             await rewardControl.methods.harnessSetBlockNumber(3).send({gas: 1000000, from: root}); // last block is #1, current block is #3
-            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], BigInt("4161910200000000000")).send({
+            await rewardControl.methods.harnessSetAlkSpeed(accounts[1], "4161910200000000000").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), 1).send({
+            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], "41619102000000000000000000000000000000000000000000000", 1).send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], BigInt("100")).send({
+            await rewardControl.methods.harnessSetMarketTotalBorrows(accounts[1], "100").send({
                 gas: 1000000,
                 from: root
             });
@@ -219,11 +219,11 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
     describe("#distributeSupplierAlk", async () => {
         it("update accrued alk for a supplier on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
-            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), BigInt("1")).send({
+            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], "41619102000000000000000000000000000000000000000000000", "1").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetSupplyBalance(accounts[1], accounts[2], BigInt("25")).send({
+            await rewardControl.methods.harnessSetSupplyBalance(accounts[1], accounts[2], "25").send({
                 gas: 1000000,
                 from: root
             });
@@ -239,15 +239,15 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
 
         it("update accrued alk for a supplier on the second time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
-            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], BigInt("83238204000000000000000000000000000000000000000000000"), BigInt("1")).send({
+            await rewardControl.methods.harnessSetAlkSupplyState(accounts[1], "83238204000000000000000000000000000000000000000000000", "1").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetAlkSupplierIndex(accounts[1], accounts[2], BigInt("41619102000000000000000000000000000000000000000000000")).send({
+            await rewardControl.methods.harnessSetAlkSupplierIndex(accounts[1], accounts[2], "41619102000000000000000000000000000000000000000000000").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetSupplyBalance(accounts[1], accounts[2], BigInt("25")).send({
+            await rewardControl.methods.harnessSetSupplyBalance(accounts[1], accounts[2], "25").send({
                 gas: 1000000,
                 from: root
             });
@@ -265,11 +265,11 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
     describe("#distributeBorrowerAlk", async () => {
         it("update accrued alk for a borrower on the first time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
-            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], BigInt("41619102000000000000000000000000000000000000000000000"), BigInt("1")).send({
+            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], "41619102000000000000000000000000000000000000000000000", "1").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetBorrowBalance(accounts[1], accounts[2], BigInt("25")).send({
+            await rewardControl.methods.harnessSetBorrowBalance(accounts[1], accounts[2], "25").send({
                 gas: 1000000,
                 from: root
             });
@@ -285,15 +285,15 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
 
         it("update accrued alk for a borrower on the second time successfully", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
-            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], BigInt("83238204000000000000000000000000000000000000000000000"), BigInt("1")).send({
+            await rewardControl.methods.harnessSetAlkBorrowState(accounts[1], "83238204000000000000000000000000000000000000000000000", "1").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetAlkBorrowerIndex(accounts[1], accounts[2], BigInt("41619102000000000000000000000000000000000000000000000")).send({
+            await rewardControl.methods.harnessSetAlkBorrowerIndex(accounts[1], accounts[2], "41619102000000000000000000000000000000000000000000000").send({
                 gas: 1000000,
                 from: root
             });
-            await rewardControl.methods.harnessSetBorrowBalance(accounts[1], accounts[2], BigInt("25")).send({
+            await rewardControl.methods.harnessSetBorrowBalance(accounts[1], accounts[2], "25").send({
                 gas: 1000000,
                 from: root
             });
@@ -311,10 +311,10 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
     describe("#transferAlk", async () => {
         it("transfer ALK when RewardControl has no balance", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
-            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
+            const ALK = await EIP20.new("70000000000000000000000000", "test ALK", 18, "ALK").send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
 
-            await rewardControl.methods.harnessTransferAlk(accounts[1], BigInt("1040477550000000000")).send({
+            await rewardControl.methods.harnessTransferAlk(accounts[1], "1040477550000000000").send({
                 gas: 1000000,
                 from: root
             });
@@ -326,11 +326,11 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
 
         it("transfer ALK when RewardControl has enough balance", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
-            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
+            const ALK = await EIP20.new("70000000000000000000000000", "test ALK", 18, "ALK").send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
-            await ALK.methods.transfer(rewardControl._address, BigInt("1040477550000000000")).send({from: root});
+            await ALK.methods.transfer(rewardControl._address, "1040477550000000000").send({from: root});
 
-            await rewardControl.methods.harnessTransferAlk(accounts[1], BigInt("1040477550000000000")).send({
+            await rewardControl.methods.harnessTransferAlk(accounts[1], "1040477550000000000").send({
                 gas: 1000000,
                 from: root
             });
@@ -342,11 +342,11 @@ contract('RewardControl internal functions test', function ([root, ...accounts])
 
         it("transfer ALK when RewardControl has not enough balance", async () => {
             const rewardControl = await RewardControl.new().send({from: root});
-            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
+            const ALK = await EIP20.new("70000000000000000000000000", "test ALK", 18, "ALK").send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
-            await ALK.methods.transfer(rewardControl._address, BigInt("940477550000000000")).send({from: root});
+            await ALK.methods.transfer(rewardControl._address, "940477550000000000").send({from: root});
 
-            await rewardControl.methods.harnessTransferAlk(accounts[1], BigInt("1040477550000000000")).send({
+            await rewardControl.methods.harnessTransferAlk(accounts[1], "1040477550000000000").send({
                 gas: 1000000,
                 from: root
             });

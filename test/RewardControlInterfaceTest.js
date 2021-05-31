@@ -393,8 +393,8 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         it("claimAlk when there is one market and one user borrowing and lending assets in the market", async () => {
             // given
             const rewardControl = await RewardControl.new().send({from: root});
-            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
-            await ALK.methods.transfer(rewardControl._address, BigInt("70000000000000000000000000")).send({from: root});
+            const ALK = await EIP20.new("70000000000000000000000000", "test ALK", 18, "ALK").send({from: root});
+            await ALK.methods.transfer(rewardControl._address, "70000000000000000000000000").send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
             let marketA = accounts[1];
             let supplier = accounts[4];
@@ -478,8 +478,8 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         it("claimAlk when there are multiple markets and multiple users (ALK accrued from one market)", async () => {
             // given
             const rewardControl = await RewardControl.new().send({from: root});
-            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
-            await ALK.methods.transfer(rewardControl._address, BigInt("70000000000000000000000000")).send({from: root});
+            const ALK = await EIP20.new("70000000000000000000000000", "test ALK", 18, "ALK").send({from: root});
+            await ALK.methods.transfer(rewardControl._address, "70000000000000000000000000").send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
             let marketA = accounts[1];
             let marketB = accounts[4];
@@ -584,8 +584,8 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         it("claimAlk when there are multiple markets and multiple users (ALK accrued from multiple markets)", async () => {
             // given
             const rewardControl = await RewardControl.new().send({from: root});
-            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
-            await ALK.methods.transfer(rewardControl._address, BigInt("70000000000000000000000000")).send({from: root});
+            const ALK = await EIP20.new("70000000000000000000000000", "test ALK", 18, "ALK").send({from: root});
+            await ALK.methods.transfer(rewardControl._address, "70000000000000000000000000").send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
             let marketA = accounts[1];
             let marketB = accounts[4];
@@ -702,8 +702,8 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         it("claimAlk multiple times should not change anything", async () => {
             // given
             const rewardControl = await RewardControl.new().send({from: root});
-            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
-            await ALK.methods.transfer(rewardControl._address, BigInt("70000000000000000000000000")).send({from: root});
+            const ALK = await EIP20.new("70000000000000000000000000", "test ALK", 18, "ALK").send({from: root});
+            await ALK.methods.transfer(rewardControl._address, "70000000000000000000000000").send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
             let marketA = accounts[1];
             let supplier = accounts[4];
@@ -785,7 +785,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         it("claimAlk when RewardControl has not enough balance", async () => {
             // given
             const rewardControl = await RewardControl.new().send({from: root});
-            const ALK = await EIP20.new(BigInt("70000000000000000000000000"), "test ALK", 18, "ALK").send({from: root});
+            const ALK = await EIP20.new("70000000000000000000000000", "test ALK", 18, "ALK").send({from: root});
             await rewardControl.methods.initializer(root, accounts[2], ALK._address).send({gas: 1000000, from: root});
             let marketA = accounts[1];
             let supplier = accounts[4];
@@ -830,7 +830,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "1040477550000000000"); // 1.040477550000000000 ALK
 
             // when claim again with enough balance
-            await ALK.methods.transfer(rewardControl._address, BigInt("70000000000000000000000000")).send({from: root});
+            await ALK.methods.transfer(rewardControl._address, "70000000000000000000000000").send({from: root});
             await rewardControl.methods.claimAlk(supplier).send({gas: 1000000, from: root});
 
             // then ALK accrued is not changed
@@ -846,25 +846,25 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
     });
 
     async function mockMarketLiquidity(rewardControl, market, totalSupply, totalBorrows) {
-        await rewardControl.methods.harnessSetMarketTotalSupply(market, BigInt(totalSupply)).send({
+        await rewardControl.methods.harnessSetMarketTotalSupply(market, totalSupply).send({
             gas: 1000000,
             from: root
         });
-        await rewardControl.methods.harnessSetMarketTotalBorrows(market, BigInt(totalBorrows)).send({
+        await rewardControl.methods.harnessSetMarketTotalBorrows(market, totalBorrows).send({
             gas: 1000000,
             from: root
         });
     }
 
     async function mockSupplyBalance(rewardControl, market, supplier, supplyBalance) {
-        await rewardControl.methods.harnessSetSupplyBalance(market, supplier, BigInt(supplyBalance)).send({
+        await rewardControl.methods.harnessSetSupplyBalance(market, supplier, supplyBalance).send({
             gas: 1000000,
             from: root
         });
     }
 
     async function mockBorrowBalance(rewardControl, market, borrower, borrowBalance) {
-        await rewardControl.methods.harnessSetBorrowBalance(market, borrower, BigInt(borrowBalance)).send({
+        await rewardControl.methods.harnessSetBorrowBalance(market, borrower, borrowBalance).send({
             gas: 1000000,
             from: root
         });
