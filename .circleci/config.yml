@@ -4,7 +4,6 @@ jobs:
     docker:
       - image: circleci/node:10.9.0
       - image: trufflesuite/ganache-cli:v6.12.1
-        command: ganache-cli --allowUnlimitedContractSize
     working_directory: ~/repo
     steps:
       - checkout
