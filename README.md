@@ -106,7 +106,7 @@ Code style is enforced through the CI test process, builds will fail if there're
 	</tr>
 	<tr>
 		<td> DAIRateModel </td>
-		<td> 0x95C45786B117e5FF09029D9CB71Aafe278264A3b </td>
+		<td> 0x65E524b3594cFc26C1c0154e466695FB7fc9759C </td>
 	</tr>
 	<tr>
 		<td> DAIPriceFeed </td>
@@ -118,7 +118,7 @@ Code style is enforced through the CI test process, builds will fail if there're
     </tr>
     <tr>
     	<td> USDCRateModel </td>
-    	<td> 0x95C45786B117e5FF09029D9CB71Aafe278264A3b </td>
+    	<td> 0x65E524b3594cFc26C1c0154e466695FB7fc9759C </td>
     </tr>
 	<tr>
     	<td> USDCPriceFeed </td>
@@ -130,7 +130,7 @@ Code style is enforced through the CI test process, builds will fail if there're
     </tr>
     <tr>
     	<td> WBTCRateModel </td>
-    	<td> 0x976704A8949b82687d6e48b5FCe4030aab7c2e4F </td>
+    	<td> 0x2c59Df8A883a7Af938C4A1b059085521ffACC80C </td>
     </tr>
 	<tr>
     	<td> WBTCPriceFeed </td>
@@ -142,7 +142,7 @@ Code style is enforced through the CI test process, builds will fail if there're
     </tr>
     <tr>
     	<td> WETHRateModel </td>
-    	<td> 0x6ad4333758188a9c0c464447f857add59e7b936c </td>
+    	<td> 0xc97a9F085839d02DB1E2A1550c58299Dc85F9655 </td>
     </tr>
 	<tr>
     	<td> ChainLink Oracle </td>

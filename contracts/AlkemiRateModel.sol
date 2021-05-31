@@ -1,7 +1,6 @@
 pragma solidity ^0.4.24;
 
 import "./Exponential.sol";
-import "./LiquidationChecker.sol";
 
 /**
   * @title  Earn Interest Rate Model
@@ -9,7 +8,7 @@ import "./LiquidationChecker.sol";
   * @notice See Model here
   */
 
-contract AlkemiRateModel is Exponential, LiquidationChecker {
+contract AlkemiRateModel is Exponential {
 
     uint constant blocksPerYear = 2102400;
 
@@ -31,7 +30,6 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
     }
 
     event OwnerUpdate(address indexed owner, address indexed newOwner);
-    event LiquidatorUpdate(address indexed owner, address indexed newLiquidator, address indexed oldLiquidator);
 
     Exp internal SpreadLow;
     Exp internal BreakPointLow;
@@ -49,7 +47,7 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
     Exp internal HealthyMaxURActual;
     Exp internal HealthyMaxRateActual;
 
-    constructor(string memory _contractName,uint MinRate,uint HealthyMinUR,uint HealthyMinRate,uint HealthyMaxUR,uint HealthyMaxRate,uint MaxRate, address moneyMarket, address liquidator) LiquidationChecker(moneyMarket, liquidator) public {
+    constructor(string memory _contractName,uint MinRate,uint HealthyMinUR,uint HealthyMinRate,uint HealthyMaxUR,uint HealthyMaxRate,uint MaxRate) public {
         // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
         owner = msg.sender;
         contractName = _contractName;
@@ -148,14 +146,6 @@ contract AlkemiRateModel is Exponential, LiquidationChecker {
         emit OwnerUpdate(owner, newOwner);
         owner = newOwner;
         newOwner = address(0x0);
-    }
-
-    function setLiquidator(address _liquidator) external onlyOwner {
-        require(_liquidator != address(0), "setLiquidator: liquidator cannot be a zero address");
-        require(liquidator != _liquidator, "setLiquidator: The old and new addresses cannot be the same");
-        address oldLiquidator = liquidator;
-        liquidator = _liquidator;
-        emit LiquidatorUpdate(msg.sender, _liquidator, oldLiquidator);
     }
 
     /*
