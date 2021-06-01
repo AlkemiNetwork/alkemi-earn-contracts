@@ -20,9 +20,9 @@ jobs:
           paths:
             - node_modules
           key: v2-dependencies-{{ checksum "package.json" }}
+      - run: sudo rm -rf ~/repo/.openzeppelin
       - attach_workspace:
           at: ~/repo
-      - run: sudo rm -rf ~/repo/.openzeppelin
       - run:
           name: Test contracts
           command: |
