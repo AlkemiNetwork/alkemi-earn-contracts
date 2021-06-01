@@ -4,9 +4,9 @@ DIR=$(dirname $0)
 PROJ_ROOT="$DIR/.."
 TRUFFLE_DIR="$PROJ_ROOT/node_modules/truffle/build/cli.bundled.js"
 
-# CarefulMathTest
-# ErrorReporterTest
-# ExponentialTest
+## CarefulMathTest
+## ErrorReporterTest
+## ExponentialTest
 #"$TRUFFLE_DIR" test ./test/CarefulMathTest.sol ./test/ErrorReporterTest.sol ./test/ExponentialTest.sol ./test/AssertHelpers.sol --network development $@
 #
 ## SafeTokenNonStandardTest
