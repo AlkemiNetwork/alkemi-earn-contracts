@@ -53,13 +53,33 @@ module.exports = async (deployer, network, accounts) => {
 		// 	true
 		// );
 	} else if (network == "rinkeby") {
+		const moneyMarket = await deployer.deploy(MoneyMarketV12);
+		await moneyMarket.initializer();
+		await moneyMarket._setOracle(deploymentConfig.RINKEBY.PRICE_ORACLE);
+		await moneyMarket._supportMarket(deploymentConfig.RINKEBY.USDC, deploymentConfig.RINKEBY.USDC_RATE_MODEL)
+		await moneyMarket.addKYCAdmin(accounts[0]);
+		await moneyMarket.addKYCAdmin(accounts[1]);
+		await moneyMarket.addKYCAdmin(accounts[2]);
+		await moneyMarket.addCustomerKYC(accounts[1]);
+		await moneyMarket.addCustomerKYC(accounts[2]);
+
+		const rewardControl = await deployer.deploy(RewardControl);
+		await rewardControl.initializer(accounts[0], moneyMarket.address, deploymentConfig.RINKEBY.ALK_TOKEN);
+		await moneyMarket.setRewardControlAddress(rewardControl.address);
+		await rewardControl.addMarket(deploymentConfig.RINKEBY.USDC);
+
+		// Transfer rewardControl.address 70M ALK for reward distribution.
+		// User can then start using the MoneyMarket contract.
+		// 1. User needs to have some USDC in this case, probably from UNISWAP.
+		// 2. User needs to call `approve` function on USDC contract to grant MoneyMarket as his/her spender.
+		// 3. User needs to call `supply` function with his/her USDC assets on MoneyMarket contract.
+
+		//
 		// await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
 		// await deployer.deploy(
 		// 	PriceOracleProxy,
 		// 	deploymentConfig.RINKEBY.PriceOracle
 		// );
-		await deployer.deploy(MoneyMarketV12);
-		await deployer.deploy(RewardControl);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);

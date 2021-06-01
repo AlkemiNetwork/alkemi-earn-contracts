@@ -12,6 +12,28 @@ fs.writeFile(
 	}
 );
 contract = JSON.parse(
+	fs.readFileSync("./build/contracts/MoneyMarketV12.json", "utf8")
+);
+fs.writeFile(
+	"./ABI/MoneyMarketV12_ABI.json",
+	JSON.stringify(contract.abi),
+	function(err) {
+		if (err) throw err;
+		console.log("Money Market V12 ABI Saved!");
+	}
+);
+contract = JSON.parse(
+	fs.readFileSync("./build/contracts/RewardControl.json", "utf8")
+);
+fs.writeFile(
+	"./ABI/RewardControl_ABI.json",
+	JSON.stringify(contract.abi),
+	function(err) {
+		if (err) throw err;
+		console.log("Reward Control ABI Saved!");
+	}
+);
+contract = JSON.parse(
 	fs.readFileSync("./build/contracts/AlkemiEarnPublicV10.json", "utf8")
 );
 fs.writeFile(
