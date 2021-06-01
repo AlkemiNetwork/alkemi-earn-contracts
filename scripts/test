@@ -106,5 +106,4 @@ TRUFFLE_DIR="$PROJ_ROOT/node_modules/truffle/build/cli.bundled.js"
 # RewardControl
 #"$TRUFFLE_DIR" test ./test/RewardControlInterfaceTest.js ./test/RewardControlHarness.sol ./test/EIP20Harness.sol --network development $@
 #"$TRUFFLE_DIR" test ./test/RewardControlInternalTest.js ./test/RewardControlHarness.sol ./test/EIP20Harness.sol --network development $@
-rm -rf .openzeppelin
 "$TRUFFLE_DIR" test ./test/RewardControlUpgradeTest.js ./test/RewardControlHarness.sol ./test/EIP20Harness.sol ./test/RewardControlHarnessV2.sol --network development $@
