@@ -24,9 +24,7 @@ jobs:
           at: ~/repo
       - run:
           name: Test contracts
-          command: |
-            sudo rm -rf ~/repo/.openzeppelin
-            npm run test
+          command: npm run test
       - store_artifacts:
           path: test-results.xml
           prefix: tests
