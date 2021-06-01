@@ -1,6 +1,7 @@
 var PriceOracle = artifacts.require("PriceOracle.sol");
 var PriceOracleProxy = artifacts.require("PriceOracleProxy.sol");
-var MoneyMarket = artifacts.require("MoneyMarketV12.sol");
+var MoneyMarket = artifacts.require("MoneyMarket.sol");
+var MoneyMarketV12 = artifacts.require("MoneyMarketV12.sol");
 var RewardControl = artifacts.require("RewardControl.sol");
 var Liquidator = artifacts.require("Liquidator.sol");
 var LiquidationChecker = artifacts.require("LiquidationChecker.sol");
@@ -57,7 +58,7 @@ module.exports = async (deployer, network, accounts) => {
 		// 	PriceOracleProxy,
 		// 	deploymentConfig.RINKEBY.PriceOracle
 		// );
-		await deployer.deploy(MoneyMarket);
+		await deployer.deploy(MoneyMarketV12);
 		await deployer.deploy(RewardControl);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
