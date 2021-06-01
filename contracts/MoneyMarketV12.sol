@@ -865,53 +865,54 @@ contract MoneyMarketV12 is Exponential, SafeToken {
         return (Error.NO_ERROR, truncate(assetAmount));
     }
 
-/*    *//**
-     * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
-     * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
-     * @param newPendingAdmin New pending admin.
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     *
-     * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
-     *//*
-    function _setPendingAdmin(address newPendingAdmin) public returns (uint) {
-        // Check caller = admin
-        if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.SET_PENDING_ADMIN_OWNER_CHECK);
-        }
-
-        // save current value, if any, for inclusion in log
-        address oldPendingAdmin = pendingAdmin;
-        // Store pendingAdmin = newPendingAdmin
-        pendingAdmin = newPendingAdmin;
-
-        emit NewPendingAdmin(oldPendingAdmin, newPendingAdmin);
-
-        return uint(Error.NO_ERROR);
-    }
-
-    *//**
-     * @notice Accepts transfer of admin rights. msg.sender must be pendingAdmin
-     * @dev Admin function for pending admin to accept role and update admin
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     *//*
-    function _acceptAdmin() public returns (uint) {
-        // Check caller = pendingAdmin
-        // msg.sender can't be zero
-        if (msg.sender != pendingAdmin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.ACCEPT_ADMIN_PENDING_ADMIN_CHECK);
-        }
-
-        // Save current value for inclusion in log
-        address oldAdmin = admin;
-        // Store admin = pendingAdmin
-        admin = pendingAdmin;
-        // Clear the pending value
-        pendingAdmin = 0;
-
-        emit NewAdmin(oldAdmin, msg.sender);
-
-        return uint(Error.NO_ERROR);
-    }*/
+// These functions is removed these methods to leave more room for RewardControl invocation
+//    /**
+//     * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
+//     * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
+//     * @param newPendingAdmin New pending admin.
+//     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+//     *
+//     * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
+//     */
+//    function _setPendingAdmin(address newPendingAdmin) public returns (uint) {
+//        // Check caller = admin
+//        if (msg.sender != admin) {
+//            return fail(Error.UNAUTHORIZED, FailureInfo.SET_PENDING_ADMIN_OWNER_CHECK);
+//        }
+//
+//        // save current value, if any, for inclusion in log
+//        address oldPendingAdmin = pendingAdmin;
+//        // Store pendingAdmin = newPendingAdmin
+//        pendingAdmin = newPendingAdmin;
+//
+//        emit NewPendingAdmin(oldPendingAdmin, newPendingAdmin);
+//
+//        return uint(Error.NO_ERROR);
+//    }
+//
+//    /**
+//     * @notice Accepts transfer of admin rights. msg.sender must be pendingAdmin
+//     * @dev Admin function for pending admin to accept role and update admin
+//     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+//     */
+//    function _acceptAdmin() public returns (uint) {
+//        // Check caller = pendingAdmin
+//        // msg.sender can't be zero
+//        if (msg.sender != pendingAdmin) {
+//            return fail(Error.UNAUTHORIZED, FailureInfo.ACCEPT_ADMIN_PENDING_ADMIN_CHECK);
+//        }
+//
+//        // Save current value for inclusion in log
+//        address oldAdmin = admin;
+//        // Store admin = pendingAdmin
+//        admin = pendingAdmin;
+//        // Clear the pending value
+//        pendingAdmin = 0;
+//
+//        emit NewAdmin(oldAdmin, msg.sender);
+//
+//        return uint(Error.NO_ERROR);
+//    }
 
     /**
      * @notice Set new oracle, who can set asset prices
@@ -942,23 +943,24 @@ contract MoneyMarketV12 is Exponential, SafeToken {
         return uint(Error.NO_ERROR);
     }
 
-/*    *//**
-     * @notice set `paused` to the specified state
-     * @dev Admin function to pause or resume the market
-     * @param requestedState value to assign to `paused`
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     *//*
-    function _setPaused(bool requestedState) public returns (uint) {
-        // Check caller = admin
-        if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.SET_PAUSED_OWNER_CHECK);
-        }
-
-        paused = requestedState;
-        emit SetPaused(requestedState);
-
-        return uint(Error.NO_ERROR);
-    }*/
+// These functions is removed these methods to leave more room for RewardControl invocation
+//    /**
+//     * @notice set `paused` to the specified state
+//     * @dev Admin function to pause or resume the market
+//     * @param requestedState value to assign to `paused`
+//     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+//     */
+//    function _setPaused(bool requestedState) public returns (uint) {
+//        // Check caller = admin
+//        if (msg.sender != admin) {
+//            return fail(Error.UNAUTHORIZED, FailureInfo.SET_PAUSED_OWNER_CHECK);
+//        }
+//
+//        paused = requestedState;
+//        emit SetPaused(requestedState);
+//
+//        return uint(Error.NO_ERROR);
+//    }
 
     /**
      * @notice returns the liquidity for given account.
