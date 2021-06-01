@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 import "./RewardControlStorage.sol";
 import "./RewardControlInterface.sol";
@@ -146,8 +146,8 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         uint deltaBlocks = sub_(blockNumber, uint(supplyState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
             uint marketTotalSupply = getMarketTotalSupply(market);
-            uint alkAccrued = mul_(deltaBlocks, marketSpeed);
-            Double memory ratio = marketTotalSupply > 0 ? fraction(alkAccrued, marketTotalSupply) : Double({mantissa : 0});
+            uint supplyAlkAccrued = mul_(deltaBlocks, marketSpeed);
+            Double memory ratio = marketTotalSupply > 0 ? fraction(supplyAlkAccrued, marketTotalSupply) : Double({mantissa : 0});
             Double memory index = add_(Double({mantissa : supplyState.index}), ratio);
             alkSupplyState[market] = MarketState({
             index : safe224(index.mantissa, "new index exceeds 224 bits"),
@@ -169,8 +169,8 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         uint deltaBlocks = sub_(blockNumber, uint(borrowState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
             uint marketTotalBorrows = getMarketTotalBorrows(market);
-            uint alkAccrued = mul_(deltaBlocks, marketSpeed);
-            Double memory ratio = marketTotalBorrows > 0 ? fraction(alkAccrued, marketTotalBorrows) : Double({mantissa : 0});
+            uint borrowAlkAccrued = mul_(deltaBlocks, marketSpeed);
+            Double memory ratio = marketTotalBorrows > 0 ? fraction(borrowAlkAccrued, marketTotalBorrows) : Double({mantissa : 0});
             Double memory index = add_(Double({mantissa : borrowState.index}), ratio);
             alkBorrowState[market] = MarketState({
             index : safe224(index.mantissa, "new index exceeds 224 bits"),
@@ -288,7 +288,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         return address(moneyMarket);
     }
 
-    function getMarketStats(address market) public constant returns (bool isSupported, uint blockNumber, address interestRateModel, uint totalSupply, uint supplyRateMantissa, uint supplyIndex, uint totalBorrows, uint borrowRateMantissa, uint borrowIndex) {
+    function getMarketStats(address market) public view returns (bool isSupported, uint blockNumber, address interestRateModel, uint totalSupply, uint supplyRateMantissa, uint supplyIndex, uint totalBorrows, uint borrowRateMantissa, uint borrowIndex) {
         return (moneyMarket.markets(market));
     }
 
