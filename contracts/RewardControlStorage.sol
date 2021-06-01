@@ -16,7 +16,7 @@ contract RewardControlStorage {
     address[] public allMarkets;
 
     // The index for all markets, to check for its existence
-    mapping(address => bool) allMarketsIndex;
+    mapping(address => bool) public allMarketsIndex;
 
     /// The rate at which the flywheel distributes ALK per block
     uint public alkRate;
