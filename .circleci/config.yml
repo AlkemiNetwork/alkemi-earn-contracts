@@ -22,7 +22,7 @@ jobs:
           key: v2-dependencies-{{ checksum "package.json" }}
       - attach_workspace:
           at: ~/repo
-      - run: sudo chown -R circleci:circleci ~/repo/.openzeppelin
+      - run: sudo rm -rf ~/repo/.openzeppelin
       - run:
           name: Test contracts
           command: |
