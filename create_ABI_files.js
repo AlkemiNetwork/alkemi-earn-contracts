@@ -12,7 +12,7 @@ fs.writeFile(
 	}
 );
 contract = JSON.parse(
-	fs.readFileSync("./build/contracts/AlkemiEarnPublicV10.json", "utf8")
+	fs.readFileSync("./build/contracts/AlkemiEarnPublic.json", "utf8")
 );
 fs.writeFile(
 	"./ABI/AlkemiEarnPublic_ABI.json",
