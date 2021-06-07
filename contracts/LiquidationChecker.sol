@@ -2,15 +2,15 @@ pragma solidity ^0.4.24;
 
 import "./EIP20Interface.sol";
 import "./PriceOracleProxy.sol";
-import "./MoneyMarket.sol";
+import "./AlkemiEarnVerified.sol";
 
 contract LiquidationChecker {
-    MoneyMarket public moneyMarket;
+    AlkemiEarnVerified public alkemiEarnVerified;
     address public liquidator;
     bool public allowLiquidation;
 
-    constructor(address moneyMarket_, address liquidator_) public {
-        moneyMarket = MoneyMarket(moneyMarket_);
+    constructor(address alkemiEarnVerified_, address liquidator_) public {
+        alkemiEarnVerified = AlkemiEarnVerified(alkemiEarnVerified_);
         liquidator = liquidator_;
         allowLiquidation = false;
     }
@@ -24,13 +24,13 @@ contract LiquidationChecker {
     }
 
     function cashIsUp(address asset, uint newCash) internal view returns(bool) {
-        uint oldCash = EIP20Interface(asset).balanceOf(moneyMarket);
+        uint oldCash = EIP20Interface(asset).balanceOf(alkemiEarnVerified);
 
         return newCash >= oldCash;
     }
 
     function oracleTouched() internal view returns(bool) {
-        PriceOracleProxy oracle = PriceOracleProxy(moneyMarket.oracle());
+        PriceOracleProxy oracle = PriceOracleProxy(alkemiEarnVerified.oracle());
 
         bool sameOrigin = oracle.mostRecentCaller() == tx.origin;
         bool sameBlock = oracle.mostRecentBlock() == block.number;

@@ -6,7 +6,7 @@ import "../../contracts/AlkemiRateModel.sol";
   * @title An Interest Rate Model for tests that can be instructed to return a failure instead of doing a calculation
   * @author Compound
   */
-contract FailableInterestRateModel is InterestRateModel {
+contract FailableInterestRateModel is AlkemiRateModel {
 
     bool public failSupplyRate;
 

@@ -7,7 +7,7 @@ import "../../contracts/AlkemiRateModel.sol";
   * @author Compound
   * @notice Interest rates should be scaled by 10e18
   */
-contract FixedInterestRateModel is InterestRateModel {
+contract FixedInterestRateModel is AlkemiRateModel {
 
     uint supplyRate;
     uint borrowRate;

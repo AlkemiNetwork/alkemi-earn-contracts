@@ -6,7 +6,7 @@ import "../../contracts/AlkemiRateModel.sol";
   * @title An Interest Rate Model that always fails for tests
   * @author Compound
   */
-contract AlwaysFailInterestRateModel is InterestRateModel {
+contract AlwaysFailInterestRateModel is AlkemiRateModel {
 
     /**
       * @notice Always fails with an error

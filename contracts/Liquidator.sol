@@ -5,14 +5,14 @@ import "./EIP20NonStandardInterface.sol";
 import "./ErrorReporter.sol";
 import "./InterestRateModel.sol";
 import "./SafeToken.sol";
-import "./MoneyMarket.sol";
+import "./AlkemiEarnVerified.sol";
 import "./LiquidationChecker.sol";
 
 contract Liquidator is ErrorReporter, SafeToken {
-    MoneyMarket public moneyMarket;
+    AlkemiEarnVerified public alkemiEarnVerified;
 
-    constructor(address moneyMarket_) public {
-        moneyMarket = MoneyMarket(moneyMarket_);
+    constructor(address alkemiEarnVerified_) public {
+        alkemiEarnVerified = AlkemiEarnVerified(alkemiEarnVerified_);
     }
 
     event BorrowLiquidated(address targetAccount,
@@ -35,28 +35,28 @@ contract Liquidator is ErrorReporter, SafeToken {
         require(assetBorrow != assetCollateral, "FAILED_LIQUIDATE_IN_KIND");
 
         InterestRateModel interestRateModel;
-        (,,interestRateModel,,,,,,) = moneyMarket.markets(assetBorrow);
+        (,,interestRateModel,,,,,,) = alkemiEarnVerified.markets(assetBorrow);
 
         require(interestRateModel != address(0), "FAILED_LIQUIDATE_NO_INTEREST_RATE_MODEL");
         require(checkTransferIn(assetBorrow, msg.sender, requestedAmountClose) == Error.NO_ERROR, "FAILED_LIQUIDATE_TRANSFER_IN_INVALID");
 
         require(doTransferIn(assetBorrow, msg.sender, requestedAmountClose) == Error.NO_ERROR, "FAILED_LIQUIDATE_TRANSFER_IN_FAILED");
 
-        tokenAllowAll(assetBorrow, moneyMarket);
+        tokenAllowAll(assetBorrow, alkemiEarnVerified);
 
         LiquidationChecker(interestRateModel).setAllowLiquidation(true);
 
-        uint result = moneyMarket.liquidateBorrow(targetAccount, assetBorrow, assetCollateral, requestedAmountClose);
+        uint result = alkemiEarnVerified.liquidateBorrow(targetAccount, assetBorrow, assetCollateral, requestedAmountClose);
 
-        require(moneyMarket.withdraw(assetCollateral, uint(-1)) == uint(Error.NO_ERROR), "FAILED_LIQUIDATE_WITHDRAW_FAILED");
+        require(alkemiEarnVerified.withdraw(assetCollateral, uint(-1)) == uint(Error.NO_ERROR), "FAILED_LIQUIDATE_WITHDRAW_FAILED");
 
         LiquidationChecker(interestRateModel).setAllowLiquidation(false);
 
         // Ensure there's no remaining balances here
-        require(moneyMarket.getSupplyBalance(address(this), assetCollateral) == 0, "FAILED_LIQUIDATE_REMAINING_SUPPLY_COLLATERAL"); // just to be sure
-        require(moneyMarket.getSupplyBalance(address(this), assetBorrow) == 0, "FAILED_LIQUIDATE_REMAINING_SUPPLY_BORROW"); // just to be sure
-        require(moneyMarket.getBorrowBalance(address(this), assetCollateral) == 0, "FAILED_LIQUIDATE_REMAINING_BORROW_COLLATERAL"); // just to be sure
-        require(moneyMarket.getBorrowBalance(address(this), assetBorrow) == 0, "FAILED_LIQUIDATE_REMAINING_BORROW_BORROW"); // just to be sure
+        require(alkemiEarnVerified.getSupplyBalance(address(this), assetCollateral) == 0, "FAILED_LIQUIDATE_REMAINING_SUPPLY_COLLATERAL"); // just to be sure
+        require(alkemiEarnVerified.getSupplyBalance(address(this), assetBorrow) == 0, "FAILED_LIQUIDATE_REMAINING_SUPPLY_BORROW"); // just to be sure
+        require(alkemiEarnVerified.getBorrowBalance(address(this), assetCollateral) == 0, "FAILED_LIQUIDATE_REMAINING_BORROW_COLLATERAL"); // just to be sure
+        require(alkemiEarnVerified.getBorrowBalance(address(this), assetBorrow) == 0, "FAILED_LIQUIDATE_REMAINING_BORROW_BORROW"); // just to be sure
 
         // Transfer out everything remaining
         tokenTransferAll(assetCollateral, msg.sender);

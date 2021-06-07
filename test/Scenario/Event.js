@@ -14,7 +14,7 @@ const FixedInterestRateModel = getContract(
 	"./test/InterestRateModel/FixedInterestRateModel.sol"
 );
 const StandardInterestRateModel = getContract(
-	"./StandardInterestRateModel.sol"
+	"./AlkemiRateModel.sol"
 );
 const { addAction } = require("./World");
 const { checkAssertion } = require("./Assertion");
@@ -66,7 +66,7 @@ async function addToken(world, tokenArg) {
 	}
 
 	// TODO: This should probably not need to give cash to the protocol, but most tests assume the protocol does have cash
-	// await faucetToken.methods.allocateTo(world.moneyMarket._address, bigNums.ether.times(100)).send({from: getUser(world, "root")});
+	// await faucetToken.methods.allocateTo(world.alkemiEarnVerified._address, bigNums.ether.times(100)).send({from: getUser(world, "root")});
 
 	world = Immutable.setIn(world, ["tokens", tokenArg], {
 		_address: faucetToken._address,
@@ -91,7 +91,7 @@ async function addCash(world, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		token,
 		"allocateTo",
-		[world.moneyMarket._address, amount],
+		[world.alkemiEarnVerified._address, amount],
 		{ from: getUser(world, "root") }
 	);
 
@@ -113,7 +113,7 @@ async function addSupportedAsset(world, token) {
 	});
 	// Need to set non-zero price before supporting.
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"_supportMarket",
 		[token._address, interestRateModel._address],
 		{ from: getUser(world, "root") }
@@ -133,7 +133,7 @@ async function addSupportedAsset(world, token) {
 
 async function suspendAsset(world, token) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"_suspendMarket",
 		[token._address],
 		{ from: getUser(world, "root") }
@@ -174,7 +174,7 @@ async function approve(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
 		token,
 		"approve",
-		[world.moneyMarket._address, amount.toString()],
+		[world.alkemiEarnVerified._address, amount.toString()],
 		{ from: user }
 	);
 
@@ -210,7 +210,7 @@ async function faucet(world, user, token, amount) {
 
 async function supply(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"supply",
 		[token._address, amount.toString()],
 		{ gas: 1000000, from: user }
@@ -230,7 +230,7 @@ async function supply(world, user, token, amount) {
 
 async function withdraw(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"withdraw",
 		[token._address, amount.toString()],
 		{ from: user }
@@ -250,7 +250,7 @@ async function withdraw(world, user, token, amount) {
 
 async function borrow(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"borrow",
 		[token._address, amount.toString()],
 		{ from: user }
@@ -270,7 +270,7 @@ async function borrow(world, user, token, amount) {
 
 async function repayBorrow(world, user, token, amount) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"repayBorrow",
 		[token._address, amount.toString()],
 		{ from: user }
@@ -297,7 +297,7 @@ async function liquidateBorrow(
 	requestedAmountClose
 ) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"liquidateBorrow",
 		[
 			targetAccount,
@@ -328,7 +328,7 @@ async function fastForward(world, blocks) {
 	);
 
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"setBlockNumber",
 		[world.blockNumber],
 		{ from: getUser(world, "root") }
@@ -377,7 +377,7 @@ async function setInterestRate(world, token, interestRateArg) {
 	}
 
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"_setMarketInterestRateModel",
 		[token._address, interestModel._address],
 		{ from: getUser(world, "root") }
@@ -397,7 +397,7 @@ async function setInterestRate(world, token, interestRateArg) {
 
 async function setOriginationFee(world, fee) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"_setOriginationFee",
 		[getExpMantissa(fee)],
 		{ from: getUser(world, "root") }
@@ -417,7 +417,7 @@ async function setOriginationFee(world, fee) {
 
 async function setRiskParameters(world, ratio, discount) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"_setRiskParameters",
 		[getExpMantissa(ratio), getExpMantissa(discount)],
 		{ from: getUser(world, "root") }
@@ -437,7 +437,7 @@ async function setRiskParameters(world, ratio, discount) {
 
 async function setPaused(world, newState) {
 	let [value, tx, error] = await readAndExecContract(
-		world.moneyMarket,
+		world.alkemiEarnVerified,
 		"_setPaused",
 		[newState],
 		{ from: getUser(world, "root") }

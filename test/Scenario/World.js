@@ -2,7 +2,10 @@
 
 const Action = require("./Action");
 const Immutable = require("seamless-immutable");
-const { buildMoneyMarket, buildPriceOracle } = require("./MoneyMarket");
+const {
+	buildAlkemiEarnVerified,
+	buildPriceOracle,
+} = require("./AlkemiEarnVerified");
 const { ErrorEnumInv, FailureInfoEnumInv } = require("../ErrorReporter");
 const BigNumber = require("bignumber.js");
 
@@ -46,13 +49,13 @@ function getAmount(world, amountArg) {
 
 async function initWorld(accounts) {
 	const priceOracle = await buildPriceOracle(accounts[0]);
-	const moneyMarket = await buildMoneyMarket(
+	const alkemiEarnVerified = await buildAlkemiEarnVerified(
 		accounts[0],
 		accounts,
 		priceOracle
 	);
 
-	await moneyMarket.methods
+	await alkemiEarnVerified.methods
 		.setBlockNumber(startingBlockNumber)
 		.send({ from: accounts[0] });
 
@@ -62,7 +65,7 @@ async function initWorld(accounts) {
 		lastResult: undefined,
 		lastTx: undefined,
 		lastError: undefined,
-		moneyMarket: moneyMarket,
+		alkemiEarnVerified: alkemiEarnVerified,
 		priceOracle: priceOracle,
 		accounts: accounts,
 		tokens: {},

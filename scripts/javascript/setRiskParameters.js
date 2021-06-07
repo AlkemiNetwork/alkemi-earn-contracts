@@ -1,10 +1,10 @@
 "use strict";
 
-const BigNumber = require('bignumber.js');
-const Immutable = require('seamless-immutable');
-const {load, save} = require('./deployUtils');
+const BigNumber = require("bignumber.js");
+const Immutable = require("seamless-immutable");
+const { load, save } = require("./deployUtils");
 
-const MoneyMarket = artifacts.require("./MoneyMarket.sol");
+const AlkemiEarnVerified = artifacts.require("./AlkemiEarnVerified.sol");
 
 const network = process.env["NETWORK"];
 
@@ -14,7 +14,7 @@ if (!network) {
 
 // Returns the mantissa of an Exp with given floating value
 function getExpMantissa(float) {
-  return Math.floor(float * 1.0e18);
+	return Math.floor(float * 1.0e18);
 }
 
 // Returns the given environment variable coerced to a float value.
@@ -25,7 +25,7 @@ function coerceEnvVarToFloat(env_string) {
 		if (isNaN(collateralRatioAsNumber)) {
 			throw `${env_string} env var is not a number`;
 		}
-		
+
 		return collateralRatioAsNumber;
 	}
 	return undefined;
@@ -34,14 +34,19 @@ function coerceEnvVarToFloat(env_string) {
 async function setRiskParameters() {
 	const config = load(network);
 
-	const moneyMarketAddress = Immutable.getIn(config, ["Contracts", "MoneyMarket"]);
-	if (!moneyMarketAddress) {
-		throw `No MoneyMarket address stored for network: ${network}`;
+	const alkemiEarnVerifiedAddress = Immutable.getIn(config, [
+		"Contracts",
+		"AlkemiEarnVerified",
+	]);
+	if (!alkemiEarnVerifiedAddress) {
+		throw `No AlkemiEarnVerified address stored for network: ${network}`;
 	}
 
-	const moneyMarket = MoneyMarket.at(moneyMarketAddress);
+	const alkemiEarnVerified = AlkemiEarnVerified.at(alkemiEarnVerifiedAddress);
 
-	var collateralRatio = coerceEnvVarToFloat("COLLATERAL_RATIO") || Immutable.getIn(config, ["RiskParameters", "CollateralRatio"]);
+	var collateralRatio =
+		coerceEnvVarToFloat("COLLATERAL_RATIO") ||
+		Immutable.getIn(config, ["RiskParameters", "CollateralRatio"]);
 	if (!collateralRatio) {
 		collateralRatio = 2.0;
 		console.log(`No collateral ratio found for network: ${network}
@@ -49,7 +54,9 @@ async function setRiskParameters() {
 			`);
 	}
 
-	var liquidationDiscount = coerceEnvVarToFloat("LIQUIDATION_DISCOUNT") || Immutable.getIn(config, ["RiskParameters", "LiquidationDiscount"]);
+	var liquidationDiscount =
+		coerceEnvVarToFloat("LIQUIDATION_DISCOUNT") ||
+		Immutable.getIn(config, ["RiskParameters", "LiquidationDiscount"]);
 	if (!liquidationDiscount) {
 		liquidationDiscount = 0.0;
 		console.log(`No liquidation discount found for network: ${network}
@@ -57,11 +64,20 @@ async function setRiskParameters() {
 			`);
 	}
 
-	const newCollateralRatioMantissa = new BigNumber(getExpMantissa(collateralRatio));
-	const newLiquidationDiscountMantissa = new BigNumber(getExpMantissa(liquidationDiscount));
+	const newCollateralRatioMantissa = new BigNumber(
+		getExpMantissa(collateralRatio)
+	);
+	const newLiquidationDiscountMantissa = new BigNumber(
+		getExpMantissa(liquidationDiscount)
+	);
 
-	console.log(`Setting Risk Parameters: ${newCollateralRatioMantissa.toString()}, ${newLiquidationDiscountMantissa.toString()} ...`);
-	const result = await moneyMarket._setRiskParameters(newCollateralRatioMantissa.toString(), newLiquidationDiscountMantissa.toString());
+	console.log(
+		`Setting Risk Parameters: ${newCollateralRatioMantissa.toString()}, ${newLiquidationDiscountMantissa.toString()} ...`
+	);
+	const result = await alkemiEarnVerified._setRiskParameters(
+		newCollateralRatioMantissa.toString(),
+		newLiquidationDiscountMantissa.toString()
+	);
 
 	const error = result.logs.find((log) => log.event == "Failure");
 	const log = result.logs.find((log) => log.event == "NewRiskParameters");
@@ -71,13 +87,17 @@ async function setRiskParameters() {
 	}
 
 	if (!log) {
-		throw `Could not find log "NewRiskParameters" in result logs [${result.logs.map((log) => log.event).join(',')}]`
+		throw `Could not find log "NewRiskParameters" in result logs [${result.logs
+			.map((log) => log.event)
+			.join(",")}]`;
 	}
 
 	save(network, ["RiskParameters", "CollateralRatio"], collateralRatio);
 	save(network, ["RiskParameters", "LiquidationDiscount"], liquidationDiscount);
 
-	console.log(`Set RiskParameters: ${newCollateralRatioMantissa.toString()}, ${newLiquidationDiscountMantissa.toString()} successfully.`);
-};
+	console.log(
+		`Set RiskParameters: ${newCollateralRatioMantissa.toString()}, ${newLiquidationDiscountMantissa.toString()} successfully.`
+	);
+}
 
 module.exports = setRiskParameters;

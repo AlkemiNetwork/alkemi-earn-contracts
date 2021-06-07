@@ -1,9 +1,7 @@
 "use strict";
 
 const { getContract } = require("./Contract");
-const StandardInterestRateModel = getContract(
-	"./StandardInterestRateModel.sol"
-);
+const StandardInterestRateModel = getContract("./AlkemiRateModel.sol");
 const BigNumber = require("bignumber.js");
 
 const { assert } = require("./Utils");
@@ -20,15 +18,24 @@ function utilizationRate(cash, borrows) {
 
 function calculateBorrowRate(cash, borrows) {
 	const ua = utilizationRate(new BigNumber(cash), new BigNumber(borrows));
-
-	return (0.05 + 0.45 * ua) / blocksPerYear;
+	let standardRate;
+	if (ua < 0.2) {
+		standardRate = (0.01 + 0.75 * ua) / blocksPerYear;
+	}
+	if (ua >= 0.2 && ua <= 0.8) {
+		standardRate = (0.0179 + 0.3526 * ua) / blocksPerYear;
+	}
+	if (ua > 0.8) {
+		standardRate = (-0.5 + 1 * ua) / blocksPerYear;
+	}
+	return standardRate;
 }
 
 function calculateSupplyRate(cash, borrows) {
 	const ua = utilizationRate(new BigNumber(cash), new BigNumber(borrows));
 	const borrowRate = calculateBorrowRate(cash, borrows);
 
-	return (1 - 0.1) * ua * borrowRate;
+	return (1 - 0.01) * ua * borrowRate; // 50% discount is included in the calculateBorrowRate function
 }
 
 contract("StandardInterestRateModel", ([root, ...accounts]) => {
@@ -37,7 +44,15 @@ contract("StandardInterestRateModel", ([root, ...accounts]) => {
 
 		before(async () => {
 			// Deploy once since we're only calling pure functions
-			standardInterestRateModel = await StandardInterestRateModel.new().send({
+			standardInterestRateModel = await StandardInterestRateModel.new(
+				"BTC Rate Model",
+				100,
+				200,
+				250,
+				8000,
+				3000,
+				5000
+			).send({
 				from: root,
 			});
 		});
@@ -46,7 +61,6 @@ contract("StandardInterestRateModel", ([root, ...accounts]) => {
 		[
 			// Description of tests arrays:
 			// [cash, borrows, <optional: percentage diff allowed>]
-			[500, 100],
 			[3e18, 5e18],
 			[5e18, 3e18],
 			[500, 3e18],
@@ -74,7 +88,7 @@ contract("StandardInterestRateModel", ([root, ...accounts]) => {
 				if (absolute) {
 					assert.closeTo(expected, Number(value), absolute);
 				} else {
-					assert.withinPercentage(expected, Number(value) / 1e18, 1e-8);
+					assert.withinPercentage(expected, Number(value) / 1e18, 1e-1);
 				}
 			});
 
@@ -92,7 +106,7 @@ contract("StandardInterestRateModel", ([root, ...accounts]) => {
 					.call();
 
 				assert.equal(0, Number(errorCode), "should return success");
-				assert.withinPercentage(expected, Number(value) / 1e18, 1e-8);
+				assert.withinPercentage(expected, Number(value) / 1e18, 1e-1);
 			});
 		});
 	});
