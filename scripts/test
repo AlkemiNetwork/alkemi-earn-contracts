@@ -2,67 +2,67 @@
 DIR=$(dirname $0)
 PROJ_ROOT="$DIR/.."
 TRUFFLE_DIR="$PROJ_ROOT/node_modules/truffle/build/cli.bundled.js"
-# CarefulMathTest
-# ErrorReporterTest
-# ExponentialTest
-"$TRUFFLE_DIR" test ./test/CarefulMathTest.sol ./test/ErrorReporterTest.sol ./test/ExponentialTest.sol ./test/AssertHelpers.sol --network development $@
-# SafeTokenNonStandardTest
-# SafeTokenTest
-"$TRUFFLE_DIR" test ./test/SafeTokenNonStandardTest.sol ./test/SafeTokenTest.sol ./test/AssertHelpers.sol ./test/EIP20NonStandardReturnHarness.sol ./test/EIP20Harness.sol ./test/AddressGenerator.sol --network development $@
-# StableCoinInterestRateModelTest
-# StandardInterestRateModelTest
-"$TRUFFLE_DIR" test ./test/StableCoinInterestRateModelTest.js ./test/StandardInterestRateModelTest.js ./test/AssertHelpers.sol ./test/MathHelpers.sol --network development $@
-# AlkemiEarnVerifiedTest_AddCollateralMarket
-# AlkemiEarnVerifiedTest_AssetPrices
-# AlkemiEarnVerifiedTest_Basic
-# AlkemiEarnVerifiedTest_Borrow
-# AlkemiEarnVerifiedTest_CalculateAccountLiquidity
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_AddCollateralMarket.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_AssetPrices.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Basic.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Borrow.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity2.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity3.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity4.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity5.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-# AlkemiEarnVerifiedTest_CalculateAccountValues
-# AlkemiEarnVerifiedTest_CalculateAmountSeize
-# AlkemiEarnVerifiedTest_CalculateAmountSeize2
-# AlkemiEarnVerifiedTest_CalculateBorrowAmountWithFee
-# AlkemiEarnVerifiedTest_CalculateBalance
-# AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral
-# AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral2
-# AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount
-# AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2
-# AlkemiEarnVerifiedTest_CalculateInterestIndex
-# AlkemiEarnVerifiedTest_CalculateInterestIndex2
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountValues.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAmountSeize.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAmountSeize2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateBorrowAmountWithFee.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateBalance.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateInterestIndex.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateInterestIndex2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-# AlkemiEarnVerifiedTest_GetAssetAmountForValue
-# AlkemiEarnVerifiedTest_GetPriceForAssetAmount
-# AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio
-# AlkemiEarnVerifiedTest_Oracle
-# AlkemiEarnVerifiedTest_Oracle2
-# AlkemiEarnVerifiedTest_SetMarketInterestRateModel
-# AlkemiEarnVerifiedTest_SetRiskParameters
-# AlkemiEarnVerifiedTest_SetRiskParameters2
-# AlkemiEarnVerifiedTest_SetRiskParameters3
-# AlkemiEarnVerifiedTest_SetRiskParameters4
-# AlkemiEarnVerifiedTest_SetPendingAdmin
-# AlkemiEarnVerifiedTest_SetOriginationFee
-# AlkemiEarnVerifiedTest_Supply
-# AlkemiEarnVerifiedTest_Supply_NonStandard
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_GetAssetAmountForValue.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_GetPriceForAssetAmount.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Oracle.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Oracle2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetMarketInterestRateModel.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetRiskParameters.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetRiskParameters2.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetRiskParameters3.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetRiskParameters4.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetPendingAdmin.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetOriginationFee.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
-"$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Supply.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Supply_NonStandard.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# # CarefulMathTest
+# # ErrorReporterTest
+# # ExponentialTest
+# "$TRUFFLE_DIR" test ./test/CarefulMathTest.sol ./test/ErrorReporterTest.sol ./test/ExponentialTest.sol ./test/AssertHelpers.sol --network development $@
+# # SafeTokenNonStandardTest
+# # SafeTokenTest
+# "$TRUFFLE_DIR" test ./test/SafeTokenNonStandardTest.sol ./test/SafeTokenTest.sol ./test/AssertHelpers.sol ./test/EIP20NonStandardReturnHarness.sol ./test/EIP20Harness.sol ./test/AddressGenerator.sol --network development $@
+# # StableCoinInterestRateModelTest
+# # StandardInterestRateModelTest
+# "$TRUFFLE_DIR" test ./test/StableCoinInterestRateModelTest.js ./test/StandardInterestRateModelTest.js ./test/AssertHelpers.sol ./test/MathHelpers.sol --network development $@
+# # AlkemiEarnVerifiedTest_AddCollateralMarket
+# # AlkemiEarnVerifiedTest_AssetPrices
+# # AlkemiEarnVerifiedTest_Basic
+# # AlkemiEarnVerifiedTest_Borrow
+# # AlkemiEarnVerifiedTest_CalculateAccountLiquidity
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_AddCollateralMarket.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_AssetPrices.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Basic.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Borrow.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity2.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity3.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity4.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountLiquidity5.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# # AlkemiEarnVerifiedTest_CalculateAccountValues
+# # AlkemiEarnVerifiedTest_CalculateAmountSeize
+# # AlkemiEarnVerifiedTest_CalculateAmountSeize2
+# # AlkemiEarnVerifiedTest_CalculateBorrowAmountWithFee
+# # AlkemiEarnVerifiedTest_CalculateBalance
+# # AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral
+# # AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral2
+# # AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount
+# # AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2
+# # AlkemiEarnVerifiedTest_CalculateInterestIndex
+# # AlkemiEarnVerifiedTest_CalculateInterestIndex2
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAccountValues.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAmountSeize.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateAmountSeize2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateBorrowAmountWithFee.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateBalance.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateInterestIndex.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_CalculateInterestIndex2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# # AlkemiEarnVerifiedTest_GetAssetAmountForValue
+# # AlkemiEarnVerifiedTest_GetPriceForAssetAmount
+# # AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio
+# # AlkemiEarnVerifiedTest_Oracle
+# # AlkemiEarnVerifiedTest_Oracle2
+# # AlkemiEarnVerifiedTest_SetMarketInterestRateModel
+# # AlkemiEarnVerifiedTest_SetRiskParameters
+# # AlkemiEarnVerifiedTest_SetRiskParameters2
+# # AlkemiEarnVerifiedTest_SetRiskParameters3
+# # AlkemiEarnVerifiedTest_SetRiskParameters4
+# # AlkemiEarnVerifiedTest_SetPendingAdmin
+# # AlkemiEarnVerifiedTest_SetOriginationFee
+# # AlkemiEarnVerifiedTest_Supply
+# # AlkemiEarnVerifiedTest_Supply_NonStandard
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_GetAssetAmountForValue.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_GetPriceForAssetAmount.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Oracle.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Oracle2.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetMarketInterestRateModel.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetRiskParameters.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetRiskParameters2.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetRiskParameters3.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetRiskParameters4.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetPendingAdmin.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_SetOriginationFee.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
+# "$TRUFFLE_DIR" test ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Supply.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest_Supply_NonStandard.sol ./test/AddressGenerator.sol ./test/AssertHelpers.sol ./test/MathHelpers.sol ./test/EIP20Harness.sol ./test/EIP20NonStandardReturnHarness.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedNonStandardTest.sol ./test/AlkemiEarnVerified/AlkemiEarnVerifiedWithPriceTest.sol ./test/AlkemiEarnVerifiedLightHarness.sol --network development $@
 # AlkemiEarnVerifiedTest_RepayBorrow
 # AlkemiEarnVerifiedTest_SupportMarket
 # AlkemiEarnVerifiedTest_SupportMarket2
