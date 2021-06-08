@@ -2,9 +2,12 @@
 
 const Action = require("./Action");
 const Immutable = require("seamless-immutable");
-const { buildMoneyMarket, buildPriceOracle } = require("./MoneyMarket");
+const { buildMoneyMarket, buildPriceOracle, buildRewardControl } = require("./MoneyMarket");
 const { ErrorEnumInv, FailureInfoEnumInv } = require("../ErrorReporter");
 const BigNumber = require("bignumber.js");
+const { getContract } = require("../Contract");
+const MoneyMarket = getContract("./test/MoneyMarketScenario.sol");
+const MoneyMarketV12 = getContract("./test/MoneyMarketV12Scenario.sol");
 
 const accountMap = {
 	root: 0,
@@ -12,6 +15,7 @@ const accountMap = {
 	Geoff: 2,
 	Torrey: 3,
 	Robert: 4,
+	James: 5
 };
 
 const startingBlockNumber = 1000;
@@ -47,6 +51,7 @@ function getAmount(world, amountArg) {
 async function initWorld(accounts) {
 	const priceOracle = await buildPriceOracle(accounts[0]);
 	const moneyMarket = await buildMoneyMarket(
+		MoneyMarket,
 		accounts[0],
 		accounts,
 		priceOracle
@@ -64,6 +69,42 @@ async function initWorld(accounts) {
 		lastError: undefined,
 		moneyMarket: moneyMarket,
 		priceOracle: priceOracle,
+		accounts: accounts,
+		tokens: {},
+		blockNumber: startingBlockNumber, // starting block number
+	});
+}
+
+async function initWorldWithRewardDistribution(accounts) {
+	const priceOracle = await buildPriceOracle(accounts[0]);
+	const moneyMarket = await buildMoneyMarket(
+		MoneyMarketV12,
+		accounts[0],
+		accounts,
+		priceOracle
+	);
+	const rewardControl = await buildRewardControl(accounts[0])
+	await moneyMarket.methods
+		.setRewardControlAddress(rewardControl._address)
+		.send({from: accounts[0]});
+
+	await moneyMarket.methods
+		.setBlockNumber(startingBlockNumber)
+		.send({from: accounts[0]});
+
+	await rewardControl.methods
+		.harnessSetBlockNumber(startingBlockNumber)
+		.send({from: accounts[0]});
+
+	return Immutable({
+		isWorld: true,
+		actions: [],
+		lastResult: undefined,
+		lastTx: undefined,
+		lastError: undefined,
+		moneyMarket: moneyMarket,
+		priceOracle: priceOracle,
+		rewardControl: rewardControl,
 		accounts: accounts,
 		tokens: {},
 		blockNumber: startingBlockNumber, // starting block number
@@ -123,5 +164,6 @@ module.exports = {
 	getToken,
 	getUser,
 	initWorld,
+	initWorldWithRewardDistribution,
 	addAction,
 };

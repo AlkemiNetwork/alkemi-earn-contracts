@@ -1,11 +1,11 @@
 "use strict";
 
 const { getContract, readAndExecContract } = require("../Contract");
-const MoneyMarket = getContract("./test/MoneyMarketScenario.sol");
 const PriceOracle = getContract("./test/PriceOracleHarness.sol");
+const RewardControl = getContract("./test/RewardControlScenario.sol");
 
-async function buildMoneyMarket(root, accounts, priceOracle) {
-	const moneyMarket = await MoneyMarket.new().send({ from: root });
+async function buildMoneyMarket(moneyMarketContract, root, accounts, priceOracle) {
+	const moneyMarket = await moneyMarketContract.new().send({ from: root });
 	await readAndExecContract(moneyMarket, "initializer", [], { from: root });
 	await readAndExecContract(moneyMarket, "addKYCAdmin", [root], { from: root });
 	await readAndExecContract(moneyMarket, "addCustomerKYC", [root], {
@@ -94,7 +94,18 @@ async function buildPriceOracle(root) {
 	};
 }
 
+async function buildRewardControl(root) {
+	const rewardControl = await RewardControl.new().send({ from: root });
+
+	return {
+		_address: rewardControl._address,
+		name: "RewardControl",
+		methods: rewardControl.methods,
+	};
+}
+
 module.exports = {
 	buildMoneyMarket,
 	buildPriceOracle,
+	buildRewardControl
 };

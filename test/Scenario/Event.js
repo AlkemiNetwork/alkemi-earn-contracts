@@ -131,6 +131,30 @@ async function addSupportedAsset(world, token) {
 	return world;
 }
 
+async function addSupportedAssetToRewardControl(world, token) {
+	world = await addSupportedAsset(world, token);
+
+	// TODO: We should actually make this scenario event pass in an interest rate model and price
+	// Need to set non-zero price before supporting.
+	let [value, tx, error] = await readAndExecContract(
+		world.rewardControl,
+		"addMarket",
+		[token._address],
+		{ from: getUser(world, "root") }
+	);
+
+	world = addAction(
+		world,
+		`Added supported asset ${token.name} to Reward Control`,
+		value,
+		tx,
+		error,
+		true
+	);
+
+	return world;
+}
+
 async function suspendAsset(world, token) {
 	let [value, tx, error] = await readAndExecContract(
 		world.moneyMarket,
@@ -320,6 +344,31 @@ async function liquidateBorrow(
 	return world;
 }
 
+async function claimAlk(
+	world,
+	user
+) {
+	let [value, tx, error] = await readAndExecContract(
+		world.rewardControl,
+		"claimAlk",
+		[
+			user,
+		],
+		{ from: user }
+	);
+
+	world = addAction(
+		world,
+		`Claim ALK for the user: ${user} `,
+		value,
+		tx,
+		error,
+		true
+	);
+
+	return world;
+}
+
 async function fastForward(world, blocks) {
 	world = Immutable.update(
 		world,
@@ -337,6 +386,27 @@ async function fastForward(world, blocks) {
 	world = addAction(
 		world,
 		`Fast forwarded ${blocks} block(s).`,
+		value,
+		tx,
+		error
+	);
+
+	return world;
+}
+
+async function fastForwardWithRewardControl(world, blocks) {
+	world = await fastForward(world, blocks);
+
+	let [value, tx, error] = await readAndExecContract(
+		world.rewardControl,
+		"harnessSetBlockNumber",
+		[world.blockNumber],
+		{ from: getUser(world, "root") }
+	);
+
+	world = addAction(
+		world,
+		`Fast forwarded ${blocks} block(s) for Reward Control.`,
 		value,
 		tx,
 		error
@@ -458,6 +528,26 @@ async function inspect(world, string) {
 	return world;
 }
 
+async function initRewardControl(world, alkToken) {
+	let root = getUser(world, "root");
+	let [value, tx, error] = await readAndExecContract(
+		world.rewardControl,
+		"initializer",
+		[root, world.moneyMarket._address, alkToken._address],
+		{ from: root }
+	);
+
+	world = addAction(
+		world,
+		`RewardControl is initialized successfully`,
+		value,
+		tx,
+		error
+	);
+
+	return world;
+}
+
 async function processEvent(world, event) {
 	const [eventType, ...args] = event;
 
@@ -484,6 +574,12 @@ async function processEvent(world, event) {
 				let [tokenArg] = args;
 
 				return await addSupportedAsset(world, getToken(world, tokenArg));
+			})();
+		case "AddSupportedAssetToRewardControl":
+			return await (async () => {
+				let [tokenArg] = args;
+
+				return await addSupportedAssetToRewardControl(world, getToken(world, tokenArg));
 			})();
 		case "SuspendAsset":
 			return await (async () => {
@@ -576,6 +672,17 @@ async function processEvent(world, event) {
 					getAmount(world, closeAmountArg)
 				);
 			})();
+		case "ClaimAlk":
+			return await (async () => {
+				let [
+					user
+				] = args;
+
+				return await claimAlk(
+					world,
+					getUser(world, user)
+				);
+			})();
 		case "Assert":
 			return await (async () => {
 				let [assertionArg] = args;
@@ -587,6 +694,12 @@ async function processEvent(world, event) {
 				let [blocks, _fastForwardBlocksKeyword] = args;
 
 				return await fastForward(world, blocks);
+			})();
+		case "FastForwardWithRewardControl":
+			return await (async () => {
+				let [blocks, _fastForwardBlocksKeyword] = args;
+
+				return await fastForwardWithRewardControl(world, blocks);
 			})();
 		case "SetAssetValue":
 			return await (async () => {
@@ -643,4 +756,7 @@ async function processEvent(world, event) {
 
 module.exports = {
 	processEvents,
+	addToken,
+	faucet,
+	initRewardControl
 };
