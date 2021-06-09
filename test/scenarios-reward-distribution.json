@@ -242,6 +242,18 @@
 		["Faucet", "Torrey", "OMG", "20.0e18"],
 		["Supply", "Torrey", "OMG", "20.0e18"],
 		["Borrow", "Torrey", "OMG", "1.0e18"],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "1.001e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "2.774606800000000000e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkBorrowIndex", "OMG"], ["Exactly", "0"]]
+		],
 		["Borrow", "Geoff", "OMG", "2.0e18"],
 		["Assert", ["Success"]],
 		[
