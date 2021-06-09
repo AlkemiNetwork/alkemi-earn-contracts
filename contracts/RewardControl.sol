@@ -20,12 +20,16 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     /// @notice Emitted when ALK is distributed to a borrower
     event DistributedBorrowerAlk(address indexed market, address indexed borrower, uint borrowerDelta, uint borrowerAccruedAlk, uint borrowIndexMantissa);
 
+    /// @notice Emitted when ALK is transferred to a participant
     event TransferredAlk(address indexed participant, uint participantAccrued);
 
+    /// @notice Emitted when the owner of the contract is updated
     event OwnerUpdate(address indexed owner, address indexed newOwner);
 
+    /// @notice Emitted when a market is added
     event MarketAdded(address indexed market, uint numberOfMarkets);
 
+    /// @notice Emitted when a market is removed
     event MarketRemoved(address indexed market, uint numberOfMarkets);
 
     /**
@@ -40,7 +44,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice `RewardControl` is the contract to calculate and distribute reward tokens
      * @notice This contract uses Openzeppelin Upgrades plugin to make use of the upgradeability functionality using proxies
      * @notice Hence this contract has an 'initializer' in place of a 'constructor'
-     * @notice Make sure to add new global variables only at the bottom of all the existing global variables i.e., line #344
+     * @notice Make sure to add new global variables only in a derived contract of RewardControlStorage, inherited by this contract
      * @notice Also make sure to do extensive testing while modifying any structs and enums during an upgrade
      */
     function initializer(address _owner, address _moneyMarket, address _alkAddress) public {
@@ -50,7 +54,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
             moneyMarket = MoneyMarket(_moneyMarket);
             alkAddress = _alkAddress;
             alkRate = 4161910200000000000;
-            // 8323820396000000000 divided by 2 (for lending and borrowing separately)
+            // 8323820396000000000 divided by 2 (for lending or borrowing)
         }
     }
 
@@ -58,6 +62,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Modifiers
      */
 
+    /**
+     * @notice Make sure that the sender is only the owner of the contract
+     */
     modifier onlyOwner() {
         require(msg.sender == owner, "non-owner");
         _;
@@ -67,13 +74,10 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Public functions
      */
 
-    /** usage
-     * mintAllowed --> supply
-     * redeemAllowed --> withdraw
-     * seizeAllowed --> liquidateBorrow
-     * transferAllowed --> ???
-     * refreshCompSpeedsInternal (used by refreshCompSpeeds)
-     * claimComp --> claimAlk
+    /**
+     * @notice Refresh ALK supply index for the specified market and supplier
+     * @param market The market whose supply index to update
+     * @param supplier The address of the supplier to distribute ALK to
      */
     function refreshAlkSupplyIndex(address market, address supplier) external {
         if (!allMarketsIndex[market]) {
@@ -84,11 +88,10 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         distributeSupplierAlk(market, supplier);
     }
 
-    /** usage
-     * borrowAllowed --> borrow
-     * repayBorrowAllowed --> repayBorrow
-     * refreshCompSpeedsInternal (used by refreshCompSpeeds)
-     * claimComp --> claimAlk
+    /**
+     * @notice Refresh ALK borrow index for the specified market and borrower
+     * @param market The market whose borrow index to update
+     * @param borrower The address of the borrower to distribute ALK to
      */
     function refreshAlkBorrowIndex(address market, address borrower) external {
         if (!allMarketsIndex[market]) {
@@ -112,7 +115,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
 
     /**
-     * Recalculate and update ALK speeds for all ALK markets
+     * @notice Recalculate and update ALK speeds for all markets
      */
     function refreshAlkSpeeds() internal {
         Exp memory totalLiquidity = Exp({mantissa : 0});
@@ -136,7 +139,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     /**
-     * Accrue ALK to the market by updating the supply index
+     * @notice Accrue ALK to the market by updating the supply index
      * @param market The market whose supply index to update
      */
     function updateAlkSupplyIndex(address market) internal {
@@ -159,7 +162,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     /**
-     * Accrue ALK to the market by updating the borrow index
+     * @notice Accrue ALK to the market by updating the borrow index
      * @param market The market whose borrow index to update
      */
     function updateAlkBorrowIndex(address market) internal {
@@ -182,7 +185,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     /**
-     * Calculate ALK accrued by a supplier and add it on top of alkAccrued[supplier]
+     * @notice Calculate ALK accrued by a supplier and add it on top of alkAccrued[supplier]
      * @param market The market in which the supplier is interacting
      * @param supplier The address of the supplier to distribute ALK to
      */
@@ -202,7 +205,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     /**
-     * Calculate ALK accrued by a borrower and add it on top of alkAccrued[borrower]
+     * @notice Calculate ALK accrued by a borrower and add it on top of alkAccrued[borrower]
      * @param market The market in which the borrower is interacting
      * @param borrower The address of the borrower to distribute ALK to
      */
@@ -241,7 +244,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     /**
-     * Transfer ALK to the user
+     * @notice Transfer ALK to the participant
      * @dev Note: If there is not enough ALK, we do not perform the transfer all.
      * @param participant The address of the participant to transfer ALK to
      * @param participantAccrued The amount of ALK to (possibly) transfer
@@ -264,50 +267,86 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Getters
      */
 
+    /**
+     * @notice Get the current block number
+     * @return The current block number
+     */
     function getBlockNumber() public view returns (uint) {
         return block.number;
     }
 
+    /**
+     * @notice Get the current accrued ALK for a participant
+     * @param participant The address of the participant
+     * @return The amount of accrued ALK for the participant
+     */
     function getAlkAccrued(address participant) public view returns (uint) {
         return alkAccrued[participant];
     }
 
     /**
-     * Return the address of the ALK token
-     * @return The address of ALK
+     * @notice Get the address of the ALK token
+     * @return The address of ALK token
      */
     function getAlkAddress() public view returns (address) {
         return alkAddress;
     }
 
     /**
-     * Return the address of the underlying Money Market contract
+     * @notice Get the address of the underlying Money Market contract
      * @return The address of the underlying Money Market contract
      */
     function getMoneyMarketAddress() public view returns (address) {
         return address(moneyMarket);
     }
 
+    /**
+     * @notice Get market statistics from the Money Market contract
+     * @param market The address of the market
+     * @return Market statistics for the given market
+     */
     function getMarketStats(address market) public view returns (bool isSupported, uint blockNumber, address interestRateModel, uint totalSupply, uint supplyRateMantissa, uint supplyIndex, uint totalBorrows, uint borrowRateMantissa, uint borrowIndex) {
         return (moneyMarket.markets(market));
     }
 
+    /**
+     * @notice Get market total supply from the Money Market contract
+     * @param market The address of the market
+     * @return Market total supply for the given market
+     */
     function getMarketTotalSupply(address market) public view returns (uint) {
         uint totalSupply;
         (,,, totalSupply,,,,,) = getMarketStats(market);
         return totalSupply;
     }
 
+    /**
+     * @notice Get market total borrows from the Money Market contract
+     * @param market The address of the market
+     * @return Market total borrows for the given market
+     */
     function getMarketTotalBorrows(address market) public view returns (uint) {
         uint totalBorrows;
         (,,,,,, totalBorrows,,) = getMarketStats(market);
         return totalBorrows;
     }
 
+    /**
+     * @notice Get supply balance of the specified market and supplier
+     * @param market The address of the market
+     * @param supplier The address of the supplier
+     * @return Supply balance of the specified market and supplier
+     */
     function getSupplyBalance(address market, address supplier) public view returns (uint) {
         return moneyMarket.getSupplyBalance(supplier, market);
     }
 
+    /**
+     * @notice Get borrow balance of the specified market and borrower
+     * @param market The address of the market
+     * @param borrower The address of the borrower
+     * @return Borrow balance of the specified market and borrower
+     */
     function getBorrowBalance(address market, address borrower) public view returns (uint) {
         return moneyMarket.getBorrowBalance(borrower, market);
     }
@@ -316,11 +355,18 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * Admin functions
      */
 
+    /**
+     * @notice Transfer the ownership of this contract to the new owner. The ownership will not be transferred until the new owner accept it.
+     * @param _newOwner The address of the new owner
+     */
     function transferOwnership(address _newOwner) external onlyOwner {
         require(_newOwner != owner, "TransferOwnership: the same owner.");
         newOwner = _newOwner;
     }
 
+    /**
+     * @notice Accept the ownership of this contract by the new owner
+     */
     function acceptOwnership() external {
         require(msg.sender == newOwner, "AcceptOwnership: only new owner do this.");
         emit OwnerUpdate(owner, newOwner);
@@ -328,6 +374,10 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         newOwner = address(0);
     }
 
+    /**
+     * @notice Add new market to the reward program
+     * @param market The address of the new market to be added to the reward program
+     */
     function addMarket(address market) external onlyOwner {
         require(!allMarketsIndex[market], "Market already exists");
         allMarketsIndex[market] = true;
@@ -335,6 +385,10 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         emit MarketAdded(market, allMarkets.length);
     }
 
+    /**
+     * @notice Remove a market from the reward program based on array index
+     * @param id The index of the `allMarkets` array to be removed
+     */
     function removeMarket(uint id) external onlyOwner {
         if (id >= allMarkets.length) {
             return;
@@ -349,18 +403,30 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         emit MarketRemoved(removedMarket, allMarkets.length);
     }
 
+    /**
+     * @notice Set ALK token address
+     * @param _alkAddress The ALK token address
+     */
     function setAlkAddress(address _alkAddress) external onlyOwner {
         require(alkAddress != _alkAddress, "The same ALK address");
         require(_alkAddress != address(0), "ALK address cannot be empty");
         alkAddress = _alkAddress;
     }
 
+    /**
+     * @notice Set Money Market contract address
+     * @param _moneyMarket The Money Market contract address
+     */
     function setMoneyMarketAddress(address _moneyMarket) external onlyOwner {
         require(address(moneyMarket) != _moneyMarket, "The same Money Market address");
         require(_moneyMarket != address(0), "MoneyMarket address cannot be empty");
         moneyMarket = MoneyMarket(_moneyMarket);
     }
 
+    /**
+     * @notice Set ALK rate
+     * @param _alkRate The ALK rate
+     */
     function setAlkRate(uint _alkRate) external onlyOwner {
         alkRate = _alkRate;
     }
