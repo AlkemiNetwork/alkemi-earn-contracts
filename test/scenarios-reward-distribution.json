@@ -169,6 +169,15 @@
 		["FastForwardWithRewardControl", 1, "blocks"],
 		["Supply", "Torrey", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
+		["Assert", ["Equal", ["BalanceSheetSupply", "Ether"], ["Exactly", "2.0e18"]]],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Torrey", "Ether"], ["Exactly", "1.0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Torrey", "Ether"], ["Exactly", "1.0e18"]]
+		],
 		[
 			"Assert",
 			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "4.1619102e+36"]]
@@ -182,7 +191,20 @@
 			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "0"]]
 		],
 		["FastForwardWithRewardControl", 1, "blocks"],
+		["Assert", ["Equal", ["BalanceSheetSupply", "Ether"], ["Exactly", "2.0e18"]]],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Torrey", "Ether"], ["Exactly", "1.5e18"]]
+		],
         ["Withdraw", "Torrey", "Ether", "1.0e18"],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Torrey", "Ether"], ["Exactly", "0.5e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Torrey", "Ether"], ["Exactly", "2.0e18"]]
+		],
 		[
 			"Assert",
 			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "6.2428653e+36"]]
