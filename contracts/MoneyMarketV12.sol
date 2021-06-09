@@ -1927,6 +1927,7 @@ contract MoneyMarketV12 is Exponential, SafeToken {
 
         refreshAlkSupplyIndex(assetCollateral, targetAccount);
         refreshAlkSupplyIndex(assetCollateral, msg.sender);
+        refreshAlkBorrowIndex(assetBorrow, targetAccount);
 
         LiquidateLocalVars memory localResults;
         // Copy these addresses into the struct for use with `emitLiquidationEvent`
