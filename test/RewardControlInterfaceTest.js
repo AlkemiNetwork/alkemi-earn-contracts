@@ -16,6 +16,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             let supplier = accounts[4];
             await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
             await mockMarketLiquidity(rewardControl, marketA, "100", "200");
+            // make sure that the supplier has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplier, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -69,7 +70,9 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockMarketLiquidity(rewardControl, marketB, 100, 100);
             await mockMarketLiquidity(rewardControl, marketC, 100, 100);
             await mockMarketLiquidity(rewardControl, marketD, 100, 100);
+            // make sure that the supplierA has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplierA, "0");
+            // make sure that the supplierB has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplierB, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -141,6 +144,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             let supplier = accounts[4];
             await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
             await mockMarketLiquidity(rewardControl, marketA, "100", "200");
+            // make sure that the supplier has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplier, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -207,6 +211,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             let borrower = accounts[4];
             await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
             await mockMarketLiquidity(rewardControl, marketA, "200", "100");
+            // make sure that the borrower has no balance on the marketA
             await mockBorrowBalance(rewardControl, marketA, borrower, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -260,7 +265,9 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockMarketLiquidity(rewardControl, marketB, 100, 100);
             await mockMarketLiquidity(rewardControl, marketC, 100, 100);
             await mockMarketLiquidity(rewardControl, marketD, 100, 100);
+            // make sure that the borrowerA has no balance on the marketA
             await mockBorrowBalance(rewardControl, marketA, borrowerA, "0");
+            // make sure that the borrowerB has no balance on the marketA
             await mockBorrowBalance(rewardControl, marketA, borrowerB, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -332,6 +339,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             let borrower = accounts[4];
             await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
             await mockMarketLiquidity(rewardControl, marketA, "200", "100");
+            // make sure that the borrower has no balance on the marketA
             await mockBorrowBalance(rewardControl, marketA, borrower, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -401,6 +409,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             let borrower = supplier;
             await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
             await mockMarketLiquidity(rewardControl, marketA, "100", "100");
+            // make sure that the supplier has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplier, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -495,7 +504,9 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockMarketLiquidity(rewardControl, marketB, 100, 100);
             await mockMarketLiquidity(rewardControl, marketC, 100, 100);
             await mockMarketLiquidity(rewardControl, marketD, 100, 100);
+            // make sure that the supplierA has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplierA, "0");
+            // make sure that the supplierB has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplierB, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -601,7 +612,9 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockMarketLiquidity(rewardControl, marketB, 100, 100);
             await mockMarketLiquidity(rewardControl, marketC, 100, 100);
             await mockMarketLiquidity(rewardControl, marketD, 100, 100);
+            // make sure that the supplierA has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplierA, "0");
+            // make sure that the supplierB has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplierB, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -710,6 +723,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             let borrower = supplier;
             await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
             await mockMarketLiquidity(rewardControl, marketA, "100", "100");
+            // make sure that the supplier has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplier, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
@@ -755,6 +769,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await rewardControl.methods.claimAlk(supplier).send({gas: 1000000, from: root});
             await rewardControl.methods.claimAlk(supplier).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
+            // make sure that the supplier has no balance on the marketA
             await mockSupplyBalance(rewardControl, marketA, supplier, "0");
 
             // then ALK accrued is not changed
