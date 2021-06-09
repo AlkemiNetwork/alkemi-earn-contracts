@@ -321,6 +321,10 @@
 		],
 		[
 			"Assert",
+			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "5.006e18"]]
+		],
+		[
+			"Assert",
 			["Equal", ["AlkBorrowIndex", "OMG"], ["Exactly", "4.7485465718374937e+36"]]
 		],
       	[
