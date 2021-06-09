@@ -1,5 +1,5 @@
 {
-	"Borrow: Supply Ether and Borrow OMG": [
+	"Borrow: Torrey supplies OMG and borrows Ether to get ALK rewards": [
 		["AddToken", "Ether"],
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAssetToRewardControl", "Ether"],
@@ -19,7 +19,7 @@
 		["Supply", "Torrey", "OMG", "2.5e18"],
 		["FastForwardWithRewardControl", 1, "blocks"],
 		["Supply", "Torrey", "OMG", "2.5e18"],
-		["Borrow", "Geoff", "OMG", "2.0e18"],
+		["Borrow", "Geoff", "Ether", "2.0e18"],
 		["Assert", ["Success"]],
         ["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "6.250000000000000000e18"]]],
       	[
@@ -85,6 +85,62 @@
 		[
 			"Assert",
 			["Equal", ["TokenBalance", "Torrey", "ALK"], ["Exactly", "2.401102038461538300e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkBorrowIndex", "Ether"], ["Exactly", "1.279308445400753e+36"]]
+		],
+      	[
+			"Assert",
+			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "1.279308445400753e+36"]]
+		],
+		["FastForwardWithRewardControl", 1, "blocks"],
+		["Borrow", "Torrey", "Ether", "2.5e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "2.646318769626166e+36"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "0"]]
+		],
+		["FastForwardWithRewardControl", 1, "blocks"],
+		["Borrow", "Torrey", "Ether", "2.5e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Torrey", "Ether"], ["Exactly", "5e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSpeed", "Ether"], ["Exactly", "2.908594593745935000e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkBorrowIndex", "Ether"], ["Exactly", "3.292027415146409e+36"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkBorrowIndexBlock", "Ether"], ["Exactly", "1005"]]
+		],
+      	[
+			"Assert",
+			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "3.292027415146409e+36"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "2.827800299475214300e18"]]
+		],
+		["ClaimAlk", "Torrey"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "0"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Torrey", "ALK"], ["Exactly", "11.495480369207079000e18"]]
 		]
 	]
 }

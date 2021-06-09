@@ -76,6 +76,16 @@ async function getAlkSupplierIndex(world, market, user) {
   return Number((await world.rewardControl.methods.alkSupplierIndex(market._address, user).call()));
 }
 
+async function getAlkBorrowIndex(world, market) {
+  let response = await world.rewardControl.methods.alkBorrowState(market._address).call();
+  return Number(response[0]);
+}
+
+async function getAlkBorrowIndexBlock(world, market) {
+  let response = await world.rewardControl.methods.alkBorrowState(market._address).call();
+  return Number(response[1]);
+}
+
 async function getAlkBorrowerIndex(world, market, user) {
   return Number((await world.rewardControl.methods.alkBorrowerIndex(market._address, user).call()));
 }
@@ -175,6 +185,18 @@ async function getAssertionValue(world, value) {
         const [market, user] = valueArgs;
 
         return await getAlkSupplierIndex(world, getToken(world, market), getUser(world, user));
+      })();
+    case "AlkBorrowIndex":
+      return await (async () => {
+        const [market] = valueArgs;
+
+        return await getAlkBorrowIndex(world, getToken(world, market));
+      })();
+    case "AlkBorrowIndexBlock":
+      return await (async () => {
+        const [market] = valueArgs;
+
+        return await getAlkBorrowIndexBlock(world, getToken(world, market));
       })();
     case "AlkBorrowerIndex":
       return await (async () => {
