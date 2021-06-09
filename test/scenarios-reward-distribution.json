@@ -261,6 +261,22 @@
 			"Assert",
 			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "3.003e18"]]
 		],
+		[
+			"Assert",
+			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "2.819401829302280700e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkBorrowIndex", "OMG"], ["Exactly", "0"]]
+		],
+      	[
+			"Assert",
+			["Equal", ["AlkBorrowerIndex", "OMG", "Geoff"], ["Exactly", "0"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Geoff"], ["Exactly", "0"]]
+		],
 		["Approve", "Geoff", "OMG", "1.0e18"],
 		["PayBorrow", "Geoff", "OMG", "1.0e18"],
 		["Assert", ["Success"]],
