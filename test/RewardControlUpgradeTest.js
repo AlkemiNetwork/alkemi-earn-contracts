@@ -18,7 +18,6 @@ contract('RewardControl upgrade test', function ([root, ...accounts]) {
                 initializer: 'initializer',
                 unsafeAllowCustomTypes: true
             });
-            console.log(`rewardControl.address: ${rewardControlV1.address}`);
 
             await ALK.methods.transfer(rewardControlV1.address, "70000000000000000000000000").send({from: root});
             assert.equal((await ALK.methods.balanceOf(rewardControlV1.address).call()).toString(), "70000000000000000000000000");
@@ -29,9 +28,10 @@ contract('RewardControl upgrade test', function ([root, ...accounts]) {
 
             // when
             const rewardControlV2 = await upgradeProxy(rewardControlV1.address, RewardControlV2, {unsafeAllowCustomTypes: true});
-            console.log(`rewardControlV2.address: ${rewardControlV2.address}`);
 
             // then
+            assert.equal(rewardControlV1.address, rewardControlV2.address);
+
             await rewardControlV2.setValue(100);
             assert.equal(await rewardControlV2.getValue(), 100);
 
