@@ -413,7 +413,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockSupplyBalance(rewardControl, marketA, supplier, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
-            // when #1 refresh supply index
+            // given #1 refresh supply index
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplier, "25");
 
@@ -423,7 +423,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "41619102000000000000000000000000000000000000000000000",
                 "0"); // 0 ALK
 
-            // when #2 refresh supply index
+            // given #2 refresh supply index
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplier, "50");
@@ -434,7 +434,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "83238204000000000000000000000000000000000000000000000",
                 "1040477550000000000"); // 1.040477550000000000 ALK
 
-            // when #3 refresh supply index
+            // given #3 refresh supply index
             await rewardControl.methods.harnessFastForward(3).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
 
@@ -444,7 +444,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "208095510000000000000000000000000000000000000000000000",
                 "7283342850000000000"); // 7.283342850000000000 ALK
 
-            // when #1 refresh borrow index
+            // given #1 refresh borrow index
             await rewardControl.methods.harnessFastForward(3).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrower).send({gas: 1000000, from: root});
             await mockBorrowBalance(rewardControl, marketA, borrower, "25");
@@ -455,7 +455,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "332952816000000000000000000000000000000000000000000000",
                 "7283342850000000000"); // 7.283342850000000000 ALK
 
-            // when #2 refresh borrow index
+            // given #2 refresh borrow index
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkBorrowIndex(marketA, borrower).send({gas: 1000000, from: root});
             await mockBorrowBalance(rewardControl, marketA, borrower, "50");
@@ -510,7 +510,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockSupplyBalance(rewardControl, marketA, supplierB, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
-            // when #1 refresh supply index for supplierA
+            // given #1 refresh supply index for supplierA
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierA).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplierA, "50");
 
@@ -520,7 +520,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "10404775500000000000000000000000000000000000000000000",
                 "0"); // 0 ALK
 
-            // when #2 refresh supply index for supplierA and supplierB
+            // given #2 refresh supply index for supplierA and supplierB
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierA).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierB).send({gas: 1000000, from: root});
@@ -537,7 +537,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "20809551000000000000000000000000000000000000000000000",
                 "0"); // 0 ALK
 
-            // when #3 refresh supply index for supplierB
+            // given #3 refresh supply index for supplierB
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierB).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplierB, "75");
@@ -552,7 +552,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "31214326500000000000000000000000000000000000000000000",
                 "520238775000000000"); // 0.520238775000000000 ALK
 
-            // when #4 refresh supply index for supplierA
+            // given #4 refresh supply index for supplierA
             await mockMarketLiquidity(rewardControl, marketA, 125, 100);
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierA).send({gas: 1000000, from: root});
@@ -618,7 +618,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockSupplyBalance(rewardControl, marketA, supplierB, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
-            // when #1 refresh supply index for supplierA
+            // given #1 refresh supply index for supplierA
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierA).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplierA, "50");
 
@@ -628,7 +628,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "10404775500000000000000000000000000000000000000000000",
                 "0"); // 0 ALK
 
-            // when #2 refresh supply index for supplierA and supplierB
+            // given #2 refresh supply index for supplierA and supplierB
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierA).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierB).send({gas: 1000000, from: root});
@@ -645,7 +645,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "20809551000000000000000000000000000000000000000000000",
                 "0"); // 0 ALK
 
-            // when #3 refresh supply index for supplierB
+            // given #3 refresh supply index for supplierB
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierB).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplierB, "75");
@@ -660,7 +660,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "31214326500000000000000000000000000000000000000000000",
                 "520238775000000000"); // 0.520238775000000000 ALK
 
-            // when #4 refresh supply index for supplierA (marketA)
+            // given #4 refresh supply index for supplierA (marketA)
             await mockMarketLiquidity(rewardControl, marketA, 125, 100);
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplierA).send({gas: 1000000, from: root});
@@ -677,7 +677,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "31214326500000000000000000000000000000000000000000000",
                 "520238775000000000"); // 5.20238775000000000 ALK
 
-            // when #4 refresh supply index for supplierA (marketB)
+            // given #4 refresh supply index for supplierA (marketB)
             await rewardControl.methods.refreshAlkSupplyIndex(marketB, supplierA).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketB, supplierA, "25");
 
@@ -727,7 +727,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockSupplyBalance(rewardControl, marketA, supplier, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
-            // when #1 refresh supply index
+            // given #1 refresh supply index
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplier, "25");
 
@@ -737,7 +737,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "41619102000000000000000000000000000000000000000000000",
                 "0"); // 0 ALK
 
-            // when #2 refresh supply index
+            // given #2 refresh supply index
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplier, "50");
@@ -810,7 +810,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
             await mockSupplyBalance(rewardControl, marketA, supplier, "0");
             await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
 
-            // when #1 refresh supply index
+            // given #1 refresh supply index
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplier, "25");
 
@@ -820,7 +820,7 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
                 "41619102000000000000000000000000000000000000000000000",
                 "0"); // 0 ALK
 
-            // when #2 refresh supply index
+            // given #2 refresh supply index
             await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
             await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
             await mockSupplyBalance(rewardControl, marketA, supplier, "50");
