@@ -1,5 +1,5 @@
 {
-	"Borrow: Torrey supplies OMG and borrows Ether to get ALK rewards": [
+	"Borrow: Supply OMG and borrow Ether to get ALK rewards": [
 		["AddToken", "Ether"],
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAssetToRewardControl", "Ether"],
@@ -217,7 +217,83 @@
 			"Assert",
 			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "3.121432650000000000e18"]]
 		]
-    ]
+    ],
+	"PayBorrow: Supply Ether and Borrow OMG and Repay half should refresh borrow index": [
+		["AddToken", "Ether"],
+		["SetAssetValue", "Ether", "1.0"],
+		["AddSupportedAssetToRewardControl", "Ether"],
+		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
+		["Approve", "Geoff", "Ether", "10.0e18"],
+		["Faucet", "Geoff", "Ether", "10.0e18"],
+		["Supply", "Geoff", "Ether", "10.0e18"],
+		["Assert", ["Success"]],
+		["Assert", ["Log", "SupplyReceived"]],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+		],
+		["FastForwardWithRewardControl", 2, "blocks"],
+		["AddToken", "OMG"],
+		["AddCash", "OMG", "1e20"],
+		["SetAssetValue", "OMG", "1.0"],
+		["AddSupportedAssetToRewardControl", "OMG"],
+		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
+		["Approve", "Torrey", "OMG", "20.0e18"],
+		["Faucet", "Torrey", "OMG", "20.0e18"],
+		["Supply", "Torrey", "OMG", "20.0e18"],
+		["Borrow", "Torrey", "OMG", "1.0e18"],
+		["Borrow", "Geoff", "OMG", "2.0e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "2.002e18"]]
+		],
+		["FastForwardWithRewardControl", 2, "blocks"],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "5.005e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Precisely", "2.0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "3.003e18"]]
+		],
+		["Approve", "Geoff", "OMG", "1.0e18"],
+		["PayBorrow", "Geoff", "OMG", "1.0e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "4.005e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Exactly", "1.0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "5.006e18"]]
+		],
+		["FastForwardWithRewardControl", 2, "blocks"],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "10.0125e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkBorrowIndex", "OMG"], ["Exactly", "1.9319613277792715e+36"]]
+		],
+      	[
+			"Assert",
+			["Equal", ["AlkBorrowerIndex", "OMG", "Geoff"], ["Exactly", "1.9319613277792715e+36"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Geoff"], ["Exactly", "0"]]
+		]
+	]
 }
 
 
