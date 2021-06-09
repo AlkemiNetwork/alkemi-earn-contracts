@@ -142,7 +142,60 @@
 			"Assert",
 			["Equal", ["TokenBalance", "Torrey", "ALK"], ["Exactly", "11.495480369207079000e18"]]
 		]
-	]
+	],
+	"Withdraw: Withdraw should refresh supply index": [
+		["AddToken", "Ether"],
+		["SetAssetValue", "Ether", "1.0"],
+		["AddSupportedAssetToRewardControl", "Ether"],
+		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
+		["Approve", "Geoff", "Ether", "1.0e18"],
+		["Faucet", "Geoff", "Ether", "1.0e18"],
+		["Supply", "Geoff", "Ether", "1.0e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "0"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "0"]]
+		],
+      	["Approve", "Torrey", "Ether", "2.0e18"],
+		["Faucet", "Torrey", "Ether", "2.0e18"],
+		["FastForwardWithRewardControl", 1, "blocks"],
+		["Supply", "Torrey", "Ether", "1.0e18"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "4.1619102e+36"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSupplierIndex", "Ether", "Torrey"], ["Exactly", "4.1619102e+36"]]
+		],
+      	[
+			"Assert",
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "0"]]
+		],
+		["FastForwardWithRewardControl", 1, "blocks"],
+        ["Withdraw", "Torrey", "Ether", "1.0e18"],
+		[
+			"Assert",
+			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "6.2428653e+36"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSupplierIndex", "Ether", "Torrey"], ["Exactly", "6.2428653e+36"]]
+		],
+        [
+			"Assert",
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "3.121432650000000000e18"]]
+		]
+    ]
 }
 
 
