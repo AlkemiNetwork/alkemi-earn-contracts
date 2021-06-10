@@ -111,9 +111,9 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     }
 
     /**
-     * @notice Claim all the ALK accrued by holder in the specified market
+     * @notice Claim all the ALK accrued by holder by refreshing the indexes on the specified market only
      * @param holder The address to claim ALK for
-     * @param market The address of the market to claim ALK for
+     * @param market The address of the market to refresh the indexes for
      */
     function claimAlk(address holder, address market) external {
         require(allMarketsIndex[market], "Market does not exist");
