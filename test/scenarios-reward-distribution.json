@@ -2,8 +2,12 @@
 	"Liquidate: LiquidateBorrow should refresh both supply and borrow indexes": [
 		["AddToken", "OMG"],
 		["SetAssetValue", "OMG", "1.0"],
-		["AddSupportedAsset", "OMG"],
-		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
+		["AddSupportedAssetToRewardControl", "OMG"],
+		["SetInterestRate", "OMG", ["FixedRate", 0.1, 0.15]],
+		["Approve", "Robert", "OMG", "0.1e18"],
+		["Faucet", "Robert", "OMG", "0.1e18"],
+		["Supply", "Robert", "OMG", "0.1e18"],
+		["FastForwardWithRewardControl", 1, "blocks"],
 		["Approve", "Geoff", "OMG", "2.1e18"],
 		["Faucet", "Geoff", "OMG", "2.1e18"],
 		["Supply", "Geoff", "OMG", "2.1e18"],
@@ -14,21 +18,24 @@
 		],
 		["AddToken", "Ether"],
 		["SetAssetValue", "Ether", "1.0"],
-		["AddSupportedAsset", "Ether"],
-		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
+		["AddSupportedAssetToRewardControl", "Ether"],
+		["SetInterestRate", "Ether", ["FixedRate", 0.1, 0.15]],
 		["Approve", "Torrey", "Ether", "5.0e18"],
 		["Faucet", "Torrey", "Ether", "5.0e18"],
+		["FastForwardWithRewardControl", 1, "blocks"],
 		["Supply", "Torrey", "Ether", "2.0e18"],
-		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "2.1e18"]]],
+		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "2.2e18"]]],
 		[
 			"Assert",
 			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "0.0e18"]]
 		],
+		["Borrow", "Robert", "Ether", "0.05e18"],
+		["FastForwardWithRewardControl", 1, "blocks"],
 		["Borrow", "Geoff", "Ether", "1e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.001e18"]]
+			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.05105e18"]]
 		],
 		[
 			"Assert",
@@ -42,16 +49,37 @@
 			"Assert",
 			["Equal", ["BalanceSheetSupply", "Ether"], ["Exactly", "2.0e18"]]
 		],
-		["SetAssetValue", "OMG", "0.5"],
-		["Liquidate", "Torrey", "Geoff", "Ether", "0.95e18", "OMG"],
-		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "0.051e18"]]
+			["Equal", ["AlkSupplierIndex", "OMG", "Geoff"], ["Exactly", "4.1619102e+37"]]
 		],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "0.051e18"]]
+			["Equal", ["AlkBorrowerIndex", "Ether", "Geoff"], ["Exactly", "4.011058884062491e+37"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Geoff"], ["Exactly", "0"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSupplierIndex", "OMG", "Torrey"], ["Exactly", "0"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "0"]]
+		],
+		["FastForwardWithRewardControl", 1, "blocks"],
+		["SetAssetValue", "OMG", "0.5"],
+		["Liquidate", "Torrey", "Geoff", "Ether", "0.1e18", "OMG"],
+		["Assert", ["Success"]],
+		[
+			"Assert",
+			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.1012e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.05115e18"]]
 		],
 		[
 			"Assert",
@@ -59,15 +87,35 @@
 		],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "OMG"], ["Exactly", "0.01e18"]]
+			["Equal", ["SupplyBalance", "Geoff", "OMG"], ["Exactly", "2.51e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Torrey", "OMG"], ["Exactly", "2.09e18"]]
+			["Equal", ["SupplyBalance", "Torrey", "OMG"], ["Exactly", "0.22e18"]]
 		],
 		[
 			"Assert",
 			["Equal", ["TokenBalance", "Torrey", "OMG"], ["Exactly", "0"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSupplierIndex", "OMG", "Geoff"], ["Exactly", "4.399686084823036e+37"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkBorrowerIndex", "Ether", "Geoff"], ["Exactly", "4.2411355100997305e+37"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Geoff"], ["Exactly", "9.13980873629655e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSupplierIndex", "OMG", "Torrey"], ["Exactly", "4.399686084823036e+37"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "0"]]
 		]
 	]
 }
