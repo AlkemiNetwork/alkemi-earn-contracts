@@ -7,4 +7,5 @@ contract RewardControlInterface {
 
     function claimAlk(address holder) external;
 
+    function claimAlk(address holder, address market) external;
 }
