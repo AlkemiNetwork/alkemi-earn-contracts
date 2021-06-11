@@ -2528,6 +2528,11 @@ contract MoneyMarketV12 is Exponential, SafeToken {
         }
     }
 
+    /**
+     * @notice Set the address of the Reward Control contract to be triggered to accrue ALK rewards for participants
+     * @param _rewardControl The address of the underlying reward control contract
+     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+     */
     function setRewardControlAddress(address _rewardControl) external returns (uint) {
         // Check caller = admin
         if (msg.sender != admin) {
@@ -2539,6 +2544,11 @@ contract MoneyMarketV12 is Exponential, SafeToken {
         return uint(Error.NO_ERROR); // success
     }
 
+    /**
+     * @notice Trigger the underlying Reward Control contract to accrue ALK supply rewards for the supplier on the specified market
+     * @param market The address of the market to accrue rewards
+     * @param supplier The address of the supplier to accrue rewards
+     */
     function refreshAlkSupplyIndex(address market, address supplier) internal {
         if (address(rewardControl) == address(0)) {
             return;
@@ -2546,6 +2556,11 @@ contract MoneyMarketV12 is Exponential, SafeToken {
         rewardControl.refreshAlkSupplyIndex(market, supplier);
     }
 
+    /**
+     * @notice Trigger the underlying Reward Control contract to accrue ALK borrow rewards for the borrower on the specified market
+     * @param market The address of the market to accrue rewards
+     * @param borrower The address of the borrower to accrue rewards
+     */
     function refreshAlkBorrowIndex(address market, address borrower) internal {
         if (address(rewardControl) == address(0)) {
             return;
