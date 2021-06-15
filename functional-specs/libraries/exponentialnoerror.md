@@ -572,39 +572,4 @@ returns(struct ExponentialNoError.Double)
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
 | a | uint256 |  | 
-| b | uint256 |  | 
-
-## Contracts
-
-* [AggregatorV3Interface](AggregatorV3Interface.md)
-* [AlkemiEarnPublicV10](AlkemiEarnPublicV10.md)
-* [AlkemiRateModel](AlkemiRateModel.md)
-* [AlkemiWETH](AlkemiWETH.md)
-* [CarefulMath](CarefulMath.md)
-* [ChainLink](ChainLink.md)
-* [EIP20Interface](EIP20Interface.md)
-* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
-* [ErrorReporter](ErrorReporter.md)
-* [ExchangeRateModel](ExchangeRateModel.md)
-* [Exponential](Exponential.md)
-* [ExponentialNoError](ExponentialNoError.md)
-* [InterestRateModel](InterestRateModel.md)
-* [JumpRateModel](JumpRateModel.md)
-* [JumpRateModelV2](JumpRateModelV2.md)
-* [LiquidationChecker](LiquidationChecker.md)
-* [Liquidator](Liquidator.md)
-* [Migrations](Migrations.md)
-* [MoneyMarket](MoneyMarket.md)
-* [MoneyMarketV11](MoneyMarketV11.md)
-* [MoneyMarketV12](MoneyMarketV12.md)
-* [PriceOracle](PriceOracle.md)
-* [PriceOracleInterface](PriceOracleInterface.md)
-* [PriceOracleProxy](PriceOracleProxy.md)
-* [RewardControl](RewardControl.md)
-* [RewardControlInterface](RewardControlInterface.md)
-* [RewardControlStorage](RewardControlStorage.md)
-* [SafeMath](SafeMath.md)
-* [SafeToken](SafeToken.md)
-* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
-* [StandardInterestRateModel](StandardInterestRateModel.md)
-* [TestTokens](TestTokens.md)
+| b | uint256 |  |
