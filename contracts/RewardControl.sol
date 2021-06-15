@@ -51,7 +51,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
         if (initializationDone == false) {
             initializationDone = true;
             owner = _owner;
-            moneyMarket = MoneyMarket(_moneyMarket);
+            moneyMarket = MoneyMarketV12(_moneyMarket);
             alkAddress = _alkAddress;
             alkRate = 4161910200000000000;
             // 8323820396000000000 divided by 2 (for lending or borrowing)
@@ -317,8 +317,8 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param market The address of the market
      * @return Market statistics for the given market
      */
-    function getMarketStats(address market) public view returns (bool isSupported, uint blockNumber, address interestRateModel, uint totalSupply, uint supplyRateMantissa, uint supplyIndex, uint totalBorrows, uint borrowRateMantissa, uint borrowIndex) {
-        return (moneyMarket.markets(market));
+    function getMarketStats(address market) public view returns (uint, uint) {
+        return moneyMarket.getMarketBalances(market);
     }
 
     /**
@@ -328,7 +328,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
     function getMarketTotalSupply(address market) public view returns (uint) {
         uint totalSupply;
-        (,,, totalSupply,,,,,) = getMarketStats(market);
+        (totalSupply,) = getMarketStats(market);
         return totalSupply;
     }
 
@@ -339,7 +339,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
     function getMarketTotalBorrows(address market) public view returns (uint) {
         uint totalBorrows;
-        (,,,,,, totalBorrows,,) = getMarketStats(market);
+        (, totalBorrows) = getMarketStats(market);
         return totalBorrows;
     }
 
@@ -432,7 +432,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
     function setMoneyMarketAddress(address _moneyMarket) external onlyOwner {
         require(address(moneyMarket) != _moneyMarket, "The same Money Market address");
         require(_moneyMarket != address(0), "MoneyMarket address cannot be empty");
-        moneyMarket = MoneyMarket(_moneyMarket);
+        moneyMarket = MoneyMarketV12(_moneyMarket);
     }
 
     /**

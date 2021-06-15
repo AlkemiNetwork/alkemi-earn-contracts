@@ -1,6 +1,6 @@
 pragma solidity 0.4.24;
 
-import "./MoneyMarket.sol";
+import "./MoneyMarketV12.sol";
 
 contract RewardControlStorage {
 
@@ -49,7 +49,7 @@ contract RewardControlStorage {
     address public newOwner;
 
     // @notice The underlying Money Market contract
-    MoneyMarket public moneyMarket;
+    MoneyMarketV12 public moneyMarket;
 
     // @notice The ALK token address
     address public alkAddress;

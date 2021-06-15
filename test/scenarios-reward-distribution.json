@@ -28,11 +28,11 @@
 		],
       	[
 			"Assert",
-			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "1.600734692307692300e18"]]
+			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "0.990931e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplyIndex", "OMG"], ["Exactly", "3.32952816e35"]]
+			["Equal", ["AlkSupplyIndex", "OMG"], ["Exactly", "1.752383242105263e35"]]
 		],
 		[
 			"Assert",
@@ -40,7 +40,7 @@
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplierIndex", "OMG", "Torrey"], ["Exactly", "3.32952816e35"]]
+			["Equal", ["AlkSupplierIndex", "OMG", "Torrey"], ["Exactly", "1.752383242105263e35"]]
 		],
         [
 			"Assert",
@@ -64,11 +64,11 @@
 		],
         [
 			"Assert",
-			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "1.600734692307692300e18"]]
+			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "0.990931e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplyIndex", "OMG"], ["Exactly", "5.8907036676923075e35"]]
+			["Equal", ["AlkSupplyIndex", "OMG"], ["Exactly", "2.8093763087719298e35"]]
 		],
 		[
 			"Assert",
@@ -76,7 +76,7 @@
 		],
       	[
 			"Assert",
-			["Equal", ["AlkSupplierIndex", "OMG", "Torrey"], ["Exactly", "5.8907036676923075e35"]]
+			["Equal", ["AlkSupplierIndex", "OMG", "Torrey"], ["Exactly", "2.8093763087719298e35"]]
 		],
 		[
 			"Assert",
@@ -84,22 +84,22 @@
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Torrey", "ALK"], ["Exactly", "2.401102038461538300e18"]]
+			["Equal", ["TokenBalance", "Torrey", "ALK"], ["Exactly", "0.990931e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkBorrowIndex", "Ether"], ["Exactly", "1.279308445400753e+36"]]
+			["Equal", ["AlkBorrowIndex", "Ether"], ["Exactly", "9.059940571428571e35"]]
 		],
       	[
 			"Assert",
-			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "1.279308445400753e+36"]]
+			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "9.059940571428571e35"]]
 		],
 		["FastForwardWithRewardControl", 1, "blocks"],
 		["Borrow", "Torrey", "Ether", "2.5e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "2.646318769626166e+36"]]
+			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "1.4609154171428573e36"]]
 		],
 		[
 			"Assert",
@@ -114,11 +114,11 @@
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSpeed", "Ether"], ["Exactly", "2.908594593745935000e18"]]
+			["Equal", ["AlkSpeed", "Ether"], ["Exactly", "2.4728232681818184e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkBorrowIndex", "Ether"], ["Exactly", "3.292027415146409e+36"]]
+			["Equal", ["AlkBorrowIndex", "Ether"], ["Exactly", "1.774924721038961e36"]]
 		],
 		[
 			"Assert",
@@ -126,11 +126,11 @@
 		],
       	[
 			"Assert",
-			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "3.292027415146409e+36"]]
+			["Equal", ["AlkBorrowerIndex", "Ether", "Torrey"], ["Exactly", "1.774924721038961e36"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "2.827800299475214300e18"]]
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "1.3737907045454546e18"]]
 		],
 		["ClaimAlk", "Torrey"],
 		["Assert", ["Success"]],
@@ -140,7 +140,7 @@
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Torrey", "ALK"], ["Exactly", "11.495480369207079000e18"]]
+			["Equal", ["TokenBalance", "Torrey", "ALK"], ["Exactly", "5.742895568181818e18"]]
 		]
 	],
 	"Withdraw: Withdraw should refresh supply index": [
@@ -180,11 +180,11 @@
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "4.1619102e+36"]]
+			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "2.7746068e36"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplierIndex", "Ether", "Torrey"], ["Exactly", "4.1619102e+36"]]
+			["Equal", ["AlkSupplierIndex", "Ether", "Torrey"], ["Exactly", "2.7746068e36"]]
 		],
       	[
 			"Assert",
@@ -207,15 +207,15 @@
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "6.2428653e+36"]]
+			["Equal", ["AlkSupplyIndex", "Ether"], ["Exactly", "4.1619102e36"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplierIndex", "Ether", "Torrey"], ["Exactly", "6.2428653e+36"]]
+			["Equal", ["AlkSupplierIndex", "Ether", "Torrey"], ["Exactly", "4.1619102e36"]]
 		],
         [
 			"Assert",
-			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "3.121432650000000000e18"]]
+			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "2.0809551e18"]]
 		]
     ],
 	"PayBorrow: Supply Ether and Borrow OMG and Repay half should refresh borrow index": [
@@ -253,11 +253,11 @@
 		["Borrow", "Torrey", "OMG", "1.0e18"],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "1.001e18"]]
+			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "1.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "2.774606800000000000e18"]]
+			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "2.2701328363636365e18"]]
 		],
 		[
 			"Assert",
@@ -268,12 +268,12 @@
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "2.002e18"]]
+			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "2.0e18"]]
 		],
 		["FastForwardWithRewardControl", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "5.005e18"]]
+			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "5.0e18"]]
 		],
 		[
 			"Assert",
@@ -281,19 +281,19 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "3.003e18"]]
+			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "3.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "2.819401829302280700e18"]]
+			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "2.1399295360323886e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkBorrowIndex", "OMG"], ["Exactly", "2.8165852440582225e+36"]]
+			["Equal", ["AlkBorrowIndex", "OMG"], ["Exactly", "1.2228168777327935e36"]]
 		],
       	[
 			"Assert",
-			["Equal", ["AlkBorrowerIndex", "OMG", "Geoff"], ["Exactly", "2.8165852440582225e+36"]]
+			["Equal", ["AlkBorrowerIndex", "OMG", "Geoff"], ["Exactly", "1.2228168777327935e36"]]
 		],
 		[
 			"Assert",
@@ -304,7 +304,7 @@
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "4.005e18"]]
+			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "4.0e18"]]
 		],
 		[
 			"Assert",
@@ -312,28 +312,28 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "5.006e18"]]
+			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "5.0e18"]]
 		],
 		["FastForwardWithRewardControl", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "10.0125e18"]]
+			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "10.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "5.006e18"]]
+			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "5.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkBorrowIndex", "OMG"], ["Exactly", "4.7485465718374937e+36"]]
+			["Equal", ["AlkBorrowIndex", "OMG"], ["Exactly", "1.8253029257327937e36"]]
 		],
       	[
 			"Assert",
-			["Equal", ["AlkBorrowerIndex", "OMG", "Geoff"], ["Exactly", "4.7485465718374937e+36"]]
+			["Equal", ["AlkBorrowerIndex", "OMG", "Geoff"], ["Exactly", "1.8253029257327937e36"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkAccrued", "Geoff"], ["Exactly", "9.669466445535255000e18"]]
+			["Equal", ["AlkAccrued", "Geoff"], ["Exactly", "3.01243024e18"]]
 		]
 	],
 	"Liquidate: LiquidateBorrow should refresh both supply and borrow indexes": [
@@ -372,11 +372,11 @@
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.05105e18"]]
+			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.05e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.001e18"]]
+			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
 		],
 		[
 			"Assert",
@@ -388,11 +388,11 @@
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplierIndex", "OMG", "Geoff"], ["Exactly", "4.1619102e+37"]]
+			["Equal", ["AlkSupplierIndex", "OMG", "Geoff"], ["Exactly", "3.7835547272727274e37"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkBorrowerIndex", "Ether", "Geoff"], ["Exactly", "4.011058884062491e+37"]]
+			["Equal", ["AlkBorrowerIndex", "Ether", "Geoff"], ["Exactly", "3.336400479925428e37"]]
 		],
 		[
 			"Assert",
@@ -412,11 +412,11 @@
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.1012e18"]]
+			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.1e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.05115e18"]]
+			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.05e18"]]
 		],
 		[
 			"Assert",
@@ -436,19 +436,19 @@
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplierIndex", "OMG", "Geoff"], ["Exactly", "4.399686084823036e+37"]]
+			["Equal", ["AlkSupplierIndex", "OMG", "Geoff"], ["Exactly", "3.9827686179787505e37"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkBorrowerIndex", "Ether", "Geoff"], ["Exactly", "4.2411355100997305e+37"]]
+			["Equal", ["AlkBorrowerIndex", "Ether", "Geoff"], ["Exactly", "3.5237907718731914e37"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkAccrued", "Geoff"], ["Exactly", "9.13980873629655e18"]]
+			["Equal", ["AlkAccrued", "Geoff"], ["Exactly", "7.593527573673714e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["AlkSupplierIndex", "OMG", "Torrey"], ["Exactly", "4.399686084823036e+37"]]
+			["Equal", ["AlkSupplierIndex", "OMG", "Torrey"], ["Exactly", "3.9827686179787505e37"]]
 		],
 		[
 			"Assert",

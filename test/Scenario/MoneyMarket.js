@@ -150,10 +150,8 @@ async function buildMoneyMarketV12(root, accounts, priceOracle) {
 	});
 
 	await moneyMarket.methods
-		._adminFunctions(root, priceOracle._address, false)
+		._adminFunctions(root, priceOracle._address, false, 0)
 		.send({ from: root });
-
-	// TODO: Should we set default origination fee here?
 
 	return {
 		_address: moneyMarket._address,
