@@ -334,7 +334,7 @@ Get market statistics from the Money Market contract
 
 ```js
 function getMarketStats(address market) public view
-returns(isSupported bool, blockNumber uint256, interestRateModel address, totalSupply uint256, supplyRateMantissa uint256, supplyIndex uint256, totalBorrows uint256, borrowRateMantissa uint256, borrowIndex uint256)
+returns(uint256, uint256)
 ```
 
 **Returns**

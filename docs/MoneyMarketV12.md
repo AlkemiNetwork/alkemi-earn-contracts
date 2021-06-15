@@ -314,7 +314,7 @@ modifier isLiquidator() internal
 - [fetchAssetPrice(address asset)](#fetchassetprice)
 - [assetPrices(address asset)](#assetprices)
 - [getAssetAmountForValue(address asset, struct Exponential.Exp ethValue)](#getassetamountforvalue)
-- [_adminFunctions(address newPendingAdmin, address newOracle, bool requestedState)](#_adminfunctions)
+- [_adminFunctions(address newPendingAdmin, address newOracle, bool requestedState, uint256 originationFeeMantissa)](#_adminfunctions)
 - [_acceptAdmin()](#_acceptadmin)
 - [getAccountLiquidity(address account)](#getaccountliquidity)
 - [getSupplyBalance(address account, address asset)](#getsupplybalance)
@@ -322,7 +322,6 @@ modifier isLiquidator() internal
 - [_supportMarket(address asset, InterestRateModel interestRateModel)](#_supportmarket)
 - [_suspendMarket(address asset)](#_suspendmarket)
 - [_setRiskParameters(uint256 collateralRatioMantissa, uint256 liquidationDiscountMantissa, uint256 _minimumCollateralRatioMantissa, uint256 _maximumLiquidationDiscountMantissa)](#_setriskparameters)
-- [_setOriginationFee(uint256 originationFeeMantissa)](#_setoriginationfee)
 - [_setMarketInterestRateModel(address asset, InterestRateModel interestRateModel)](#_setmarketinterestratemodel)
 - [_withdrawEquity(address asset, uint256 amount)](#_withdrawequity)
 - [setWethAddress(address wethContractAddress)](#setwethaddress)
@@ -330,7 +329,6 @@ modifier isLiquidator() internal
 - [revertEtherToUser(address user, uint256 etherAmount)](#revertethertouser)
 - [supply(address asset, uint256 amount)](#supply)
 - [withdrawEther(address user, uint256 etherAmount)](#withdrawether)
-- [sendEtherToUser(address user, uint256 amount)](#sendethertouser)
 - [withdraw(address asset, uint256 requestedAmount)](#withdraw)
 - [calculateAccountLiquidity(address userAddress)](#calculateaccountliquidity)
 - [calculateAccountValuesInternal(address userAddress)](#calculateaccountvaluesinternal)
@@ -346,6 +344,7 @@ modifier isLiquidator() internal
 - [setRewardControlAddress(address _rewardControl)](#setrewardcontroladdress)
 - [refreshAlkSupplyIndex(address market, address supplier)](#refreshalksupplyindex)
 - [refreshAlkBorrowIndex(address market, address borrower)](#refreshalkborrowindex)
+- [getMarketBalances(address asset)](#getmarketbalances)
 
 ### initializer
 
@@ -693,7 +692,7 @@ returns(enum ErrorReporter.Error, uint256)
 Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
 
 ```js
-function _adminFunctions(address newPendingAdmin, address newOracle, bool requestedState) public nonpayable
+function _adminFunctions(address newPendingAdmin, address newOracle, bool requestedState, uint256 originationFeeMantissa) public nonpayable
 returns(uint256)
 ```
 
@@ -709,6 +708,7 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 | newPendingAdmin | address | New pending admin. | 
 | newOracle | address |  | 
 | requestedState | bool |  | 
+| originationFeeMantissa | uint256 |  | 
 
 ### _acceptAdmin
 
@@ -852,25 +852,6 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 | _minimumCollateralRatioMantissa | uint256 |  | 
 | _maximumLiquidationDiscountMantissa | uint256 |  | 
 
-### _setOriginationFee
-
-Sets the origination fee (which is a multiplier on new borrows)
-
-```js
-function _setOriginationFee(uint256 originationFeeMantissa) public nonpayable
-returns(uint256)
-```
-
-**Returns**
-
-uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| originationFeeMantissa | uint256 | rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1 | 
-
 ### _setMarketInterestRateModel
 
 Sets the interest rate model for a given market
@@ -996,22 +977,6 @@ returns(uint256)
 | ------------- |------------- | -----|
 | user | address | User account address | 
 | etherAmount | uint256 | Amount of ether to be converted to WETH | 
-
-### sendEtherToUser
-
-send Ether from contract to a user
-
-```js
-function sendEtherToUser(address user, uint256 amount) public nonpayable
-returns(uint256)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| user | address |  | 
-| amount | uint256 |  | 
 
 ### withdraw
 
@@ -1289,6 +1254,19 @@ function refreshAlkBorrowIndex(address market, address borrower) internal nonpay
 | ------------- |------------- | -----|
 | market | address | The address of the market to accrue rewards | 
 | borrower | address | The address of the borrower to accrue rewards | 
+
+### getMarketBalances
+
+```js
+function getMarketBalances(address asset) public view
+returns(uint256, uint256)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| asset | address |  | 
 
 ## Contracts
 

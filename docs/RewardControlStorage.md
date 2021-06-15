@@ -32,7 +32,7 @@ mapping(address => uint256) public alkAccrued;
 bool public initializationDone;
 address public owner;
 address public newOwner;
-contract MoneyMarket public moneyMarket;
+contract MoneyMarketV12 public moneyMarket;
 address public alkAddress;
 
 ```
