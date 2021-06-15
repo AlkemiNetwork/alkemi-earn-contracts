@@ -2,12 +2,10 @@
 
 const Action = require("./Action");
 const Immutable = require("seamless-immutable");
-const { buildMoneyMarket, buildPriceOracle, buildRewardControl } = require("./MoneyMarket");
+const { buildMoneyMarket, buildMoneyMarketV12, buildPriceOracle, buildRewardControl } = require("./MoneyMarket");
 const { ErrorEnumInv, FailureInfoEnumInv } = require("../ErrorReporter");
 const BigNumber = require("bignumber.js");
 const { getContract } = require("../Contract");
-const MoneyMarket = getContract("./test/MoneyMarketScenario.sol");
-const MoneyMarketV12 = getContract("./test/MoneyMarketV12Scenario.sol");
 
 const accountMap = {
 	root: 0,
@@ -51,7 +49,6 @@ function getAmount(world, amountArg) {
 async function initWorld(accounts) {
 	const priceOracle = await buildPriceOracle(accounts[0]);
 	const moneyMarket = await buildMoneyMarket(
-		MoneyMarket,
 		accounts[0],
 		accounts,
 		priceOracle
@@ -77,8 +74,7 @@ async function initWorld(accounts) {
 
 async function initWorldWithRewardDistribution(accounts) {
 	const priceOracle = await buildPriceOracle(accounts[0]);
-	const moneyMarket = await buildMoneyMarket(
-		MoneyMarketV12,
+	const moneyMarket = await buildMoneyMarketV12(
 		accounts[0],
 		accounts,
 		priceOracle

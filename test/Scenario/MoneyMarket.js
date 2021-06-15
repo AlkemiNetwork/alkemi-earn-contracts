@@ -3,9 +3,11 @@
 const { getContract, readAndExecContract } = require("../Contract");
 const PriceOracle = getContract("./test/PriceOracleHarness.sol");
 const RewardControl = getContract("./test/RewardControlScenario.sol");
+const MoneyMarket = getContract("./test/MoneyMarketScenario.sol");
+const MoneyMarketV12 = getContract("./test/MoneyMarketV12Scenario.sol");
 
-async function buildMoneyMarket(moneyMarketContract, root, accounts, priceOracle) {
-	const moneyMarket = await moneyMarketContract.new().send({ from: root });
+async function buildMoneyMarket(root, accounts, priceOracle) {
+	const moneyMarket = await MoneyMarket.new().send({ from: root });
 	await readAndExecContract(moneyMarket, "initializer", [], { from: root });
 	await readAndExecContract(moneyMarket, "addKYCAdmin", [root], { from: root });
 	await readAndExecContract(moneyMarket, "addCustomerKYC", [root], {
@@ -82,6 +84,84 @@ async function buildMoneyMarket(moneyMarketContract, root, accounts, priceOracle
 	};
 }
 
+async function buildMoneyMarketV12(root, accounts, priceOracle) {
+	const moneyMarket = await MoneyMarketV12.new().send({ from: root });
+	await readAndExecContract(moneyMarket, "initializer", [], { from: root });
+	await readAndExecContract(moneyMarket, "_changeKYCAdmin", [root, true], { from: root });
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [root, true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[1], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[2], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[3], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[4], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[5], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[6], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[7], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[8], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeCustomerKYC", [accounts[9], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [root, true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[1], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[2], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[3], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[4], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[5], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[6], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[7], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[8], true], {
+		from: root,
+	});
+	await readAndExecContract(moneyMarket, "_changeLiquidator", [accounts[9], true], {
+		from: root,
+	});
+
+	await moneyMarket.methods
+		._adminFunctions(root, priceOracle._address, false)
+		.send({ from: root });
+
+	// TODO: Should we set default origination fee here?
+
+	return {
+		_address: moneyMarket._address,
+		name: "MoneyMarket",
+		methods: moneyMarket.methods,
+	};
+}
+
 async function buildPriceOracle(root) {
 	const priceOracle = await PriceOracle.new().send({ from: root });
 
@@ -106,6 +186,7 @@ async function buildRewardControl(root) {
 
 module.exports = {
 	buildMoneyMarket,
+	buildMoneyMarketV12,
 	buildPriceOracle,
 	buildRewardControl
 };
