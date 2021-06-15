@@ -853,7 +853,7 @@ contract MoneyMarketV12 is Exponential, SafeToken {
     *
     * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
     */
-   function _adminFunctions(address newPendingAdmin, address newOracle, bool requestedState) public returns (uint) {
+   function _adminFunctions(address newPendingAdmin, address newOracle, bool requestedState, uint originationFeeMantissa) public returns (uint) {
        // Check caller = admin
        if (msg.sender != admin) {
            return fail(Error.UNAUTHORIZED, FailureInfo.SET_PENDING_ADMIN_OWNER_CHECK);
@@ -882,6 +882,13 @@ contract MoneyMarketV12 is Exponential, SafeToken {
 
         paused = requestedState;
        emit SetPaused(requestedState);
+
+       // Save current value so we can emit it in log.
+        Exp memory oldOriginationFee = originationFee;
+
+        originationFee = Exp({mantissa: originationFeeMantissa});
+
+        emit NewOriginationFee(oldOriginationFee.mantissa, originationFeeMantissa);
 
        return uint(Error.NO_ERROR);
    }
@@ -1162,27 +1169,27 @@ contract MoneyMarketV12 is Exponential, SafeToken {
         return uint(Error.NO_ERROR);
     }
 
-    /**
-     * @notice Sets the origination fee (which is a multiplier on new borrows)
-     * @dev Owner function to set the origination fee
-     * @param originationFeeMantissa rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     */
-    function _setOriginationFee(uint originationFeeMantissa) public returns (uint) {
-        // Check caller = admin
-        if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.SET_ORIGINATION_FEE_OWNER_CHECK);
-        }
+    // /**
+    //  * @notice Sets the origination fee (which is a multiplier on new borrows)
+    //  * @dev Owner function to set the origination fee
+    //  * @param originationFeeMantissa rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1
+    //  * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+    //  */
+    // function _setOriginationFee(uint originationFeeMantissa) public returns (uint) {
+    //     // Check caller = admin
+    //     if (msg.sender != admin) {
+    //         return fail(Error.UNAUTHORIZED, FailureInfo.SET_ORIGINATION_FEE_OWNER_CHECK);
+    //     }
 
-        // Save current value so we can emit it in log.
-        Exp memory oldOriginationFee = originationFee;
+    //     // Save current value so we can emit it in log.
+    //     Exp memory oldOriginationFee = originationFee;
 
-        originationFee = Exp({mantissa: originationFeeMantissa});
+    //     originationFee = Exp({mantissa: originationFeeMantissa});
 
-        emit NewOriginationFee(oldOriginationFee.mantissa, originationFeeMantissa);
+    //     emit NewOriginationFee(oldOriginationFee.mantissa, originationFeeMantissa);
 
-        return uint(Error.NO_ERROR);
-    }
+    //     return uint(Error.NO_ERROR);
+    // }
 
     /**
      * @notice Sets the interest rate model for a given market
@@ -1440,18 +1447,18 @@ contract MoneyMarketV12 is Exponential, SafeToken {
             return uint(Error.NO_ERROR);
     }
 
-    /**
-     * @notice send Ether from contract to a user
-     * @dev Fail safe plan to send Ether stuck in contract in case there is a problem with withdraw
-     */
-    function sendEtherToUser(address user, uint amount) public returns (uint) {
-        // Check caller = admin
-        if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.SEND_ETHER_ADMIN_CHECK_FAILED);
-        }
-        user.transfer(amount);
-        return uint(Error.NO_ERROR);
-    }
+    // /**
+    //  * @notice send Ether from contract to a user
+    //  * @dev Fail safe plan to send Ether stuck in contract in case there is a problem with withdraw
+    //  */
+    // function sendEtherToUser(address user, uint amount) public returns (uint) {
+    //     // Check caller = admin
+    //     if (msg.sender != admin) {
+    //         return fail(Error.UNAUTHORIZED, FailureInfo.SEND_ETHER_ADMIN_CHECK_FAILED);
+    //     }
+    //     user.transfer(amount);
+    //     return uint(Error.NO_ERROR);
+    // }
 
     /**
      * @notice withdraw `amount` of `asset` from sender's account to sender's address
@@ -2551,5 +2558,33 @@ contract MoneyMarketV12 is Exponential, SafeToken {
             return;
         }
         rewardControl.refreshAlkBorrowIndex(market, borrower);
+    }
+
+    function getMarketBalances(address asset) public view returns(uint, uint) {
+        Error err;
+        uint newSupplyIndex;
+        uint marketSupplyCurrent;
+        uint newBorrowIndex;
+        uint marketBorrowCurrent;
+
+        Market storage market = markets[asset];
+
+        // Calculate the newSupplyIndex, needed to calculate market's supplyCurrent
+        (err, newSupplyIndex) = calculateInterestIndex(market.supplyIndex, market.supplyRateMantissa, market.blockNumber, getBlockNumber());
+        require(err == Error.NO_ERROR);
+
+        // Use newSupplyIndex and stored principal to calculate the accumulated balance
+        (err, marketSupplyCurrent) = calculateBalance(market.totalSupply, market.supplyIndex, newSupplyIndex);
+        require(err == Error.NO_ERROR);
+
+        // Calculate the newBorrowIndex, needed to calculate market's borrowCurrent
+        (err, newBorrowIndex) = calculateInterestIndex(market.borrowIndex, market.borrowRateMantissa, market.blockNumber, getBlockNumber());
+        require(err == Error.NO_ERROR);
+
+        // Use newBorrowIndex and stored principal to calculate the accumulated balance
+        (err, marketBorrowCurrent) = calculateBalance(market.totalBorrows, market.borrowIndex, newBorrowIndex);
+        require(err == Error.NO_ERROR);
+
+        return (marketSupplyCurrent,marketBorrowCurrent);
     }
 }
