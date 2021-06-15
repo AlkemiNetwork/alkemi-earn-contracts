@@ -1,4 +1,9 @@
-# Exponential module for storing fixed-precision decimals (ExponentialNoError.sol)
+---
+layout: default
+title: Exponential
+---
+
+# ExponentialNoError.sol
 
 View Source: [contracts/ExponentialNoError.sol](../contracts/ExponentialNoError.sol)
 

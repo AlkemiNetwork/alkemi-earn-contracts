@@ -1,3 +1,8 @@
+---
+layout: default
+title: RewardControlInterface
+---
+
 # RewardControlInterface.sol
 
 View Source: [contracts/RewardControlInterface.sol](../contracts/RewardControlInterface.sol)

@@ -1,3 +1,8 @@
+---
+layout: default
+title: MoneyMarket
+---
+
 # MoneyMarketV12.sol
 
 View Source: [contracts/MoneyMarketV12.sol](../contracts/MoneyMarketV12.sol)

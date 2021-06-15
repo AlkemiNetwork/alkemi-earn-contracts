@@ -1,3 +1,8 @@
+---
+layout: default
+title: RewardControl
+---
+
 # RewardControl.sol
 
 View Source: [contracts/RewardControl.sol](../contracts/RewardControl.sol)

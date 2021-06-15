@@ -1,3 +1,8 @@
+---
+layout: default
+title: RewardControlStorage
+---
+
 # RewardControlStorage.sol
 
 View Source: [contracts/RewardControlStorage.sol](../contracts/RewardControlStorage.sol)

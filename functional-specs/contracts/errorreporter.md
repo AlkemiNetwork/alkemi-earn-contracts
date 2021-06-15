@@ -5,15 +5,16 @@ title: ErrorReporter
 
 # ErrorReporter.sol
 
-View Source: [contracts/ErrorReporter.sol](https://github.com/project-alkemi/alkemi-earn-protocol/tree/2a353e0fa125b9f579db260fbb031d53b74bf7e2/contracts/ErrorReporter.sol)
+View Source: [contracts/ErrorReporter.sol](../contracts/ErrorReporter.sol)
 
-**↘ Derived Contracts:** [**CarefulMath**](../libraries/carefulmath.md)**,** [**Exponential**](../libraries/exponential.md)**,** [**Liquidator**](liquidator.md)**,** [**SafeToken**](../libraries/safetoken.md)
+**↘ Derived Contracts: [CarefulMath](CarefulMath.md), [Exponential](Exponential.md), [Liquidator](Liquidator.md), [SafeToken](SafeToken.md)**
+
+**ErrorReporter**
 
 **Enums**
-
 ### Error
 
-```javascript
+```js
 enum Error {
  NO_ERROR,
  OPAQUE_ERROR,
@@ -48,13 +49,14 @@ enum Error {
  LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
  SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
  WETH_ADDRESS_NOT_SET_ERROR,
- ETHER_AMOUNT_MISMATCH_ERROR
+ ETHER_AMOUNT_MISMATCH_ERROR,
+ SET_REWARD_CONTROL_ADDRESS_ADMIN_CHECK_FAILED
 }
 ```
 
 ### FailureInfo
 
-```javascript
+```js
 enum FailureInfo {
  ACCEPT_ADMIN_PENDING_ADMIN_CHECK,
  BORROW_ACCOUNT_LIQUIDITY_CALCULATION_FAILED,
@@ -156,50 +158,85 @@ enum FailureInfo {
  SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
  WETH_ADDRESS_NOT_SET_ERROR,
  SEND_ETHER_ADMIN_CHECK_FAILED,
- ETHER_AMOUNT_MISMATCH_ERROR
+ ETHER_AMOUNT_MISMATCH_ERROR,
+ SET_REWARD_CONTROL_ADDRESS_ADMIN_CHECK_FAILED
 }
 ```
 
 **Events**
 
-```javascript
+```js
 event Failure(uint256  error, uint256  info, uint256  detail);
 ```
 
 ## Functions
 
-* [fail\(enum ErrorReporter.Error err, enum ErrorReporter.FailureInfo info\)](errorreporter.md#fail)
-* [failOpaque\(enum ErrorReporter.FailureInfo info, uint256 opaqueError\)](errorreporter.md#failopaque)
+- [fail(enum ErrorReporter.Error err, enum ErrorReporter.FailureInfo info)](#fail)
+- [failOpaque(enum ErrorReporter.FailureInfo info, uint256 opaqueError)](#failopaque)
 
 ### fail
 
 use this when reporting a known error from the money market or a non-upgradeable collaborator
 
-```javascript
+```js
 function fail(enum ErrorReporter.Error err, enum ErrorReporter.FailureInfo info) internal nonpayable
 returns(uint256)
 ```
 
 **Arguments**
 
-| Name | Type | Description |
-| :--- | :--- | :--- |
-| err | enum ErrorReporter.Error |  |
-| info | enum ErrorReporter.FailureInfo |  |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| err | enum ErrorReporter.Error |  | 
+| info | enum ErrorReporter.FailureInfo |  | 
 
 ### failOpaque
 
 use this when reporting an opaque error from an upgradeable collaborator contract
 
-```javascript
+```js
 function failOpaque(enum ErrorReporter.FailureInfo info, uint256 opaqueError) internal nonpayable
 returns(uint256)
 ```
 
 **Arguments**
 
-| Name | Type | Description |
-| :--- | :--- | :--- |
-| info | enum ErrorReporter.FailureInfo |  |
-| opaqueError | uint256 |  |
+| Name        | Type           | Description  |
+| ------------- |------------- | -----|
+| info | enum ErrorReporter.FailureInfo |  | 
+| opaqueError | uint256 |  | 
 
+## Contracts
+
+* [AggregatorV3Interface](AggregatorV3Interface.md)
+* [AlkemiEarnPublicV10](AlkemiEarnPublicV10.md)
+* [AlkemiRateModel](AlkemiRateModel.md)
+* [AlkemiWETH](AlkemiWETH.md)
+* [CarefulMath](CarefulMath.md)
+* [ChainLink](ChainLink.md)
+* [EIP20Interface](EIP20Interface.md)
+* [EIP20NonStandardInterface](EIP20NonStandardInterface.md)
+* [ErrorReporter](ErrorReporter.md)
+* [ExchangeRateModel](ExchangeRateModel.md)
+* [Exponential](Exponential.md)
+* [ExponentialNoError](ExponentialNoError.md)
+* [InterestRateModel](InterestRateModel.md)
+* [JumpRateModel](JumpRateModel.md)
+* [JumpRateModelV2](JumpRateModelV2.md)
+* [LiquidationChecker](LiquidationChecker.md)
+* [Liquidator](Liquidator.md)
+* [Migrations](Migrations.md)
+* [MoneyMarket](MoneyMarket.md)
+* [MoneyMarketV11](MoneyMarketV11.md)
+* [MoneyMarketV12](MoneyMarketV12.md)
+* [PriceOracle](PriceOracle.md)
+* [PriceOracleInterface](PriceOracleInterface.md)
+* [PriceOracleProxy](PriceOracleProxy.md)
+* [RewardControl](RewardControl.md)
+* [RewardControlInterface](RewardControlInterface.md)
+* [RewardControlStorage](RewardControlStorage.md)
+* [SafeMath](SafeMath.md)
+* [SafeToken](SafeToken.md)
+* [StableCoinInterestRateModel](StableCoinInterestRateModel.md)
+* [StandardInterestRateModel](StandardInterestRateModel.md)
+* [TestTokens](TestTokens.md)
