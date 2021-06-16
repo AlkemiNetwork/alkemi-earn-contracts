@@ -249,7 +249,7 @@
 		["Supply", "Torrey", "OMG", "20.0e18"],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "0"]]
+			["Equal", ["RefreshedBalanceSheetBorrow", "OMG"], ["Exactly", "0"]]
 		],
 		[
 			"Assert",
@@ -259,7 +259,7 @@
 		["Borrow", "Torrey", "OMG", "1.0e18"],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "1.0e18"]]
+			["Equal", ["RefreshedBalanceSheetBorrow", "OMG"], ["Exactly", "1.0e18"]]
 		],
 		[
 			"Assert",
@@ -287,7 +287,7 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "3.0e18"]]
+			["Equal", ["RefreshedBalanceSheetBorrow", "OMG"], ["Exactly", "7.5e18"]]
 		],
 		[
 			"Assert",
@@ -318,7 +318,11 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "5.0e18"]]
+			["Equal", ["RefreshedBalanceSheetBorrow", "OMG"], ["Exactly", "5.0e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["AlkSpeed", "OMG"], ["Exactly", "2.25932268e18"]]
 		],
 		["FastForwardWithRewardControl", 2, "blocks"],
 		[
@@ -327,7 +331,7 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "5.0e18"]]
+			["Equal", ["RefreshedBalanceSheetBorrow", "OMG"], ["Exactly", "12.5e18"]]
 		],
 		[
 			"Assert",
