@@ -371,7 +371,7 @@
 		["Faucet", "Torrey", "Ether", "5.0e18"],
 		["FastForwardWithRewardControl", 1, "blocks"],
 		["Supply", "Torrey", "Ether", "2.0e18"],
-		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "2.2e18"]]],
+		["Assert", ["Equal", ["RefreshedBalanceSheetSupply", "OMG"], ["Exactly", "2.42e18"]]],
 		[
 			"Assert",
 			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "0.0e18"]]
@@ -380,13 +380,14 @@
 		["FastForwardWithRewardControl", 1, "blocks"],
 		["Borrow", "Geoff", "Ether", "1e18"],
 		["Assert", ["Success"]],
+		["FastForwardWithRewardControl", 1, "blocks"],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.05e18"]]
+			["Equal", ["RefreshedBalanceSheetBorrow", "Ether"], ["Exactly", "1.2075e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
+			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.15e18"]]
 		],
 		[
 			"Assert",
@@ -394,7 +395,15 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetSupply", "Ether"], ["Exactly", "2.0e18"]]
+			["Equal", ["SupplyBalance", "Geoff", "OMG"], ["Exactly", "2.73e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["RefreshedBalanceSheetSupply", "Ether"], ["Exactly", "2.2e18"]]
+		],
+		[
+			"Assert",
+			["Equal", ["RefreshedBalanceSheetSupply", "OMG"], ["Exactly", "2.86e18"]]
 		],
 		[
 			"Assert",
@@ -416,13 +425,12 @@
 			"Assert",
 			["Equal", ["AlkAccrued", "Torrey"], ["Exactly", "0"]]
 		],
-		["FastForwardWithRewardControl", 1, "blocks"],
 		["SetAssetValue", "OMG", "0.5"],
 		["Liquidate", "Torrey", "Geoff", "Ether", "0.1e18", "OMG"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BalanceSheetBorrow", "Ether"], ["Exactly", "1.1e18"]]
+			["Equal", ["RefreshedBalanceSheetBorrow", "Ether"], ["Exactly", "1.1e18"]]
 		],
 		[
 			"Assert",
