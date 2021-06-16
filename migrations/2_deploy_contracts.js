@@ -61,7 +61,7 @@ module.exports = async (deployer, network, accounts) => {
 			unsafeAllowCustomTypes: true,
 		});
 		await moneyMarket._adminFunctions(
-			address[0],
+			accounts[0],
 			deploymentConfig.RINKEBY.PRICE_ORACLE,
 			false,
 			0
