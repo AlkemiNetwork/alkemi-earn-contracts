@@ -54,6 +54,16 @@ async function getBalanceSheetSupply(world, token) {
   return Number((await world.moneyMarket.methods.markets(token._address).call()).totalSupply);
 }
 
+async function getRefreshedBalanceSheetSupply(world, token) {
+  let response = await world.moneyMarket.methods.getMarketBalances(token._address).call();
+  return Number(response[0]);
+}
+
+async function getRefreshedBalanceSheetBorrow(world, token) {
+  let response = await world.moneyMarket.methods.getMarketBalances(token._address).call();
+  return Number(response[1]);
+}
+
 async function getBalanceSheetBorrow(world, token) {
   return Number((await world.moneyMarket.methods.markets(token._address).call()).totalBorrows);
 }
@@ -156,11 +166,23 @@ async function getAssertionValue(world, value) {
 
         return await getBalanceSheetSupply(world, getToken(world, token));
       })();
+    case "RefreshedBalanceSheetSupply":
+      return await (async () => {
+        const [token] = valueArgs;
+
+        return await getRefreshedBalanceSheetSupply(world, getToken(world, token));
+      })();
     case "BalanceSheetBorrow":
       return await (async () => {
         const [token] = valueArgs;
 
         return await getBalanceSheetBorrow(world, getToken(world, token));
+      })();
+    case "RefreshedBalanceSheetBorrow":
+      return await (async () => {
+        const [token] = valueArgs;
+
+        return await getRefreshedBalanceSheetBorrow(world, getToken(world, token));
       })();
     case "AlkSpeed":
       return await (async () => {
