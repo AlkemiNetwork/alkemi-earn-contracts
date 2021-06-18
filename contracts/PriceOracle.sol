@@ -3,24 +3,33 @@ pragma solidity ^0.4.24;
 import "./Exponential.sol";
 
 contract ExchangeRateModel {
-    function scale() external view returns (uint);
-    function getExchangeRate() external view returns (uint);
-    function getMaxSwingRate(uint interval) external view returns (uint);
-    function getFixedInterestRate(uint interval) external view returns (uint);
-    function getFixedExchangeRate(uint interval) public view returns (uint);
+    function scale() external view returns (uint256);
+
+    function getExchangeRate() external view returns (uint256);
+
+    function getMaxSwingRate(uint256 interval) external view returns (uint256);
+
+    function getFixedInterestRate(uint256 interval)
+        external
+        view
+        returns (uint256);
+
+    function getFixedExchangeRate(uint256 interval)
+        public
+        view
+        returns (uint256);
 }
 
 contract PriceOracle is Exponential {
-
     /**
      * @dev flag for whether or not contract is paused
      *
      */
     bool public paused;
 
-    uint public constant numBlocksPerPeriod = 240; // approximately 1 hour: 60 seconds/minute * 60 minutes/hour * 1 block/15 seconds
+    uint256 public constant numBlocksPerPeriod = 240; // approximately 1 hour: 60 seconds/minute * 60 minutes/hour * 1 block/15 seconds
 
-    uint public constant maxSwingMantissa = (10 ** 17); // 0.1
+    uint256 public constant maxSwingMantissa = (10**17); // 0.1
 
     /**
      * @dev Mapping of asset addresses to exchange rate information. Dynamic changes in asset prices based on exchange rates.
@@ -29,9 +38,9 @@ contract PriceOracle is Exponential {
      */
     struct ExchangeRateInfo {
         address exchangeRateModel;
-        uint exchangeRate;
-        uint maxSwingRate;
-        uint maxSwingDuration;
+        uint256 exchangeRate;
+        uint256 maxSwingRate;
+        uint256 maxSwingDuration;
     }
     mapping(address => ExchangeRateInfo) public exchangeRates;
 
@@ -46,13 +55,13 @@ contract PriceOracle is Exponential {
     constructor(address _poster) public {
         anchorAdmin = msg.sender;
         poster = _poster;
-        maxSwing = Exp({mantissa : maxSwingMantissa});
+        maxSwing = Exp({mantissa: maxSwingMantissa});
     }
 
     /**
      * @notice Do not pay into PriceOracle
      */
-    function() payable public {
+    function() public payable {
         revert();
     }
 
@@ -81,25 +90,46 @@ contract PriceOracle is Exponential {
      * @dev `msgSender` is msg.sender; `error` corresponds to enum OracleError; `info` corresponds to enum OracleFailureInfo, and `detail` is an arbitrary
      * contract-specific code that enables us to report opaque error codes from upgradeable contracts.
      */
-    event OracleFailure(address msgSender, address asset, uint error, uint info, uint detail);
+    event OracleFailure(
+        address msgSender,
+        address asset,
+        uint256 error,
+        uint256 info,
+        uint256 detail
+    );
 
     /**
      * @dev use this when reporting a known error from the price oracle or a non-upgradeable collaborator
      *      Using Oracle in name because we already inherit a `fail` function from ErrorReporter.sol via Exponential.sol
      */
-    function failOracle(address asset, OracleError err, OracleFailureInfo info) internal returns (uint) {
-        emit OracleFailure(msg.sender, asset, uint(err), uint(info), 0);
+    function failOracle(
+        address asset,
+        OracleError err,
+        OracleFailureInfo info
+    ) internal returns (uint256) {
+        emit OracleFailure(msg.sender, asset, uint256(err), uint256(info), 0);
 
-        return uint(err);
+        return uint256(err);
     }
 
     /**
      * @dev Use this when reporting an error from the money market. Give the money market result as `details`
      */
-    function failOracleWithDetails(address asset, OracleError err, OracleFailureInfo info, uint details) internal returns (uint) {
-        emit OracleFailure(msg.sender, asset, uint(err), uint(info), details);
+    function failOracleWithDetails(
+        address asset,
+        OracleError err,
+        OracleFailureInfo info,
+        uint256 details
+    ) internal returns (uint256) {
+        emit OracleFailure(
+            msg.sender,
+            asset,
+            uint256(err),
+            uint256(info),
+            details
+        );
 
-        return uint(err);
+        return uint256(err);
     }
 
     /**
@@ -127,10 +157,9 @@ contract PriceOracle is Exponential {
 
     struct Anchor {
         // floor(block.number / numBlocksPerPeriod) + 1
-        uint period;
-
+        uint256 period;
         // Price in ETH, scaled by 10**18
-        uint priceMantissa;
+        uint256 priceMantissa;
     }
 
     /**
@@ -141,7 +170,7 @@ contract PriceOracle is Exponential {
     /**
      * @dev pending anchor prices by asset
      */
-    mapping(address => uint) public pendingAnchors;
+    mapping(address => uint256) public pendingAnchors;
 
     /**
      * @dev emitted when a pending anchor is set
@@ -149,7 +178,12 @@ contract PriceOracle is Exponential {
      * @param oldScaledPrice if an unused pending anchor was present, its value; otherwise 0.
      * @param newScaledPrice the new scaled pending anchor price
      */
-    event NewPendingAnchor(address anchorAdmin, address asset, uint oldScaledPrice, uint newScaledPrice);
+    event NewPendingAnchor(
+        address anchorAdmin,
+        address asset,
+        uint256 oldScaledPrice,
+        uint256 newScaledPrice
+    );
 
     /**
      * @notice provides ability to override the anchor price for an asset
@@ -158,35 +192,69 @@ contract PriceOracle is Exponential {
      * @param newScaledPrice New anchor price
      * @return uint 0=success, otherwise a failure (see enum OracleError for details)
      */
-    function _setPendingAnchor(address asset, uint newScaledPrice) public returns (uint) {
+    function _setPendingAnchor(address asset, uint256 newScaledPrice)
+        public
+        returns (uint256)
+    {
         // Check caller = anchorAdmin. Note: Deliberately not allowing admin. They can just change anchorAdmin if desired.
         if (msg.sender != anchorAdmin) {
-            return failOracle(asset, OracleError.UNAUTHORIZED, OracleFailureInfo.SET_PENDING_ANCHOR_PERMISSION_CHECK);
+            return
+                failOracle(
+                    asset,
+                    OracleError.UNAUTHORIZED,
+                    OracleFailureInfo.SET_PENDING_ANCHOR_PERMISSION_CHECK
+                );
         }
 
-        uint oldScaledPrice = pendingAnchors[asset];
+        uint256 oldScaledPrice = pendingAnchors[asset];
         pendingAnchors[asset] = newScaledPrice;
 
-        emit NewPendingAnchor(msg.sender, asset, oldScaledPrice, newScaledPrice);
+        emit NewPendingAnchor(
+            msg.sender,
+            asset,
+            oldScaledPrice,
+            newScaledPrice
+        );
 
-        return uint(OracleError.NO_ERROR);
+        return uint256(OracleError.NO_ERROR);
     }
 
     /**
      * @dev emitted for all exchangeRates changes
      */
-    event SetExchangeRate(address asset, address exchangeRateModel, uint exchangeRate, uint maxSwingRate, uint maxSwingDuration);
-    event SetMaxSwingRate(address asset, uint oldMaxSwingRate, uint newMaxSwingRate, uint maxSwingDuration);
+    event SetExchangeRate(
+        address asset,
+        address exchangeRateModel,
+        uint256 exchangeRate,
+        uint256 maxSwingRate,
+        uint256 maxSwingDuration
+    );
+    event SetMaxSwingRate(
+        address asset,
+        uint256 oldMaxSwingRate,
+        uint256 newMaxSwingRate,
+        uint256 maxSwingDuration
+    );
 
     /**
      * @dev emitted for all price changes
      */
-    event PricePosted(address asset, uint previousPriceMantissa, uint requestedPriceMantissa, uint newPriceMantissa);
+    event PricePosted(
+        address asset,
+        uint256 previousPriceMantissa,
+        uint256 requestedPriceMantissa,
+        uint256 newPriceMantissa
+    );
 
     /**
      * @dev emitted if this contract successfully posts a capped-to-max price to the money market
      */
-    event CappedPricePosted(address asset, uint requestedPriceMantissa, uint anchorPriceMantissa, uint cappedPriceMantissa);
+    event CappedPricePosted(
+        address asset,
+        uint256 requestedPriceMantissa,
+        uint256 anchorPriceMantissa,
+        uint256 cappedPriceMantissa
+    );
 
     /**
      * @dev emitted when admin either pauses or resumes the contract; newState is the resulting state
@@ -196,7 +264,10 @@ contract PriceOracle is Exponential {
     /**
      * @dev emitted when pendingAnchorAdmin is changed
      */
-    event NewPendingAnchorAdmin(address oldPendingAnchorAdmin, address newPendingAnchorAdmin);
+    event NewPendingAnchorAdmin(
+        address oldPendingAnchorAdmin,
+        address newPendingAnchorAdmin
+    );
 
     /**
      * @dev emitted when pendingAnchorAdmin is accepted, which means anchor admin is updated
@@ -214,16 +285,21 @@ contract PriceOracle is Exponential {
      * @param requestedState value to assign to `paused`
      * @return uint 0=success, otherwise a failure
      */
-    function _setPaused(bool requestedState) public returns (uint) {
+    function _setPaused(bool requestedState) public returns (uint256) {
         // Check caller = anchorAdmin
         if (msg.sender != anchorAdmin) {
-            return failOracle(0, OracleError.UNAUTHORIZED, OracleFailureInfo.SET_PAUSED_OWNER_CHECK);
+            return
+                failOracle(
+                    0,
+                    OracleError.UNAUTHORIZED,
+                    OracleFailureInfo.SET_PAUSED_OWNER_CHECK
+                );
         }
 
         paused = requestedState;
         emit SetPaused(requestedState);
 
-        return uint(Error.NO_ERROR);
+        return uint256(Error.NO_ERROR);
     }
 
     /**
@@ -234,10 +310,18 @@ contract PriceOracle is Exponential {
      *
      * TODO: Should we add a second arg to verify, like a checksum of `newAnchorAdmin` address?
      */
-    function _setPendingAnchorAdmin(address newPendingAnchorAdmin) public returns (uint) {
+    function _setPendingAnchorAdmin(address newPendingAnchorAdmin)
+        public
+        returns (uint256)
+    {
         // Check caller = anchorAdmin
         if (msg.sender != anchorAdmin) {
-            return failOracle(0, OracleError.UNAUTHORIZED, OracleFailureInfo.SET_PENDING_ANCHOR_ADMIN_OWNER_CHECK);
+            return
+                failOracle(
+                    0,
+                    OracleError.UNAUTHORIZED,
+                    OracleFailureInfo.SET_PENDING_ANCHOR_ADMIN_OWNER_CHECK
+                );
         }
 
         // save current value, if any, for inclusion in log
@@ -245,9 +329,12 @@ contract PriceOracle is Exponential {
         // Store pendingAdmin = newPendingAdmin
         pendingAnchorAdmin = newPendingAnchorAdmin;
 
-        emit NewPendingAnchorAdmin(oldPendingAnchorAdmin, newPendingAnchorAdmin);
+        emit NewPendingAnchorAdmin(
+            oldPendingAnchorAdmin,
+            newPendingAnchorAdmin
+        );
 
-        return uint(Error.NO_ERROR);
+        return uint256(Error.NO_ERROR);
     }
 
     /**
@@ -255,11 +342,17 @@ contract PriceOracle is Exponential {
      * @dev Admin function for pending anchor admin to accept role and update anchor admin
      * @return uint 0=success, otherwise a failure
      */
-    function _acceptAnchorAdmin() public returns (uint) {
+    function _acceptAnchorAdmin() public returns (uint256) {
         // Check caller = pendingAnchorAdmin
         // msg.sender can't be zero
         if (msg.sender != pendingAnchorAdmin) {
-            return failOracle(0, OracleError.UNAUTHORIZED, OracleFailureInfo.ACCEPT_ANCHOR_ADMIN_PENDING_ANCHOR_ADMIN_CHECK);
+            return
+                failOracle(
+                    0,
+                    OracleError.UNAUTHORIZED,
+                    OracleFailureInfo
+                        .ACCEPT_ANCHOR_ADMIN_PENDING_ANCHOR_ADMIN_CHECK
+                );
         }
 
         // Save current value for inclusion in log
@@ -271,7 +364,7 @@ contract PriceOracle is Exponential {
 
         emit NewAnchorAdmin(oldAnchorAdmin, msg.sender);
 
-        return uint(Error.NO_ERROR);
+        return uint256(Error.NO_ERROR);
     }
 
     /**
@@ -282,11 +375,16 @@ contract PriceOracle is Exponential {
      *
      * TODO: Should we add a second arg to verify, like a checksum of `newAnchorAdmin` address?
      */
-    function _setPoster(address newPoster) public returns (uint) {
+    function _setPoster(address newPoster) public returns (uint256) {
         assert(poster != newPoster);
         // Check caller = anchorAdmin
         if (msg.sender != anchorAdmin) {
-            return failOracle(0, OracleError.UNAUTHORIZED, OracleFailureInfo.SET_PENDING_ANCHOR_ADMIN_OWNER_CHECK);
+            return
+                failOracle(
+                    0,
+                    OracleError.UNAUTHORIZED,
+                    OracleFailureInfo.SET_PENDING_ANCHOR_ADMIN_OWNER_CHECK
+                );
         }
 
         // save current value, if any, for inclusion in log
@@ -296,7 +394,7 @@ contract PriceOracle is Exponential {
 
         emit NewPoster(oldPoster, newPoster);
 
-        return uint(Error.NO_ERROR);
+        return uint256(Error.NO_ERROR);
     }
 
     /**
@@ -307,25 +405,43 @@ contract PriceOracle is Exponential {
      * @param maxSwingDuration maxSwingDuration uint, Is a value greater than zero and less than a second of a week
      * @return uint 0=success, otherwise a failure (see enum OracleError for details)
      */
-    function setExchangeRate(address asset, address exchangeRateModel, uint maxSwingDuration) public returns (uint) {
-
+    function setExchangeRate(
+        address asset,
+        address exchangeRateModel,
+        uint256 maxSwingDuration
+    ) public returns (uint256) {
         // Fail when msg.sender is not poster
         if (msg.sender != anchorAdmin) {
-            return failOracle(asset, OracleError.UNAUTHORIZED, OracleFailureInfo.SET_PRICE_PERMISSION_CHECK);
+            return
+                failOracle(
+                    asset,
+                    OracleError.UNAUTHORIZED,
+                    OracleFailureInfo.SET_PRICE_PERMISSION_CHECK
+                );
         }
 
-        require(exchangeRateModel != address(0), "setExchangeRate: exchangeRateModel cannot be a zero address.");
+        require(
+            exchangeRateModel != address(0),
+            "setExchangeRate: exchangeRateModel cannot be a zero address."
+        );
         require(
             maxSwingDuration > 0 && maxSwingDuration <= 604800,
             "setExchangeRate: maxSwingDuration cannot be zero, less than 31536000 (seconds per week)."
         );
 
-        uint currentExchangeRate = ExchangeRateModel(exchangeRateModel).getExchangeRate();
-        require(currentExchangeRate > 0, "setExchangeRate: currentExchangeRate not zero.");
-
-        uint maxSwingRate = ExchangeRateModel(exchangeRateModel).getMaxSwingRate(maxSwingDuration);
+        uint256 currentExchangeRate = ExchangeRateModel(exchangeRateModel)
+        .getExchangeRate();
         require(
-            maxSwingRate > 0 && maxSwingRate <= ExchangeRateModel(exchangeRateModel).getMaxSwingRate(604800),
+            currentExchangeRate > 0,
+            "setExchangeRate: currentExchangeRate not zero."
+        );
+
+        uint256 maxSwingRate = ExchangeRateModel(exchangeRateModel)
+        .getMaxSwingRate(maxSwingDuration);
+        require(
+            maxSwingRate > 0 &&
+                maxSwingRate <=
+                ExchangeRateModel(exchangeRateModel).getMaxSwingRate(604800),
             "setExchangeRate: maxSwingRate cannot be zero, less than 31536000 (seconds per week)."
         );
 
@@ -334,8 +450,14 @@ contract PriceOracle is Exponential {
         exchangeRates[asset].maxSwingRate = maxSwingRate;
         exchangeRates[asset].maxSwingDuration = maxSwingDuration;
 
-        emit SetExchangeRate(asset, exchangeRateModel, currentExchangeRate, maxSwingRate, maxSwingDuration);
-        return uint(OracleError.NO_ERROR);
+        emit SetExchangeRate(
+            asset,
+            exchangeRateModel,
+            currentExchangeRate,
+            maxSwingRate,
+            maxSwingDuration
+        );
+        return uint256(OracleError.NO_ERROR);
     }
 
     /**
@@ -345,11 +467,18 @@ contract PriceOracle is Exponential {
      * @param maxSwingDuration Interval time
      * @return uint 0=success, otherwise a failure (see enum OracleError for details)
      */
-    function setMaxSwingRate(address asset, uint maxSwingDuration) public returns (uint) {
-
+    function setMaxSwingRate(address asset, uint256 maxSwingDuration)
+        public
+        returns (uint256)
+    {
         // Fail when msg.sender is not poster
         if (msg.sender != anchorAdmin) {
-            return failOracle(asset, OracleError.UNAUTHORIZED, OracleFailureInfo.SET_PRICE_PERMISSION_CHECK);
+            return
+                failOracle(
+                    asset,
+                    OracleError.UNAUTHORIZED,
+                    OracleFailureInfo.SET_PRICE_PERMISSION_CHECK
+                );
         }
 
         require(
@@ -357,20 +486,33 @@ contract PriceOracle is Exponential {
             "setMaxSwingRate: maxSwingDuration cannot be zero, less than 31536000 (seconds per week)."
         );
 
-        ExchangeRateModel exchangeRateModel = ExchangeRateModel(exchangeRates[asset].exchangeRateModel);
-        uint newMaxSwingRate = exchangeRateModel.getMaxSwingRate(maxSwingDuration);
-        uint oldMaxSwingRate = exchangeRates[asset].maxSwingRate;
-        require(oldMaxSwingRate != newMaxSwingRate, "setMaxSwingRate: Old and new values cannot be the same.");
+        ExchangeRateModel exchangeRateModel = ExchangeRateModel(
+            exchangeRates[asset].exchangeRateModel
+        );
+        uint256 newMaxSwingRate = exchangeRateModel.getMaxSwingRate(
+            maxSwingDuration
+        );
+        uint256 oldMaxSwingRate = exchangeRates[asset].maxSwingRate;
         require(
-            newMaxSwingRate > 0 && newMaxSwingRate <= exchangeRateModel.getMaxSwingRate(604800),
+            oldMaxSwingRate != newMaxSwingRate,
+            "setMaxSwingRate: Old and new values cannot be the same."
+        );
+        require(
+            newMaxSwingRate > 0 &&
+                newMaxSwingRate <= exchangeRateModel.getMaxSwingRate(604800),
             "setMaxSwingRate: maxSwingRate cannot be zero, less than 31536000 (seconds per week)."
         );
 
         exchangeRates[asset].maxSwingRate = newMaxSwingRate;
         exchangeRates[asset].maxSwingDuration = maxSwingDuration;
 
-        emit SetMaxSwingRate(asset, oldMaxSwingRate, newMaxSwingRate, maxSwingDuration);
-        return uint(OracleError.NO_ERROR);
+        emit SetMaxSwingRate(
+            asset,
+            oldMaxSwingRate,
+            newMaxSwingRate,
+            maxSwingDuration
+        );
+        return uint256(OracleError.NO_ERROR);
     }
 
     /**
@@ -379,7 +521,7 @@ contract PriceOracle is Exponential {
      * @param asset Asset for which to get the price
      * @return uint mantissa of asset price (scaled by 1e18) or zero if unset or contract paused
      */
-    function assetPrices(address asset) public view returns (uint) {
+    function assetPrices(address asset) public view returns (uint256) {
         // Note: zero is treated by the money market as an invalid
         //       price and will cease operations with that asset
         //       when zero.
@@ -395,23 +537,32 @@ contract PriceOracle is Exponential {
         } else {
             ExchangeRateInfo memory exchangeRateInfo = exchangeRates[asset];
             if (exchangeRateInfo.exchangeRateModel != address(0)) {
-                uint scale = ExchangeRateModel(exchangeRateInfo.exchangeRateModel).scale();
-                uint currentExchangeRate = ExchangeRateModel(exchangeRateInfo.exchangeRateModel).getExchangeRate();
-                uint currentChangeRate;
+                uint256 scale = ExchangeRateModel(
+                    exchangeRateInfo.exchangeRateModel
+                ).scale();
+                uint256 currentExchangeRate = ExchangeRateModel(
+                    exchangeRateInfo.exchangeRateModel
+                ).getExchangeRate();
+                uint256 currentChangeRate;
                 Error err;
                 (err, currentChangeRate) = mul(currentExchangeRate, scale);
-                if (err != Error.NO_ERROR)
-                    return 0;
+                if (err != Error.NO_ERROR) return 0;
 
-                currentChangeRate = currentChangeRate / exchangeRateInfo.exchangeRate;
+                currentChangeRate =
+                    currentChangeRate /
+                    exchangeRateInfo.exchangeRate;
                 // require(currentExchangeRate >= exchangeRateInfo.exchangeRate && currentChangeRate <= exchangeRateInfo.maxSwingRate, "assetPrices: Abnormal exchange rate.");
-                if (currentExchangeRate < exchangeRateInfo.exchangeRate || currentChangeRate > exchangeRateInfo.maxSwingRate)
-                    return 0;
+                if (
+                    currentExchangeRate < exchangeRateInfo.exchangeRate ||
+                    currentChangeRate > exchangeRateInfo.maxSwingRate
+                ) return 0;
 
-                uint price;
-                (err, price) = mul(_assetPrices[asset].mantissa, currentExchangeRate);
-                if (err != Error.NO_ERROR)
-                    return 0;
+                uint256 price;
+                (err, price) = mul(
+                    _assetPrices[asset].mantissa,
+                    currentExchangeRate
+                );
+                if (err != Error.NO_ERROR) return 0;
 
                 return price / scale;
             } else {
@@ -426,7 +577,7 @@ contract PriceOracle is Exponential {
      * @param asset Asset for which to get the price
      * @return uint mantissa of asset price (scaled by 1e18) or zero if unset or contract paused
      */
-    function getPrice(address asset) public view returns (uint) {
+    function getPrice(address asset) public view returns (uint256) {
         return assetPrices(asset);
     }
 
@@ -434,11 +585,11 @@ contract PriceOracle is Exponential {
         Exp price;
         Exp swing;
         Exp anchorPrice;
-        uint anchorPeriod;
-        uint currentPeriod;
+        uint256 anchorPeriod;
+        uint256 currentPeriod;
         bool priceCapped;
-        uint cappingAnchorPriceMantissa;
-        uint pendingAnchorMantissa;
+        uint256 cappingAnchorPriceMantissa;
+        uint256 pendingAnchorMantissa;
     }
 
     /**
@@ -448,16 +599,27 @@ contract PriceOracle is Exponential {
      * @param requestedPriceMantissa requested new price, scaled by 10**18
      * @return uint 0=success, otherwise a failure (see enum OracleError for details)
      */
-    function setPrice(address asset, uint requestedPriceMantissa) public returns (uint) {
+    function setPrice(address asset, uint256 requestedPriceMantissa)
+        public
+        returns (uint256)
+    {
         // Fail when msg.sender is not poster
         if (msg.sender != poster) {
-            return failOracle(asset, OracleError.UNAUTHORIZED, OracleFailureInfo.SET_PRICE_PERMISSION_CHECK);
+            return
+                failOracle(
+                    asset,
+                    OracleError.UNAUTHORIZED,
+                    OracleFailureInfo.SET_PRICE_PERMISSION_CHECK
+                );
         }
 
         return setPriceInternal(asset, requestedPriceMantissa);
     }
 
-    function setPriceInternal(address asset, uint requestedPriceMantissa) internal returns (uint) {
+    function setPriceInternal(address asset, uint256 requestedPriceMantissa)
+        internal
+        returns (uint256)
+    {
         // re-used for intermediate errors
         Error err;
         SetPriceLocalVars memory localVars;
@@ -465,52 +627,91 @@ contract PriceOracle is Exponential {
         // (It can be a problem in tests with low block numbers.)
         localVars.currentPeriod = (block.number / numBlocksPerPeriod) + 1;
         localVars.pendingAnchorMantissa = pendingAnchors[asset];
-        localVars.price = Exp({mantissa : requestedPriceMantissa});
+        localVars.price = Exp({mantissa: requestedPriceMantissa});
 
         if (exchangeRates[asset].exchangeRateModel != address(0)) {
-
-            uint currentExchangeRate = ExchangeRateModel(exchangeRates[asset].exchangeRateModel).getExchangeRate();
-            uint scale = ExchangeRateModel(exchangeRates[asset].exchangeRateModel).scale();
-            uint currentChangeRate;
+            uint256 currentExchangeRate = ExchangeRateModel(
+                exchangeRates[asset].exchangeRateModel
+            ).getExchangeRate();
+            uint256 scale = ExchangeRateModel(
+                exchangeRates[asset].exchangeRateModel
+            ).scale();
+            uint256 currentChangeRate;
             (err, currentChangeRate) = mul(currentExchangeRate, scale);
             assert(err == Error.NO_ERROR);
 
-            currentChangeRate = currentChangeRate / exchangeRates[asset].exchangeRate;
-            require(currentExchangeRate >= exchangeRates[asset].exchangeRate && currentChangeRate <= exchangeRates[asset].maxSwingRate, "setPriceInternal: Abnormal exchange rate.");
+            currentChangeRate =
+                currentChangeRate /
+                exchangeRates[asset].exchangeRate;
+            require(
+                currentExchangeRate >= exchangeRates[asset].exchangeRate &&
+                    currentChangeRate <= exchangeRates[asset].maxSwingRate,
+                "setPriceInternal: Abnormal exchange rate."
+            );
             exchangeRates[asset].exchangeRate = currentExchangeRate;
         }
 
         if (localVars.pendingAnchorMantissa != 0) {
             // let's explicitly set to 0 rather than relying on default of declaration
             localVars.anchorPeriod = 0;
-            localVars.anchorPrice = Exp({mantissa : localVars.pendingAnchorMantissa});
+            localVars.anchorPrice = Exp({
+                mantissa: localVars.pendingAnchorMantissa
+            });
 
             // Verify movement is within max swing of pending anchor (currently: 10%)
-            (err, localVars.swing) = calculateSwing(localVars.anchorPrice, localVars.price);
+            (err, localVars.swing) = calculateSwing(
+                localVars.anchorPrice,
+                localVars.price
+            );
             if (err != Error.NO_ERROR) {
-                return failOracleWithDetails(asset, OracleError.FAILED_TO_SET_PRICE, OracleFailureInfo.SET_PRICE_CALCULATE_SWING, uint(err));
+                return
+                    failOracleWithDetails(
+                        asset,
+                        OracleError.FAILED_TO_SET_PRICE,
+                        OracleFailureInfo.SET_PRICE_CALCULATE_SWING,
+                        uint256(err)
+                    );
             }
 
             // Fail when swing > maxSwing
             if (greaterThanExp(localVars.swing, maxSwing)) {
-                return failOracleWithDetails(asset, OracleError.FAILED_TO_SET_PRICE, OracleFailureInfo.SET_PRICE_MAX_SWING_CHECK, localVars.swing.mantissa);
+                return
+                    failOracleWithDetails(
+                        asset,
+                        OracleError.FAILED_TO_SET_PRICE,
+                        OracleFailureInfo.SET_PRICE_MAX_SWING_CHECK,
+                        localVars.swing.mantissa
+                    );
             }
         } else {
             localVars.anchorPeriod = anchors[asset].period;
-            localVars.anchorPrice = Exp({mantissa : anchors[asset].priceMantissa});
+            localVars.anchorPrice = Exp({
+                mantissa: anchors[asset].priceMantissa
+            });
 
             if (localVars.anchorPeriod != 0) {
-                (err, localVars.priceCapped, localVars.price) = capToMax(localVars.anchorPrice, localVars.price);
+                (err, localVars.priceCapped, localVars.price) = capToMax(
+                    localVars.anchorPrice,
+                    localVars.price
+                );
                 if (err != Error.NO_ERROR) {
-                    return failOracleWithDetails(asset, OracleError.FAILED_TO_SET_PRICE, OracleFailureInfo.SET_PRICE_CAP_TO_MAX, uint(err));
+                    return
+                        failOracleWithDetails(
+                            asset,
+                            OracleError.FAILED_TO_SET_PRICE,
+                            OracleFailureInfo.SET_PRICE_CAP_TO_MAX,
+                            uint256(err)
+                        );
                 }
                 if (localVars.priceCapped) {
                     // save for use in log
-                    localVars.cappingAnchorPriceMantissa = localVars.anchorPrice.mantissa;
+                    localVars.cappingAnchorPriceMantissa = localVars
+                    .anchorPrice
+                    .mantissa;
                 }
             } else {
                 // Setting first price. Accept as is (already assigned above from requestedPriceMantissa) and use as anchor
-                localVars.anchorPrice = Exp({mantissa : requestedPriceMantissa});
+                localVars.anchorPrice = Exp({mantissa: requestedPriceMantissa});
             }
         }
 
@@ -519,11 +720,22 @@ contract PriceOracle is Exponential {
         // zero price is more likely as the result of bad input from the caller of this function
         if (isZeroExp(localVars.anchorPrice)) {
             // If we get here price could also be zero, but it does not seem worthwhile to distinguish the 3rd case
-            return failOracle(asset, OracleError.FAILED_TO_SET_PRICE, OracleFailureInfo.SET_PRICE_NO_ANCHOR_PRICE_OR_INITIAL_PRICE_ZERO);
+            return
+                failOracle(
+                    asset,
+                    OracleError.FAILED_TO_SET_PRICE,
+                    OracleFailureInfo
+                        .SET_PRICE_NO_ANCHOR_PRICE_OR_INITIAL_PRICE_ZERO
+                );
         }
 
         if (isZeroExp(localVars.price)) {
-            return failOracle(asset, OracleError.FAILED_TO_SET_PRICE, OracleFailureInfo.SET_PRICE_ZERO_PRICE);
+            return
+                failOracle(
+                    asset,
+                    OracleError.FAILED_TO_SET_PRICE,
+                    OracleFailureInfo.SET_PRICE_ZERO_PRICE
+                );
         }
 
         // BEGIN SIDE EFFECTS
@@ -538,30 +750,49 @@ contract PriceOracle is Exponential {
         //  Set anchors[asset] = (currentPeriod, price)
         //  The new anchor is if we're in a new period or we had a pending anchor, then we become the new anchor
         if (localVars.currentPeriod > localVars.anchorPeriod) {
-            anchors[asset] = Anchor({period : localVars.currentPeriod, priceMantissa : localVars.price.mantissa});
+            anchors[asset] = Anchor({
+                period: localVars.currentPeriod,
+                priceMantissa: localVars.price.mantissa
+            });
         }
 
-        uint previousPrice = _assetPrices[asset].mantissa;
+        uint256 previousPrice = _assetPrices[asset].mantissa;
 
         setPriceStorageInternal(asset, localVars.price.mantissa);
 
-        emit PricePosted(asset, previousPrice, requestedPriceMantissa, localVars.price.mantissa);
+        emit PricePosted(
+            asset,
+            previousPrice,
+            requestedPriceMantissa,
+            localVars.price.mantissa
+        );
 
         if (localVars.priceCapped) {
             // We have set a capped price. Log it so we can detect the situation and investigate.
-            emit CappedPricePosted(asset, requestedPriceMantissa, localVars.cappingAnchorPriceMantissa, localVars.price.mantissa);
+            emit CappedPricePosted(
+                asset,
+                requestedPriceMantissa,
+                localVars.cappingAnchorPriceMantissa,
+                localVars.price.mantissa
+            );
         }
 
-        return uint(OracleError.NO_ERROR);
+        return uint256(OracleError.NO_ERROR);
     }
 
     // As a function to allow harness overrides
-    function setPriceStorageInternal(address asset, uint256 priceMantissa) internal {
+    function setPriceStorageInternal(address asset, uint256 priceMantissa)
+        internal
+    {
         _assetPrices[asset] = Exp({mantissa: priceMantissa});
     }
 
     // abs(price - anchorPrice) / anchorPrice
-    function calculateSwing(Exp memory anchorPrice, Exp memory price) pure internal returns (Error, Exp memory) {
+    function calculateSwing(Exp memory anchorPrice, Exp memory price)
+        internal
+        pure
+        returns (Error, Exp memory)
+    {
         Exp memory numerator;
         Error err;
 
@@ -578,8 +809,16 @@ contract PriceOracle is Exponential {
         return divExp(numerator, anchorPrice);
     }
 
-    function capToMax(Exp memory anchorPrice, Exp memory price) view internal returns (Error, bool, Exp memory) {
-        Exp memory one = Exp({mantissa : mantissaOne});
+    function capToMax(Exp memory anchorPrice, Exp memory price)
+        internal
+        view
+        returns (
+            Error,
+            bool,
+            Exp memory
+        )
+    {
+        Exp memory one = Exp({mantissa: mantissaOne});
         Exp memory onePlusMaxSwing;
         Exp memory oneMinusMaxSwing;
         Exp memory max;
@@ -589,13 +828,13 @@ contract PriceOracle is Exponential {
 
         (err, onePlusMaxSwing) = addExp(one, maxSwing);
         if (err != Error.NO_ERROR) {
-            return (err, false, Exp({mantissa : 0}));
+            return (err, false, Exp({mantissa: 0}));
         }
 
         // max = anchorPrice * (1 + maxSwing)
         (err, max) = mulExp(anchorPrice, onePlusMaxSwing);
         if (err != Error.NO_ERROR) {
-            return (err, false, Exp({mantissa : 0}));
+            return (err, false, Exp({mantissa: 0}));
         }
 
         // If price > anchorPrice * (1 + maxSwing)
@@ -606,7 +845,7 @@ contract PriceOracle is Exponential {
 
         (err, oneMinusMaxSwing) = subExp(one, maxSwing);
         if (err != Error.NO_ERROR) {
-            return (err, false, Exp({mantissa : 0}));
+            return (err, false, Exp({mantissa: 0}));
         }
 
         // min = anchorPrice * (1 - maxSwing)
@@ -630,27 +869,38 @@ contract PriceOracle is Exponential {
      * @param requestedPriceMantissas requested new prices for the assets, scaled by 10**18. required: 0 < assets.length == requestedPriceMantissas.length
      * @return uint values in same order as inputs. For each: 0=success, otherwise a failure (see enum OracleError for details)
      */
-    function setPrices(address[] assets, uint[] requestedPriceMantissas) public returns (uint[] memory) {
-        uint numAssets = assets.length;
-        uint numPrices = requestedPriceMantissas.length;
-        uint[] memory result;
+    function setPrices(address[] assets, uint256[] requestedPriceMantissas)
+        public
+        returns (uint256[] memory)
+    {
+        uint256 numAssets = assets.length;
+        uint256 numPrices = requestedPriceMantissas.length;
+        uint256[] memory result;
 
         // Fail when msg.sender is not poster
         if (msg.sender != poster) {
-            result = new uint[](1);
-            result[0] = failOracle(0, OracleError.UNAUTHORIZED, OracleFailureInfo.SET_PRICE_PERMISSION_CHECK);
+            result = new uint256[](1);
+            result[0] = failOracle(
+                0,
+                OracleError.UNAUTHORIZED,
+                OracleFailureInfo.SET_PRICE_PERMISSION_CHECK
+            );
             return result;
         }
 
         if ((numAssets == 0) || (numPrices != numAssets)) {
-            result = new uint[](1);
-            result[0] = failOracle(0, OracleError.FAILED_TO_SET_PRICE, OracleFailureInfo.SET_PRICES_PARAM_VALIDATION);
+            result = new uint256[](1);
+            result[0] = failOracle(
+                0,
+                OracleError.FAILED_TO_SET_PRICE,
+                OracleFailureInfo.SET_PRICES_PARAM_VALIDATION
+            );
             return result;
         }
 
-        result = new uint[](numAssets);
+        result = new uint256[](numAssets);
 
-        for (uint i = 0; i < numAssets; i++) {
+        for (uint256 i = 0; i < numAssets; i++) {
             result[i] = setPriceInternal(assets[i], requestedPriceMantissas[i]);
         }
 

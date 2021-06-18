@@ -6,8 +6,9 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
 /*
  * @dev This tests the money market with tests for calculateAccountLiquidity, part 5
  */
-contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity5 is AlkemiEarnVerifiedWithPriceTest {
-
+contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity5 is
+    AlkemiEarnVerifiedWithPriceTest
+{
     function testCalculateAccountLiquidity_SupplySummationOverflow() public {
         address userAddress = nextAddress();
         address asset1 = nextAddress();
@@ -38,9 +39,17 @@ contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity5 is AlkemiEarnVerified
         setAssetPriceInternal(asset1, Exp({mantissa: 1}));
         setAssetPriceInternal(asset2, Exp({mantissa: 1}));
 
-        (Error err2, Exp memory liquidity, Exp memory shortfall) = calculateAccountLiquidity(userAddress);
+        (
+            Error err2,
+            Exp memory liquidity,
+            Exp memory shortfall
+        ) = calculateAccountLiquidity(userAddress);
         assertZero(liquidity.mantissa, "default value");
         assertZero(shortfall.mantissa, "default value");
-        assertError(Error.INTEGER_OVERFLOW, err2, "should overflow calculating supply sums with massive supply balances");
+        assertError(
+            Error.INTEGER_OVERFLOW,
+            err2,
+            "should overflow calculating supply sums with massive supply balances"
+        );
     }
 }

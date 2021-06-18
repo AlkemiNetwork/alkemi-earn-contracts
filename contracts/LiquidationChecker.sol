@@ -15,21 +15,33 @@ contract LiquidationChecker {
         allowLiquidation = false;
     }
 
-    function isAllowed(address asset, uint newCash) internal view returns(bool) {
+    function isAllowed(address asset, uint256 newCash)
+        internal
+        view
+        returns (bool)
+    {
         return allowLiquidation || !isLiquidate(asset, newCash);
     }
 
-    function isLiquidate(address asset, uint newCash) internal view returns(bool) {
+    function isLiquidate(address asset, uint256 newCash)
+        internal
+        view
+        returns (bool)
+    {
         return cashIsUp(asset, newCash) && oracleTouched();
     }
 
-    function cashIsUp(address asset, uint newCash) internal view returns(bool) {
-        uint oldCash = EIP20Interface(asset).balanceOf(alkemiEarnVerified);
+    function cashIsUp(address asset, uint256 newCash)
+        internal
+        view
+        returns (bool)
+    {
+        uint256 oldCash = EIP20Interface(asset).balanceOf(alkemiEarnVerified);
 
         return newCash >= oldCash;
     }
 
-    function oracleTouched() internal view returns(bool) {
+    function oracleTouched() internal view returns (bool) {
         PriceOracleProxy oracle = PriceOracleProxy(alkemiEarnVerified.oracle());
 
         bool sameOrigin = oracle.mostRecentCaller() == tx.origin;
@@ -39,7 +51,10 @@ contract LiquidationChecker {
     }
 
     function setAllowLiquidation(bool allowLiquidation_) public {
-        require(msg.sender == liquidator, "LIQUIDATION_CHECKER_INVALID_LIQUIDATOR");
+        require(
+            msg.sender == liquidator,
+            "LIQUIDATION_CHECKER_INVALID_LIQUIDATOR"
+        );
 
         allowLiquidation = allowLiquidation_;
     }

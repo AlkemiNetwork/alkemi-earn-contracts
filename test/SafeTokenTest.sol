@@ -7,9 +7,13 @@ import "./AddressGenerator.sol";
 import "../contracts/SafeToken.sol";
 import "../contracts/ErrorReporter.sol";
 
-contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerator {
-
-    constructor() EIP20Harness(0, "test", 18, "test") public {}
+contract SafeTokenTest is
+    SafeToken,
+    AssertHelpers,
+    EIP20Harness,
+    AddressGenerator
+{
+    constructor() public EIP20Harness(0, "test", 18, "test") {}
 
     function testCheckTransferIn_FailsWithInsufficientApproval() public {
         address token = address(this);
@@ -17,7 +21,11 @@ contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerat
 
         Error err = checkTransferIn(token, customer, 5);
 
-        assertError(err, Error.TOKEN_INSUFFICIENT_ALLOWANCE, "should fail with insufficient allowance");
+        assertError(
+            err,
+            Error.TOKEN_INSUFFICIENT_ALLOWANCE,
+            "should fail with insufficient allowance"
+        );
     }
 
     function testCheckTransferIn_FailsWithInsufficientBalance() public {
@@ -32,10 +40,16 @@ contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerat
 
         Error err = checkTransferIn(token, customer, 5);
 
-        assertError(err, Error.TOKEN_INSUFFICIENT_BALANCE, "should fail with insufficient balance");
+        assertError(
+            err,
+            Error.TOKEN_INSUFFICIENT_BALANCE,
+            "should fail with insufficient balance"
+        );
     }
 
-    function testCheckTransferIn_SuccessWithSufficientApprovalAndBalance() public {
+    function testCheckTransferIn_SuccessWithSufficientApprovalAndBalance()
+        public
+    {
         // This test contract is serving as both the ERC-20 token AND the contract requesting a transfer from customer.
         // Using separate variables to track those concepts to help with clarity.
         address token = address(this);
@@ -49,11 +63,21 @@ contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerat
         Error err = checkTransferIn(token, customer, 6);
         assertNoError(err);
 
-        Assert.equal(allowed[customer][spender], 6, "should not have subtracted allowance");
-        Assert.equal(balances[customer], 7, "should not have subtracted balance");
+        Assert.equal(
+            allowed[customer][spender],
+            6,
+            "should not have subtracted allowance"
+        );
+        Assert.equal(
+            balances[customer],
+            7,
+            "should not have subtracted balance"
+        );
     }
 
-    function testDoTransferIn_SucceedsWithSufficientApprovalAndBalance() public {
+    function testDoTransferIn_SucceedsWithSufficientApprovalAndBalance()
+        public
+    {
         // This test contract is serving as both the ERC-20 token AND the contract requesting a transfer from customer.
         // Using separate variables to track those concepts to help with clarity.
         address token = address(this);
@@ -67,9 +91,21 @@ contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerat
         Error err = doTransferIn(token, customer, 6);
         assertNoError(err);
 
-        Assert.equal(allowed[customer][token], 0, "should have subtracted allowance");
-        Assert.equal(balances[customer], 1, "should have subtracted balance from customer");
-        Assert.equal(balances[address(this)], 6, "should have added balance to this contract");
+        Assert.equal(
+            allowed[customer][token],
+            0,
+            "should have subtracted allowance"
+        );
+        Assert.equal(
+            balances[customer],
+            1,
+            "should have subtracted balance from customer"
+        );
+        Assert.equal(
+            balances[address(this)],
+            6,
+            "should have added balance to this contract"
+        );
     }
 
     function testDoTransferIn_FailedDueToReturnValue() public {
@@ -85,7 +121,11 @@ contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerat
 
         Error err = doTransferIn(token, customer, 5);
 
-        assertError(err, Error.TOKEN_TRANSFER_FAILED, "should fail since false value returned");
+        assertError(
+            err,
+            Error.TOKEN_TRANSFER_FAILED,
+            "should fail since false value returned"
+        );
     }
 
     function testGetCash() public {
@@ -95,10 +135,22 @@ contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerat
 
         balances[protocol] = 500 * 10**18;
 
-        uint protocolCash = getCash(token);
-        Assert.equal(protocolCash, 500 * 10**18, "should have returned protocol's balance");
-        Assert.equal(balances[protocol], 500 * 10**18, "should not have changed protocol's balance");
-        Assert.equal(balances[noCashAddress], 0, "noCashAddress was not given any tokens so should have zero balance");
+        uint256 protocolCash = getCash(token);
+        Assert.equal(
+            protocolCash,
+            500 * 10**18,
+            "should have returned protocol's balance"
+        );
+        Assert.equal(
+            balances[protocol],
+            500 * 10**18,
+            "should not have changed protocol's balance"
+        );
+        Assert.equal(
+            balances[noCashAddress],
+            0,
+            "noCashAddress was not given any tokens so should have zero balance"
+        );
     }
 
     function testDoTransferOut_FailsWithInsufficientCash() public {
@@ -111,8 +163,16 @@ contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerat
 
         Error err = doTransferOut(token, recipient, 10);
 
-        assertError(err, Error.TOKEN_TRANSFER_OUT_FAILED, "should fail with insufficient cash");
-        Assert.equal(balances[account], 10, "should not have subtracted balance");
+        assertError(
+            err,
+            Error.TOKEN_TRANSFER_OUT_FAILED,
+            "should fail with insufficient cash"
+        );
+        Assert.equal(
+            balances[account],
+            10,
+            "should not have subtracted balance"
+        );
         Assert.equal(balances[recipient], 0, "should not have given balance");
     }
 
@@ -145,5 +205,4 @@ contract SafeTokenTest is SafeToken, AssertHelpers, EIP20Harness, AddressGenerat
         Assert.equal(getBalanceOf(token, account2), 20, "account2 balance");
         Assert.equal(getBalanceOf(token, account3), 0, "account3 balance");
     }
-
 }

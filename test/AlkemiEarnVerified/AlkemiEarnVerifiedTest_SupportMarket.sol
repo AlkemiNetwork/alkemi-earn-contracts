@@ -6,8 +6,9 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
 /*
  * @dev This tests the money market with tests for supportMarket.
  */
-contract AlkemiEarnVerifiedTest_SupportMarket is AlkemiEarnVerifiedWithPriceTest {
-
+contract AlkemiEarnVerifiedTest_SupportMarket is
+    AlkemiEarnVerifiedWithPriceTest
+{
     function testSupportMarket_Success() public {
         initializer();
         clearCollateralMarkets();
@@ -23,7 +24,7 @@ contract AlkemiEarnVerifiedTest_SupportMarket is AlkemiEarnVerifiedWithPriceTest
 
         assertNoError(Error(_supportMarket(asset, InterestRateModel(asset))));
 
-        validateMarket(asset, asset, true, 10 ** 18, 10 ** 18);
+        validateMarket(asset, asset, true, 10**18, 10**18);
         Assert.equal(single, collateralMarkets, "should have just this asset");
 
         markets[asset].supplyIndex = 5;
@@ -32,19 +33,43 @@ contract AlkemiEarnVerifiedTest_SupportMarket is AlkemiEarnVerifiedWithPriceTest
         assertNoError(Error(_supportMarket(asset, InterestRateModel(asset))));
 
         validateMarket(asset, asset, true, 5, 6);
-        Assert.equal(single, collateralMarkets, "should still have just this asset");
+        Assert.equal(
+            single,
+            collateralMarkets,
+            "should still have just this asset"
+        );
     }
 
-    function validateMarket(address asset, address intRateModel, bool isSupported, uint supplyIndex, uint borrowIndex) internal {
-
-        Assert.equal(markets[asset].isSupported, isSupported, "validateMarket: isSupported");
-        Assert.equal(markets[asset].interestRateModel, intRateModel, "validateMarket: interestRateModel");
-        Assert.equal(markets[asset].supplyIndex, supplyIndex, "validateMarket: supplyIndex");
-        Assert.equal(markets[asset].borrowIndex, borrowIndex, "validateMarket: borrowIndex");
+    function validateMarket(
+        address asset,
+        address intRateModel,
+        bool isSupported,
+        uint256 supplyIndex,
+        uint256 borrowIndex
+    ) internal {
+        Assert.equal(
+            markets[asset].isSupported,
+            isSupported,
+            "validateMarket: isSupported"
+        );
+        Assert.equal(
+            markets[asset].interestRateModel,
+            intRateModel,
+            "validateMarket: interestRateModel"
+        );
+        Assert.equal(
+            markets[asset].supplyIndex,
+            supplyIndex,
+            "validateMarket: supplyIndex"
+        );
+        Assert.equal(
+            markets[asset].borrowIndex,
+            borrowIndex,
+            "validateMarket: borrowIndex"
+        );
     }
 
     function clearCollateralMarkets() internal {
         collateralMarkets = new address[](0); // clear collateral markets
     }
-
 }

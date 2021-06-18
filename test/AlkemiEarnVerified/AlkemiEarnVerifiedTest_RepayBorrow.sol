@@ -7,7 +7,6 @@ import "./AlkemiEarnVerifiedTest.sol";
  * @dev This tests the money market with tests for repayBorrow.
  */
 contract AlkemiEarnVerifiedTest_RepayBorrow is AlkemiEarnVerifiedTest {
-
     function testRepayBorrow_basicValidations() public {
         address token = address(this); // must be this
         address protocol = address(this); // must be this
@@ -24,18 +23,29 @@ contract AlkemiEarnVerifiedTest_RepayBorrow is AlkemiEarnVerifiedTest {
         });
 
         // Repay too much
-        uint err = repayBorrow(token, 16);
-        Assert.equal(uint(Error.INTEGER_UNDERFLOW), err, "should have returned Error.INTEGER_UNDERFLOW");
+        uint256 err = repayBorrow(token, 16);
+        Assert.equal(
+            uint256(Error.INTEGER_UNDERFLOW),
+            err,
+            "should have returned Error.INTEGER_UNDERFLOW"
+        );
 
         // Repay without approval
         err = repayBorrow(token, 10);
-        Assert.equal(uint(Error.TOKEN_INSUFFICIENT_ALLOWANCE), err, "should have returned Error.TOKEN_INSUFFICIENT_ALLOWANCE");
+        Assert.equal(
+            uint256(Error.TOKEN_INSUFFICIENT_ALLOWANCE),
+            err,
+            "should have returned Error.TOKEN_INSUFFICIENT_ALLOWANCE"
+        );
 
         approve(protocol, 20); // allowed[customer][protocol] = 20; is not working. why not?
 
         // Repay without funds
         err = repayBorrow(token, 10);
-        Assert.equal(uint(Error.TOKEN_INSUFFICIENT_BALANCE), err, "should have returned Error.TOKEN_INSUFFICIENT_BALANCE");
+        Assert.equal(
+            uint256(Error.TOKEN_INSUFFICIENT_BALANCE),
+            err,
+            "should have returned Error.TOKEN_INSUFFICIENT_BALANCE"
+        );
     }
-
 }

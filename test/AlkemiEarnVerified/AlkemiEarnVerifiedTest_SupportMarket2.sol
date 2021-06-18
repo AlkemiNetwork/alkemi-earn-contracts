@@ -6,8 +6,9 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
 /*
  * @dev This tests the money market with tests for supportMarket part 2.
  */
-contract AlkemiEarnVerifiedTest_SupportMarket2 is AlkemiEarnVerifiedWithPriceTest {
-
+contract AlkemiEarnVerifiedTest_SupportMarket2 is
+    AlkemiEarnVerifiedWithPriceTest
+{
     function testSupportMarket_NotAdmin() public {
         initializer();
         clearCollateralMarkets();
@@ -15,9 +16,17 @@ contract AlkemiEarnVerifiedTest_SupportMarket2 is AlkemiEarnVerifiedWithPriceTes
         address asset = nextAddress();
         admin = address(0);
 
-        assertError(Error.UNAUTHORIZED, Error(_supportMarket(asset, InterestRateModel(asset))), "requires admin rights");
+        assertError(
+            Error.UNAUTHORIZED,
+            Error(_supportMarket(asset, InterestRateModel(asset))),
+            "requires admin rights"
+        );
 
-        Assert.equal(markets[asset].isSupported, false, "market stays unsupported");
+        Assert.equal(
+            markets[asset].isSupported,
+            false,
+            "market stays unsupported"
+        );
     }
 
     function testSupportMarket_SucceedsWithBadInterestRateModelValue() public {
@@ -29,10 +38,20 @@ contract AlkemiEarnVerifiedTest_SupportMarket2 is AlkemiEarnVerifiedWithPriceTes
         admin = msg.sender;
         assertNoError(Error(_setAssetPrice(asset, 500)));
 
-        assertNoError(Error(_supportMarket(asset, InterestRateModel(address(0)))));
+        assertNoError(
+            Error(_supportMarket(asset, InterestRateModel(address(0))))
+        );
 
-        Assert.equal(markets[asset].isSupported, true, "market should now be supported");
-        Assert.equal(markets[asset].interestRateModel, address(0), "market has interest rate model set");
+        Assert.equal(
+            markets[asset].isSupported,
+            true,
+            "market should now be supported"
+        );
+        Assert.equal(
+            markets[asset].interestRateModel,
+            address(0),
+            "market has interest rate model set"
+        );
     }
 
     function clearCollateralMarkets() internal {

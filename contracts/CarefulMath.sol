@@ -11,12 +11,12 @@ contract CarefulMath is ErrorReporter {
     /**
      * @dev Multiplies two numbers, returns an error on overflow.
      */
-    function mul(uint a, uint b) internal pure returns (Error, uint) {
+    function mul(uint256 a, uint256 b) internal pure returns (Error, uint256) {
         if (a == 0) {
             return (Error.NO_ERROR, 0);
         }
 
-        uint c = a * b;
+        uint256 c = a * b;
 
         if (c / a != b) {
             return (Error.INTEGER_OVERFLOW, 0);
@@ -28,7 +28,7 @@ contract CarefulMath is ErrorReporter {
     /**
      * @dev Integer division of two numbers, truncating the quotient.
      */
-    function div(uint a, uint b) internal pure returns (Error, uint) {
+    function div(uint256 a, uint256 b) internal pure returns (Error, uint256) {
         if (b == 0) {
             return (Error.DIVISION_BY_ZERO, 0);
         }
@@ -39,7 +39,7 @@ contract CarefulMath is ErrorReporter {
     /**
      * @dev Subtracts two numbers, returns an error on overflow (i.e. if subtrahend is greater than minuend).
      */
-    function sub(uint a, uint b) internal pure returns (Error, uint) {
+    function sub(uint256 a, uint256 b) internal pure returns (Error, uint256) {
         if (b <= a) {
             return (Error.NO_ERROR, a - b);
         } else {
@@ -50,15 +50,19 @@ contract CarefulMath is ErrorReporter {
     /**
      * @dev Subtracts two numbers, returns an error on overflow (i.e. if subtrahend is greater than minuend).
      */
-    function subInt(uint a, uint b) internal pure returns (Error, int) {
-            return (Error.NO_ERROR, int(a - b));
+    function subInt(uint256 a, uint256 b)
+        internal
+        pure
+        returns (Error, int256)
+    {
+        return (Error.NO_ERROR, int256(a - b));
     }
 
     /**
      * @dev Adds two numbers, returns an error on overflow.
      */
-    function add(uint a, uint b) internal pure returns (Error, uint) {
-        uint c = a + b;
+    function add(uint256 a, uint256 b) internal pure returns (Error, uint256) {
+        uint256 c = a + b;
 
         if (c >= a) {
             return (Error.NO_ERROR, c);
@@ -70,16 +74,20 @@ contract CarefulMath is ErrorReporter {
     /**
      * @dev Adds two numbers, returns an error on overflow.
      */
-    function addInt(uint a, int b) internal pure returns (Error, int) {
-        int c = int(a) + b;
-            return (Error.NO_ERROR, c);
+    function addInt(uint256 a, int256 b) internal pure returns (Error, int256) {
+        int256 c = int256(a) + b;
+        return (Error.NO_ERROR, c);
     }
 
     /**
      * @dev add a and b and then subtract c
      */
-    function addThenSub(uint a, uint b, uint c) internal pure returns (Error, uint) {
-        (Error err0, uint sum) = add(a, b);
+    function addThenSub(
+        uint256 a,
+        uint256 b,
+        uint256 c
+    ) internal pure returns (Error, uint256) {
+        (Error err0, uint256 sum) = add(a, b);
 
         if (err0 != Error.NO_ERROR) {
             return (err0, 0);

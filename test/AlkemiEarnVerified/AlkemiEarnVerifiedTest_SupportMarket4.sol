@@ -6,8 +6,9 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
 /*
  * @dev This tests the money market with tests for supportMarket part 4.
  */
-contract AlkemiEarnVerifiedTest_SupportMarket4 is AlkemiEarnVerifiedWithPriceTest {
-
+contract AlkemiEarnVerifiedTest_SupportMarket4 is
+    AlkemiEarnVerifiedWithPriceTest
+{
     function testSupportMarket_Suspended() public {
         initializer();
         collateralMarkets = new address[](0); // clear collateral markets
@@ -31,7 +32,11 @@ contract AlkemiEarnVerifiedTest_SupportMarket4 is AlkemiEarnVerifiedWithPriceTes
         assertNoError(Error(_supportMarket(asset, InterestRateModel(asset))));
 
         Assert.equal(markets[asset].isSupported, true, "supported again");
-        Assert.equal(markets[asset].interestRateModel, asset, "should still have interest rate model");
+        Assert.equal(
+            markets[asset].interestRateModel,
+            asset,
+            "should still have interest rate model"
+        );
         Assert.equal(markets[asset].supplyIndex, 5, "supply index unchanged");
         Assert.equal(markets[asset].borrowIndex, 6, "borrow index unchanged");
     }

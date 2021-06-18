@@ -2,10 +2,9 @@ pragma solidity ^0.4.24;
 
 import "./PriceOracleInterface.sol";
 
-
 contract PriceOracleProxy {
     address public mostRecentCaller;
-    uint public mostRecentBlock;
+    uint256 public mostRecentBlock;
     PriceOracleInterface public realPriceOracle;
 
     constructor(address realPriceOracle_) public {
@@ -18,7 +17,7 @@ contract PriceOracleProxy {
      * @param asset Asset to get the price of
      * @return the price scaled by 10**18, or zero if the price is not available
      */
-    function assetPrices(address asset) public returns (uint) {
+    function assetPrices(address asset) public returns (uint256) {
         mostRecentCaller = tx.origin;
         mostRecentBlock = block.number;
 

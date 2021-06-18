@@ -10,8 +10,12 @@ import "../EIP20Harness.sol";
 /*
  * @dev This continues to test the money market, whose previous tests are full due to gas limits.
  */
-contract AlkemiEarnVerifiedTest is AlkemiEarnVerified, MathHelpers, AssertHelpers, EIP20Harness, AddressGenerator {
-
-    constructor() EIP20Harness(0, "mmtestb", 18, "mmtestb") public {}
-
+contract AlkemiEarnVerifiedTest is
+    AlkemiEarnVerified,
+    MathHelpers,
+    AssertHelpers,
+    EIP20Harness,
+    AddressGenerator
+{
+    constructor() public EIP20Harness(0, "mmtestb", 18, "mmtestb") {}
 }

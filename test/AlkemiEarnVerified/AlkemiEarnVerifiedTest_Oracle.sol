@@ -7,7 +7,6 @@ import "./AlkemiEarnVerifiedTest.sol";
  * @dev This tests the money market with tests for oracle activities.
  */
 contract AlkemiEarnVerifiedTest_Oracle is AlkemiEarnVerifiedTest {
-
     function testSetOracle_NotAdmin() public {
         address addr1 = nextAddress();
         address addr2 = nextAddress();
@@ -16,7 +15,11 @@ contract AlkemiEarnVerifiedTest_Oracle is AlkemiEarnVerifiedTest {
         oracle = addr1;
         admin = addr2;
 
-        assertError(Error.UNAUTHORIZED, Error(_setOracle(addr3)), "should fail as not admin");
+        assertError(
+            Error.UNAUTHORIZED,
+            Error(_setOracle(addr3)),
+            "should fail as not admin"
+        );
         Assert.equal(oracle, addr1, "oracle should remain addr1");
     }
 }

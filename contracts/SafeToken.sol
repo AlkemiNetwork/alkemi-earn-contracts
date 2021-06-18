@@ -5,12 +5,15 @@ import "./EIP20NonStandardInterface.sol";
 import "./ErrorReporter.sol";
 
 contract SafeToken is ErrorReporter {
-
     /**
      * @dev Checks whether or not there is sufficient allowance for this contract to move amount from `from` and
      *      whether or not `from` has a balance of at least `amount`. Does NOT do a transfer.
      */
-    function checkTransferIn(address asset, address from, uint amount) internal view returns (Error) {
+    function checkTransferIn(
+        address asset,
+        address from,
+        uint256 amount
+    ) internal view returns (Error) {
         EIP20Interface token = EIP20Interface(asset);
 
         if (token.allowance(from, address(this)) < amount) {
@@ -33,7 +36,11 @@ contract SafeToken is ErrorReporter {
      *      Note: This wrapper safely handles non-standard ERC-20 tokens that do not return a value.
      *            See here: https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
      */
-    function doTransferIn(address asset, address from, uint amount) internal returns (Error) {
+    function doTransferIn(
+        address asset,
+        address from,
+        uint256 amount
+    ) internal returns (Error) {
         EIP20NonStandardInterface token = EIP20NonStandardInterface(asset);
 
         bool result;
@@ -42,16 +49,19 @@ contract SafeToken is ErrorReporter {
 
         assembly {
             switch returndatasize()
-                case 0 {                      // This is a non-standard ERC-20
-                    result := not(0)          // set result to true
-                }
-                case 32 {                     // This is a complaint ERC-20
-                    returndatacopy(0, 0, 32)
-                    result := mload(0)        // Set `result = returndata` of external call
-                }
-                default {                     // This is an excessively non-compliant ERC-20, revert.
-                    revert(0, 0)
-                }
+            case 0 {
+                // This is a non-standard ERC-20
+                result := not(0) // set result to true
+            }
+            case 32 {
+                // This is a complaint ERC-20
+                returndatacopy(0, 0, 32)
+                result := mload(0) // Set `result = returndata` of external call
+            }
+            default {
+                // This is an excessively non-compliant ERC-20, revert.
+                revert(0, 0)
+            }
         }
 
         if (!result) {
@@ -64,7 +74,7 @@ contract SafeToken is ErrorReporter {
     /**
      * @dev Checks balance of this contract in asset
      */
-    function getCash(address asset) internal view returns (uint) {
+    function getCash(address asset) internal view returns (uint256) {
         EIP20Interface token = EIP20Interface(asset);
 
         return token.balanceOf(address(this));
@@ -73,7 +83,11 @@ contract SafeToken is ErrorReporter {
     /**
      * @dev Checks balance of `from` in `asset`
      */
-    function getBalanceOf(address asset, address from) internal view returns (uint) {
+    function getBalanceOf(address asset, address from)
+        internal
+        view
+        returns (uint256)
+    {
         EIP20Interface token = EIP20Interface(asset);
 
         return token.balanceOf(from);
@@ -88,7 +102,11 @@ contract SafeToken is ErrorReporter {
      *      Note: This wrapper safely handles non-standard ERC-20 tokens that do not return a value.
      *            See here: https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
      */
-    function doTransferOut(address asset, address to, uint amount) internal returns (Error) {
+    function doTransferOut(
+        address asset,
+        address to,
+        uint256 amount
+    ) internal returns (Error) {
         EIP20NonStandardInterface token = EIP20NonStandardInterface(asset);
 
         bool result;
@@ -97,16 +115,19 @@ contract SafeToken is ErrorReporter {
 
         assembly {
             switch returndatasize()
-                case 0 {                      // This is a non-standard ERC-20
-                    result := not(0)          // set result to true
-                }
-                case 32 {                     // This is a complaint ERC-20
-                    returndatacopy(0, 0, 32)
-                    result := mload(0)        // Set `result = returndata` of external call
-                }
-                default {                     // This is an excessively non-compliant ERC-20, revert.
-                    revert(0, 0)
-                }
+            case 0 {
+                // This is a non-standard ERC-20
+                result := not(0) // set result to true
+            }
+            case 32 {
+                // This is a complaint ERC-20
+                returndatacopy(0, 0, 32)
+                result := mload(0) // Set `result = returndata` of external call
+            }
+            default {
+                // This is an excessively non-compliant ERC-20, revert.
+                revert(0, 0)
+            }
         }
 
         if (!result) {
@@ -116,22 +137,29 @@ contract SafeToken is ErrorReporter {
         return Error.NO_ERROR;
     }
 
-    function doApprove(address asset, address to, uint amount) internal returns (Error) {
+    function doApprove(
+        address asset,
+        address to,
+        uint256 amount
+    ) internal returns (Error) {
         EIP20NonStandardInterface token = EIP20NonStandardInterface(asset);
         bool result;
         token.approve(to, amount);
         assembly {
             switch returndatasize()
-                case 0 {                      // This is a non-standard ERC-20
-                    result := not(0)          // set result to true
-                }
-                case 32 {                     // This is a complaint ERC-20
-                    returndatacopy(0, 0, 32)
-                    result := mload(0)        // Set `result = returndata` of external call
-                }
-                default {                     // This is an excessively non-compliant ERC-20, revert.
-                    revert(0, 0)
-                }
+            case 0 {
+                // This is a non-standard ERC-20
+                result := not(0) // set result to true
+            }
+            case 32 {
+                // This is a complaint ERC-20
+                returndatacopy(0, 0, 32)
+                result := mload(0) // Set `result = returndata` of external call
+            }
+            default {
+                // This is an excessively non-compliant ERC-20, revert.
+                revert(0, 0)
+            }
         }
         if (!result) {
             return Error.TOKEN_TRANSFER_OUT_FAILED;

@@ -7,9 +7,12 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
  * @dev This tests the money market with tests for calculateDiscountedRepayToEvenAmount.
  *      shortfall / [Oracle price for the borrow * (1 - liquidationDiscount)]
  */
-contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount is AlkemiEarnVerifiedWithPriceTest {
-
-    function testCalculateDiscountedBorrowDenominatedShortfall_HappyPathNoDiscount() public {
+contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount is
+    AlkemiEarnVerifiedWithPriceTest
+{
+    function testCalculateDiscountedBorrowDenominatedShortfall_HappyPathNoDiscount()
+        public
+    {
         address userAddress = nextAddress();
         address assetBorrow = nextAddress();
         address assetCollateral = nextAddress();
@@ -44,7 +47,10 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount is AlkemiEa
         markets[assetCollateral].borrowRateMantissa = 0;
         markets[assetCollateral].blockNumber = 1;
 
-        (Error err, uint result) = calculateDiscountedRepayToEvenAmount(userAddress, assetPrices[assetBorrow]);
+        (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
+            userAddress,
+            assetPrices[assetBorrow]
+        );
 
         // shortfall = abs((10 * 3) - (50 * 2 * 2)) = 170
         // 170 / 2 = 85
@@ -53,7 +59,9 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount is AlkemiEa
         assertNoError(err);
     }
 
-    function testCalculateDiscountedBorrowDenominatedShortfall_HappyPathDiscount() public {
+    function testCalculateDiscountedBorrowDenominatedShortfall_HappyPathDiscount()
+        public
+    {
         address userAddress = nextAddress();
         address assetBorrow = nextAddress();
         address assetCollateral = nextAddress();
@@ -88,7 +96,10 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount is AlkemiEa
         markets[assetCollateral].borrowRateMantissa = 0;
         markets[assetCollateral].blockNumber = 1;
 
-        (Error err, uint result) = calculateDiscountedRepayToEvenAmount(userAddress, assetPrices[assetBorrow]);
+        (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
+            userAddress,
+            assetPrices[assetBorrow]
+        );
 
         // shortfall = abs((10 * 3) - (50 * 2 * 2)) = 170
         // 170 / 2 = 85
@@ -99,7 +110,9 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount is AlkemiEa
         assertNoError(err);
     }
 
-    function testCalculateDiscountedBorrowDenominatedShortfall_AccountLiquidityFails() public {
+    function testCalculateDiscountedBorrowDenominatedShortfall_AccountLiquidityFails()
+        public
+    {
         address userAddress = nextAddress();
         address assetBorrow = nextAddress();
 
@@ -115,9 +128,16 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount is AlkemiEa
         markets[assetBorrow].borrowRateMantissa = 2**256 - 1;
         markets[assetBorrow].blockNumber = 1;
 
-        (Error err, uint result) = calculateDiscountedRepayToEvenAmount(userAddress, Exp({mantissa: 2 * mantissaOne}));
+        (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
+            userAddress,
+            Exp({mantissa: 2 * mantissaOne})
+        );
         assertZero(result, "default value");
 
-        assertError(Error.INTEGER_OVERFLOW, err, "should overflow calculating borrow index with massive rate");
+        assertError(
+            Error.INTEGER_OVERFLOW,
+            err,
+            "should overflow calculating borrow index with massive rate"
+        );
     }
 }

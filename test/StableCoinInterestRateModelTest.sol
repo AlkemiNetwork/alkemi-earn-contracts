@@ -5,19 +5,19 @@ import "./AssertHelpers.sol";
 import "./MathHelpers.sol";
 import "../contracts/AlkemiRateModel.sol";
 
-contract StableCoinInterestRateModelTest is AlkemiRateModel
-            (
-                "Stable Rate Model",
-                50,
-                2000,
-                100,
-                8000,
-                400,
-                3000,
-                0x0000000000000000000000000000000000000000,
-                0x0000000000000000000000000000000000000000
-            ) {
-
+contract StableCoinInterestRateModelTest is
+    AlkemiRateModel(
+        "Stable Rate Model",
+        50,
+        2000,
+        100,
+        8000,
+        400,
+        3000,
+        0x0000000000000000000000000000000000000000,
+        0x0000000000000000000000000000000000000000
+    )
+{
     // Supply rate = (1 - 0.15) * Ua * ( 10% + (30% * Ua) )
     // C.f. Elixir:
     /*
@@ -33,29 +33,49 @@ contract StableCoinInterestRateModelTest is AlkemiRateModel
         end
     */
     function testGetSupplyRate() public {
-        (uint err0, uint rate0) = getSupplyRate(address(this), 500, 100);
+        (uint256 err0, uint256 rate0) = getSupplyRate(address(this), 500, 100);
         Assert.equal(0, err0, "should be successful");
-        Assert.equal(( 723049319 ), rate0, "supply rate for 500/100"); // getSupplyRate.(500, 100)
+        Assert.equal((723049319), rate0, "supply rate for 500/100"); // getSupplyRate.(500, 100)
 
-        (uint err1, uint rate1) = getSupplyRate(address(this), 3 * 10**18, 5 * 10**18);
+        (uint256 err1, uint256 rate1) = getSupplyRate(
+            address(this),
+            3 * 10**18,
+            5 * 10**18
+        );
         Assert.equal(0, err1, "should be successful");
-        Assert.equal(( 36323814450 ), rate1, "borrow rate for 3e18/5e18"); // getSupplyRate.(3.0e18, 5.0e18)
+        Assert.equal((36323814450), rate1, "borrow rate for 3e18/5e18"); // getSupplyRate.(3.0e18, 5.0e18)
 
         // TODO: Handle zero/zero case
-        (uint err2, uint rate2) = getSupplyRate(address(this), 0, 0);
+        (uint256 err2, uint256 rate2) = getSupplyRate(address(this), 0, 0);
         Assert.equal(0, err2, "should be successful");
         Assert.equal(0, rate2, "borrow rate for 0/0");
     }
 
     function testGetSupplyRate_FAILED_TO_ADD_CASH_PLUS_BORROWS() public {
-        (uint err, uint rate) = getSupplyRate(address(this), uint(-1), uint(-1));
-        Assert.equal(uint(IRError.FAILED_TO_ADD_CASH_PLUS_BORROWS), err, "expected FAILED_TO_ADD_CASH_PLUS_BORROWS");
+        (uint256 err, uint256 rate) = getSupplyRate(
+            address(this),
+            uint256(-1),
+            uint256(-1)
+        );
+        Assert.equal(
+            uint256(IRError.FAILED_TO_ADD_CASH_PLUS_BORROWS),
+            err,
+            "expected FAILED_TO_ADD_CASH_PLUS_BORROWS"
+        );
         Assert.equal(0, rate, "error calculating");
     }
 
     function testGetSupplyRate_FAILED_TO_GET_EXP() public {
-        (uint err, uint rate) = getSupplyRate(address(this), 0, uint(-1));
-        Assert.equal(uint(IRError.FAILED_TO_GET_EXP), err, "expected FAILED_TO_GET_EXP");
+        (uint256 err, uint256 rate) = getSupplyRate(
+            address(this),
+            0,
+            uint256(-1)
+        );
+        Assert.equal(
+            uint256(IRError.FAILED_TO_GET_EXP),
+            err,
+            "expected FAILED_TO_GET_EXP"
+        );
         Assert.equal(0, rate, "error calculating");
     }
 
@@ -69,28 +89,46 @@ contract StableCoinInterestRateModelTest is AlkemiRateModel
         end
     */
     function testGetBorrowRate() public {
-        (uint err0, uint rate0) = getBorrowRate(address(this), 500, 100);
-        uint expectedRate = ( uint(35673515981) );
+        (uint256 err0, uint256 rate0) = getBorrowRate(address(this), 500, 100);
+        uint256 expectedRate = (uint256(35673515981));
         Assert.equal(0, err0, "should be successful");
         Assert.equal(expectedRate, rate0, "borrow rate for 500/100"); // getBorrowRate.(500, 100)
 
-        uint expectedRate2 = ( uint(68374238964) );
-        (uint err1, uint rate1) = getBorrowRate(address(this), 3 * 10**18, 5 * 10**18);
+        uint256 expectedRate2 = (uint256(68374238964));
+        (uint256 err1, uint256 rate1) = getBorrowRate(
+            address(this),
+            3 * 10**18,
+            5 * 10**18
+        );
         Assert.equal(0, err1, "should be successful");
         Assert.equal(expectedRate2, rate1, "borrow rate for 3e18/5e18"); // getBorrowRate.(3.0e18, 5.0e18)
     }
 
     function testGetBorrowRate_FAILED_TO_ADD_CASH_PLUS_BORROWS() public {
-        (uint err, uint rate) = getBorrowRate(address(this), uint(-1), uint(-1));
-        Assert.equal(uint(IRError.FAILED_TO_ADD_CASH_PLUS_BORROWS), err, "expected FAILED_TO_ADD_CASH_PLUS_BORROWS");
+        (uint256 err, uint256 rate) = getBorrowRate(
+            address(this),
+            uint256(-1),
+            uint256(-1)
+        );
+        Assert.equal(
+            uint256(IRError.FAILED_TO_ADD_CASH_PLUS_BORROWS),
+            err,
+            "expected FAILED_TO_ADD_CASH_PLUS_BORROWS"
+        );
         Assert.equal(0, rate, "error calculating");
     }
 
     function testGetBorrowRate_FAILED_TO_GET_EXP() public {
-        (uint err, uint rate) = getBorrowRate(address(this), 0, uint(-1));
-        Assert.equal(uint(IRError.FAILED_TO_GET_EXP), err, "expected FAILED_TO_GET_EXP");
+        (uint256 err, uint256 rate) = getBorrowRate(
+            address(this),
+            0,
+            uint256(-1)
+        );
+        Assert.equal(
+            uint256(IRError.FAILED_TO_GET_EXP),
+            err,
+            "expected FAILED_TO_GET_EXP"
+        );
         Assert.equal(0, rate, "error calculating");
     }
-
-
 }

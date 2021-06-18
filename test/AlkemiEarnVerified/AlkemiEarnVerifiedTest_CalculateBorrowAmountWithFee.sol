@@ -6,11 +6,12 @@ import "./AlkemiEarnVerifiedTest.sol";
 /*
  * @dev This tests the money market with tests for calculateBorrowAmountWithFee.
  */
-contract AlkemiEarnVerifiedTest_CalculateBorrowAmountWithFee is AlkemiEarnVerifiedTest {
-
+contract AlkemiEarnVerifiedTest_CalculateBorrowAmountWithFee is
+    AlkemiEarnVerifiedTest
+{
     function testCalculateBorrowAmountWithFee() public {
         Error err;
-        uint fee;
+        uint256 fee;
 
         (err, originationFee) = getExp(5, 1);
         assertNoError(err);
@@ -51,13 +52,16 @@ contract AlkemiEarnVerifiedTest_CalculateBorrowAmountWithFee is AlkemiEarnVerifi
         (err, originationFee) = getExp(1, 1);
         assertNoError(err);
         (err, fee) = calculateBorrowAmountWithFee(10**75);
-        assertError(Error.INTEGER_OVERFLOW, err, "overflows exp multiplication");
+        assertError(
+            Error.INTEGER_OVERFLOW,
+            err,
+            "overflows exp multiplication"
+        );
         Assert.equal(0, fee, "0 due to overflow");
 
-        originationFee = Exp({mantissa: uint(-1)});
+        originationFee = Exp({mantissa: uint256(-1)});
         (err, fee) = calculateBorrowAmountWithFee(0);
         assertError(Error.INTEGER_OVERFLOW, err, "overflows exp plus 1");
         Assert.equal(0, fee, "0 due to overflow");
     }
-
 }

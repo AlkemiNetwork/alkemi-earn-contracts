@@ -6,8 +6,9 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
 /*
  * @dev This tests the money market with tests for calculateAccountValues
  */
-contract AlkemiEarnVerifiedTest_CalculateAccountValues is AlkemiEarnVerifiedWithPriceTest {
-
+contract AlkemiEarnVerifiedTest_CalculateAccountValues is
+    AlkemiEarnVerifiedWithPriceTest
+{
     function testGetAccountValues_HappyPath() public {
         address userAddress = nextAddress();
         address asset1 = nextAddress();
@@ -30,22 +31,34 @@ contract AlkemiEarnVerifiedTest_CalculateAccountValues is AlkemiEarnVerifiedWith
         supplyBalances[userAddress][asset1] = Balance({
             principal: 3 * 10**18,
             interestIndex: 1
-            });
+        });
 
         borrowBalances[userAddress][asset2] = Balance({
             principal: 2 * 10**18,
             interestIndex: 1
-            });
+        });
 
         setAssetPriceInternal(asset1, Exp({mantissa: 3}));
         setAssetPriceInternal(asset2, Exp({mantissa: 2}));
 
         // Test
-        (uint err, uint supplyMantissa, uint borrowMantissa) = calculateAccountValues(userAddress);
+        (
+            uint256 err,
+            uint256 supplyMantissa,
+            uint256 borrowMantissa
+        ) = calculateAccountValues(userAddress);
 
         assertZero(err, "should have gotten NO_ERROR");
-        Assert.equal(9 * 10**18, supplyMantissa, "should have gotten scaled supply value");
-        Assert.equal(4 * 10**18, borrowMantissa, "should have gotten scaled borrow value");
+        Assert.equal(
+            9 * 10**18,
+            supplyMantissa,
+            "should have gotten scaled supply value"
+        );
+        Assert.equal(
+            4 * 10**18,
+            borrowMantissa,
+            "should have gotten scaled borrow value"
+        );
     }
 
     function testGetAccountValues_SupplySummationOverflow() public {
@@ -79,7 +92,11 @@ contract AlkemiEarnVerifiedTest_CalculateAccountValues is AlkemiEarnVerifiedWith
         setAssetPriceInternal(asset2, Exp({mantissa: 1}));
 
         // Test
-        (uint err2, uint supplyMantissa, uint borrowMantissa) = calculateAccountValues(userAddress);
+        (
+            uint256 err2,
+            uint256 supplyMantissa,
+            uint256 borrowMantissa
+        ) = calculateAccountValues(userAddress);
 
         Assert.equal(3, err2, "should have gotten INTEGER_OVERFLOW");
         assertZero(supplyMantissa, "default value");

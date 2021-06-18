@@ -3,7 +3,6 @@ pragma solidity ^0.4.24;
 import "./BasicToken.sol";
 import "./ERC20.sol";
 
-
 /**
  * @title Standard ERC20 token
  *
@@ -12,9 +11,7 @@ import "./ERC20.sol";
  * Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
  */
 contract StandardToken is ERC20, BasicToken {
-
-    mapping (address => mapping (address => uint256)) internal allowed;
-
+    mapping(address => mapping(address => uint256)) internal allowed;
 
     /**
      * @dev Transfer tokens from one address to another
@@ -26,13 +23,10 @@ contract StandardToken is ERC20, BasicToken {
         address _from,
         address _to,
         uint256 _value
-    )
-        public
-        returns (bool)
-    {
-        require(_to != address(0),"Null address");
-        require(_value <= balances[_from],"Value > balance");
-        require(_value <= allowed[_from][msg.sender],"Value > allowance");
+    ) public returns (bool) {
+        require(_to != address(0), "Null address");
+        require(_value <= balances[_from], "Value > balance");
+        require(_value <= allowed[_from][msg.sender], "Value > allowance");
 
         balances[_from] = balances[_from].sub(_value);
         balances[_to] = balances[_to].add(_value);
@@ -62,10 +56,7 @@ contract StandardToken is ERC20, BasicToken {
      * @param _spender address The address which will spend the funds.
      * @return A uint256 specifying the amount of tokens still available for the spender.
      */
-    function allowance(
-        address _owner,
-        address _spender
-     )
+    function allowance(address _owner, address _spender)
         public
         view
         returns (uint256)
@@ -82,15 +73,13 @@ contract StandardToken is ERC20, BasicToken {
      * @param _spender The address which will spend the funds.
      * @param _addedValue The amount of tokens to increase the allowance by.
      */
-    function increaseApproval(
-        address _spender,
-        uint256 _addedValue
-    )
+    function increaseApproval(address _spender, uint256 _addedValue)
         public
         returns (bool)
     {
         allowed[msg.sender][_spender] = (
-            allowed[msg.sender][_spender].add(_addedValue));
+            allowed[msg.sender][_spender].add(_addedValue)
+        );
         emit Approval(msg.sender, _spender, allowed[msg.sender][_spender]);
         return true;
     }
@@ -104,10 +93,7 @@ contract StandardToken is ERC20, BasicToken {
      * @param _spender The address which will spend the funds.
      * @param _subtractedValue The amount of tokens to decrease the allowance by.
      */
-    function decreaseApproval(
-        address _spender,
-        uint256 _subtractedValue
-    )
+    function decreaseApproval(address _spender, uint256 _subtractedValue)
         public
         returns (bool)
     {
@@ -120,5 +106,4 @@ contract StandardToken is ERC20, BasicToken {
         emit Approval(msg.sender, _spender, allowed[msg.sender][_spender]);
         return true;
     }
-
 }

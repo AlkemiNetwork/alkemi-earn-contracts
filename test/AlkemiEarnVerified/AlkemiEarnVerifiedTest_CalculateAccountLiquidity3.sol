@@ -6,8 +6,9 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
 /*
  * @dev This tests the money market with tests for calculateAccountLiquidity, part 3
  */
-contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity3 is AlkemiEarnVerifiedWithPriceTest {
-
+contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity3 is
+    AlkemiEarnVerifiedWithPriceTest
+{
     function testCalculateAccountLiquidity_BorrowAssetPriceOverflow() public {
         address userAddress = nextAddress();
         address asset = nextAddress();
@@ -25,14 +26,22 @@ contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity3 is AlkemiEarnVerified
         borrowBalances[userAddress][asset] = Balance({
             principal: 10**18,
             interestIndex: 2
-            });
+        });
 
         setAssetPriceInternal(asset, Exp({mantissa: 2**256 - 1}));
 
-        (Error err2, Exp memory liquidity, Exp memory shortfall) = calculateAccountLiquidity(userAddress);
+        (
+            Error err2,
+            Exp memory liquidity,
+            Exp memory shortfall
+        ) = calculateAccountLiquidity(userAddress);
         assertZero(liquidity.mantissa, "default value");
         assertZero(shortfall.mantissa, "default value");
-        assertError(Error.INTEGER_OVERFLOW, err2, "should overflow calculating borrow balance with massive asset price");
+        assertError(
+            Error.INTEGER_OVERFLOW,
+            err2,
+            "should overflow calculating borrow balance with massive asset price"
+        );
     }
 
     function testCalculateAccountLiquidity_BorrowSummationOverflow() public {
@@ -60,11 +69,11 @@ contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity3 is AlkemiEarnVerified
         borrowBalances[userAddress][asset1] = Balance({
             principal: 10**59,
             interestIndex: 1
-            });
+        });
         borrowBalances[userAddress][asset2] = Balance({
             principal: 10**59,
             interestIndex: 1
-            });
+        });
 
         // For simplicity we'll use a collateralRatio of 1e-18
         collateralRatio = Exp({mantissa: mantissaOne});
@@ -72,9 +81,17 @@ contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity3 is AlkemiEarnVerified
         setAssetPriceInternal(asset1, Exp({mantissa: mantissaOne}));
         setAssetPriceInternal(asset2, Exp({mantissa: mantissaOne}));
 
-        (Error err2, Exp memory liquidity, Exp memory shortfall) = calculateAccountLiquidity(userAddress);
+        (
+            Error err2,
+            Exp memory liquidity,
+            Exp memory shortfall
+        ) = calculateAccountLiquidity(userAddress);
         assertZero(liquidity.mantissa, "default value");
         assertZero(shortfall.mantissa, "default value");
-        assertError(Error.INTEGER_OVERFLOW, err2, "should overflow calculating borrow sums with massive borrow balances");
+        assertError(
+            Error.INTEGER_OVERFLOW,
+            err2,
+            "should overflow calculating borrow sums with massive borrow balances"
+        );
     }
 }

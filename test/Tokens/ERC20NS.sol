@@ -8,9 +8,22 @@ import "./ERC20BasicNS.sol";
  * See https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca
  */
 contract ERC20NS is ERC20BasicNS {
-    function allowance(address owner, address spender) public view returns (uint256);
-    function transferFrom(address from, address to, uint256 value) public;
+    function allowance(address owner, address spender)
+        public
+        view
+        returns (uint256);
+
+    function transferFrom(
+        address from,
+        address to,
+        uint256 value
+    ) public;
+
     function approve(address spender, uint256 value) public returns (bool);
 
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
 }

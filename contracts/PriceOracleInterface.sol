@@ -7,5 +7,5 @@ contract PriceOracleInterface {
      * @param asset Asset to get the price of
      * @return the price scaled by 10**18, or zero if the price is not available
      */
-    function assetPrices(address asset) public view returns (uint);
+    function assetPrices(address asset) public view returns (uint256);
 }

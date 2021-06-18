@@ -7,10 +7,9 @@ import "./AlkemiEarnVerifiedTest.sol";
  * @dev This tests the money market with tests for calculateBalance.
  */
 contract AlkemiEarnVerifiedTest_CalculateBalance is AlkemiEarnVerifiedTest {
-
     function testCalculateBalance() public {
         Error err;
-        uint balance;
+        uint256 balance;
 
         // Simple test
         (err, balance) = calculateBalance(11, 2, 6);
@@ -40,18 +39,33 @@ contract AlkemiEarnVerifiedTest_CalculateBalance is AlkemiEarnVerifiedTest {
         // Test user's first supply- both previous balance and index are 0
         (err, balance) = calculateBalance(0, 0, 10**18);
         assertNoError(err);
-        Assert.equal(0, balance, "returns 0 if previous balance was zero and does not try to divide 0 by 0");
+        Assert.equal(
+            0,
+            balance,
+            "returns 0 if previous balance was zero and does not try to divide 0 by 0"
+        );
 
         // Test with small end of back of envelope estimates
         // Our interestIndexEnd of 10512937595120000000 corresponds to 1 block of 1% annual interest
-        (err, balance) = calculateBalance(50 * 10**18, 10**18, 1000000004756468797);
+        (err, balance) = calculateBalance(
+            50 * 10**18,
+            10**18,
+            1000000004756468797
+        );
         assertNoError(err);
-        Assert.equal(50000000237823439850, balance, "(50 * 10**18 * 1000000004756468797) / 10**18");
+        Assert.equal(
+            50000000237823439850,
+            balance,
+            "(50 * 10**18 * 1000000004756468797) / 10**18"
+        );
 
         // Our interestIndexEnd of 10512937595120000000 corresponds to ~10 years of 100% interest
         (err, balance) = calculateBalance(10**30, 10**18, 10512937595120000000);
         assertNoError(err);
-        Assert.equal(10512937595120000000000000000000, balance, "10**30 * (10512937595120000000) / 10**18");
+        Assert.equal(
+            10512937595120000000000000000000,
+            balance,
+            "10**30 * (10512937595120000000) / 10**18"
+        );
     }
-
 }

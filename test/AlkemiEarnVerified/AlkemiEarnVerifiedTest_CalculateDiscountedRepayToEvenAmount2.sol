@@ -7,9 +7,12 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
  * @dev This tests the money market with tests for calculateDiscountedRepayToEvenAmount.
  *      shortfall / [Oracle price for the borrow * (1 - liquidationDiscount)]
  */
-contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is AlkemiEarnVerifiedWithPriceTest {
-
-    function testCalculateDiscountedBorrowDenominatedShortfall_UnderflowFromCollateralRatioMinusLiquidationDiscount() public {
+contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is
+    AlkemiEarnVerifiedWithPriceTest
+{
+    function testCalculateDiscountedBorrowDenominatedShortfall_UnderflowFromCollateralRatioMinusLiquidationDiscount()
+        public
+    {
         address userAddress = nextAddress();
         address assetBorrow = nextAddress();
         address assetCollateral = nextAddress();
@@ -45,13 +48,22 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is AlkemiE
         markets[assetCollateral].borrowRateMantissa = 0;
         markets[assetCollateral].blockNumber = 1;
 
-        (Error err, uint result) = calculateDiscountedRepayToEvenAmount(userAddress, assetPrices[assetBorrow]);
+        (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
+            userAddress,
+            assetPrices[assetBorrow]
+        );
         assertZero(result, "default value");
 
-        assertError(Error.INTEGER_UNDERFLOW, err, "should cause underflow when collateral ratio < liquidation discount");
+        assertError(
+            Error.INTEGER_UNDERFLOW,
+            err,
+            "should cause underflow when collateral ratio < liquidation discount"
+        );
     }
 
-    function testCalculateDiscountedBorrowDenominatedShortfall_UnderflowSubtractingOneFromCollateralRatioMinusLiquidationDiscount() public {
+    function testCalculateDiscountedBorrowDenominatedShortfall_UnderflowSubtractingOneFromCollateralRatioMinusLiquidationDiscount()
+        public
+    {
         address userAddress = nextAddress();
         address assetBorrow = nextAddress();
         address assetCollateral = nextAddress();
@@ -87,13 +99,22 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is AlkemiE
         markets[assetCollateral].borrowRateMantissa = 0;
         markets[assetCollateral].blockNumber = 1;
 
-        (Error err, uint result) = calculateDiscountedRepayToEvenAmount(userAddress, assetPrices[assetBorrow]);
+        (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
+            userAddress,
+            assetPrices[assetBorrow]
+        );
         assertZero(result, "default value");
 
-        assertError(Error.INTEGER_UNDERFLOW, err, "should cause underflow when collateral ratio - liquidation discount < 1");
+        assertError(
+            Error.INTEGER_UNDERFLOW,
+            err,
+            "should cause underflow when collateral ratio - liquidation discount < 1"
+        );
     }
 
-    function testCalculateDiscountedBorrowDenominatedShortfall_TinyBorrowPriceCausesDivisionByZeroWhenDiscounted() public {
+    function testCalculateDiscountedBorrowDenominatedShortfall_TinyBorrowPriceCausesDivisionByZeroWhenDiscounted()
+        public
+    {
         address userAddress = nextAddress();
         address assetBorrow = nextAddress();
 
@@ -114,9 +135,16 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is AlkemiE
         assetPrices[assetBorrow] = Exp({mantissa: 1}); //address => Exp
         liquidationDiscount = Exp({mantissa: 10**17});
 
-        (Error err, uint result) = calculateDiscountedRepayToEvenAmount(userAddress, assetPrices[assetBorrow]);
+        (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
+            userAddress,
+            assetPrices[assetBorrow]
+        );
         assertZero(result, "default value");
 
-        assertError(Error.DIVISION_BY_ZERO, err, "should cause division by zero when tiny borrow asset price discounts to zero");
+        assertError(
+            Error.DIVISION_BY_ZERO,
+            err,
+            "should cause division by zero when tiny borrow asset price discounts to zero"
+        );
     }
 }

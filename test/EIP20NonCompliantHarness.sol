@@ -6,15 +6,21 @@ especially non-compliant and stress safe token.
 pragma solidity ^0.4.24;
 
 contract EIP20NonCompliantHarness {
-
-    function transfer(address _to, uint256 _value) public returns (uint, uint) {
+    function transfer(address _to, uint256 _value)
+        public
+        returns (uint256, uint256)
+    {
         _to;
         _value; // supress unused variable warning
 
         return (1, 2);
     }
 
-    function transferFrom(address _from, address _to, uint256 _value) public returns (uint, uint) {
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _value
+    ) public returns (uint256, uint256) {
         _from;
         _to;
         _value; // supress unused variable warning

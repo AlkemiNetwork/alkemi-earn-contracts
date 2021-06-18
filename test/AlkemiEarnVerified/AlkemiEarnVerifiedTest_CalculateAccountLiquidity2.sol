@@ -6,9 +6,12 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
 /*
  * @dev This tests the money market with tests for calculateAccountLiquidity, part 2
  */
-contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity2 is AlkemiEarnVerifiedWithPriceTest {
-
-    function testCalculateAccountLiquidity_BorrowInterestIndexShortcircuit() public {
+contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity2 is
+    AlkemiEarnVerifiedWithPriceTest
+{
+    function testCalculateAccountLiquidity_BorrowInterestIndexShortcircuit()
+        public
+    {
         address userAddress = nextAddress();
         address asset = nextAddress();
 
@@ -22,13 +25,19 @@ contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity2 is AlkemiEarnVerified
         collateralMarkets = new address[](0);
         addCollateralMarket(asset);
 
-        (Error err2, Exp memory liquidity, Exp memory shortfall) = calculateAccountLiquidity(userAddress);
+        (
+            Error err2,
+            Exp memory liquidity,
+            Exp memory shortfall
+        ) = calculateAccountLiquidity(userAddress);
         assertZero(liquidity.mantissa, "default value");
         assertZero(shortfall.mantissa, "default value");
         assertNoError(err2);
     }
 
-    function testCalculateAccountLiquidity_BorrowInterestIndexOverflow() public {
+    function testCalculateAccountLiquidity_BorrowInterestIndexOverflow()
+        public
+    {
         address userAddress = nextAddress();
         address asset = nextAddress();
 
@@ -43,13 +52,23 @@ contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity2 is AlkemiEarnVerified
         collateralMarkets = new address[](0);
         addCollateralMarket(asset);
 
-        (Error err2, Exp memory liquidity, Exp memory shortfall) = calculateAccountLiquidity(userAddress);
+        (
+            Error err2,
+            Exp memory liquidity,
+            Exp memory shortfall
+        ) = calculateAccountLiquidity(userAddress);
         assertZero(liquidity.mantissa, "default value");
         assertZero(shortfall.mantissa, "default value");
-        assertError(Error.INTEGER_OVERFLOW, err2, "should overflow calculating borrow index with massive rate");
+        assertError(
+            Error.INTEGER_OVERFLOW,
+            err2,
+            "should overflow calculating borrow index with massive rate"
+        );
     }
 
-    function testCalculateAccountLiquidity_BorrowCalculateBalanceOverflow() public {
+    function testCalculateAccountLiquidity_BorrowCalculateBalanceOverflow()
+        public
+    {
         address userAddress = nextAddress();
         address asset = nextAddress();
 
@@ -66,14 +85,19 @@ contract AlkemiEarnVerifiedTest_CalculateAccountLiquidity2 is AlkemiEarnVerified
         borrowBalances[userAddress][asset] = Balance({
             principal: 2**256 - 1,
             interestIndex: 2
-            });
+        });
 
-        (Error err2, Exp memory liquidity, Exp memory shortfall) = calculateAccountLiquidity(userAddress);
+        (
+            Error err2,
+            Exp memory liquidity,
+            Exp memory shortfall
+        ) = calculateAccountLiquidity(userAddress);
         assertZero(liquidity.mantissa, "default value");
         assertZero(shortfall.mantissa, "default value");
-        assertError(Error.INTEGER_OVERFLOW, err2, "should overflow calculating borrow balance with massive principal");
+        assertError(
+            Error.INTEGER_OVERFLOW,
+            err2,
+            "should overflow calculating borrow balance with massive principal"
+        );
     }
-
-
-
 }

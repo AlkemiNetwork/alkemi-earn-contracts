@@ -4,10 +4,9 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /**
-  * @dev This tests the money market with tests for _withdrawEquity part 2.
-  */
+ * @dev This tests the money market with tests for _withdrawEquity part 2.
+ */
 contract AlkemiEarnVerifiedTest_WithdrawEquity2 is AlkemiEarnVerifiedTest {
-
     function testWithdrawEquity_SuccessAllEquity() public {
         initializer();
         addKYCAdmin(msg.sender);
@@ -17,7 +16,7 @@ contract AlkemiEarnVerifiedTest_WithdrawEquity2 is AlkemiEarnVerifiedTest {
         balances[protocol] = 10000;
 
         admin = msg.sender;
-        uint initialAdminBalance = balances[admin];
+        uint256 initialAdminBalance = balances[admin];
 
         markets[asset].totalSupply = 2000;
         markets[asset].totalBorrows = 1000;
@@ -26,10 +25,26 @@ contract AlkemiEarnVerifiedTest_WithdrawEquity2 is AlkemiEarnVerifiedTest {
         // we attempt to withdraw all 7000, which should be allowed
         assertNoError(Error(_withdrawEquity(asset, 7000)));
 
-        Assert.equal(3000, balances[protocol], "cash should now be reduced to 3000");
-        Assert.equal(2000, markets[asset].totalSupply, "totalSupply should be unchanged");
-        Assert.equal(1000, markets[asset].totalBorrows, "totalBorrows should be unchanged");
+        Assert.equal(
+            3000,
+            balances[protocol],
+            "cash should now be reduced to 3000"
+        );
+        Assert.equal(
+            2000,
+            markets[asset].totalSupply,
+            "totalSupply should be unchanged"
+        );
+        Assert.equal(
+            1000,
+            markets[asset].totalBorrows,
+            "totalBorrows should be unchanged"
+        );
 
-        Assert.equal(initialAdminBalance + 7000, balances[admin], "admin should now have the equity");
+        Assert.equal(
+            initialAdminBalance + 7000,
+            balances[admin],
+            "admin should now have the equity"
+        );
     }
 }

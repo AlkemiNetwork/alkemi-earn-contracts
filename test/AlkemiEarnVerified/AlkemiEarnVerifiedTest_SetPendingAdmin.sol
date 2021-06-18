@@ -7,7 +7,6 @@ import "./AlkemiEarnVerifiedTest.sol";
  * @dev This tests the money market with tests for _setPendingAdmin.
  */
 contract AlkemiEarnVerifiedTest_SetPendingAdmin is AlkemiEarnVerifiedTest {
-
     function testSetPendingAdmin_asAdmin() public {
         address addr1 = nextAddress();
         initializer();
@@ -17,5 +16,4 @@ contract AlkemiEarnVerifiedTest_SetPendingAdmin is AlkemiEarnVerifiedTest {
         assertNoError(Error(_setPendingAdmin(addr1)));
         Assert.equal(pendingAdmin, addr1, "should be addr1");
     }
-
 }

@@ -6,8 +6,9 @@ import "./AlkemiEarnVerifiedWithPriceTest.sol";
 /*
  * @dev This tests the money market with tests for getPriceForAssetAmountMulCollatRatio.
  */
-contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is AlkemiEarnVerifiedWithPriceTest {
-
+contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is
+    AlkemiEarnVerifiedWithPriceTest
+{
     function testGetPriceForAssetAmountMulCollatRatio_Success1() public {
         address addr1 = nextAddress();
         initializer();
@@ -17,7 +18,10 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is AlkemiEa
 
         setAssetPriceInternal(addr1, val1);
 
-        (Error err2, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(addr1, 1 ether);
+        (
+            Error err2,
+            Exp memory assetValue
+        ) = getPriceForAssetAmountMulCollatRatio(addr1, 1 ether);
         assertNoError(err2);
         Assert.equal(62.5 ether, truncate(assetValue), "1 ether * 50:1 * 2:1");
     }
@@ -30,7 +34,10 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is AlkemiEa
 
         setAssetPriceInternal(addr1, val1);
 
-        (Error err2, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(addr1, 1 ether);
+        (
+            Error err2,
+            Exp memory assetValue
+        ) = getPriceForAssetAmountMulCollatRatio(addr1, 1 ether);
         assertNoError(err2);
         Assert.equal(0.25 ether, truncate(assetValue), "1 ether * 1:5 * 2:1");
     }
@@ -43,15 +50,25 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is AlkemiEa
 
         setAssetPriceInternal(addr1, val1);
 
-        (Error err2, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
-        assertError(Error.INTEGER_OVERFLOW, err2, "should overflow multiplication of massive price");
+        (
+            Error err2,
+            Exp memory assetValue
+        ) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
+        assertError(
+            Error.INTEGER_OVERFLOW,
+            err2,
+            "should overflow multiplication of massive price"
+        );
         assertZero(assetValue.mantissa, "default value");
     }
 
     function testGetPriceForAssetAmountMulCollatRatio_Zero() public {
         address addr1 = nextAddress();
 
-        (Error err, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
+        (
+            Error err,
+            Exp memory assetValue
+        ) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
         assertError(Error.MISSING_ASSET_PRICE, err, "missing asset price");
         assertZero(assetValue.mantissa, "default value");
     }
@@ -62,9 +79,15 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is AlkemiEa
         useOracle = true;
         address addr1 = nextAddress();
 
-        (Error err, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
-        assertError(Error.ZERO_ORACLE_ADDRESS, err, "should have failed from unset oracle");
+        (
+            Error err,
+            Exp memory assetValue
+        ) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
+        assertError(
+            Error.ZERO_ORACLE_ADDRESS,
+            err,
+            "should have failed from unset oracle"
+        );
         Assert.equal(0, assetValue.mantissa, "assetValue.mantissa");
     }
-
 }

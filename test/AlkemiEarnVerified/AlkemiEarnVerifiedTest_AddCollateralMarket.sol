@@ -7,7 +7,6 @@ import "./AlkemiEarnVerifiedTest.sol";
  * @dev This tests the money market with tests for addCollateralMarket.
  */
 contract AlkemiEarnVerifiedTest_AddCollateralMarket is AlkemiEarnVerifiedTest {
-
     function testAddCollateralMarket() public {
         initializer();
         address addr1 = nextAddress();
@@ -22,16 +21,35 @@ contract AlkemiEarnVerifiedTest_AddCollateralMarket is AlkemiEarnVerifiedTest {
         Assert.equal(empty, collateralMarkets, "should have no markets");
 
         addCollateralMarket(addr1);
-        Assert.equal(getCollateralMarketsLength(), 1, "should have first market");
-        Assert.equal(single, collateralMarkets, "should have just the one market");
+        Assert.equal(
+            getCollateralMarketsLength(),
+            1,
+            "should have first market"
+        );
+        Assert.equal(
+            single,
+            collateralMarkets,
+            "should have just the one market"
+        );
 
         addCollateralMarket(addr1);
-        Assert.equal(getCollateralMarketsLength(), 1, "should still have first market");
-        Assert.equal(single, collateralMarkets, "should have just the one market, still");
+        Assert.equal(
+            getCollateralMarketsLength(),
+            1,
+            "should still have first market"
+        );
+        Assert.equal(
+            single,
+            collateralMarkets,
+            "should have just the one market, still"
+        );
 
         addCollateralMarket(addr2);
-        Assert.equal(getCollateralMarketsLength(), 2, "should have first two markets");
+        Assert.equal(
+            getCollateralMarketsLength(),
+            2,
+            "should have first two markets"
+        );
         Assert.equal(both, collateralMarkets, "should have both markets");
     }
-
 }
