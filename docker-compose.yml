@@ -11,5 +11,5 @@ services:
       bash -c "cd /usr/src/app
       pip3 install mythx-cli
       npm install
-      mythx analyze --solc-version 0.4.24 --mode deep
+      mythx analyze ./contracts/RewardControl.sol ./contracts/MoneyMarketV12.sol ./contracts/RewardControlInterface.sol ./contracts/RewardControlStorage.sol ./contracts/ExponentialNoError.sol --solc-version 0.4.24 --mode standard
       tail -f /dev/null"
