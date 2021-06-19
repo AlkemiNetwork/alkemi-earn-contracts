@@ -5,7 +5,7 @@ import "./AlkemiEarnVerifiedTest.sol";
 import "../MathHelpers.sol";
 
 /*
- * @dev This tests the money market with tests for setOriginationFee.
+ * @dev This tests the Alkemi Earn Verified with tests for setOriginationFee.
  */
 contract AlkemiEarnVerifiedTest_SetOriginationFee is AlkemiEarnVerifiedTest {
     /**
@@ -35,7 +35,7 @@ contract AlkemiEarnVerifiedTest_SetOriginationFee is AlkemiEarnVerifiedTest {
 
         assertError(
             Error.UNAUTHORIZED,
-            Error(_setOriginationFee(newFee.mantissa)),
+            Error(_adminFunctions(admin,admin,false,newFee.mantissa)),
             "should require admin rights"
         );
 
@@ -56,7 +56,7 @@ contract AlkemiEarnVerifiedTest_SetOriginationFee is AlkemiEarnVerifiedTest {
             "setup failed; choose a different newFee"
         );
 
-        assertNoError(Error(_setOriginationFee(newFee.mantissa)));
+        assertNoError(Error(_adminFunctions(admin,admin,false,newFee.mantissa)));
 
         Assert.equal(
             originationFee.mantissa,
@@ -78,7 +78,7 @@ contract AlkemiEarnVerifiedTest_SetOriginationFee is AlkemiEarnVerifiedTest {
             "setup failed; choose a different newFee"
         );
 
-        assertNoError(Error(_setOriginationFee(newFee.mantissa)));
+        assertNoError(Error(_adminFunctions(admin,admin,false,newFee.mantissa)));
 
         Assert.equal(
             originationFee.mantissa,

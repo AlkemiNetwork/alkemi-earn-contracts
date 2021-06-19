@@ -1,8 +1,12 @@
 "use strict";
 
 const { getContract, readAndExecContract } = require("../Contract");
-const AlkemiEarnVerified = getContract("./test/AlkemiEarnVerifiedScenario.sol");
 const PriceOracle = getContract("./test/PriceOracleHarness.sol");
+const RewardControl = getContract("./test/RewardControlScenario.sol");
+const AlkemiEarnVerified = getContract("./test/AlkemiEarnVerifiedScenario.sol");
+const AlkemiEarnVerified2 = getContract(
+	"./test/AlkemiEarnVerifiedScenario2.sol"
+);
 
 async function buildAlkemiEarnVerified(root, accounts, priceOracle) {
 	const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
@@ -11,162 +15,366 @@ async function buildAlkemiEarnVerified(root, accounts, priceOracle) {
 	await readAndExecContract(alkemiEarnVerified, "initializer", [], {
 		from: root,
 	});
-	await readAndExecContract(alkemiEarnVerified, "addKYCAdmin", [root], {
-		from: root,
-	});
-	await readAndExecContract(alkemiEarnVerified, "addCustomerKYC", [root], {
-		from: root,
-	});
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[1]],
+		"_changeKYCAdmin",
+		[root, true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[2]],
+		"_changeCustomerKYC",
+		[root, true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[3]],
+		"_changeCustomerKYC",
+		[accounts[1], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[4]],
+		"_changeCustomerKYC",
+		[accounts[2], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[5]],
+		"_changeCustomerKYC",
+		[accounts[3], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[6]],
+		"_changeCustomerKYC",
+		[accounts[4], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[7]],
+		"_changeCustomerKYC",
+		[accounts[5], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[8]],
+		"_changeCustomerKYC",
+		[accounts[6], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addCustomerKYC",
-		[accounts[9]],
-		{
-			from: root,
-		}
-	);
-	await readAndExecContract(alkemiEarnVerified, "addLiquidator", [root], {
-		from: root,
-	});
-	await readAndExecContract(
-		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[1]],
+		"_changeCustomerKYC",
+		[accounts[7], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[2]],
+		"_changeCustomerKYC",
+		[accounts[8], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[3]],
+		"_changeCustomerKYC",
+		[accounts[9], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[4]],
+		"_changeLiquidator",
+		[root, true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[5]],
+		"_changeLiquidator",
+		[accounts[1], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[6]],
+		"_changeLiquidator",
+		[accounts[2], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[7]],
+		"_changeLiquidator",
+		[accounts[3], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[8]],
+		"_changeLiquidator",
+		[accounts[4], true],
 		{
 			from: root,
 		}
 	);
 	await readAndExecContract(
 		alkemiEarnVerified,
-		"addLiquidator",
-		[accounts[9]],
+		"_changeLiquidator",
+		[accounts[5], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[6], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[7], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[8], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[9], true],
 		{
 			from: root,
 		}
 	);
 
 	await alkemiEarnVerified.methods
-		._setOracle(priceOracle._address)
+		._adminFunctions(root, priceOracle._address, false, 1000000000000000)
+		.send({ from: root });
+
+	// TODO: Should we set default origination fee here?
+
+	return {
+		_address: alkemiEarnVerified._address,
+		name: "AlkemiEarnVerified",
+		methods: alkemiEarnVerified.methods,
+	};
+}
+
+async function buildAlkemiEarnVerified2(root, accounts, priceOracle) {
+	const alkemiEarnVerified = await AlkemiEarnVerified2.new().send({
+		from: root,
+	});
+	await readAndExecContract(alkemiEarnVerified, "initializer", [], {
+		from: root,
+	});
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeKYCAdmin",
+		[root, true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[root, true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[1], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[2], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[3], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[4], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[5], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[6], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[7], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[8], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeCustomerKYC",
+		[accounts[9], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[root, true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[1], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[2], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[3], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[4], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[5], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[6], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[7], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[8], true],
+		{
+			from: root,
+		}
+	);
+	await readAndExecContract(
+		alkemiEarnVerified,
+		"_changeLiquidator",
+		[accounts[9], true],
+		{
+			from: root,
+		}
+	);
+
+	await alkemiEarnVerified.methods
+		._adminFunctions(root, priceOracle._address, false, 1000000000000000)
 		.send({ from: root });
 
 	// TODO: Should we set default origination fee here?
@@ -190,7 +398,19 @@ async function buildPriceOracle(root) {
 	};
 }
 
+async function buildRewardControl(root) {
+	const rewardControl = await RewardControl.new().send({ from: root });
+
+	return {
+		_address: rewardControl._address,
+		name: "RewardControl",
+		methods: rewardControl.methods,
+	};
+}
+
 module.exports = {
 	buildAlkemiEarnVerified,
+	buildAlkemiEarnVerified2,
 	buildPriceOracle,
+	buildRewardControl,
 };

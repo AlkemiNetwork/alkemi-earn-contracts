@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the money market with tests for suspendMarket.
+ * @dev This tests the Alkemi Earn Verified with tests for suspendMarket.
  */
 contract AlkemiEarnVerifiedTest_SuspendMarket is AlkemiEarnVerifiedTest {
     function testSuspendMarket_NotAdmin() public {

@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedWithPriceTest.sol";
 
 /*
- * @dev This tests the money market with tests for calculateDiscountedBorrowDenominatedCollateral
+ * @dev This tests the Alkemi Earn Verified with tests for calculateDiscountedBorrowDenominatedCollateral
  *      discountedBorrowDenominatedCollateral = [supplyCurrent / (1 + liquidationDiscount)] * (Oracle price for the collateral / Oracle price for the borrow)
  */
 contract AlkemiEarnVerifiedTest_CalculateDiscountedBorrowDenominatedCollateral is

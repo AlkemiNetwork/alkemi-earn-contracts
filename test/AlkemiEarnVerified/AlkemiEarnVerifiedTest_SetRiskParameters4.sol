@@ -5,7 +5,7 @@ import "./AlkemiEarnVerifiedTest.sol";
 import "../MathHelpers.sol";
 
 /*
- * @dev This tests the money market with tests for setRiskParameters.
+ * @dev This tests the Alkemi Earn Verified with tests for setRiskParameters.
  */
 contract AlkemiEarnVerifiedTest_SetRiskParameters4 is AlkemiEarnVerifiedTest {
     /**

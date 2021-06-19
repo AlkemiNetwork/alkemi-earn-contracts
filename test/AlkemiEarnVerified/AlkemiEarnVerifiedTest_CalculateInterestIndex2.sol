@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the money market with tests for calculateInterestIndex, part 2
+ * @dev This tests the Alkemi Earn Verified with tests for calculateInterestIndex, part 2
  */
 contract AlkemiEarnVerifiedTest_CalculateInterestIndex2 is
     AlkemiEarnVerifiedTest
@@ -34,7 +34,6 @@ contract AlkemiEarnVerifiedTest_CalculateInterestIndex2 is
         );
     }
 
-    // https://github.com/compound-finance/money-market/wiki/Back-of-the-Envelope-Numbers
     function testCalculateInterestIndex_BackOfEnvelopeSmallInterest() public {
         (Error err0, Exp memory interestRate) = getExp(1, 210240000); // 1% (.01) annual interest / 2102400 blocks per year
         assertNoError(err0);
@@ -60,7 +59,6 @@ contract AlkemiEarnVerifiedTest_CalculateInterestIndex2 is
         );
     }
 
-    // https://github.com/compound-finance/money-market/wiki/Back-of-the-Envelope-Numbers
     function testCalculateInterestIndex_BackOfEnvelopeLargeInterest() public {
         (Error err0, Exp memory interestRate) = getExp(1, 2102400); // 100% (1.0) annual interest / 2102400 blocks per year
         assertNoError(err0);

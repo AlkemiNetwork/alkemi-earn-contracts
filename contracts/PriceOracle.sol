@@ -113,7 +113,7 @@ contract PriceOracle is Exponential {
     }
 
     /**
-     * @dev Use this when reporting an error from the money market. Give the money market result as `details`
+     * @dev Use this when reporting an error from the Alkemi Earn Verified. Give the Alkemi Earn Verified result as `details`
      */
     function failOracleWithDetails(
         address asset,
@@ -247,7 +247,7 @@ contract PriceOracle is Exponential {
     );
 
     /**
-     * @dev emitted if this contract successfully posts a capped-to-max price to the money market
+     * @dev emitted if this contract successfully posts a capped-to-max price to the Alkemi Earn Verified
      */
     event CappedPricePosted(
         address asset,
@@ -522,7 +522,7 @@ contract PriceOracle is Exponential {
      * @return uint mantissa of asset price (scaled by 1e18) or zero if unset or contract paused
      */
     function assetPrices(address asset) public view returns (uint256) {
-        // Note: zero is treated by the money market as an invalid
+        // Note: zero is treated by the Alkemi Earn Verified as an invalid
         //       price and will cease operations with that asset
         //       when zero.
         //

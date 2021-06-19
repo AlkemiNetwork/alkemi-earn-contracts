@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the money market with tests for calculateInterestIndex.
+ * @dev This tests the Alkemi Earn Verified with tests for calculateInterestIndex.
  */
 contract AlkemiEarnVerifiedTest_CalculateInterestIndex is
     AlkemiEarnVerifiedTest

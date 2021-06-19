@@ -4,15 +4,15 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the money market with tests for repayBorrow.
+ * @dev This tests the Alkemi Earn Verified with tests for repayBorrow.
  */
 contract AlkemiEarnVerifiedTest_RepayBorrow is AlkemiEarnVerifiedTest {
     function testRepayBorrow_basicValidations() public {
         address token = address(this); // must be this
         address protocol = address(this); // must be this
         initializer();
-        addKYCAdmin(msg.sender);
-        addCustomerKYC(msg.sender);
+        _changeKYCAdmin(msg.sender,true);
+        _changeCustomerKYC(msg.sender,true);
 
         // Set a borrow balance for the user
         markets[token].borrowIndex = 1;

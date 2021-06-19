@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedWithPriceTest.sol";
 
 /*
- * @dev This tests the money market with tests for calculateDiscountedRepayToEvenAmount.
+ * @dev This tests the Alkemi Earn Verified with tests for calculateDiscountedRepayToEvenAmount.
  *      shortfall / [Oracle price for the borrow * (1 - liquidationDiscount)]
  */
 contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is

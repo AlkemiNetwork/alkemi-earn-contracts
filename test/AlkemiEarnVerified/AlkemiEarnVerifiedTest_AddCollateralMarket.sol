@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the money market with tests for addCollateralMarket.
+ * @dev This tests the Alkemi Earn Verified with tests for addCollateralMarket.
  */
 contract AlkemiEarnVerifiedTest_AddCollateralMarket is AlkemiEarnVerifiedTest {
     function testAddCollateralMarket() public {

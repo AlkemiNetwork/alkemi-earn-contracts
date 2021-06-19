@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-DIR=`dirname $0`
+DIR=$(dirname $0)
 PROJ_ROOT="$DIR/../.."
 
 network="$1"
@@ -10,7 +10,7 @@ network="$1"
 if [ -z "$network" ]; then
 	echo "usage: scripts/blockchain/support-markets {network}"
 	echo ""
-	echo "calls money market's _supportMarket for each known token"
+	echo "calls alkemi earn verified's _supportMarket for each known token"
 	exit 1
 fi
 

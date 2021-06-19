@@ -8,7 +8,7 @@ import "../MathHelpers.sol";
 import "../EIP20NonStandardReturnHarness.sol";
 
 /*
- * @dev This continues to test the money market, whose previous tests are full due to gas limits.
+ * @dev This continues to test the Alkemi Earn Verified, whose previous tests are full due to gas limits.
  */
 contract AlkemiEarnVerifiedNonStandardTest is
     AlkemiEarnVerified,

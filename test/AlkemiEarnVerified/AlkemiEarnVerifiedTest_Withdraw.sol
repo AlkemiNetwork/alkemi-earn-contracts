@@ -4,13 +4,13 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the withdraw function of the money market.
+ * @dev This tests the withdraw function of the Alkemi Earn Verified.
  */
 contract AlkemiEarnVerifiedTest_Withdraw is AlkemiEarnVerifiedTest {
     function testBasicValidations() public {
         initializer();
-        addKYCAdmin(msg.sender);
-        addCustomerKYC(msg.sender);
+        _changeKYCAdmin(msg.sender,true);
+        _changeCustomerKYC(msg.sender,true);
         address token = address(this);
 
         uint256 err = withdraw(token, 10);

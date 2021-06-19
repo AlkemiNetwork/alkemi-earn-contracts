@@ -12,8 +12,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 	describe("Add and remove KYC Admin", () => {
 		describe("Success", () => {
 			it("Admin can add KYC Admin", async () => {
-				const result = await AlkemiEarnVerifiedInstance.addKYCAdmin(
-					accounts[1],
+				const result = await AlkemiEarnVerifiedInstance._changeKYCAdmin(
+					accounts[1],true,
 					{
 						from: accounts[0],
 					}
@@ -25,8 +25,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 				);
 			});
 			it("Admin can remove KYC Admin", async () => {
-				const result = await AlkemiEarnVerifiedInstance.removeKYCAdmin(
-					accounts[1],
+				const result = await AlkemiEarnVerifiedInstance._changeKYCAdmin(
+					accounts[1],false,
 					{
 						from: accounts[0],
 					}
@@ -40,8 +40,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 		});
 		describe("Failure", () => {
 			it("Cannot add KYC Admin if not Admin", async () => {
-				const result = await AlkemiEarnVerifiedInstance.addKYCAdmin(
-					accounts[1],
+				const result = await AlkemiEarnVerifiedInstance._changeKYCAdmin(
+					accounts[1],true,
 					{
 						from: accounts[1],
 					}
@@ -53,8 +53,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 				);
 			});
 			it("Cannot remove KYC Admin if not Admin", async () => {
-				const result = await AlkemiEarnVerifiedInstance.removeKYCAdmin(
-					accounts[1],
+				const result = await AlkemiEarnVerifiedInstance._changeKYCAdmin(
+					accounts[1],false,
 					{
 						from: accounts[1],
 					}
@@ -70,15 +70,15 @@ contract("AlkemiEarnVerified", (accounts) => {
 
 	describe("Add and remove KYC Customer", () => {
 		beforeEach(async () => {
-			await AlkemiEarnVerifiedInstance.addKYCAdmin(accounts[1], {
+			await AlkemiEarnVerifiedInstance._changeKYCAdmin(accounts[1],true, {
 				from: accounts[0],
 			});
 		});
 
 		describe("Success", () => {
 			it("KYC Admin can add KYC Customer", async () => {
-				const result = await AlkemiEarnVerifiedInstance.addCustomerKYC(
-					accounts[2],
+				const result = await AlkemiEarnVerifiedInstance._changeCustomerKYC(
+					accounts[2],true,
 					{
 						from: accounts[1],
 					}
@@ -90,8 +90,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 				);
 			});
 			it("KYC Admin can remove KYC Customer", async () => {
-				const result = await AlkemiEarnVerifiedInstance.removeCustomerKYC(
-					accounts[2],
+				const result = await AlkemiEarnVerifiedInstance._changeCustomerKYC(
+					accounts[2],false,
 					{
 						from: accounts[1],
 					}
@@ -105,8 +105,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 		});
 		describe("Failure", () => {
 			it("Cannot add KYC Customer if not KYC Admin", async () => {
-				const result = await AlkemiEarnVerifiedInstance.addCustomerKYC(
-					accounts[2],
+				const result = await AlkemiEarnVerifiedInstance._changeCustomerKYC(
+					accounts[2],true,
 					{
 						from: accounts[2],
 					}
@@ -118,8 +118,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 				);
 			});
 			it("Cannot remove KYC Customer if not KYC Admin", async () => {
-				const result = await AlkemiEarnVerifiedInstance.removeCustomerKYC(
-					accounts[2],
+				const result = await AlkemiEarnVerifiedInstance._changeCustomerKYC(
+					accounts[2],false,
 					{
 						from: accounts[2],
 					}
@@ -134,10 +134,10 @@ contract("AlkemiEarnVerified", (accounts) => {
 	});
 	describe("Customer KYC Verification", () => {
 		beforeEach(async () => {
-			await AlkemiEarnVerifiedInstance.addKYCAdmin(accounts[1], {
+			await AlkemiEarnVerifiedInstance._changeKYCAdmin(accounts[1],true, {
 				from: accounts[0],
 			});
-			await AlkemiEarnVerifiedInstance.addCustomerKYC(accounts[2], {
+			await AlkemiEarnVerifiedInstance._changeCustomerKYC(accounts[2],true, {
 				from: accounts[1],
 			});
 		});
@@ -210,8 +210,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 	describe("Add and remove Liquidator", () => {
 		describe("Success", () => {
 			it("Admin can add Liquidator", async () => {
-				const result = await AlkemiEarnVerifiedInstance.addLiquidator(
-					accounts[2],
+				const result = await AlkemiEarnVerifiedInstance._changeLiquidator(
+					accounts[2],true,
 					{
 						from: accounts[0],
 					}
@@ -223,8 +223,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 				);
 			});
 			it("Admin can remove Liquidator", async () => {
-				const result = await AlkemiEarnVerifiedInstance.removeLiquidator(
-					accounts[2],
+				const result = await AlkemiEarnVerifiedInstance._changeLiquidator(
+					accounts[2],false,
 					{
 						from: accounts[0],
 					}
@@ -238,8 +238,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 		});
 		describe("Failure", () => {
 			it("Cannot add Liquidator if not Admin", async () => {
-				const result = await AlkemiEarnVerifiedInstance.addLiquidator(
-					accounts[2],
+				const result = await AlkemiEarnVerifiedInstance._changeLiquidator(
+					accounts[2],true,
 					{
 						from: accounts[2],
 					}
@@ -251,8 +251,8 @@ contract("AlkemiEarnVerified", (accounts) => {
 				);
 			});
 			it("Cannot remove Liquidator if not Admin", async () => {
-				const result = await AlkemiEarnVerifiedInstance.removeLiquidator(
-					accounts[2],
+				const result = await AlkemiEarnVerifiedInstance._changeLiquidator(
+					accounts[2],false,
 					{
 						from: accounts[2],
 					}
@@ -267,7 +267,7 @@ contract("AlkemiEarnVerified", (accounts) => {
 	});
 	describe("Liquidator Verification", () => {
 		beforeEach(async () => {
-			await AlkemiEarnVerifiedInstance.addLiquidator(accounts[2], {
+			await AlkemiEarnVerifiedInstance._changeLiquidator(accounts[2],true, {
 				from: accounts[0],
 			});
 		});

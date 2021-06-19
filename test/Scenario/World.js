@@ -4,10 +4,13 @@ const Action = require("./Action");
 const Immutable = require("seamless-immutable");
 const {
 	buildAlkemiEarnVerified,
+	buildAlkemiEarnVerified2,
 	buildPriceOracle,
+	buildRewardControl,
 } = require("./AlkemiEarnVerified");
 const { ErrorEnumInv, FailureInfoEnumInv } = require("../ErrorReporter");
 const BigNumber = require("bignumber.js");
+const { getContract } = require("../Contract");
 
 const accountMap = {
 	root: 0,
@@ -15,6 +18,7 @@ const accountMap = {
 	Geoff: 2,
 	Torrey: 3,
 	Robert: 4,
+	James: 5,
 };
 
 const startingBlockNumber = 1000;
@@ -67,6 +71,41 @@ async function initWorld(accounts) {
 		lastError: undefined,
 		alkemiEarnVerified: alkemiEarnVerified,
 		priceOracle: priceOracle,
+		accounts: accounts,
+		tokens: {},
+		blockNumber: startingBlockNumber, // starting block number
+	});
+}
+
+async function initWorldWithRewardDistribution(accounts) {
+	const priceOracle = await buildPriceOracle(accounts[0]);
+	const alkemiEarnVerified = await buildAlkemiEarnVerified2(
+		accounts[0],
+		accounts,
+		priceOracle
+	);
+	const rewardControl = await buildRewardControl(accounts[0]);
+	await alkemiEarnVerified.methods
+		.setRewardControlAddress(rewardControl._address)
+		.send({ from: accounts[0] });
+
+	await alkemiEarnVerified.methods
+		.setBlockNumber(startingBlockNumber)
+		.send({ from: accounts[0] });
+
+	await rewardControl.methods
+		.harnessSetBlockNumber(startingBlockNumber)
+		.send({ from: accounts[0] });
+
+	return Immutable({
+		isWorld: true,
+		actions: [],
+		lastResult: undefined,
+		lastTx: undefined,
+		lastError: undefined,
+		alkemiEarnVerified: alkemiEarnVerified,
+		priceOracle: priceOracle,
+		rewardControl: rewardControl,
 		accounts: accounts,
 		tokens: {},
 		blockNumber: startingBlockNumber, // starting block number
@@ -126,5 +165,6 @@ module.exports = {
 	getToken,
 	getUser,
 	initWorld,
+	initWorldWithRewardDistribution,
 	addAction,
 };

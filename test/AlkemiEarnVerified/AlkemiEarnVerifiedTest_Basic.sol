@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the money market with basic tests.
+ * @dev This tests the Alkemi Earn Verified with basic tests.
  */
 contract AlkemiEarnVerifiedTest_Basic is AlkemiEarnVerifiedTest {
     function testMin() public {

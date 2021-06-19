@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedWithPriceTest.sol";
 
 /*
- * @dev This tests the money market with tests for oracle activities, part 2
+ * @dev This tests the Alkemi Earn Verified with tests for oracle activities, part 2
  */
 contract AlkemiEarnVerifiedTest_Oracle2 is AlkemiEarnVerifiedWithPriceTest {
     // Here we are letting the AlkemiEarnVerified be its own oracle.

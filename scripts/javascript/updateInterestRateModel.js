@@ -3,7 +3,7 @@
 const { load, deployNew } = require("./deployUtils");
 const AlkemiEarnVerified = artifacts.require("./AlkemiEarnVerified.sol");
 const network = process.env["NETWORK"];
-const updateAlkemiEarnVerified = process.env["UPDATE_MONEY_MARKET"];
+const updateAlkemiEarnVerified = process.env["UPDATE_ALKEMI_EARN_VERIFIED"];
 const Immutable = require("seamless-immutable");
 
 if (!network) {
@@ -88,7 +88,7 @@ async function updateInterestRateModel() {
 			);
 		} else {
 			console.log(
-				`deployed or found ${interestRateModel}: ${interestRateModelAddress}, but did not update money market`
+				`deployed or found ${interestRateModel}: ${interestRateModelAddress}, but did not update alkemi earn verified`
 			);
 		}
 	} catch (e) {

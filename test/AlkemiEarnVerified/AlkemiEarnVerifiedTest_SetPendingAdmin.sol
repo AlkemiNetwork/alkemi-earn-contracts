@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the money market with tests for _setPendingAdmin.
+ * @dev This tests the Alkemi Earn Verified with tests for _setPendingAdmin.
  */
 contract AlkemiEarnVerifiedTest_SetPendingAdmin is AlkemiEarnVerifiedTest {
     function testSetPendingAdmin_asAdmin() public {
@@ -13,7 +13,7 @@ contract AlkemiEarnVerifiedTest_SetPendingAdmin is AlkemiEarnVerifiedTest {
 
         admin = msg.sender;
 
-        assertNoError(Error(_setPendingAdmin(addr1)));
+        assertNoError(Error(_adminFunctions(addr1,addr1,false,1000000000000000)));
         Assert.equal(pendingAdmin, addr1, "should be addr1");
     }
 }

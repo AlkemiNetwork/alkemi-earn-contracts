@@ -37,7 +37,12 @@ module.exports = async (deployer, network, accounts) => {
 			400,
 			3000
 		);
-		await alkemiEarnVerified._setOracle(priceOracle.address);
+		await alkemiEarnVerified._adminFunctions(
+			accounts[0],
+			priceOracle.address,
+			false,
+			1000000000000000
+		);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
 		// 	AlkemiEarnVerified.address,
@@ -45,6 +50,38 @@ module.exports = async (deployer, network, accounts) => {
 		// 	true
 		// );
 	} else if (network == "rinkeby") {
+		const alkemiEarnVerified = await deployProxy(AlkemiEarnVerified, [], {
+			deployer,
+			initializer: "initializer",
+			unsafeAllowCustomTypes: true,
+		});
+		await alkemiEarnVerified._adminFunctions(
+			address[0],
+			deploymentConfig.RINKEBY.PRICE_ORACLE,
+			false
+		);
+		await alkemiEarnVerified._supportMarket(
+			deploymentConfig.RINKEBY.USDC,
+			deploymentConfig.RINKEBY.USDC_RATE_MODEL
+		);
+		await alkemiEarnVerified._changeKYCAdmin(accounts[0], true);
+		await alkemiEarnVerified._changeCustomerKYC(accounts[0], true);
+
+		const rewardControl = await deployProxy(
+			RewardControl,
+			[
+				accounts[0],
+				alkemiEarnVerified.address,
+				deploymentConfig.RINKEBY.ALK_TOKEN,
+			],
+			{
+				deployer,
+				initializer: "initializer",
+				unsafeAllowCustomTypes: true,
+			}
+		);
+		await alkemiEarnVerified.setRewardControlAddress(rewardControl.address);
+		await rewardControl.addMarket(deploymentConfig.RINKEBY.USDC);
 		// await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
 		// await deployer.deploy(
 		// 	PriceOracleProxy,

@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-DIR=`dirname $0`
+DIR=$(dirname $0)
 PROJ_ROOT="$DIR/../.."
 
 network="$1"
@@ -14,7 +14,7 @@ liquidation_discount="$3"
 if [ -z "$network" ]; then
 	echo "usage: scripts/blockchain/set-risk-parameters {network} <{collateral_ratio}> <{liquidation_discount}>"
 	echo ""
-	echo "calls money market's _setRiskParameters"
+	echo "calls alkemi earn verified's _setRiskParameters"
 	exit 1
 fi
 

@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedTest.sol";
 
 /*
- * @dev This tests the money market with tests for oracle activities.
+ * @dev This tests the Alkemi Earn Verified with tests for oracle activities.
  */
 contract AlkemiEarnVerifiedTest_Oracle is AlkemiEarnVerifiedTest {
     function testSetOracle_NotAdmin() public {
@@ -17,7 +17,7 @@ contract AlkemiEarnVerifiedTest_Oracle is AlkemiEarnVerifiedTest {
 
         assertError(
             Error.UNAUTHORIZED,
-            Error(_setOracle(addr3)),
+            Error(_adminFunctions(addr1,addr3,false,1000000000000000)),
             "should fail as not admin"
         );
         Assert.equal(oracle, addr1, "oracle should remain addr1");

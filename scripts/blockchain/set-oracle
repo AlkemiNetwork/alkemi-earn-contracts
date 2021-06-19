@@ -13,7 +13,7 @@ oracle_address="$2"
 if [ -z "$network" ]; then
 	echo "usage: scripts/blockchain/set-oracle {network} <{oracle_address}>"
 	echo ""
-	echo "calls money market's _setOracle"
+	echo "calls alkemi earn verified's _setOracle"
 	exit 1
 fi
 

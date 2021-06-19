@@ -4,7 +4,7 @@ import "truffle/Assert.sol";
 import "./AlkemiEarnVerifiedNonStandardTest.sol";
 
 /*
- * @dev This tests the money market with tests for supply.
+ * @dev This tests the Alkemi Earn Verified with tests for supply.
  */
 contract AlkemiEarnVerifiedTest_Supply_NonStandard is
     AlkemiEarnVerifiedNonStandardTest
@@ -13,8 +13,8 @@ contract AlkemiEarnVerifiedTest_Supply_NonStandard is
         address token = address(this); // must be this
         address protocol = address(this); // must be this
         initializer();
-        addKYCAdmin(msg.sender);
-        addCustomerKYC(msg.sender);
+        _changeKYCAdmin(msg.sender,true);
+        _changeCustomerKYC(msg.sender,true);
 
         uint256 err = supply(token, 10);
         Assert.equal(

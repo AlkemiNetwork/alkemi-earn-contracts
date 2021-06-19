@@ -82,6 +82,64 @@ async function getBalanceSheetBorrow(world, token) {
 	);
 }
 
+async function getAlkSpeed(world, market) {
+	return Number(
+		await world.rewardControl.methods.alkSpeeds(market._address).call()
+	);
+}
+
+async function getAlkSupplyIndex(world, market) {
+	let response = await world.rewardControl.methods
+		.alkSupplyState(market._address)
+		.call();
+	return Number(response[0]);
+}
+
+async function getAlkSupplyIndexBlock(world, market) {
+	let response = await world.rewardControl.methods
+		.alkSupplyState(market._address)
+		.call();
+	return Number(response[1]);
+}
+
+async function getAlkSupplierIndex(world, market, user) {
+	return Number(
+		await world.rewardControl.methods
+			.alkSupplierIndex(market._address, user)
+			.call()
+	);
+}
+
+async function getAlkBorrowIndex(world, market) {
+	let response = await world.rewardControl.methods
+		.alkBorrowState(market._address)
+		.call();
+	return Number(response[0]);
+}
+
+async function getAlkBorrowIndexBlock(world, market) {
+	let response = await world.rewardControl.methods
+		.alkBorrowState(market._address)
+		.call();
+	return Number(response[1]);
+}
+
+async function getAlkBorrowerIndex(world, market, user) {
+	return Number(
+		await world.rewardControl.methods
+			.alkBorrowerIndex(market._address, user)
+			.call()
+	);
+}
+
+async function getAlkAccrued(world, user) {
+	return Number(await world.rewardControl.methods.alkAccrued(user).call());
+}
+
+async function getSupportedMarket(world, index) {
+	return await world.rewardControl.methods.allMarkets(index).call();
+}
+
 function getSigFigs(value) {
 	let str = value.toString();
 
@@ -157,6 +215,68 @@ async function getAssertionValue(world, value) {
 				const [token] = valueArgs;
 
 				return await getBalanceSheetBorrow(world, getToken(world, token));
+			})();
+		case "AlkSpeed":
+			return await (async () => {
+				const [market] = valueArgs;
+
+				return await getAlkSpeed(world, getToken(world, market));
+			})();
+		case "AlkSupplyIndex":
+			return await (async () => {
+				const [market] = valueArgs;
+
+				return await getAlkSupplyIndex(world, getToken(world, market));
+			})();
+		case "AlkSupplyIndexBlock":
+			return await (async () => {
+				const [market] = valueArgs;
+
+				return await getAlkSupplyIndexBlock(world, getToken(world, market));
+			})();
+		case "AlkSupplierIndex":
+			return await (async () => {
+				const [market, user] = valueArgs;
+
+				return await getAlkSupplierIndex(
+					world,
+					getToken(world, market),
+					getUser(world, user)
+				);
+			})();
+		case "AlkBorrowIndex":
+			return await (async () => {
+				const [market] = valueArgs;
+
+				return await getAlkBorrowIndex(world, getToken(world, market));
+			})();
+		case "AlkBorrowIndexBlock":
+			return await (async () => {
+				const [market] = valueArgs;
+
+				return await getAlkBorrowIndexBlock(world, getToken(world, market));
+			})();
+		case "AlkBorrowerIndex":
+			return await (async () => {
+				const [market, user] = valueArgs;
+
+				return await getAlkBorrowerIndex(
+					world,
+					getToken(world, market),
+					getUser(world, user)
+				);
+			})();
+		case "AlkAccrued":
+			return await (async () => {
+				const [user] = valueArgs;
+
+				return await getAlkAccrued(world, getUser(world, user));
+			})();
+		case "getSupportedMarket":
+			return await (async () => {
+				const [index] = valueArgs;
+
+				return await getSupportedMarket(world, index);
 			})();
 		default:
 			throw new Error(`Unknown assertion value type: ${valueType}`);
