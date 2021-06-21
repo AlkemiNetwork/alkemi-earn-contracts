@@ -19,6 +19,7 @@ definitions:
     - step: &docs
         name: "Generate docs with solidoc"
         script:
+          - npm i
           - npm run generate:doc
 pipelines:
   branches:
