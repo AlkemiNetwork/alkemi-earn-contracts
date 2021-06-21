@@ -7,19 +7,11 @@ title: AlkemiRateModel
 
 View Source: [contracts/AlkemiRateModel.sol](../contracts/AlkemiRateModel.sol)
 
-**↗ Extends: [Exponential](Exponential.md), [LiquidationChecker](LiquidationChecker.md)**
+**↗ Extends: [Exponential](Exponential.md)**
 
 **{{ContractName}}**
 
 See Model here
-
-## Constructor
-
-```js
-constructor(address moneyMarket, address liquidator) public
-```
-
-**Arguments**
 
 **Enums**
 ### IRError
@@ -65,13 +57,7 @@ string public contractName;
 
 ```js
 event OwnerUpdate(address indexed owner, address indexed newOwner);
-event LiquidatorUpdate(address indexed owner, address indexed newLiquidator, address indexed oldLiquidator);
 ```
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| moneyMarket | address |  | 
-| liquidator | address |  | 
 
 ## Modifiers
 
@@ -93,7 +79,6 @@ modifier onlyOwner() internal
 - [changeRates(string _contractName, uint256 MinRate, uint256 HealthyMinUR, uint256 HealthyMinRate, uint256 HealthyMaxUR, uint256 HealthyMaxRate, uint256 MaxRate)](#changerates)
 - [transferOwnership(address newOwner_)](#transferownership)
 - [acceptOwnership()](#acceptownership)
-- [setLiquidator(address _liquidator)](#setliquidator)
 - [getUtilizationRate(uint256 cash, uint256 borrows)](#getutilizationrate)
 - [getUtilizationAndAnnualBorrowRate(uint256 cash, uint256 borrows)](#getutilizationandannualborrowrate)
 - [getSupplyRate(address _asset, uint256 cash, uint256 borrows)](#getsupplyrate)
@@ -139,18 +124,6 @@ function acceptOwnership() external nonpayable
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-
-### setLiquidator
-
-```js
-function setLiquidator(address _liquidator) external nonpayable onlyOwner 
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| _liquidator | address |  | 
 
 ### getUtilizationRate
 

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: MoneyMarket
+title: MoneyMarketV11
 ---
 
-# MoneyMarket.sol
+# MoneyMarketV11.sol
 
-View Source: [contracts/MoneyMarket.sol](../contracts/MoneyMarket.sol)
+View Source: [contracts/MoneyMarketV11.sol](../contracts/MoneyMarketV11.sol)
 
 **↗ Extends: [Exponential](Exponential.md), [SafeToken](SafeToken.md)**
 
@@ -165,7 +165,8 @@ struct LiquidateLocalVars {
  uint256 closeBorrowAmount_TargetUnderwaterAsset,
  uint256 seizeSupplyAmount_TargetCollateralAsset,
  struct Exponential.Exp collateralPrice,
- struct Exponential.Exp underwaterAssetPrice
+ struct Exponential.Exp underwaterAssetPrice,
+ uint256 reimburseAmount
 }
 ```
 
@@ -188,11 +189,11 @@ address public pendingAdmin;
 address public admin;
 mapping(address => bool) public managers;
 address public oracle;
-mapping(address => mapping(address => struct MoneyMarket.Balance)) public supplyBalances;
-mapping(address => mapping(address => struct MoneyMarket.Balance)) public borrowBalances;
+mapping(address => mapping(address => struct MoneyMarketV11.Balance)) public supplyBalances;
+mapping(address => mapping(address => struct MoneyMarketV11.Balance)) public borrowBalances;
 address public wethAddress;
 contract AlkemiWETH public WETHContract;
-mapping(address => struct MoneyMarket.Market) public markets;
+mapping(address => struct MoneyMarketV11.Market) public markets;
 address[] public collateralMarkets;
 struct Exponential.Exp public collateralRatio;
 struct Exponential.Exp public originationFee;
@@ -345,7 +346,7 @@ modifier isLiquidator() internal
 - [calculateAccountValues(address userAddress)](#calculateaccountvalues)
 - [repayBorrow(address asset, uint256 amount)](#repayborrow)
 - [liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint256 requestedAmountClose)](#liquidateborrow)
-- [emitLiquidationEvent(struct MoneyMarket.LiquidateLocalVars localResults)](#emitliquidationevent)
+- [emitLiquidationEvent(struct MoneyMarketV11.LiquidateLocalVars localResults)](#emitliquidationevent)
 - [calculateDiscountedRepayToEvenAmount(address targetAccount, struct Exponential.Exp underwaterAssetPrice)](#calculatediscountedrepaytoevenamount)
 - [calculateDiscountedBorrowDenominatedCollateral(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 supplyCurrent_TargetCollateralAsset)](#calculatediscountedborrowdenominatedcollateral)
 - [calculateAmountSeize(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 closeBorrowAmount_TargetUnderwaterAsset)](#calculateamountseize)
@@ -1101,7 +1102,7 @@ returns(uint256)
 withdraw `amount` of `asset` from sender's account to sender's address
 
 ```js
-function withdraw(address asset, uint256 requestedAmount) public nonpayable isKYCVerifiedCustomer 
+function withdraw(address asset, uint256 requestedAmount) public nonpayable
 returns(uint256)
 ```
 
@@ -1186,7 +1187,7 @@ returns(uint256, uint256, uint256)
 Users repay borrowed assets from their own address to the protocol.
 
 ```js
-function repayBorrow(address asset, uint256 amount) public payable isKYCVerifiedCustomer 
+function repayBorrow(address asset, uint256 amount) public payable
 returns(uint256)
 ```
 
@@ -1206,7 +1207,7 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 users repay all or some of an underwater borrow and receive collateral
 
 ```js
-function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint256 requestedAmountClose) public nonpayable isKYCVerifiedCustomer isLiquidator 
+function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint256 requestedAmountClose) public nonpayable isLiquidator 
 returns(uint256)
 ```
 
@@ -1228,14 +1229,14 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 this function exists to avoid error `CompilerError: Stack too deep, try removing local variables.` in `liquidateBorrow`
 
 ```js
-function emitLiquidationEvent(struct MoneyMarket.LiquidateLocalVars localResults) internal nonpayable
+function emitLiquidationEvent(struct MoneyMarketV11.LiquidateLocalVars localResults) internal nonpayable
 ```
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| localResults | struct MoneyMarket.LiquidateLocalVars |  | 
+| localResults | struct MoneyMarketV11.LiquidateLocalVars |  | 
 
 ### calculateDiscountedRepayToEvenAmount
 

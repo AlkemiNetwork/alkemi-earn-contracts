@@ -232,7 +232,7 @@ returns(uint256)
 
 ### failOracleWithDetails
 
-Use this when reporting an error from the money market. Give the money market result as `details`
+Use this when reporting an error from the Alkemi Earn Verified. Give the Alkemi Earn Verified result as `details`
 
 ```js
 function failOracleWithDetails(address asset, enum PriceOracle.OracleError err, enum PriceOracle.OracleFailureInfo info, uint256 details) internal nonpayable

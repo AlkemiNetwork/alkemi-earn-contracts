@@ -15,7 +15,7 @@ View Source: [contracts/Liquidator.sol](../contracts/Liquidator.sol)
 **Constants & Variables**
 
 ```js
-contract MoneyMarket public moneyMarket;
+contract AlkemiEarnVerified public alkemiEarnVerified;
 
 ```
 
