@@ -16,7 +16,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
     uint256 internal minimumCollateralRatioMantissa;
     uint256 internal maximumLiquidationDiscountMantissa;
     bool public initializationDone; // To make sure initializer is called only once
-    RewardControlInterface public rewardControl;
 
     /**
      * @notice `AlkemiEarnVerified` is the core contract
@@ -338,6 +337,16 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         public originationFeeBalance;
 
     /**
+     * @dev Reward Control Contract address
+     */
+    RewardControlInterface public rewardControl;
+
+    /**
+     * @notice Multiplier used to calculate the maximum repayAmount when liquidating a borrow
+     */
+    uint256 public closeFactorMantissa = 0;
+
+    /**
      * @dev Event emitted on successful addition of Weth Address
      */
     event WETHAddressSet(address wethAddress);
@@ -539,25 +548,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
     }
 
     /**
-     * @dev Modifier to check if the caller of the function is a KYC Admin
-     */
-    modifier isKYCAdmin {
-        // Check caller = KYCadmin
-        if (!KYCAdmins[msg.sender]) {
-            emitError(
-                Error.KYC_ADMIN_CHECK_FAILED,
-                FailureInfo.KYC_ADMIN_CHECK_FAILED
-            );
-        } else {
-            require(
-                KYCAdmins[msg.sender],
-                "Operation can only be performed by a KYC Admin"
-            );
-            _;
-        }
-    }
-
-    /**
      * @dev Modifier to check if the caller of the function is KYC verified
      */
     modifier isKYCVerifiedCustomer {
@@ -580,32 +570,48 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
     /**
      * @dev Function for use by the admin of the contract to add or remove KYC Admins
      */
-    function _changeKYCAdmin(address KYCAdmin, bool newStatus) public returns(uint) {
+    function _changeKYCAdmin(address KYCAdmin, bool newStatus)
+        public
+        returns (uint256)
+    {
         // Check caller = admin
         if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+            return
+                fail(
+                    Error.UNAUTHORIZED,
+                    FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED
+                );
         }
         KYCAdmins[KYCAdmin] = newStatus;
-        if(newStatus){
+        if (newStatus) {
             emit KYCAdminAdded(KYCAdmin);
         } else {
             emit KYCAdminRemoved(KYCAdmin);
         }
-        return uint(Error.NO_ERROR);
+        return uint256(Error.NO_ERROR);
     }
 
     /**
      * @dev Function for use by the KYC admins to add or remove KYC Customers
      */
-    function _changeCustomerKYC(address customer, bool newStatus) public isKYCAdmin returns(uint) {
+    function _changeCustomerKYC(address customer, bool newStatus)
+        public
+        returns (uint256)
+    {
+        if (!KYCAdmins[msg.sender]) {
+            emitError(
+                Error.KYC_ADMIN_CHECK_FAILED,
+                FailureInfo.KYC_ADMIN_CHECK_FAILED
+            );
+        }
         customersWithKYC[customer] = newStatus;
-        if(newStatus){
+        if (newStatus) {
             emit KYCCustomerAdded(customer);
         } else {
             emit KYCCustomerRemoved(customer);
         }
-        
-        return uint(Error.NO_ERROR);
+
+        return uint256(Error.NO_ERROR);
     }
 
     /**
@@ -627,37 +633,28 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
      */
 
     /**
-     * @dev Modifier to check if the caller of the function is a Liquidator
-     */
-    modifier isLiquidator {
-        // Check caller = Liquidator
-        if (!liquidators[msg.sender]) {
-            emitError(
-                Error.LIQUIDATOR_CHECK_FAILED,
-                FailureInfo.LIQUIDATOR_CHECK_FAILED
-            );
-        } else {
-            require(liquidators[msg.sender], "Customer is not a Liquidator");
-            _;
-        }
-    }
-
-    /**
      * @dev Function for use by the admin of the contract to add or remove Liquidators
      */
-    function _changeLiquidator(address liquidator, bool newStatus) public returns(uint) {
+    function _changeLiquidator(address liquidator, bool newStatus)
+        public
+        returns (uint256)
+    {
         // Check caller = admin
         if (msg.sender != admin) {
-            return fail(Error.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED, FailureInfo.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED);
+            return
+                fail(
+                    Error.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
+                    FailureInfo.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED
+                );
         }
         liquidators[liquidator] = newStatus;
-        if(newStatus){
+        if (newStatus) {
             emit LiquidatorAdded(liquidator);
         } else {
             emit LiquidatorRemoved(liquidator);
         }
-        
-        return uint(Error.NO_ERROR);
+
+        return uint256(Error.NO_ERROR);
     }
 
     /**
@@ -943,20 +940,29 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
      *
      * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
      */
-    function _adminFunctions(address newPendingAdmin, address newOracle, bool requestedState, uint originationFeeMantissa) public returns (uint) {
-       // Check caller = admin
-       if (msg.sender != admin) {
-           return fail(Error.UNAUTHORIZED, FailureInfo.SET_PENDING_ADMIN_OWNER_CHECK);
-       }
+    function _adminFunctions(
+        address newPendingAdmin,
+        address newOracle,
+        bool requestedState,
+        uint256 originationFeeMantissa,
+        uint256 newCloseFactorMantissa
+    ) public returns (uint256) {
+        // Check caller = admin
+        if (msg.sender != admin) {
+            return
+                fail(
+                    Error.UNAUTHORIZED,
+                    FailureInfo.SET_PENDING_ADMIN_OWNER_CHECK
+                );
+        }
 
-       // save current value, if any, for inclusion in log
-       address oldPendingAdmin = pendingAdmin;
-       // Store pendingAdmin = newPendingAdmin
-       pendingAdmin = newPendingAdmin;
+        // save current value, if any, for inclusion in log
+        address oldPendingAdmin = pendingAdmin;
+        // Store pendingAdmin = newPendingAdmin
+        pendingAdmin = newPendingAdmin;
+        emit NewPendingAdmin(oldPendingAdmin, newPendingAdmin);
 
-       emit NewPendingAdmin(oldPendingAdmin, newPendingAdmin);
-
-       // Verify contract at newOracle address supports assetPrices call.
+        // Verify contract at newOracle address supports assetPrices call.
         // This will revert if it doesn't.
         // ChainLink priceOracleTemp = ChainLink(newOracle);
         // priceOracleTemp.getAssetPrice(address(0));
@@ -967,21 +973,24 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         oracle = newOracle;
         // Initialize the Chainlink contract in priceOracle
         priceOracle = ChainLink(newOracle);
-
         emit NewOracle(oldOracle, newOracle);
 
         paused = requestedState;
-       emit SetPaused(requestedState);
+        emit SetPaused(requestedState);
 
-       // Save current value so we can emit it in log.
+        // Save current value so we can emit it in log.
         Exp memory oldOriginationFee = originationFee;
 
         originationFee = Exp({mantissa: originationFeeMantissa});
+        emit NewOriginationFee(
+            oldOriginationFee.mantissa,
+            originationFeeMantissa
+        );
 
-        emit NewOriginationFee(oldOriginationFee.mantissa, originationFeeMantissa);
+        closeFactorMantissa = newCloseFactorMantissa;
 
-       return uint(Error.NO_ERROR);
-   }
+        return uint256(Error.NO_ERROR);
+    }
 
     /**
      * @notice Accepts transfer of admin rights. msg.sender must be pendingAdmin
@@ -2441,13 +2450,19 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         address assetBorrow,
         address assetCollateral,
         uint256 requestedAmountClose
-    ) public payable isLiquidator returns (uint256) {
+    ) public payable returns (uint256) {
         if (paused) {
             return
                 fail(
                     Error.CONTRACT_PAUSED,
                     FailureInfo.LIQUIDATE_CONTRACT_PAUSED
                 );
+        }
+        if (!liquidators[msg.sender]) {
+            emitError(
+                Error.LIQUIDATOR_CHECK_FAILED,
+                FailureInfo.LIQUIDATOR_CHECK_FAILED
+            );
         }
         refreshAlkSupplyIndex(assetCollateral, targetAccount);
         refreshAlkSupplyIndex(assetCollateral, msg.sender);
@@ -2470,6 +2485,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         ][assetCollateral];
 
         // Liquidator might already hold some of the collateral asset
+
 
             Balance storage supplyBalance_LiquidatorCollateralAsset
          = supplyBalances[localResults.liquidator][assetCollateral];
@@ -2648,7 +2664,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                 localResults.discountedRepayToEvenAmount
             ) = calculateDiscountedRepayToEvenAmount(
                 targetAccount,
-                localResults.underwaterAssetPrice
+                localResults.underwaterAssetPrice,
+                assetBorrow
             );
             if (err != Error.NO_ERROR) {
                 return
@@ -3049,7 +3066,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
      */
     function calculateDiscountedRepayToEvenAmount(
         address targetAccount,
-        Exp memory underwaterAssetPrice
+        Exp memory underwaterAssetPrice,
+        address assetBorrow
     ) internal view returns (Error, uint256) {
         Error err;
         Exp memory _accountLiquidity; // unused return value from calculateAccountLiquidity
@@ -3095,10 +3113,15 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         // underwaterAssetPrice * discountedCollateralRatioMinusOne can't overflow either
         assert(err == Error.NO_ERROR);
 
-        (err, rawResult) = divExp(
-            accountShortfall_TargetUser,
-            discountedPrice_UnderwaterAsset
+        /* The liquidator may not repay more than what is allowed by the closeFactor */
+        uint256 borrowBalance = getBorrowBalance(targetAccount, assetBorrow);
+        Exp memory maxClose;
+        (err, maxClose) = mulScalar(
+            Exp({mantissa: closeFactorMantissa}),
+            borrowBalance
         );
+
+        (err, rawResult) = divExp(maxClose, discountedPrice_UnderwaterAsset);
         // It's theoretically possible an asset could have such a low price that it truncates to zero when discounted.
         if (err != Error.NO_ERROR) {
             return (err, 0);
@@ -3535,13 +3558,25 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
      * @param _rewardControl The address of the underlying reward control contract
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function setRewardControlAddress(address _rewardControl) external returns (uint) {
+    function setRewardControlAddress(address _rewardControl)
+        external
+        returns (uint256)
+    {
         // Check caller = admin
-        require(msg.sender==admin,"SET_REWARD_CONTROL_ADDRESS_ADMIN_CHECK_FAILED");
-        require(address(rewardControl) != _rewardControl, "The same Reward Control address");
-        require(_rewardControl != address(0), "RewardControl address cannot be empty");
+        require(
+            msg.sender == admin,
+            "SET_REWARD_CONTROL_ADDRESS_ADMIN_CHECK_FAILED"
+        );
+        require(
+            address(rewardControl) != _rewardControl,
+            "The same Reward Control address"
+        );
+        require(
+            _rewardControl != address(0),
+            "RewardControl address cannot be empty"
+        );
         rewardControl = RewardControlInterface(_rewardControl);
-        return uint(Error.NO_ERROR); // success
+        return uint256(Error.NO_ERROR); // success
     }
 
     /**
@@ -3568,31 +3603,53 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         rewardControl.refreshAlkBorrowIndex(market, borrower);
     }
 
-    function getMarketBalances(address asset) public view returns(uint, uint) {
+    function getMarketBalances(address asset)
+        public
+        view
+        returns (uint256, uint256)
+    {
         Error err;
-        uint newSupplyIndex;
-        uint marketSupplyCurrent;
-        uint newBorrowIndex;
-        uint marketBorrowCurrent;
+        uint256 newSupplyIndex;
+        uint256 marketSupplyCurrent;
+        uint256 newBorrowIndex;
+        uint256 marketBorrowCurrent;
 
         Market storage market = markets[asset];
 
         // Calculate the newSupplyIndex, needed to calculate market's supplyCurrent
-        (err, newSupplyIndex) = calculateInterestIndex(market.supplyIndex, market.supplyRateMantissa, market.blockNumber, getBlockNumber());
+        (err, newSupplyIndex) = calculateInterestIndex(
+            market.supplyIndex,
+            market.supplyRateMantissa,
+            market.blockNumber,
+            getBlockNumber()
+        );
         require(err == Error.NO_ERROR);
 
         // Use newSupplyIndex and stored principal to calculate the accumulated balance
-        (err, marketSupplyCurrent) = calculateBalance(market.totalSupply, market.supplyIndex, newSupplyIndex);
+        (err, marketSupplyCurrent) = calculateBalance(
+            market.totalSupply,
+            market.supplyIndex,
+            newSupplyIndex
+        );
         require(err == Error.NO_ERROR);
 
         // Calculate the newBorrowIndex, needed to calculate market's borrowCurrent
-        (err, newBorrowIndex) = calculateInterestIndex(market.borrowIndex, market.borrowRateMantissa, market.blockNumber, getBlockNumber());
+        (err, newBorrowIndex) = calculateInterestIndex(
+            market.borrowIndex,
+            market.borrowRateMantissa,
+            market.blockNumber,
+            getBlockNumber()
+        );
         require(err == Error.NO_ERROR);
 
         // Use newBorrowIndex and stored principal to calculate the accumulated balance
-        (err, marketBorrowCurrent) = calculateBalance(market.totalBorrows, market.borrowIndex, newBorrowIndex);
+        (err, marketBorrowCurrent) = calculateBalance(
+            market.totalBorrows,
+            market.borrowIndex,
+            newBorrowIndex
+        );
         require(err == Error.NO_ERROR);
 
-        return (marketSupplyCurrent,marketBorrowCurrent);
+        return (marketSupplyCurrent, marketBorrowCurrent);
     }
 }

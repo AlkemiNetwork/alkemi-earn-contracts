@@ -5,6 +5,7 @@ import "./InterestRateModel.sol";
 import "./SafeToken.sol";
 import "./ChainLink.sol";
 import "./AlkemiWETH.sol";
+import "./RewardControlInterface.sol";
 
 contract AlkemiEarnPublic is Exponential, SafeToken {
     uint256 internal initialInterestIndex;
@@ -17,7 +18,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     bool public initializationDone; // To make sure initializer is called only once
 
     /**
-     * @notice `AlkemiEarnPublic` is the core AlkemiEarnPublic contract
+     * @notice `AlkemiEarnPublic` is the core contract
      * @notice This contract uses Openzeppelin Upgrades plugin to make use of the upgradeability functionality using proxies
      * @notice Hence this contract has an 'initializer' in place of a 'constructor'
      * @notice Make sure to add new global variables only at the bottom of all the existing global variables i.e., line #344
@@ -57,6 +58,12 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      be changed by the admin itself.
      */
     address public admin;
+
+    /**
+     * @dev Managers for this contract with limited permissions. Can
+     *      be changed by the admin.
+     */
+    mapping(address => bool) public managers;
 
     /**
      * @dev Account allowed to set oracle prices for this contract. Initially set
@@ -314,6 +321,16 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      */
     mapping(address => mapping(address => uint256))
         public originationFeeBalance;
+
+    /**
+     * @dev Reward Control Contract address
+     */
+    RewardControlInterface public rewardControl;
+
+    /**
+     * @notice Multiplier used to calculate the maximum repayAmount when liquidating a borrow
+     */
+    uint256 public closeFactorMantissa = 0;
 
     /**
      * @dev Event emitted on successful addition of Weth Address
@@ -752,17 +769,23 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     }
 
     /**
-     * @notice Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
+     * @notice Admin Functions. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
      * @dev Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
-     * @param newPendingAdmin New pending admin.
+     * @param newPendingAdmin New pending admin
+     * @param newOracle New oracle address
+     * @param requestedState value to assign to `paused`
+     * @param originationFeeMantissa rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      *
      * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
      */
-    function _setPendingAdmin(address newPendingAdmin)
-        public
-        returns (uint256)
-    {
+    function _adminFunctions(
+        address newPendingAdmin,
+        address newOracle,
+        bool requestedState,
+        uint256 originationFeeMantissa,
+        uint256 newCloseFactorMantissa
+    ) public returns (uint256) {
         // Check caller = admin
         if (msg.sender != admin) {
             return
@@ -776,8 +799,34 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         address oldPendingAdmin = pendingAdmin;
         // Store pendingAdmin = newPendingAdmin
         pendingAdmin = newPendingAdmin;
-
         emit NewPendingAdmin(oldPendingAdmin, newPendingAdmin);
+
+        // Verify contract at newOracle address supports assetPrices call.
+        // This will revert if it doesn't.
+        // ChainLink priceOracleTemp = ChainLink(newOracle);
+        // priceOracleTemp.getAssetPrice(address(0));
+
+        address oldOracle = oracle;
+
+        // Store oracle = newOracle
+        oracle = newOracle;
+        // Initialize the Chainlink contract in priceOracle
+        priceOracle = ChainLink(newOracle);
+        emit NewOracle(oldOracle, newOracle);
+
+        paused = requestedState;
+        emit SetPaused(requestedState);
+
+        // Save current value so we can emit it in log.
+        Exp memory oldOriginationFee = originationFee;
+
+        originationFee = Exp({mantissa: originationFeeMantissa});
+        emit NewOriginationFee(
+            oldOriginationFee.mantissa,
+            originationFeeMantissa
+        );
+
+        closeFactorMantissa = newCloseFactorMantissa;
 
         return uint256(Error.NO_ERROR);
     }
@@ -806,53 +855,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         pendingAdmin = 0;
 
         emit NewAdmin(oldAdmin, msg.sender);
-
-        return uint256(Error.NO_ERROR);
-    }
-
-    /**
-     * @notice Set new oracle, who can set asset prices
-     * @dev Admin function to change oracle
-     * @param newOracle New oracle address
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     */
-    function _setOracle(address newOracle) public returns (uint256) {
-        // Check caller = admin
-        if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.SET_ORACLE_OWNER_CHECK);
-        }
-
-        // Verify contract at newOracle address supports assetPrices call.
-        // This will revert if it doesn't.
-        // ChainLink priceOracleTemp = ChainLink(newOracle);
-        // priceOracleTemp.getAssetPrice(address(0));
-
-        address oldOracle = oracle;
-
-        // Store oracle = newOracle
-        oracle = newOracle;
-        // Initialize the Chainlink contract in priceOracle
-        priceOracle = ChainLink(newOracle);
-
-        emit NewOracle(oldOracle, newOracle);
-
-        return uint256(Error.NO_ERROR);
-    }
-
-    /**
-     * @notice set `paused` to the specified state
-     * @dev Admin function to pause or resume the market
-     * @param requestedState value to assign to `paused`
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     */
-    function _setPaused(bool requestedState) public returns (uint256) {
-        // Check caller = admin
-        if (msg.sender != admin) {
-            return fail(Error.UNAUTHORIZED, FailureInfo.SET_PAUSED_OWNER_CHECK);
-        }
-
-        paused = requestedState;
-        emit SetPaused(requestedState);
 
         return uint256(Error.NO_ERROR);
     }
@@ -1150,38 +1152,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     }
 
     /**
-     * @notice Sets the origination fee (which is a multiplier on new borrows)
-     * @dev Owner function to set the origination fee
-     * @param originationFeeMantissa rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     */
-    function _setOriginationFee(uint256 originationFeeMantissa)
-        public
-        returns (uint256)
-    {
-        // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.SET_ORIGINATION_FEE_OWNER_CHECK
-                );
-        }
-
-        // Save current value so we can emit it in log.
-        Exp memory oldOriginationFee = originationFee;
-
-        originationFee = Exp({mantissa: originationFeeMantissa});
-
-        emit NewOriginationFee(
-            oldOriginationFee.mantissa,
-            originationFeeMantissa
-        );
-
-        return uint256(Error.NO_ERROR);
-    }
-
-    /**
      * @notice Sets the interest rate model for a given market
      * @dev Admin function to set interest rate model
      * @param asset Asset to support
@@ -1345,6 +1315,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
+
+        refreshAlkSupplyIndex(asset, msg.sender);
 
         Market storage market = markets[asset];
         Balance storage balance = supplyBalances[msg.sender][asset];
@@ -1553,26 +1525,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     }
 
     /**
-     * @notice send Ether from contract to a user
-     * @dev Fail safe plan to send Ether stuck in contract in case there is a problem with withdraw
-     */
-    function sendEtherToUser(address user, uint256 amount)
-        public
-        returns (uint256)
-    {
-        // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.SEND_ETHER_ADMIN_CHECK_FAILED
-                );
-        }
-        user.transfer(amount);
-        return uint256(Error.NO_ERROR);
-    }
-
-    /**
      * @notice withdraw `amount` of `asset` from sender's account to sender's address
      * @dev withdraw `amount` of `asset` from msg.sender's account to msg.sender
      * @param asset The market asset to withdraw
@@ -1590,6 +1542,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                     FailureInfo.WITHDRAW_CONTRACT_PAUSED
                 );
         }
+
+        refreshAlkSupplyIndex(asset, msg.sender);
 
         Market storage market = markets[asset];
         Balance storage supplyBalance = supplyBalances[msg.sender][asset];
@@ -2064,6 +2018,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                     FailureInfo.REPAY_BORROW_CONTRACT_PAUSED
                 );
         }
+        refreshAlkBorrowIndex(asset, msg.sender);
         PayBorrowLocalVars memory localResults;
         Market storage market = markets[asset];
         Balance storage borrowBalance = borrowBalances[msg.sender][asset];
@@ -2341,6 +2296,9 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                     FailureInfo.LIQUIDATE_CONTRACT_PAUSED
                 );
         }
+        refreshAlkSupplyIndex(assetCollateral, targetAccount);
+        refreshAlkSupplyIndex(assetCollateral, msg.sender);
+        refreshAlkBorrowIndex(assetBorrow, targetAccount);
         LiquidateLocalVars memory localResults;
         // Copy these addresses into the struct for use with `emitLiquidationEvent`
         // We'll use localResults.liquidator inside this function for clarity vs using msg.sender.
@@ -2359,6 +2317,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         ][assetCollateral];
 
         // Liquidator might already hold some of the collateral asset
+
 
             Balance storage supplyBalance_LiquidatorCollateralAsset
          = supplyBalances[localResults.liquidator][assetCollateral];
@@ -2537,7 +2496,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                 localResults.discountedRepayToEvenAmount
             ) = calculateDiscountedRepayToEvenAmount(
                 targetAccount,
-                localResults.underwaterAssetPrice
+                localResults.underwaterAssetPrice,
+                assetBorrow
             );
             if (err != Error.NO_ERROR) {
                 return
@@ -2806,6 +2766,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
         if (assetBorrow != wethAddress) {
             // WETH is supplied to AlkemiEarnPublic contract in case of ETH automatically
+            revertEtherToUser(msg.sender, msg.value);
             err = doTransferIn(
                 assetBorrow,
                 localResults.liquidator,
@@ -2816,22 +2777,32 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                 return fail(err, FailureInfo.LIQUIDATE_TRANSFER_IN_FAILED);
             }
         } else {
-            uint256 supplyError = supplyEther(
-                localResults.liquidator,
-                localResults.closeBorrowAmount_TargetUnderwaterAsset
-            );
-            //Repay excess funds
-            if (localResults.reimburseAmount > 0) {
-                revertEtherToUser(
+            if (msg.value == requestedAmountClose) {
+                uint256 supplyError = supplyEther(
                     localResults.liquidator,
-                    localResults.reimburseAmount
+                    localResults.closeBorrowAmount_TargetUnderwaterAsset
                 );
-            }
-            if (supplyError != 0) {
+                //Repay excess funds
+                if (localResults.reimburseAmount > 0) {
+                    revertEtherToUser(
+                        localResults.liquidator,
+                        localResults.reimburseAmount
+                    );
+                }
+                if (supplyError != 0) {
+                    revertEtherToUser(msg.sender, msg.value);
+                    return
+                        fail(
+                            Error.WETH_ADDRESS_NOT_SET_ERROR,
+                            FailureInfo.WETH_ADDRESS_NOT_SET_ERROR
+                        );
+                }
+            } else {
+                revertEtherToUser(msg.sender, msg.value);
                 return
                     fail(
-                        Error.WETH_ADDRESS_NOT_SET_ERROR,
-                        FailureInfo.WETH_ADDRESS_NOT_SET_ERROR
+                        Error.ETHER_AMOUNT_MISMATCH_ERROR,
+                        FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR
                     );
             }
         }
@@ -2927,7 +2898,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      */
     function calculateDiscountedRepayToEvenAmount(
         address targetAccount,
-        Exp memory underwaterAssetPrice
+        Exp memory underwaterAssetPrice,
+        address assetBorrow
     ) internal view returns (Error, uint256) {
         Error err;
         Exp memory _accountLiquidity; // unused return value from calculateAccountLiquidity
@@ -2973,10 +2945,15 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         // underwaterAssetPrice * discountedCollateralRatioMinusOne can't overflow either
         assert(err == Error.NO_ERROR);
 
-        (err, rawResult) = divExp(
-            accountShortfall_TargetUser,
-            discountedPrice_UnderwaterAsset
+        /* The liquidator may not repay more than what is allowed by the closeFactor */
+        uint256 borrowBalance = getBorrowBalance(targetAccount, assetBorrow);
+        Exp memory maxClose;
+        (err, maxClose) = mulScalar(
+            Exp({mantissa: closeFactorMantissa}),
+            borrowBalance
         );
+
+        (err, rawResult) = divExp(maxClose, discountedPrice_UnderwaterAsset);
         // It's theoretically possible an asset could have such a low price that it truncates to zero when discounted.
         if (err != Error.NO_ERROR) {
             return (err, 0);
@@ -3106,6 +3083,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
         }
+        refreshAlkBorrowIndex(asset, msg.sender);
         BorrowLocalVars memory localResults;
         Market storage market = markets[asset];
         Balance storage borrowBalance = borrowBalances[msg.sender][asset];
@@ -3352,6 +3330,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         uint256 amount,
         uint256 newSupplyIndex
     ) private {
+        refreshAlkSupplyIndex(asset, admin);
         uint256 originationFeeRepaid = 0;
         if (originationFeeBalance[user][asset] != 0) {
             if (amount < originationFeeBalance[user][asset]) {
@@ -3400,5 +3379,105 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                 localResults.userSupplyUpdated
             );
         }
+    }
+
+    /**
+     * @notice Set the address of the Reward Control contract to be triggered to accrue ALK rewards for participants
+     * @param _rewardControl The address of the underlying reward control contract
+     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+     */
+    function setRewardControlAddress(address _rewardControl)
+        external
+        returns (uint256)
+    {
+        // Check caller = admin
+        require(
+            msg.sender == admin,
+            "SET_REWARD_CONTROL_ADDRESS_ADMIN_CHECK_FAILED"
+        );
+        require(
+            address(rewardControl) != _rewardControl,
+            "The same Reward Control address"
+        );
+        require(
+            _rewardControl != address(0),
+            "RewardControl address cannot be empty"
+        );
+        rewardControl = RewardControlInterface(_rewardControl);
+        return uint256(Error.NO_ERROR); // success
+    }
+
+    /**
+     * @notice Trigger the underlying Reward Control contract to accrue ALK supply rewards for the supplier on the specified market
+     * @param market The address of the market to accrue rewards
+     * @param supplier The address of the supplier to accrue rewards
+     */
+    function refreshAlkSupplyIndex(address market, address supplier) internal {
+        if (address(rewardControl) == address(0)) {
+            return;
+        }
+        rewardControl.refreshAlkSupplyIndex(market, supplier);
+    }
+
+    /**
+     * @notice Trigger the underlying Reward Control contract to accrue ALK borrow rewards for the borrower on the specified market
+     * @param market The address of the market to accrue rewards
+     * @param borrower The address of the borrower to accrue rewards
+     */
+    function refreshAlkBorrowIndex(address market, address borrower) internal {
+        if (address(rewardControl) == address(0)) {
+            return;
+        }
+        rewardControl.refreshAlkBorrowIndex(market, borrower);
+    }
+
+    function getMarketBalances(address asset)
+        public
+        view
+        returns (uint256, uint256)
+    {
+        Error err;
+        uint256 newSupplyIndex;
+        uint256 marketSupplyCurrent;
+        uint256 newBorrowIndex;
+        uint256 marketBorrowCurrent;
+
+        Market storage market = markets[asset];
+
+        // Calculate the newSupplyIndex, needed to calculate market's supplyCurrent
+        (err, newSupplyIndex) = calculateInterestIndex(
+            market.supplyIndex,
+            market.supplyRateMantissa,
+            market.blockNumber,
+            getBlockNumber()
+        );
+        require(err == Error.NO_ERROR);
+
+        // Use newSupplyIndex and stored principal to calculate the accumulated balance
+        (err, marketSupplyCurrent) = calculateBalance(
+            market.totalSupply,
+            market.supplyIndex,
+            newSupplyIndex
+        );
+        require(err == Error.NO_ERROR);
+
+        // Calculate the newBorrowIndex, needed to calculate market's borrowCurrent
+        (err, newBorrowIndex) = calculateInterestIndex(
+            market.borrowIndex,
+            market.borrowRateMantissa,
+            market.blockNumber,
+            getBlockNumber()
+        );
+        require(err == Error.NO_ERROR);
+
+        // Use newBorrowIndex and stored principal to calculate the accumulated balance
+        (err, marketBorrowCurrent) = calculateBalance(
+            market.totalBorrows,
+            market.borrowIndex,
+            newBorrowIndex
+        );
+        require(err == Error.NO_ERROR);
+
+        return (marketSupplyCurrent, marketBorrowCurrent);
     }
 }

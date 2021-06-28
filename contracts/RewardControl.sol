@@ -5,32 +5,50 @@ import "./RewardControlInterface.sol";
 import "./ExponentialNoError.sol";
 import "./EIP20Interface.sol";
 
-contract RewardControl is RewardControlStorage, RewardControlInterface, ExponentialNoError {
-
+contract RewardControl is
+    RewardControlStorage,
+    RewardControlInterface,
+    ExponentialNoError
+{
     /**
      * Events
      */
 
     /// @notice Emitted when a new ALK speed is calculated for a market
-    event AlkSpeedUpdated(address indexed market, uint newSpeed);
+    event AlkSpeedUpdated(address indexed market, uint256 newSpeed);
 
     /// @notice Emitted when ALK is distributed to a supplier
-    event DistributedSupplierAlk(address indexed market, address indexed supplier, uint supplierDelta, uint supplierAccruedAlk, uint supplyIndexMantissa);
+    event DistributedSupplierAlk(
+        address indexed market,
+        address indexed supplier,
+        uint256 supplierDelta,
+        uint256 supplierAccruedAlk,
+        uint256 supplyIndexMantissa
+    );
 
     /// @notice Emitted when ALK is distributed to a borrower
-    event DistributedBorrowerAlk(address indexed market, address indexed borrower, uint borrowerDelta, uint borrowerAccruedAlk, uint borrowIndexMantissa);
+    event DistributedBorrowerAlk(
+        address indexed market,
+        address indexed borrower,
+        uint256 borrowerDelta,
+        uint256 borrowerAccruedAlk,
+        uint256 borrowIndexMantissa
+    );
 
     /// @notice Emitted when ALK is transferred to a participant
-    event TransferredAlk(address indexed participant, uint participantAccrued);
+    event TransferredAlk(
+        address indexed participant,
+        uint256 participantAccrued
+    );
 
     /// @notice Emitted when the owner of the contract is updated
     event OwnerUpdate(address indexed owner, address indexed newOwner);
 
     /// @notice Emitted when a market is added
-    event MarketAdded(address indexed market, uint numberOfMarkets);
+    event MarketAdded(address indexed market, uint256 numberOfMarkets);
 
     /// @notice Emitted when a market is removed
-    event MarketRemoved(address indexed market, uint numberOfMarkets);
+    event MarketRemoved(address indexed market, uint256 numberOfMarkets);
 
     /**
      * Constants
@@ -47,7 +65,11 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Make sure to add new global variables only in a derived contract of RewardControlStorage, inherited by this contract
      * @notice Also make sure to do extensive testing while modifying any structs and enums during an upgrade
      */
-    function initializer(address _owner, address _alkemiEarnVerified, address _alkAddress) public {
+    function initializer(
+        address _owner,
+        address _alkemiEarnVerified,
+        address _alkAddress
+    ) public {
         if (initializationDone == false) {
             initializationDone = true;
             owner = _owner;
@@ -130,21 +152,32 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Recalculate and update ALK speeds for all markets
      */
     function refreshAlkSpeeds() internal {
-        Exp memory totalLiquidity = Exp({mantissa : 0});
+        Exp memory totalLiquidity = Exp({mantissa: 0});
         Exp[] memory marketTotalLiquidity = new Exp[](allMarkets.length);
         address currentMarket;
-        for (uint i = 0; i < allMarkets.length; i++) {
+        for (uint256 i = 0; i < allMarkets.length; i++) {
             currentMarket = allMarkets[i];
-            uint currentMarketTotalSupply = getMarketTotalSupply(currentMarket);
-            uint currentMarketTotalBorrows = getMarketTotalBorrows(currentMarket);
-            Exp memory currentMarketTotalLiquidity = Exp({mantissa : add_(currentMarketTotalSupply, currentMarketTotalBorrows)});
+            uint256 currentMarketTotalSupply = getMarketTotalSupply(
+                currentMarket
+            );
+            uint256 currentMarketTotalBorrows = getMarketTotalBorrows(
+                currentMarket
+            );
+            Exp memory currentMarketTotalLiquidity = Exp({
+                mantissa: add_(
+                    currentMarketTotalSupply,
+                    currentMarketTotalBorrows
+                )
+            });
             marketTotalLiquidity[i] = currentMarketTotalLiquidity;
             totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
         }
 
-        for (uint j = 0; j < allMarkets.length; j++) {
+        for (uint256 j = 0; j < allMarkets.length; j++) {
             currentMarket = allMarkets[j];
-            uint newSpeed = totalLiquidity.mantissa > 0 ? mul_(alkRate, div_(marketTotalLiquidity[j], totalLiquidity)) : 0;
+            uint256 newSpeed = totalLiquidity.mantissa > 0
+                ? mul_(alkRate, div_(marketTotalLiquidity[j], totalLiquidity))
+                : 0;
             alkSpeeds[currentMarket] = newSpeed;
             emit AlkSpeedUpdated(currentMarket, newSpeed);
         }
@@ -156,20 +189,28 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
     function updateAlkSupplyIndex(address market) internal {
         MarketState storage supplyState = alkSupplyState[market];
-        uint marketSpeed = alkSpeeds[market];
-        uint blockNumber = getBlockNumber();
-        uint deltaBlocks = sub_(blockNumber, uint(supplyState.block));
+        uint256 marketSpeed = alkSpeeds[market];
+        uint256 blockNumber = getBlockNumber();
+        uint256 deltaBlocks = sub_(blockNumber, uint256(supplyState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
-            uint marketTotalSupply = getMarketTotalSupply(market);
-            uint supplyAlkAccrued = mul_(deltaBlocks, marketSpeed);
-            Double memory ratio = marketTotalSupply > 0 ? fraction(supplyAlkAccrued, marketTotalSupply) : Double({mantissa : 0});
-            Double memory index = add_(Double({mantissa : supplyState.index}), ratio);
+            uint256 marketTotalSupply = getMarketTotalSupply(market);
+            uint256 supplyAlkAccrued = mul_(deltaBlocks, marketSpeed);
+            Double memory ratio = marketTotalSupply > 0
+                ? fraction(supplyAlkAccrued, marketTotalSupply)
+                : Double({mantissa: 0});
+            Double memory index = add_(
+                Double({mantissa: supplyState.index}),
+                ratio
+            );
             alkSupplyState[market] = MarketState({
-            index : safe224(index.mantissa, "new index exceeds 224 bits"),
-            block : safe32(blockNumber, "block number exceeds 32 bits")
+                index: safe224(index.mantissa, "new index exceeds 224 bits"),
+                block: safe32(blockNumber, "block number exceeds 32 bits")
             });
         } else if (deltaBlocks > 0) {
-            supplyState.block = safe32(blockNumber, "block number exceeds 32 bits");
+            supplyState.block = safe32(
+                blockNumber,
+                "block number exceeds 32 bits"
+            );
         }
     }
 
@@ -179,20 +220,28 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
     function updateAlkBorrowIndex(address market) internal {
         MarketState storage borrowState = alkBorrowState[market];
-        uint marketSpeed = alkSpeeds[market];
-        uint blockNumber = getBlockNumber();
-        uint deltaBlocks = sub_(blockNumber, uint(borrowState.block));
+        uint256 marketSpeed = alkSpeeds[market];
+        uint256 blockNumber = getBlockNumber();
+        uint256 deltaBlocks = sub_(blockNumber, uint256(borrowState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
-            uint marketTotalBorrows = getMarketTotalBorrows(market);
-            uint borrowAlkAccrued = mul_(deltaBlocks, marketSpeed);
-            Double memory ratio = marketTotalBorrows > 0 ? fraction(borrowAlkAccrued, marketTotalBorrows) : Double({mantissa : 0});
-            Double memory index = add_(Double({mantissa : borrowState.index}), ratio);
+            uint256 marketTotalBorrows = getMarketTotalBorrows(market);
+            uint256 borrowAlkAccrued = mul_(deltaBlocks, marketSpeed);
+            Double memory ratio = marketTotalBorrows > 0
+                ? fraction(borrowAlkAccrued, marketTotalBorrows)
+                : Double({mantissa: 0});
+            Double memory index = add_(
+                Double({mantissa: borrowState.index}),
+                ratio
+            );
             alkBorrowState[market] = MarketState({
-            index : safe224(index.mantissa, "new index exceeds 224 bits"),
-            block : safe32(blockNumber, "block number exceeds 32 bits")
+                index: safe224(index.mantissa, "new index exceeds 224 bits"),
+                block: safe32(blockNumber, "block number exceeds 32 bits")
             });
         } else if (deltaBlocks > 0) {
-            borrowState.block = safe32(blockNumber, "block number exceeds 32 bits");
+            borrowState.block = safe32(
+                blockNumber,
+                "block number exceeds 32 bits"
+            );
         }
     }
 
@@ -203,16 +252,24 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
     function distributeSupplierAlk(address market, address supplier) internal {
         MarketState storage supplyState = alkSupplyState[market];
-        Double memory supplyIndex = Double({mantissa : supplyState.index});
-        Double memory supplierIndex = Double({mantissa : alkSupplierIndex[market][supplier]});
+        Double memory supplyIndex = Double({mantissa: supplyState.index});
+        Double memory supplierIndex = Double({
+            mantissa: alkSupplierIndex[market][supplier]
+        });
         alkSupplierIndex[market][supplier] = supplyIndex.mantissa;
 
         if (supplierIndex.mantissa > 0) {
             Double memory deltaIndex = sub_(supplyIndex, supplierIndex);
-            uint supplierBalance = getSupplyBalance(market, supplier);
-            uint supplierDelta = mul_(supplierBalance, deltaIndex);
+            uint256 supplierBalance = getSupplyBalance(market, supplier);
+            uint256 supplierDelta = mul_(supplierBalance, deltaIndex);
             alkAccrued[supplier] = add_(alkAccrued[supplier], supplierDelta);
-            emit DistributedSupplierAlk(market, supplier, supplierDelta, alkAccrued[supplier], supplyIndex.mantissa);
+            emit DistributedSupplierAlk(
+                market,
+                supplier,
+                supplierDelta,
+                alkAccrued[supplier],
+                supplyIndex.mantissa
+            );
         }
     }
 
@@ -223,16 +280,24 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      */
     function distributeBorrowerAlk(address market, address borrower) internal {
         MarketState storage borrowState = alkBorrowState[market];
-        Double memory borrowIndex = Double({mantissa : borrowState.index});
-        Double memory borrowerIndex = Double({mantissa : alkBorrowerIndex[market][borrower]});
+        Double memory borrowIndex = Double({mantissa: borrowState.index});
+        Double memory borrowerIndex = Double({
+            mantissa: alkBorrowerIndex[market][borrower]
+        });
         alkBorrowerIndex[market][borrower] = borrowIndex.mantissa;
 
         if (borrowerIndex.mantissa > 0) {
             Double memory deltaIndex = sub_(borrowIndex, borrowerIndex);
-            uint borrowerBalance = getBorrowBalance(market, borrower);
-            uint borrowerDelta = mul_(borrowerBalance, deltaIndex);
+            uint256 borrowerBalance = getBorrowBalance(market, borrower);
+            uint256 borrowerDelta = mul_(borrowerBalance, deltaIndex);
             alkAccrued[borrower] = add_(alkAccrued[borrower], borrowerDelta);
-            emit DistributedBorrowerAlk(market, borrower, borrowerDelta, alkAccrued[borrower], borrowIndex.mantissa);
+            emit DistributedBorrowerAlk(
+                market,
+                borrower,
+                borrowerDelta,
+                alkAccrued[borrower],
+                borrowIndex.mantissa
+            );
         }
     }
 
@@ -242,7 +307,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param markets The list of markets to claim ALK in
      */
     function claimAlk(address holder, address[] memory markets) internal {
-        for (uint i = 0; i < markets.length; i++) {
+        for (uint256 i = 0; i < markets.length; i++) {
             address market = markets[i];
 
             updateAlkSupplyIndex(market);
@@ -262,10 +327,13 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param participantAccrued The amount of ALK to (possibly) transfer
      * @return The amount of ALK which was NOT transferred to the participant
      */
-    function transferAlk(address participant, uint participantAccrued) internal returns (uint) {
+    function transferAlk(address participant, uint256 participantAccrued)
+        internal
+        returns (uint256)
+    {
         if (participantAccrued > 0) {
             EIP20Interface alk = EIP20Interface(getAlkAddress());
-            uint alkRemaining = alk.balanceOf(address(this));
+            uint256 alkRemaining = alk.balanceOf(address(this));
             if (participantAccrued <= alkRemaining) {
                 alk.transfer(participant, participantAccrued);
                 emit TransferredAlk(participant, participantAccrued);
@@ -283,7 +351,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Get the current block number
      * @return The current block number
      */
-    function getBlockNumber() public view returns (uint) {
+    function getBlockNumber() public view returns (uint256) {
         return block.number;
     }
 
@@ -292,7 +360,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param participant The address of the participant
      * @return The amount of accrued ALK for the participant
      */
-    function getAlkAccrued(address participant) public view returns (uint) {
+    function getAlkAccrued(address participant) public view returns (uint256) {
         return alkAccrued[participant];
     }
 
@@ -317,7 +385,21 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param market The address of the market
      * @return Market statistics for the given market
      */
-    function getMarketStats(address market) public view returns (bool isSupported, uint blockNumber, address interestRateModel, uint totalSupply, uint supplyRateMantissa, uint supplyIndex, uint totalBorrows, uint borrowRateMantissa, uint borrowIndex) {
+    function getMarketStats(address market)
+        public
+        view
+        returns (
+            bool isSupported,
+            uint256 blockNumber,
+            address interestRateModel,
+            uint256 totalSupply,
+            uint256 supplyRateMantissa,
+            uint256 supplyIndex,
+            uint256 totalBorrows,
+            uint256 borrowRateMantissa,
+            uint256 borrowIndex
+        )
+    {
         return (alkemiEarnVerified.markets(market));
     }
 
@@ -326,9 +408,13 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param market The address of the market
      * @return Market total supply for the given market
      */
-    function getMarketTotalSupply(address market) public view returns (uint) {
-        uint totalSupply;
-        (,,, totalSupply,,,,,) = getMarketStats(market);
+    function getMarketTotalSupply(address market)
+        public
+        view
+        returns (uint256)
+    {
+        uint256 totalSupply;
+        (, , , totalSupply, , , , , ) = getMarketStats(market);
         return totalSupply;
     }
 
@@ -337,9 +423,13 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param market The address of the market
      * @return Market total borrows for the given market
      */
-    function getMarketTotalBorrows(address market) public view returns (uint) {
-        uint totalBorrows;
-        (,,,,,, totalBorrows,,) = getMarketStats(market);
+    function getMarketTotalBorrows(address market)
+        public
+        view
+        returns (uint256)
+    {
+        uint256 totalBorrows;
+        (, , , , , , totalBorrows, , ) = getMarketStats(market);
         return totalBorrows;
     }
 
@@ -349,7 +439,11 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param supplier The address of the supplier
      * @return Supply balance of the specified market and supplier
      */
-    function getSupplyBalance(address market, address supplier) public view returns (uint) {
+    function getSupplyBalance(address market, address supplier)
+        public
+        view
+        returns (uint256)
+    {
         return alkemiEarnVerified.getSupplyBalance(supplier, market);
     }
 
@@ -359,7 +453,11 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @param borrower The address of the borrower
      * @return Borrow balance of the specified market and borrower
      */
-    function getBorrowBalance(address market, address borrower) public view returns (uint) {
+    function getBorrowBalance(address market, address borrower)
+        public
+        view
+        returns (uint256)
+    {
         return alkemiEarnVerified.getBorrowBalance(borrower, market);
     }
 
@@ -380,7 +478,10 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Accept the ownership of this contract by the new owner
      */
     function acceptOwnership() external {
-        require(msg.sender == newOwner, "AcceptOwnership: only new owner do this.");
+        require(
+            msg.sender == newOwner,
+            "AcceptOwnership: only new owner do this."
+        );
         emit OwnerUpdate(owner, newOwner);
         owner = newOwner;
         newOwner = address(0);
@@ -401,14 +502,14 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Remove a market from the reward program based on array index
      * @param id The index of the `allMarkets` array to be removed
      */
-    function removeMarket(uint id) external onlyOwner {
+    function removeMarket(uint256 id) external onlyOwner {
         if (id >= allMarkets.length) {
             return;
         }
         allMarketsIndex[allMarkets[id]] = false;
         address removedMarket = allMarkets[id];
 
-        for (uint i = id; i < allMarkets.length - 1; i++) {
+        for (uint256 i = id; i < allMarkets.length - 1; i++) {
             allMarkets[i] = allMarkets[i + 1];
         }
         allMarkets.length--;
@@ -429,9 +530,18 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Set AlkemiEarnVerified contract address
      * @param _alkemiEarnVerified The AlkemiEarnVerified contract address
      */
-    function setAlkemiEarnVerifiedAddress(address _alkemiEarnVerified) external onlyOwner {
-        require(address(alkemiEarnVerified) != _alkemiEarnVerified, "The same AlkemiEarnVerified address");
-        require(_alkemiEarnVerified != address(0), "AlkemiEarnVerified address cannot be empty");
+    function setAlkemiEarnVerifiedAddress(address _alkemiEarnVerified)
+        external
+        onlyOwner
+    {
+        require(
+            address(alkemiEarnVerified) != _alkemiEarnVerified,
+            "The same AlkemiEarnVerified address"
+        );
+        require(
+            _alkemiEarnVerified != address(0),
+            "AlkemiEarnVerified address cannot be empty"
+        );
         alkemiEarnVerified = AlkemiEarnVerified(_alkemiEarnVerified);
     }
 
@@ -439,8 +549,7 @@ contract RewardControl is RewardControlStorage, RewardControlInterface, Exponent
      * @notice Set ALK rate
      * @param _alkRate The ALK rate
      */
-    function setAlkRate(uint _alkRate) external onlyOwner {
+    function setAlkRate(uint256 _alkRate) external onlyOwner {
         alkRate = _alkRate;
     }
-
 }

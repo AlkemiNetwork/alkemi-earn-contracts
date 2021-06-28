@@ -4,13 +4,13 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "10.0e18"],
-		["Faucet", "Geoff", "Ether", "10.0e18"],
-		["Supply", "Geoff", "Ether", "10.0e18"],
+		["Approve", "Ryan", "Ether", "10.0e18"],
+		["Faucet", "Ryan", "Ether", "10.0e18"],
+		["Supply", "Ryan", "Ether", "10.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "10.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		["AddToken", "OMG"],
@@ -18,15 +18,15 @@
 		["SetAssetValue", "OMG", "1.0"],
 		["AddSupportedAsset", "OMG"],
 		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Torrey", "OMG", "5.0e18"],
-		["Faucet", "Torrey", "OMG", "5.0e18"],
-		["Supply", "Torrey", "OMG", "5.0e18"],
+		["Approve", "Ben", "OMG", "5.0e18"],
+		["Faucet", "Ben", "OMG", "5.0e18"],
+		["Supply", "Ben", "OMG", "5.0e18"],
 		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "5.0e18"]]],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Exactly", "0.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Exactly", "0.0e18"]]
 		],
-		["Borrow", "Geoff", "OMG", "2.0e18"],
+		["Borrow", "Ryan", "OMG", "2.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
@@ -34,11 +34,11 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "2.002e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "2.002e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Exactly", "2.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Exactly", "2.0e18"]]
 		],
 		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "5.0e18"]]]
 	],
@@ -47,42 +47,42 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "3.0e18"],
-		["Faucet", "Geoff", "Ether", "3.0e18"],
-		["Supply", "Geoff", "Ether", "3.0e18"],
+		["Approve", "Ryan", "Ether", "3.0e18"],
+		["Faucet", "Ryan", "Ether", "3.0e18"],
+		["Supply", "Ryan", "Ether", "3.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "3.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "3.0e18"]]
 		],
-		["Assert", ["Equal", ["MaxBorrow", "Geoff"], ["Exactly", "2.4e18"]]],
+		["Assert", ["Equal", ["MaxBorrow", "Ryan"], ["Exactly", "2.4e18"]]],
 		["FastForward", 2, "blocks"],
 		["AddToken", "OMG"],
 		["AddCash", "OMG", "1e20"],
 		["SetAssetValue", "OMG", "0.2"],
 		["AddSupportedAsset", "OMG"],
 		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Torrey", "OMG", "30.0e18"],
-		["Faucet", "Torrey", "OMG", "30.0e18"],
-		["Supply", "Torrey", "OMG", "30.0e18"],
+		["Approve", "Ben", "OMG", "30.0e18"],
+		["Faucet", "Ben", "OMG", "30.0e18"],
+		["Supply", "Ben", "OMG", "30.0e18"],
 		[
 			"Assert",
 			["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "30.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Exactly", "0.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Exactly", "0.0e18"]]
 		],
-		["Assert", ["Equal", ["MaxBorrow", "Geoff"], ["Exactly", "4.8e18"]]],
-		["Borrow", "Geoff", "OMG", "50.0e18"],
+		["Assert", ["Equal", ["MaxBorrow", "Ryan"], ["Exactly", "4.8e18"]]],
+		["Borrow", "Ryan", "OMG", "50.0e18"],
 		["Assert", ["Failure", "desired action violates collateral ratio"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "0.0e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "0.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Exactly", "0.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Exactly", "0.0e18"]]
 		],
 		["Assert", ["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "0.0e18"]]],
 		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "30.0e18"]]]
@@ -92,9 +92,9 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "30.0e18"],
-		["Faucet", "Geoff", "Ether", "30.0e18"],
-		["Supply", "Geoff", "Ether", "30.0e18"],
+		["Approve", "Ryan", "Ether", "30.0e18"],
+		["Faucet", "Ryan", "Ether", "30.0e18"],
+		["Supply", "Ryan", "Ether", "30.0e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
 		["AddToken", "OMG"],
@@ -102,12 +102,12 @@
 		["SetAssetValue", "OMG", "5e-2"],
 		["AddSupportedAsset", "OMG"],
 		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Torrey", "OMG", "5.0e18"],
-		["Faucet", "Torrey", "OMG", "5.0e18"],
-		["Supply", "Torrey", "OMG", "5.0e18"],
+		["Approve", "Ben", "OMG", "5.0e18"],
+		["Faucet", "Ben", "OMG", "5.0e18"],
+		["Supply", "Ben", "OMG", "5.0e18"],
 		["FastForward", 2, "blocks"],
 		["SuspendAsset", "OMG"],
-		["Borrow", "Geoff", "OMG", "1e18"],
+		["Borrow", "Ryan", "OMG", "1e18"],
 		["Assert", ["Failure", "asset is suspended"]]
 	],
 	"Borrow: Can't borrow an initial state asset": [
@@ -115,14 +115,14 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "30.0e18"],
-		["Faucet", "Geoff", "Ether", "30.0e18"],
-		["Supply", "Geoff", "Ether", "30.0e18"],
+		["Approve", "Ryan", "Ether", "30.0e18"],
+		["Faucet", "Ryan", "Ether", "30.0e18"],
+		["Supply", "Ryan", "Ether", "30.0e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
 		["AddToken", "OMG"],
 		["AddCash", "OMG", "1e20"],
-		["Borrow", "Geoff", "OMG", "1e18"],
+		["Borrow", "Ryan", "OMG", "1e18"],
 		["Assert", ["Failure", "asset is not allowed"]]
 	],
 	"Borrow: Can't borrow when contract is paused": [
@@ -130,13 +130,13 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "10.0e18"],
-		["Faucet", "Geoff", "Ether", "10.0e18"],
-		["Supply", "Geoff", "Ether", "10.0e18"],
+		["Approve", "Ryan", "Ether", "10.0e18"],
+		["Faucet", "Ryan", "Ether", "10.0e18"],
+		["Supply", "Ryan", "Ether", "10.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "10.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		["AddToken", "OMG"],
@@ -144,24 +144,24 @@
 		["SetAssetValue", "OMG", "1.0"],
 		["AddSupportedAsset", "OMG"],
 		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Torrey", "OMG", "5.0e18"],
-		["Faucet", "Torrey", "OMG", "5.0e18"],
-		["Supply", "Torrey", "OMG", "5.0e18"],
+		["Approve", "Ben", "OMG", "5.0e18"],
+		["Faucet", "Ben", "OMG", "5.0e18"],
+		["Supply", "Ben", "OMG", "5.0e18"],
 		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "5.0e18"]]],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Exactly", "0.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Exactly", "0.0e18"]]
 		],
 		["SetPaused", true],
-		["Borrow", "Geoff", "OMG", "2.0e18"],
+		["Borrow", "Ryan", "OMG", "2.0e18"],
 		["Assert", ["Failure", "contract has been paused"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "0.0e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "0.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Exactly", "0.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Exactly", "0.0e18"]]
 		]
 	],
 	"PayBorrow: Supply Ether and Borrow OMG and Repay half": [
@@ -169,14 +169,14 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "10.0e18"],
-		["Faucet", "Geoff", "Ether", "10.0e18"],
-		["Supply", "Geoff", "Ether", "10.0e18"],
+		["Approve", "Ryan", "Ether", "10.0e18"],
+		["Faucet", "Ryan", "Ether", "10.0e18"],
+		["Supply", "Ryan", "Ether", "10.0e18"],
 		["Assert", ["Success"]],
 		["Assert", ["Log", "SupplyReceived"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "10.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		["AddToken", "OMG"],
@@ -184,38 +184,38 @@
 		["SetAssetValue", "OMG", "1.0"],
 		["AddSupportedAsset", "OMG"],
 		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Torrey", "OMG", "20.0e18"],
-		["Faucet", "Torrey", "OMG", "20.0e18"],
-		["Supply", "Torrey", "OMG", "20.0e18"],
-		["Borrow", "Geoff", "OMG", "2.0e18"],
+		["Approve", "Ben", "OMG", "20.0e18"],
+		["Faucet", "Ben", "OMG", "20.0e18"],
+		["Supply", "Ben", "OMG", "20.0e18"],
+		["Borrow", "Ryan", "OMG", "2.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "2.002e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "2.002e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "5.005e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "5.005e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Precisely", "2.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Precisely", "2.0e18"]]
 		],
 		[
 			"Assert",
 			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "2.002e18"]]
 		],
-		["Approve", "Geoff", "OMG", "1.0e18"],
-		["PayBorrow", "Geoff", "OMG", "1.0e18"],
+		["Approve", "Ryan", "OMG", "1.0e18"],
+		["PayBorrow", "Ryan", "OMG", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "4.005e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "4.005e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Exactly", "1.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Exactly", "1.0e18"]]
 		],
 		[
 			"Assert",
@@ -224,7 +224,7 @@
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "10.0125e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "10.0125e18"]]
 		]
 	],
 	"PayBorrow: Go negative with cash due to outsized borrow": [
@@ -232,9 +232,9 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "10.0e18"],
-		["Faucet", "Geoff", "Ether", "10.0e18"],
-		["Supply", "Geoff", "Ether", "10.0e18"],
+		["Approve", "Ryan", "Ether", "10.0e18"],
+		["Faucet", "Ryan", "Ether", "10.0e18"],
+		["Supply", "Ryan", "Ether", "10.0e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
 		["AddToken", "OMG"],
@@ -242,25 +242,25 @@
 		["SetAssetValue", "OMG", "1.0"],
 		["AddSupportedAsset", "OMG"],
 		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Torrey", "OMG", "5.0e18"],
-		["Faucet", "Torrey", "OMG", "5.0e18"],
-		["Supply", "Torrey", "OMG", "5.0e18"],
-		["Borrow", "Geoff", "OMG", "2.0e18"],
+		["Approve", "Ben", "OMG", "5.0e18"],
+		["Faucet", "Ben", "OMG", "5.0e18"],
+		["Supply", "Ben", "OMG", "5.0e18"],
+		["Borrow", "Ryan", "OMG", "2.0e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
-		["Approve", "Geoff", "OMG", "2.0e18"],
-		["PayBorrow", "Geoff", "OMG", "1.0e18"],
+		["Approve", "Ryan", "OMG", "2.0e18"],
+		["PayBorrow", "Ryan", "OMG", "1.0e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "10.0125e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "10.0125e18"]]
 		],
-		["PayBorrow", "Geoff", "OMG", "1.0e18"],
+		["PayBorrow", "Ryan", "OMG", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "9.0125e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "9.0125e18"]]
 		],
 		[
 			"Assert",
@@ -272,14 +272,14 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "10.0e18"],
-		["Faucet", "Geoff", "Ether", "10.0e18"],
-		["Supply", "Geoff", "Ether", "10.0e18"],
+		["Approve", "Ryan", "Ether", "10.0e18"],
+		["Faucet", "Ryan", "Ether", "10.0e18"],
+		["Supply", "Ryan", "Ether", "10.0e18"],
 		["Assert", ["Success"]],
 		["Assert", ["Log", "SupplyReceived"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "10.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		["AddToken", "OMG"],
@@ -287,35 +287,35 @@
 		["SetAssetValue", "OMG", "1.0"],
 		["AddSupportedAsset", "OMG"],
 		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Torrey", "OMG", "20.0e18"],
-		["Faucet", "Torrey", "OMG", "20.0e18"],
-		["Supply", "Torrey", "OMG", "20.0e18"],
-		["Borrow", "Geoff", "OMG", "2.0e18"],
+		["Approve", "Ben", "OMG", "20.0e18"],
+		["Faucet", "Ben", "OMG", "20.0e18"],
+		["Supply", "Ben", "OMG", "20.0e18"],
+		["Borrow", "Ryan", "OMG", "2.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "2.002e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "2.002e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "5.005e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "5.005e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "OMG"], ["Precisely", "2.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "OMG"], ["Precisely", "2.0e18"]]
 		],
 		[
 			"Assert",
 			["Equal", ["BalanceSheetBorrow", "OMG"], ["Exactly", "2.002e18"]]
 		],
-		["Approve", "Geoff", "OMG", "1.0e18"],
+		["Approve", "Ryan", "OMG", "1.0e18"],
 		["SetPaused", true],
-		["PayBorrow", "Geoff", "OMG", "1.0e18"],
+		["PayBorrow", "Ryan", "OMG", "1.0e18"],
 		["Assert", ["Failure", "contract has been paused"]],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "OMG"], ["Exactly", "5.005e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "OMG"], ["Exactly", "5.005e18"]]
 		]
 	],
 	"Supply: Supply Ether 1": [
@@ -323,18 +323,18 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "1.0e18"],
-		["Faucet", "Geoff", "Ether", "1.0e18"],
-		["Supply", "Geoff", "Ether", "0.5e18"],
+		["Approve", "Ryan", "Ether", "1.0e18"],
+		["Faucet", "Ryan", "Ether", "1.0e18"],
+		["Supply", "Ryan", "Ether", "0.5e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0.5e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0.5e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1.0e18"]]
 		]
 	],
 	"Supply: Supply Ether 1 with Insufficient Balance": [
@@ -342,13 +342,13 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "1.0e18"],
-		["Faucet", "Geoff", "Ether", "0.4e18"],
-		["Supply", "Geoff", "Ether", "0.5e18"],
+		["Approve", "Ryan", "Ether", "1.0e18"],
+		["Faucet", "Ryan", "Ether", "0.4e18"],
+		["Supply", "Ryan", "Ether", "0.5e18"],
 		["Assert", ["Failure", "insufficient token balance"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0e18"]]
 		]
 	],
 	"Supply: Supply Ether 1 after existing supply Ether 1": [
@@ -356,24 +356,24 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "2.0e18"],
-		["Faucet", "Geoff", "Ether", "2.0e18"],
-		["Supply", "Geoff", "Ether", "1.0e18"],
+		["Approve", "Ryan", "Ether", "2.0e18"],
+		["Faucet", "Ryan", "Ether", "2.0e18"],
+		["Supply", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "2.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "2.0e18"]]
 		],
-		["Supply", "Geoff", "Ether", "1.0e18"],
+		["Supply", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "3.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "3.0e18"]]
 		]
 	],
 	"Supply: Multiple Ether supplies": [
@@ -381,36 +381,36 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "2.0e18"],
-		["Faucet", "Geoff", "Ether", "2.0e18"],
-		["Supply", "Geoff", "Ether", "0.1e18"],
+		["Approve", "Ryan", "Ether", "2.0e18"],
+		["Faucet", "Ryan", "Ether", "2.0e18"],
+		["Supply", "Ryan", "Ether", "0.1e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0.1e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0.1e18"]]
 		],
 		["FastForward", 5, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0.35e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0.35e18"]]
 		],
-		["Supply", "Geoff", "Ether", "1.0e18"],
+		["Supply", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
 		["FastForward", 1, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "2.025e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "2.025e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "3.375e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "3.375e18"]]
 		],
-		["Supply", "Geoff", "Ether", "0e18"],
+		["Supply", "Ryan", "Ether", "0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "3.375e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "3.375e18"]]
 		]
 	],
 	"Supply: Supply Ether 1 and no Borrows with Whitepaper Interest Model": [
@@ -418,81 +418,81 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["WhitepaperRate"]],
-		["Approve", "Geoff", "Ether", "1.0e18"],
-		["Faucet", "Geoff", "Ether", "1.0e18"],
-		["Supply", "Geoff", "Ether", "1.0e18"],
+		["Approve", "Ryan", "Ether", "1.0e18"],
+		["Faucet", "Ryan", "Ether", "1.0e18"],
+		["Supply", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1.0e18"]]
 		],
 		["FastForward", 5, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1.0e18"]]
 		]
 	],
-	"Supply: Geoff supplies Ether and we check 2 future balances and then supply again": [
+	"Supply: Ryan supplies Ether and we check 2 future balances and then supply again": [
 		["AddToken", "Ether"],
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "10.0e18"],
-		["Faucet", "Geoff", "Ether", "10.0e18"],
-		["Supply", "Geoff", "Ether", "3e18"],
+		["Approve", "Ryan", "Ether", "10.0e18"],
+		["Faucet", "Ryan", "Ether", "10.0e18"],
+		["Supply", "Ryan", "Ether", "3e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "6.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "6.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "9.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "9.0e18"]]
 		],
-		["Supply", "Geoff", "Ether", "1e18"],
+		["Supply", "Ryan", "Ether", "1e18"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "10.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "20.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "20.0e18"]]
 		]
 	],
-	"Supply: Geoff supplies Ether, Torrey supplies Ether and then Geoff supplies more Ether": [
+	"Supply: Ryan supplies Ether, Ben supplies Ether and then Ryan supplies more Ether": [
 		["AddToken", "Ether"],
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "10.0e18"],
-		["Faucet", "Geoff", "Ether", "10.0e18"],
-		["Approve", "Torrey", "Ether", "5.0e18"],
-		["Faucet", "Torrey", "Ether", "5.0e18"],
-		["Supply", "Geoff", "Ether", "1e18"],
+		["Approve", "Ryan", "Ether", "10.0e18"],
+		["Faucet", "Ryan", "Ether", "10.0e18"],
+		["Approve", "Ben", "Ether", "5.0e18"],
+		["Faucet", "Ben", "Ether", "5.0e18"],
+		["Supply", "Ryan", "Ether", "1e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "2.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "2.0e18"]]
 		],
-		["Supply", "Torrey", "Ether", "3e18"],
+		["Supply", "Ben", "Ether", "3e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Torrey", "Ether"], ["Exactly", "6.0e18"]]
+			["Equal", ["SupplyBalance", "Ben", "Ether"], ["Exactly", "6.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "4.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "4.0e18"]]
 		],
-		["Supply", "Geoff", "Ether", "1e18"],
+		["Supply", "Ryan", "Ether", "1e18"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "5.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "5.0e18"]]
 		]
 	],
 	"Supply: Can't supply more of a suspended asset": [
@@ -500,21 +500,21 @@
 		["SetAssetValue", "DRGN", "1.0"],
 		["AddSupportedAsset", "DRGN"],
 		["SetInterestRate", "DRGN", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "DRGN", "10.0e18"],
-		["Faucet", "Geoff", "DRGN", "10.0e18"],
-		["Supply", "Geoff", "DRGN", "1e18"],
+		["Approve", "Ryan", "DRGN", "10.0e18"],
+		["Faucet", "Ryan", "DRGN", "10.0e18"],
+		["Supply", "Ryan", "DRGN", "1e18"],
 		["Assert", ["Success"]],
 		["FastForward", 2, "blocks"],
 		["SuspendAsset", "DRGN"],
-		["Supply", "Geoff", "DRGN", "1e18"],
+		["Supply", "Ryan", "DRGN", "1e18"],
 		["Assert", ["Failure", "asset is suspended"]]
 	],
 	"Supply: Can't supply an 'initial' asset": [
 		["AddToken", "DRGN"],
 		["SetInterestRate", "DRGN", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "DRGN", "10.0e18"],
-		["Faucet", "Geoff", "DRGN", "10.0e18"],
-		["Supply", "Geoff", "DRGN", "1e18"],
+		["Approve", "Ryan", "DRGN", "10.0e18"],
+		["Faucet", "Ryan", "DRGN", "10.0e18"],
+		["Supply", "Ryan", "DRGN", "1e18"],
 		["Assert", ["Failure", "asset is not allowed"]]
 	],
 	"Supply: Can't supply when contract is paused": [
@@ -522,14 +522,14 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "1.0e18"],
-		["Faucet", "Geoff", "Ether", "0.4e18"],
+		["Approve", "Ryan", "Ether", "1.0e18"],
+		["Faucet", "Ryan", "Ether", "0.4e18"],
 		["SetPaused", true],
-		["Supply", "Geoff", "Ether", "0.5e18"],
+		["Supply", "Ryan", "Ether", "0.5e18"],
 		["Assert", ["Failure", "contract has been paused"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0e18"]]
 		]
 	],
 	"Withdraw: Withdraw Ether with none supplied fails": [
@@ -538,11 +538,11 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Withdraw", "Geoff", "Ether", "1.0e18"],
+		["Withdraw", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Failure", "insufficient supply balance"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0e18"]]
 		]
 	],
 	"Withdraw: Withdraw Ether 0 after existing supply Ether 1": [
@@ -550,23 +550,23 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "1.0e18"],
-		["Faucet", "Geoff", "Ether", "1.0e18"],
-		["Supply", "Geoff", "Ether", "1.0e18"],
+		["Approve", "Ryan", "Ether", "1.0e18"],
+		["Faucet", "Ryan", "Ether", "1.0e18"],
+		["Supply", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1e18"]]
 		],
-		["Withdraw", "Geoff", "Ether", "0e18"],
+		["Withdraw", "Ryan", "Ether", "0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "0e18"]]
 		]
 	],
 	"Withdraw: Withdraw Ether 1 after existing supply Ether 1": [
@@ -574,23 +574,23 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "1.0e18"],
-		["Faucet", "Geoff", "Ether", "1.0e18"],
-		["Supply", "Geoff", "Ether", "1.0e18"],
+		["Approve", "Ryan", "Ether", "1.0e18"],
+		["Faucet", "Ryan", "Ether", "1.0e18"],
+		["Supply", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1.0e18"]]
 		],
-		["Withdraw", "Geoff", "Ether", "1.0e18"],
+		["Withdraw", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "1e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "1e18"]]
 		]
 	],
 	"Withdraw: Supply Ether 5 then Withdraw 2": [
@@ -598,32 +598,32 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "6.0e18"],
-		["Faucet", "Geoff", "Ether", "6.0e18"],
-		["Supply", "Geoff", "Ether", "5.0e18"],
+		["Approve", "Ryan", "Ether", "6.0e18"],
+		["Faucet", "Ryan", "Ether", "6.0e18"],
+		["Supply", "Ryan", "Ether", "5.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "5.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "5.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "1e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "1e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "10.0e18"]]
 		],
-		["Withdraw", "Geoff", "Ether", "2.0e18"],
+		["Withdraw", "Ryan", "Ether", "2.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "8.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "8.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "3e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "3e18"]]
 		]
 	],
 	"Withdraw: Supply Ether 5 then Withdraw 6 after accruing some interest": [
@@ -631,31 +631,31 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "6.0e18"],
-		["Faucet", "Geoff", "Ether", "6.0e18"],
-		["Supply", "Geoff", "Ether", "5.0e18"],
-		["Approve", "Torrey", "Ether", "10.0e18"],
-		["Faucet", "Torrey", "Ether", "10.0e18"],
-		["Supply", "Torrey", "Ether", "10.0e18"],
+		["Approve", "Ryan", "Ether", "6.0e18"],
+		["Faucet", "Ryan", "Ether", "6.0e18"],
+		["Supply", "Ryan", "Ether", "5.0e18"],
+		["Approve", "Ben", "Ether", "10.0e18"],
+		["Faucet", "Ben", "Ether", "10.0e18"],
+		["Supply", "Ben", "Ether", "10.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "5.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "5.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "10.0e18"]]
 		],
-		["Withdraw", "Geoff", "Ether", "6.0e18"],
+		["Withdraw", "Ryan", "Ether", "6.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "4.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "4.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "7e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "7e18"]]
 		]
 	],
 	"Withdraw: Supply Ether 5 then Withdraw MAX in the same block": [
@@ -663,28 +663,28 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "6.0e18"],
-		["Faucet", "Geoff", "Ether", "6.0e18"],
-		["Supply", "Geoff", "Ether", "5.0e18"],
+		["Approve", "Ryan", "Ether", "6.0e18"],
+		["Faucet", "Ryan", "Ether", "6.0e18"],
+		["Supply", "Ryan", "Ether", "5.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "5.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "5.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "0e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "Ether"], ["Exactly", "0e18"]]
 		],
-		["Assert", ["Equal", ["MaxBorrow", "Geoff"], ["Exactly", "4.0e18"]]],
-		["Withdraw", "Geoff", "Ether", "MAX"],
+		["Assert", ["Equal", ["MaxBorrow", "Ryan"], ["Exactly", "4.0e18"]]],
+		["Withdraw", "Ryan", "Ether", "MAX"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "6e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "6e18"]]
 		]
 	],
 	"Withdraw: Supply Ether 5 then Withdraw MAX (6) after accruing some interest": [
@@ -692,31 +692,31 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "6.0e18"],
-		["Faucet", "Geoff", "Ether", "6.0e18"],
-		["Supply", "Geoff", "Ether", "5.0e18"],
-		["Approve", "Torrey", "Ether", "10.0e18"],
-		["Faucet", "Torrey", "Ether", "10.0e18"],
-		["Supply", "Torrey", "Ether", "10.0e18"],
+		["Approve", "Ryan", "Ether", "6.0e18"],
+		["Faucet", "Ryan", "Ether", "6.0e18"],
+		["Supply", "Ryan", "Ether", "5.0e18"],
+		["Approve", "Ben", "Ether", "10.0e18"],
+		["Faucet", "Ben", "Ether", "10.0e18"],
+		["Supply", "Ben", "Ether", "10.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "5.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "5.0e18"]]
 		],
 		["FastForward", 2, "blocks"],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "10.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "10.0e18"]]
 		],
-		["Withdraw", "Geoff", "Ether", "MAX"],
+		["Withdraw", "Ryan", "Ether", "MAX"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "0.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "0.0e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "11e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "11e18"]]
 		]
 	],
 	"Withdraw: Withdraw Ether 1 when contract paused": [
@@ -724,24 +724,24 @@
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "Ether", "1.0e18"],
-		["Faucet", "Geoff", "Ether", "1.0e18"],
-		["Supply", "Geoff", "Ether", "1.0e18"],
+		["Approve", "Ryan", "Ether", "1.0e18"],
+		["Faucet", "Ryan", "Ether", "1.0e18"],
+		["Supply", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1.0e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1.0e18"]]
 		],
 		["SetPaused", true],
-		["Withdraw", "Geoff", "Ether", "1.0e18"],
+		["Withdraw", "Ryan", "Ether", "1.0e18"],
 		["Assert", ["Failure", "contract has been paused"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "Ether"], ["Exactly", "1e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "Ether"], ["Exactly", "1e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "0e18"]]
 		]
 	],
 
@@ -750,27 +750,27 @@
 		["SetAssetValue", "OMG", "1.0"],
 		["AddSupportedAsset", "OMG"],
 		["SetInterestRate", "OMG", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Geoff", "OMG", "2.1e18"],
-		["Faucet", "Geoff", "OMG", "2.1e18"],
-		["Supply", "Geoff", "OMG", "2.1e18"],
+		["Approve", "Ryan", "OMG", "2.1e18"],
+		["Faucet", "Ryan", "OMG", "2.1e18"],
+		["Supply", "Ryan", "OMG", "2.1e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
-			["Equal", ["SupplyBalance", "Geoff", "OMG"], ["Exactly", "2.1e18"]]
+			["Equal", ["SupplyBalance", "Ryan", "OMG"], ["Exactly", "2.1e18"]]
 		],
 		["AddToken", "Ether"],
 		["SetAssetValue", "Ether", "1.0"],
 		["AddSupportedAsset", "Ether"],
 		["SetInterestRate", "Ether", ["FixedRate", 0.5, 0.75]],
-		["Approve", "Torrey", "Ether", "5.0e18"],
-		["Faucet", "Torrey", "Ether", "5.0e18"],
-		["Supply", "Torrey", "Ether", "2.0e18"],
+		["Approve", "Ben", "Ether", "5.0e18"],
+		["Faucet", "Ben", "Ether", "5.0e18"],
+		["Supply", "Ben", "Ether", "2.0e18"],
 		["Assert", ["Equal", ["BalanceSheetSupply", "OMG"], ["Exactly", "2.1e18"]]],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "0.0e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "0.0e18"]]
 		],
-		["Borrow", "Geoff", "Ether", "1e18"],
+		["Borrow", "Ryan", "Ether", "1e18"],
 		["Assert", ["Success"]],
 		[
 			"Assert",
@@ -778,11 +778,11 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.001e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "Ether"], ["Exactly", "1.001e18"]]
 		],
 		[
 			"Assert",
-			["Equal", ["TokenBalance", "Geoff", "Ether"], ["Exactly", "1e18"]]
+			["Equal", ["TokenBalance", "Ryan", "Ether"], ["Exactly", "1e18"]]
 		],
 		[
 			"Assert",
@@ -790,7 +790,7 @@
 		],
 		["SetAssetValue", "OMG", "0.5"],
 		["SetPaused", true],
-		["Liquidate", "Torrey", "Geoff", "Ether", "1e18", "OMG"],
+		["Liquidate", "Ben", "Ryan", "Ether", "1e18", "OMG"],
 		["Assert", ["Failure", "contract has been paused"]],
 		[
 			"Assert",
@@ -798,7 +798,7 @@
 		],
 		[
 			"Assert",
-			["Equal", ["BorrowBalance", "Geoff", "Ether"], ["Exactly", "1.001e18"]]
+			["Equal", ["BorrowBalance", "Ryan", "Ether"], ["Exactly", "1.001e18"]]
 		]
 	]
 }
