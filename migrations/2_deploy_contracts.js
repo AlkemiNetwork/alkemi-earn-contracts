@@ -90,7 +90,7 @@ module.exports = async (deployer, network, accounts) => {
 		// await deployer.deploy(AlkemiEarnVerified);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
-		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
+		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.ALKEMI_EARN_VERIFIED);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
 		// 	deploymentConfig.RINKEBY.AlkemiEarnVerified,
@@ -170,7 +170,7 @@ module.exports = async (deployer, network, accounts) => {
 		// await deployer.deploy(AlkemiEarnVerified);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiEarnVerified);
-		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.MONEY_MARKET);
+		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.ALKEMI_EARN_VERIFIED);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
 		// 	deploymentConfig.RINKEBY.AlkemiEarnVerified,
