@@ -82,61 +82,69 @@ Code style is enforced through the CI test process, builds will fail if there're
     	<th>Contract Address</th>
 	</tr>
 	<tr>
-		<td> Alkemi Earn Verified - Admin Upgradeability Proxy </td>
+		<td> AlkemiEarnVerified </td>
 		<td> 0x397c315d64D74d82A731d656f9C4D586D200F90A </td>
 	</tr>
 	<tr>
-		<td> Liquidator </td>
-		<td> 0x123ceAC83C6d5110671F09E96C0F8076CE4bC839 </td>
+		<td> Alkemi Earn Verified Implementation </td>
+		<td> 0x847e3e4d335f118c8aed9a09c15261581e1a01ad </td>
+	</tr>
+
+</table>
+
+### Testnet Deployments
+
+#### Kovan Testnet
+
+<table>
+	<tr>
+   		<th>Contract Name</th>
+    	<th>Contract Address</th>
 	</tr>
 	<tr>
-		<td> DAI </td>
-		<td> 0x6b175474e89094c44da98b954eedeac495271d0f </td>
+		<td> Alkemi Earn Verified </td>
+		<td> 0x87F8D2fDeFD6Ebd0D4d03719C1DE10f4aDE2C7f5 </td>
+	</tr>
+
+</table>
+
+#### Rinkeby Testnet
+
+<table>
+	<tr>
+   		<th>Contract Name</th>
+    	<th>Contract Address</th>
 	</tr>
 	<tr>
-		<td> DAIRateModel </td>
-		<td> 0x65E524b3594cFc26C1c0154e466695FB7fc9759C </td>
+		<td> Alkemi Earn Verified Proxy </td>
+		<td> 0xccFcc25E498c40c67baD046F55bDB01F0eeDA870 </td>
 	</tr>
 	<tr>
-		<td> DAIPriceFeed </td>
-		<td> 0x773616E4d11A78F511299002da57A0a94577F1f4 </td>
+		<td> Alkemi Earn Verified Implementation</td>
+		<td> 0xebBC2cd4b29c41a94E14f43260Fc20C44315bd5C </td>
 	</tr>
-    <tr>
-    	<td> USDC </td>
-    	<td> 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 </td>
-    </tr>
-    <tr>
-    	<td> USDCRateModel </td>
-    	<td> 0x65E524b3594cFc26C1c0154e466695FB7fc9759C </td>
-    </tr>
 	<tr>
-    	<td> USDCPriceFeed </td>
-    	<td> 0x986b5E1e1755e3C2440e960477f25201B0a8bbD4 </td>
-    </tr>
-    <tr>
-    	<td> WBTC </td>
-    	<td> 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599 </td>
-    </tr>
-    <tr>
-    	<td> WBTCRateModel </td>
-    	<td> 0x2c59Df8A883a7Af938C4A1b059085521ffACC80C </td>
-    </tr>
+		<td> AlkemiEarnPublic Upgrade Proxy </td>
+		<td> 0x2C8855503F7fd914815E57b620Af1130a42C5636 </td>
+	</tr>
 	<tr>
-    	<td> WBTCPriceFeed </td>
-    	<td> 0xdeb288F737066589598e9214E782fa5A8eD689e8 </td>
-    </tr>
+		<td> AlkemiEarnPublic Implementation</td>
+		<td> 0x6b91d7cce78B592Fd31D311966C5160672BF1497 </td>
+	</tr>
+
+</table>
+
+#### Ropsten Testnet
+
+<table>
 	<tr>
-    	<td> WETH </td>
-    	<td> 0x1f52453b32bfab737247114d56d756a6c37dd9ef </td>
-    </tr>
-    <tr>
-    	<td> WETHRateModel </td>
-    	<td> 0xc97a9F085839d02DB1E2A1550c58299Dc85F9655 </td>
-    </tr>
+   		<th>Contract Name</th>
+    	<th>Contract Address</th>
+	</tr>
 	<tr>
-    	<td> ChainLink Oracle </td>
-    	<td> 0x2f83073131efc90693b90cdf3fa1fdd0f7030e05 </td>
-    </tr>
+		<td> Alkemi Earn Verified </td>
+		<td> 0x877fc552EE05123A9532Da4511aaA5c6F212ECc0 </td>
+	</tr>
 </table>
 
 ## Documentation

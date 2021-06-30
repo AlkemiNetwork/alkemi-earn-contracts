@@ -21,6 +21,7 @@ contract ExchangeRateModel {
 }
 
 contract PriceOracle is Exponential {
+    // This contract is used only for unit testing purposes to simulate chainlink functionality
     /**
      * @dev flag for whether or not contract is paused
      *

@@ -3,11 +3,9 @@ pragma solidity 0.4.24;
 import "./AlkemiEarnVerified.sol";
 
 contract RewardControlStorage {
-
     struct MarketState {
         // @notice The market's last updated alkSupplyIndex or alkBorrowIndex
         uint224 index;
-
         // @notice The block number the index was last updated at
         uint32 block;
     }
@@ -19,10 +17,10 @@ contract RewardControlStorage {
     mapping(address => bool) public allMarketsIndex;
 
     // @notice The rate at which the Reward Control distributes ALK per block
-    uint public alkRate;
+    uint256 public alkRate;
 
     // @notice The portion of alkRate that each market currently receives
-    mapping(address => uint) public alkSpeeds;
+    mapping(address => uint256) public alkSpeeds;
 
     // @notice The ALK market supply state for each market
     mapping(address => MarketState) public alkSupplyState;
@@ -31,13 +29,13 @@ contract RewardControlStorage {
     mapping(address => MarketState) public alkBorrowState;
 
     // @notice The snapshot of ALK index for each market for each supplier as of the last time they accrued ALK
-    mapping(address => mapping(address => uint)) public alkSupplierIndex;
+    mapping(address => mapping(address => uint256)) public alkSupplierIndex;
 
     // @notice The snapshot of ALK index for each market for each borrower as of the last time they accrued ALK
-    mapping(address => mapping(address => uint)) public alkBorrowerIndex;
+    mapping(address => mapping(address => uint256)) public alkBorrowerIndex;
 
     // @notice The ALK accrued but not yet transferred to each participant
-    mapping(address => uint) public alkAccrued;
+    mapping(address => uint256) public alkAccrued;
 
     // @notice To make sure initializer is called only once
     bool public initializationDone;
@@ -53,5 +51,4 @@ contract RewardControlStorage {
 
     // @notice The ALK token address
     address public alkAddress;
-
 }
