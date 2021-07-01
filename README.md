@@ -131,11 +131,11 @@ Code style is enforced through the CI test process, builds will fail if there're
 	</tr>
 	<tr>
 		<td> AlkemiEarnPublic Upgrade Proxy </td>
-		<td> 0x2C8855503F7fd914815E57b620Af1130a42C5636 </td>
+		<td> 0x2A871001f53C48A1d0e6d19684cb06ae1aA40120 </td>
 	</tr>
 	<tr>
 		<td> AlkemiEarnPublic Implementation</td>
-		<td> 0x6b91d7cce78B592Fd31D311966C5160672BF1497 </td>
+		<td> 0xd33fAD40F32E16eCC4aBC9cdcfDB586F5772d315 </td>
 	</tr>
 
 </table>
