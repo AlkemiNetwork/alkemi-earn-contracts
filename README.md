@@ -127,7 +127,7 @@ Code style is enforced through the CI test process, builds will fail if there're
 	</tr>
 	<tr>
 		<td> Alkemi Earn Verified Implementation</td>
-		<td> 0xebBC2cd4b29c41a94E14f43260Fc20C44315bd5C </td>
+		<td> 0x0F96218c31dE1d2fDA48451c9873056eD690fcbe </td>
 	</tr>
 	<tr>
 		<td> AlkemiEarnPublic Upgrade Proxy </td>
