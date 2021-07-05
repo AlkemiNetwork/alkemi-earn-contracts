@@ -330,7 +330,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     /**
      * @notice Multiplier used to calculate the maximum repayAmount when liquidating a borrow
      */
-    uint256 public closeFactorMantissa = 0;
+    uint256 public closeFactorMantissa;
 
     /**
      * @dev Event emitted on successful addition of Weth Address

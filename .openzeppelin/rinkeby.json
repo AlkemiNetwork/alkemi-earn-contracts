@@ -1719,6 +1719,323 @@
           }
         }
       }
+    },
+    "8b21d44696df0800395c7c649aaf4b7a47c98a6832c3b82cc461c2154d39974b": {
+      "address": "0xd33fAD40F32E16eCC4aBC9cdcfDB586F5772d315",
+      "txHash": "0x24067ca7b531b61b80320b92e6c825da9225fa4d245f8b9674dbb656f293d048",
+      "layout": {
+        "storage": [
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "initialInterestIndex",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublic.sol:11"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "defaultOriginationFee",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublic.sol:12"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "defaultCollateralRatio",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublic.sol:13"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "defaultLiquidationDiscount",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublic.sol:14"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "minimumCollateralRatioMantissa",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublic.sol:16"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "maximumLiquidationDiscountMantissa",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublic.sol:17"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "initializationDone",
+            "type": "t_bool",
+            "src": "AlkemiEarnPublic.sol:18"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "pendingAdmin",
+            "type": "t_address",
+            "src": "AlkemiEarnPublic.sol:54"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "admin",
+            "type": "t_address",
+            "src": "AlkemiEarnPublic.sol:60"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "managers",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "AlkemiEarnPublic.sol:66"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "oracle",
+            "type": "t_address",
+            "src": "AlkemiEarnPublic.sol:72"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "priceOracle",
+            "type": "t_contract(ChainLink)15288",
+            "src": "AlkemiEarnPublic.sol:77"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "supplyBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)176_storage))",
+            "src": "AlkemiEarnPublic.sol:95"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "borrowBalances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)176_storage))",
+            "src": "AlkemiEarnPublic.sol:100"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "wethAddress",
+            "type": "t_address",
+            "src": "AlkemiEarnPublic.sol:132"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "WETHContract",
+            "type": "t_contract(AlkemiWETH)14702",
+            "src": "AlkemiEarnPublic.sol:137"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "markets",
+            "type": "t_mapping(t_address,t_struct(Market)207_storage)",
+            "src": "AlkemiEarnPublic.sol:142"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "collateralMarkets",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "AlkemiEarnPublic.sol:147"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "collateralRatio",
+            "type": "t_struct(Exp)15635_storage",
+            "src": "AlkemiEarnPublic.sol:153"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "originationFee",
+            "type": "t_struct(Exp)15635_storage",
+            "src": "AlkemiEarnPublic.sol:159"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "liquidationDiscount",
+            "type": "t_struct(Exp)15635_storage",
+            "src": "AlkemiEarnPublic.sol:165"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "paused",
+            "type": "t_bool",
+            "src": "AlkemiEarnPublic.sol:171"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "originationFeeBalance",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "AlkemiEarnPublic.sol:322"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "rewardControl",
+            "type": "t_contract(RewardControlInterface)20304",
+            "src": "AlkemiEarnPublic.sol:328"
+          },
+          {
+            "contract": "AlkemiEarnPublic",
+            "label": "closeFactorMantissa",
+            "type": "t_uint256",
+            "src": "AlkemiEarnPublic.sol:333"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_contract(ChainLink)15288": {
+            "label": "contract ChainLink"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_struct(Balance)176_storage))": {
+            "label": "mapping(address => mapping(address => struct AlkemiEarnPublic.Balance))"
+          },
+          "t_contract(AlkemiWETH)14702": {
+            "label": "contract AlkemiWETH"
+          },
+          "t_mapping(t_address,t_struct(Market)207_storage)": {
+            "label": "mapping(address => struct AlkemiEarnPublic.Market)"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_struct(Exp)15635_storage": {
+            "label": "struct Exponential.Exp"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          },
+          "t_contract(RewardControlInterface)20304": {
+            "label": "contract RewardControlInterface"
+          }
+        }
+      }
+    },
+    "baa560b1500b8068ec6d53ff3511b2e3ad20fd3915f79112230c0a8e412eed07": {
+      "address": "0xC5224C268b83Ac8cB82cf4361D42cA9cfA85a6a7",
+      "txHash": "0x09219dc08750c676c98ab76553c365738110bdca4c051b36daa9aa28451b1ffd",
+      "layout": {
+        "storage": [
+          {
+            "contract": "RewardControlStorage",
+            "label": "allMarkets",
+            "type": "t_array(t_address)dyn_storage",
+            "src": "RewardControlStorage.sol:14"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "allMarketsIndex",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "RewardControlStorage.sol:17"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkRate",
+            "type": "t_uint256",
+            "src": "RewardControlStorage.sol:20"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkSpeeds",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "RewardControlStorage.sol:23"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkSupplyState",
+            "type": "t_mapping(t_address,t_struct(MarketState)20312_storage)",
+            "src": "RewardControlStorage.sol:26"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkBorrowState",
+            "type": "t_mapping(t_address,t_struct(MarketState)20312_storage)",
+            "src": "RewardControlStorage.sol:29"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkSupplierIndex",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "RewardControlStorage.sol:32"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkBorrowerIndex",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "RewardControlStorage.sol:35"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkAccrued",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "RewardControlStorage.sol:38"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "initializationDone",
+            "type": "t_bool",
+            "src": "RewardControlStorage.sol:41"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "owner",
+            "type": "t_address",
+            "src": "RewardControlStorage.sol:44"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "newOwner",
+            "type": "t_address",
+            "src": "RewardControlStorage.sol:47"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkemiEarnVerified",
+            "type": "t_contract(AlkemiEarnVerified)13405",
+            "src": "RewardControlStorage.sol:50"
+          },
+          {
+            "contract": "RewardControlStorage",
+            "label": "alkAddress",
+            "type": "t_address",
+            "src": "RewardControlStorage.sol:53"
+          }
+        ],
+        "types": {
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_mapping(t_address,t_struct(MarketState)20312_storage)": {
+            "label": "mapping(address => struct RewardControlStorage.MarketState)"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_contract(AlkemiEarnVerified)13405": {
+            "label": "contract AlkemiEarnVerified"
+          }
+        }
+      }
     }
   },
   "admin": {

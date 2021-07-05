@@ -1,11 +1,15 @@
 var PriceOracle = artifacts.require("PriceOracle.sol");
 var PriceOracleProxy = artifacts.require("PriceOracleProxy.sol");
 var AlkemiEarnVerified = artifacts.require("AlkemiEarnVerified.sol");
+var AlkemiEarnPublic = artifacts.require("AlkemiEarnPublic.sol");
 var Liquidator = artifacts.require("Liquidator.sol");
 var LiquidationChecker = artifacts.require("LiquidationChecker.sol");
 var ChainLink = artifacts.require("ChainLink.sol");
 var AlkemiWETH = artifacts.require("AlkemiWETH.sol");
 var AlkemiRateModel = artifacts.require("AlkemiRateModel.sol");
+var RewardControl = artifacts.require("RewardControl.sol");
+
+const { deployProxy } = require("@openzeppelin/truffle-upgrades");
 
 const deploymentConfig = require("./deployment-config.json");
 
@@ -56,9 +60,11 @@ module.exports = async (deployer, network, accounts) => {
 			unsafeAllowCustomTypes: true,
 		});
 		await alkemiEarnVerified._adminFunctions(
-			address[0],
+			accounts[0],
 			deploymentConfig.RINKEBY.PRICE_ORACLE,
-			false
+			false,
+			1000000000000000,
+			0
 		);
 		await alkemiEarnVerified._supportMarket(
 			deploymentConfig.RINKEBY.USDC,
@@ -88,6 +94,7 @@ module.exports = async (deployer, network, accounts) => {
 		// 	deploymentConfig.RINKEBY.PriceOracle
 		// );
 		// await deployer.deploy(AlkemiEarnVerified);
+		// await deployer.deploy(AlkemiEarnPublic);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.ALKEMI_EARN_VERIFIED);
@@ -97,36 +104,36 @@ module.exports = async (deployer, network, accounts) => {
 		// 	deploymentConfig.RINKEBY.Liquidator,
 		// 	true
 		// );
-		await deployer.deploy(
-			AlkemiRateModel,
-			"BTC Rate Model",
-			100,
-			200,
-			250,
-			8000,
-			3000,
-			5000
-		);
-		await deployer.deploy(
-			AlkemiRateModel,
-			"ETH Rate Model",
-			100,
-			400,
-			250,
-			8000,
-			1100,
-			3000
-		);
-		await deployer.deploy(
-			AlkemiRateModel,
-			"Stable Coin Rate Model",
-			100,
-			2000,
-			100,
-			8000,
-			400,
-			3000
-		);
+		// await deployer.deploy(
+		// 	AlkemiRateModel,
+		// 	"BTC Rate Model",
+		// 	100,
+		// 	200,
+		// 	250,
+		// 	8000,
+		// 	3000,
+		// 	5000
+		// );
+		// await deployer.deploy(
+		// 	AlkemiRateModel,
+		// 	"ETH Rate Model",
+		// 	100,
+		// 	400,
+		// 	250,
+		// 	8000,
+		// 	1100,
+		// 	3000
+		// );
+		// await deployer.deploy(
+		// 	AlkemiRateModel,
+		// 	"Stable Coin Rate Model",
+		// 	100,
+		// 	2000,
+		// 	100,
+		// 	8000,
+		// 	400,
+		// 	3000
+		// );
 	} else if (network == "ropsten") {
 		// await deployer.deploy(PriceOracle, deploymentConfig.ROPSTEN.POSTER);
 		// await deployer.deploy(
