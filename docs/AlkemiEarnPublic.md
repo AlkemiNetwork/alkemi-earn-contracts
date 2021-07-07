@@ -1,11 +1,11 @@
 ---
 layout: default
-title: MoneyMarket
+title: AlkemiEarnPublic
 ---
 
-# MoneyMarket.sol
+# AlkemiEarnPublic.sol
 
-View Source: [contracts/MoneyMarket.sol](../contracts/MoneyMarket.sol)
+View Source: [contracts/AlkemiEarnPublic.sol](../contracts/AlkemiEarnPublic.sol)
 
 **↗ Extends: [Exponential](Exponential.md), [SafeToken](SafeToken.md)**
 
@@ -165,7 +165,8 @@ struct LiquidateLocalVars {
  uint256 closeBorrowAmount_TargetUnderwaterAsset,
  uint256 seizeSupplyAmount_TargetCollateralAsset,
  struct Exponential.Exp collateralPrice,
- struct Exponential.Exp underwaterAssetPrice
+ struct Exponential.Exp underwaterAssetPrice,
+ uint256 reimburseAmount
 }
 ```
 
@@ -186,13 +187,12 @@ contract ChainLink internal priceOracle;
 bool public initializationDone;
 address public pendingAdmin;
 address public admin;
-mapping(address => bool) public managers;
 address public oracle;
-mapping(address => mapping(address => struct MoneyMarket.Balance)) public supplyBalances;
-mapping(address => mapping(address => struct MoneyMarket.Balance)) public borrowBalances;
+mapping(address => mapping(address => struct AlkemiEarnPublic.Balance)) public supplyBalances;
+mapping(address => mapping(address => struct AlkemiEarnPublic.Balance)) public borrowBalances;
 address public wethAddress;
 contract AlkemiWETH public WETHContract;
-mapping(address => struct MoneyMarket.Market) public markets;
+mapping(address => struct AlkemiEarnPublic.Market) public markets;
 address[] public collateralMarkets;
 struct Exponential.Exp public collateralRatio;
 struct Exponential.Exp public originationFee;
@@ -200,19 +200,12 @@ struct Exponential.Exp public liquidationDiscount;
 bool public paused;
 mapping(address => mapping(address => uint256)) public originationFeeBalance;
 
-//private members
-mapping(address => bool) private KYCAdmins;
-mapping(address => bool) private customersWithKYC;
-mapping(address => bool) private liquidators;
-
 ```
 
 **Events**
 
 ```js
 event WETHAddressSet(address  wethAddress);
-event LiquidatorAdded(address  Liquidator);
-event LiquidatorRemoved(address  Liquidator);
 event SupplyReceived(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
 event SupplyOrgFeeAsAdmin(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
 event SupplyWithdrawn(address  account, address  asset, uint256  amount, uint256  startingBalance, uint256  newBalance);
@@ -229,85 +222,13 @@ event SetMarketInterestRateModel(address  asset, address  interestRateModel);
 event EquityWithdrawn(address  asset, uint256  equityAvailableBefore, uint256  amount, address  owner);
 event SuspendedMarket(address  asset);
 event SetPaused(bool  newState);
-event KYCAdminAdded(address  KYCAdmin);
-event KYCAdminRemoved(address  KYCAdmin);
-event KYCCustomerAdded(address  KYCCustomer);
-event KYCCustomerRemoved(address  KYCCustomer);
 ```
-
-## Modifiers
-
-- [onlyAdminOrManager](#onlyadminormanager)
-- [isKYCAdmin](#iskycadmin)
-- [isKYCVerifiedCustomer](#iskycverifiedcustomer)
-- [isLiquidator](#isliquidator)
-
-### onlyAdminOrManager
-
-Modifier to check if the caller of the function is a manager or owner
-
-```js
-modifier onlyAdminOrManager() internal
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-
-### isKYCAdmin
-
-Modifier to check if the caller of the function is a KYC Admin
-
-```js
-modifier isKYCAdmin() internal
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-
-### isKYCVerifiedCustomer
-
-Modifier to check if the caller of the function is KYC verified
-
-```js
-modifier isKYCVerifiedCustomer() internal
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-
-### isLiquidator
-
-Modifier to check if the caller of the function is a Liquidator
-
-```js
-modifier isLiquidator() internal
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
 
 ## Functions
 
 - [initializer()](#initializer)
 - [()](#)
 - [emitError(enum ErrorReporter.Error error, enum ErrorReporter.FailureInfo failure)](#emiterror)
-- [addKYCAdmin(address KYCAdmin)](#addkycadmin)
-- [removeKYCAdmin(address KYCAdmin)](#removekycadmin)
-- [addCustomerKYC(address customer)](#addcustomerkyc)
-- [removeCustomerKYC(address customer)](#removecustomerkyc)
-- [verifyKYC(address customer)](#verifykyc)
-- [checkKYCAdmin(address _KYCAdmin)](#checkkycadmin)
-- [addLiquidator(address liquidator)](#addliquidator)
-- [removeLiquidator(address liquidator)](#removeliquidator)
-- [verifyLiquidator(address liquidator)](#verifyliquidator)
 - [min(uint256 a, uint256 b)](#min)
 - [getBlockNumber()](#getblocknumber)
 - [addCollateralMarket(address asset)](#addcollateralmarket)
@@ -345,7 +266,7 @@ modifier isLiquidator() internal
 - [calculateAccountValues(address userAddress)](#calculateaccountvalues)
 - [repayBorrow(address asset, uint256 amount)](#repayborrow)
 - [liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint256 requestedAmountClose)](#liquidateborrow)
-- [emitLiquidationEvent(struct MoneyMarket.LiquidateLocalVars localResults)](#emitliquidationevent)
+- [emitLiquidationEvent(struct AlkemiEarnPublic.LiquidateLocalVars localResults)](#emitliquidationevent)
 - [calculateDiscountedRepayToEvenAmount(address targetAccount, struct Exponential.Exp underwaterAssetPrice)](#calculatediscountedrepaytoevenamount)
 - [calculateDiscountedBorrowDenominatedCollateral(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 supplyCurrent_TargetCollateralAsset)](#calculatediscountedborrowdenominatedcollateral)
 - [calculateAmountSeize(struct Exponential.Exp underwaterAssetPrice, struct Exponential.Exp collateralPrice, uint256 closeBorrowAmount_TargetUnderwaterAsset)](#calculateamountseize)
@@ -354,7 +275,7 @@ modifier isLiquidator() internal
 
 ### initializer
 
-`MoneyMarket` is the core MoneyMarket contract
+`AlkemiEarnPublic` is the core AlkemiEarnPublic contract
 
 ```js
 function initializer() public nonpayable
@@ -367,7 +288,7 @@ function initializer() public nonpayable
 
 ### 
 
-Do not pay directly into MoneyMarket, please use `supply`.
+Do not pay directly into AlkemiEarnPublic, please use `supply`.
 
 ```js
 function () public payable
@@ -393,141 +314,6 @@ returns(uint256)
 | ------------- |------------- | -----|
 | error | enum ErrorReporter.Error |  | 
 | failure | enum ErrorReporter.FailureInfo |  | 
-
-### addKYCAdmin
-
-Function for use by the admin of the contract to add KYC Admins
-
-```js
-function addKYCAdmin(address KYCAdmin) public nonpayable
-returns(uint256)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| KYCAdmin | address |  | 
-
-### removeKYCAdmin
-
-Function for use by the admin of the contract to remove KYC Admins
-
-```js
-function removeKYCAdmin(address KYCAdmin) public nonpayable
-returns(uint256)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| KYCAdmin | address |  | 
-
-### addCustomerKYC
-
-Function for use by the KYC admins to add KYC Customers
-
-```js
-function addCustomerKYC(address customer) public nonpayable isKYCAdmin 
-returns(uint256)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| customer | address |  | 
-
-### removeCustomerKYC
-
-Function for use by the KYC admins to remove KYC Customers
-
-```js
-function removeCustomerKYC(address customer) public nonpayable isKYCAdmin 
-returns(uint256)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| customer | address |  | 
-
-### verifyKYC
-
-Function to fetch KYC verification status of a customer
-
-```js
-function verifyKYC(address customer) public view
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| customer | address |  | 
-
-### checkKYCAdmin
-
-Function to fetch KYC Admin status of an admin
-
-```js
-function checkKYCAdmin(address _KYCAdmin) public view
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| _KYCAdmin | address |  | 
-
-### addLiquidator
-
-Function for use by the admin of the contract to add Liquidators
-
-```js
-function addLiquidator(address liquidator) public nonpayable
-returns(uint256)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| liquidator | address |  | 
-
-### removeLiquidator
-
-Function for use by the admin of the contract to remove Liquidators
-
-```js
-function removeLiquidator(address liquidator) public nonpayable
-returns(uint256)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| liquidator | address |  | 
-
-### verifyLiquidator
-
-Function to fetch Liquidator status of a customer
-
-```js
-function verifyLiquidator(address liquidator) public view
-returns(bool)
-```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
-| liquidator | address |  | 
 
 ### min
 
@@ -1049,7 +835,7 @@ function revertEtherToUser(address user, uint256 etherAmount) internal nonpayabl
 supply `amount` of `asset` (which must be supported) to `msg.sender` in the protocol
 
 ```js
-function supply(address asset, uint256 amount) public payable isKYCVerifiedCustomer 
+function supply(address asset, uint256 amount) public payable
 returns(uint256)
 ```
 
@@ -1101,7 +887,7 @@ returns(uint256)
 withdraw `amount` of `asset` from sender's account to sender's address
 
 ```js
-function withdraw(address asset, uint256 requestedAmount) public nonpayable isKYCVerifiedCustomer 
+function withdraw(address asset, uint256 requestedAmount) public nonpayable
 returns(uint256)
 ```
 
@@ -1186,7 +972,7 @@ returns(uint256, uint256, uint256)
 Users repay borrowed assets from their own address to the protocol.
 
 ```js
-function repayBorrow(address asset, uint256 amount) public payable isKYCVerifiedCustomer 
+function repayBorrow(address asset, uint256 amount) public payable
 returns(uint256)
 ```
 
@@ -1206,7 +992,7 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 users repay all or some of an underwater borrow and receive collateral
 
 ```js
-function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint256 requestedAmountClose) public nonpayable isKYCVerifiedCustomer isLiquidator 
+function liquidateBorrow(address targetAccount, address assetBorrow, address assetCollateral, uint256 requestedAmountClose) public payable
 returns(uint256)
 ```
 
@@ -1228,14 +1014,14 @@ uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
 this function exists to avoid error `CompilerError: Stack too deep, try removing local variables.` in `liquidateBorrow`
 
 ```js
-function emitLiquidationEvent(struct MoneyMarket.LiquidateLocalVars localResults) internal nonpayable
+function emitLiquidationEvent(struct AlkemiEarnPublic.LiquidateLocalVars localResults) internal nonpayable
 ```
 
 **Arguments**
 
 | Name        | Type           | Description  |
 | ------------- |------------- | -----|
-| localResults | struct MoneyMarket.LiquidateLocalVars |  | 
+| localResults | struct AlkemiEarnPublic.LiquidateLocalVars |  | 
 
 ### calculateDiscountedRepayToEvenAmount
 
@@ -1294,7 +1080,7 @@ returns(enum ErrorReporter.Error, uint256)
 Users borrow assets from the protocol to their own address
 
 ```js
-function borrow(address asset, uint256 amount) public nonpayable isKYCVerifiedCustomer 
+function borrow(address asset, uint256 amount) public nonpayable
 returns(uint256)
 ```
 

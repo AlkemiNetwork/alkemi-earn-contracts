@@ -7,15 +7,13 @@ title: LiquidationChecker
 
 View Source: [contracts/LiquidationChecker.sol](../contracts/LiquidationChecker.sol)
 
-**↘ Derived Contracts: [AlkemiRateModel](AlkemiRateModel.md)**
-
 **{{ContractName}}**
 
 ## Contract Members
 **Constants & Variables**
 
 ```js
-contract MoneyMarket public moneyMarket;
+contract AlkemiEarnVerified public alkemiEarnVerified;
 address public liquidator;
 bool public allowLiquidation;
 

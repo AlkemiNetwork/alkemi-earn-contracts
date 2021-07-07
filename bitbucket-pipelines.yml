@@ -10,14 +10,20 @@ definitions:
     docker:
       memory: 2048 # Increasing Docker Memory Size to 2GB instead of defailt 1GB
   steps:
-    # DEFINE Mirror to Github STEP
+    ### DEFINE Mirror to Github STEP ###
     - step: &github
         name: "Mirror to Github"
         script:
           - git push --mirror git@github.com:AlkemiNetwork/alkemi-earn-contracts.git
-
+    ### DEFINE Generate docs STEP ###
+    - step: &docs
+        name: "Generate docs with solidoc"
+        script:
+          - npm i
+          - npm run generate:doc
 pipelines:
   branches:
     master:
       # Runs only on Master Branch
+      - step: *docs
       - step: *github

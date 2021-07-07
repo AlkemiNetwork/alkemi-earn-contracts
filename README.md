@@ -1,8 +1,8 @@
-# Alkemi Earn Protocol
+# Alkemi Earn Contracts
 
 [![MythXBadge](https://badgen.net/https/api.mythx.io/v1/projects/bdc732b7-27d2-4a17-be68-0a1f842ed64b/badge/data?cache=300&icon=https://raw.githubusercontent.com/ConsenSys/mythx-github-badge/main/logo_white.svg)](https://docs.mythx.io/dashboard/github-badges)
 
-> Implementation of Alkemi Earn Protocol in Solidity.
+> Implementation of Alkemi Earn Contracts in Solidity.
 > [earn.alkemi.network](https://earn.alkemi.network/)
 
 ## Table of Contents
@@ -14,10 +14,6 @@
 - [Networks](#networks)
   - [Mainnets](#mainnet-deployments)
     - [Ethereum Mainnet](#ethereum-mainnet)
-  - [Testnets](#testnet-deployments)
-    - [Kovan Testnet](#kovan-testnet)
-    - [Rinkeby Testnet](#rinkeby-testnet)
-    - [Ropsten Testnet](#ropsten-testnet)
 - [Documentation](#documentation)
 - [Issues](#issues)
 
@@ -25,7 +21,7 @@
 
 ## Get Started
 
-For local development of `alkemi-earn-protocol` you can setup the development environment on your machine.
+For local development of `alkemi-earn-contracts` you can setup the development environment on your machine.
 
 ### Local development
 
@@ -38,8 +34,8 @@ As a pre-requisite, you need:
 
 Clone the project and install all dependencies:
 
-    git clone git@github.com:AlkemiNetwork/alkemi-earn-protocol.git
-    cd alkemi-earn-protocol/
+    git clone git@github.com:AlkemiNetwork/alkemi-earn-contracts.git
+    cd alkemi-earn-contracts/
 
     # install project dependencies
     $ npm i
@@ -48,7 +44,7 @@ Compile the solidity contracts:
 
     $ npm run compile
 
-![](https://raw.githubusercontent.com/AlkemiNetwork/alkemi-earn-contracts/master/docs/assets/alk-compile.gif)
+![](https://raw.githubusercontent.com/AlkemiNetwork/alkemi-reserve-contracts/master/docs/assets/alk-compile.gif)
 
 In a new terminal, launch an Ethereum RPC client, we use the default ganache-cli command to configure and run a local development ganache:
 
@@ -77,8 +73,6 @@ Linting is setup for `JavaScript` with [ESLint](https://eslint.org) & Solidity w
 Code style is enforced through the CI test process, builds will fail if there're any linting errors.
 
 ## Networks
-
-### Mainnet Deployments
 
 #### Ethereum Mainnet
 
@@ -159,7 +153,7 @@ Code style is enforced through the CI test process, builds will fail if there're
 
 ## Issues
 
-If you come across an issue with Alkemi Protocol contracts, do a search in the [Issues](https://github.com/AlkemiNetwork/alkemi-earn-protocol/issues) tab of this repo to make sure it hasn't been reported before. Follow these steps to help us prevent duplicate issues and unnecessary notifications going to the many people watching this repo:
+If you come across an issue with Alkemi Protocol contracts, do a search in the [Issues](https://github.com/AlkemiNetwork/alkemi-earn-contracts/issues) tab of this repo to make sure it hasn't been reported before. Follow these steps to help us prevent duplicate issues and unnecessary notifications going to the many people watching this repo:
 
 - If the issue you found has been reported and is still open, and the details match your issue, give a "thumbs up" to the relevant posts in the issue thread to signal that you have the same issue. No further action is required on your part.
 - If the issue you found has been reported and is still open, but the issue is missing some details, you can add a comment to the issue thread describing the additional details.

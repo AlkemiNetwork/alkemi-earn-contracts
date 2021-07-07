@@ -174,7 +174,7 @@ event Failure(uint256  error, uint256  info, uint256  detail);
 
 ### fail
 
-use this when reporting a known error from the money market or a non-upgradeable collaborator
+use this when reporting a known error from the Alkemi Earn Verified or a non-upgradeable collaborator
 
 ```js
 function fail(enum ErrorReporter.Error err, enum ErrorReporter.FailureInfo info) internal nonpayable
