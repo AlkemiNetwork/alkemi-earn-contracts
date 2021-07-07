@@ -59,7 +59,9 @@ module.exports = async (deployer, network, accounts) => {
 		await alkemiEarnVerified._adminFunctions(
 			address[0],
 			deploymentConfig.RINKEBY.PRICE_ORACLE,
-			false
+			false,
+			1000000000000000,
+			0
 		);
 		await alkemiEarnVerified._supportMarket(
 			deploymentConfig.RINKEBY.USDC,
