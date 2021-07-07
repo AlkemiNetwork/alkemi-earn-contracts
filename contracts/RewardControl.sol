@@ -552,4 +552,92 @@ contract RewardControl is
     function setAlkRate(uint256 _alkRate) external onlyOwner {
         alkRate = _alkRate;
     }
+
+    /**
+     * @notice Get latest ALK rewards
+     * @param user the supplier/borrower
+     */
+    function getAlkRewards(address user) external view returns (uint) {
+        // Refresh ALK speeds
+        Exp memory totalLiquidity = Exp({mantissa: 0});
+        Exp[] memory marketTotalLiquidity = new Exp[](allMarkets.length);
+        uint256 alkRewards = alkAccrued[user];
+        for (uint256 i = 0; i < allMarkets.length; i++) {
+            Exp memory currentMarketTotalLiquidity = Exp({
+                mantissa: add_(
+                    getMarketTotalSupply(allMarkets[i]),
+                    getMarketTotalBorrows(allMarkets[i])
+                )
+            });
+            marketTotalLiquidity[i] = currentMarketTotalLiquidity;
+            totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
+        }
+        for (i = 0; i < allMarkets.length; i++) {
+            alkRewards = add_(alkRewards,add_(getSupplyAlkRewards(totalLiquidity,marketTotalLiquidity,user,i),getBorrowAlkRewards(totalLiquidity,marketTotalLiquidity,user,i)));
+        }
+        return alkRewards;
+    }
+
+    function getSupplyAlkRewards(Exp memory totalLiquidity,Exp[] memory marketTotalLiquidity,address user,uint i) internal view returns(uint256) {
+            uint256 newSpeed = totalLiquidity.mantissa > 0
+                ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity))
+                : 0;
+            MarketState memory supplyState = alkSupplyState[allMarkets[i]];
+            if (sub_(getBlockNumber(), uint256(supplyState.block)) > 0 && newSpeed > 0) {
+                Double memory index = add_(
+                    Double({mantissa: supplyState.index}),
+                    (getMarketTotalSupply(allMarkets[i]) > 0
+                    ? fraction(mul_(sub_(getBlockNumber(), uint256(supplyState.block)), newSpeed), getMarketTotalSupply(allMarkets[i]))
+                    : Double({mantissa: 0}))
+                );
+                supplyState = MarketState({
+                    index: safe224(index.mantissa, "new index exceeds 224 bits"),
+                    block: safe32(getBlockNumber(), "block number exceeds 32 bits")
+                });
+            } else if (sub_(getBlockNumber(), uint256(supplyState.block)) > 0) {
+                supplyState.block = safe32(
+                    getBlockNumber(),
+                    "block number exceeds 32 bits"
+                );
+            }
+
+            if (Double({
+                mantissa: alkSupplierIndex[allMarkets[i]][user]
+            }).mantissa > 0) {
+                return mul_(alkemiEarnVerified.getSupplyBalance(user, allMarkets[i]), sub_(Double({mantissa: supplyState.index}), Double({
+                mantissa: alkSupplierIndex[allMarkets[i]][user]
+            })));
+            }
+    }
+    function getBorrowAlkRewards(Exp memory totalLiquidity,Exp[] memory marketTotalLiquidity,address user,uint i) internal view returns(uint256) {
+            uint256 newSpeed = totalLiquidity.mantissa > 0
+                ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity))
+                : 0;
+            MarketState memory borrowState = alkBorrowState[allMarkets[i]];
+            if (sub_(getBlockNumber(), uint256(borrowState.block)) > 0 && newSpeed > 0) {
+                Double memory index = add_(
+                    Double({mantissa: borrowState.index}),
+                    (getMarketTotalBorrows(allMarkets[i]) > 0
+                    ? fraction(mul_(sub_(getBlockNumber(), uint256(borrowState.block)), newSpeed), getMarketTotalBorrows(allMarkets[i]))
+                    : Double({mantissa: 0}))
+                );
+                borrowState = MarketState({
+                    index: safe224(index.mantissa, "new index exceeds 224 bits"),
+                    block: safe32(getBlockNumber(), "block number exceeds 32 bits")
+                });
+            } else if (sub_(getBlockNumber(), uint256(borrowState.block)) > 0) {
+                borrowState.block = safe32(
+                    getBlockNumber(),
+                    "block number exceeds 32 bits"
+                );
+            }
+
+            if (Double({
+                mantissa: alkBorrowerIndex[allMarkets[i]][user]
+            }).mantissa > 0) {
+                return mul_(alkemiEarnVerified.getBorrowBalance(user, allMarkets[i]), sub_(Double({mantissa: borrowState.index}), Double({
+                mantissa: alkBorrowerIndex[allMarkets[i]][user]
+            })));
+            }
+    }
 }
