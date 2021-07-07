@@ -41,7 +41,8 @@ module.exports = async (deployer, network, accounts) => {
 			accounts[0],
 			priceOracle.address,
 			false,
-			1000000000000000
+			1000000000000000,
+			0
 		);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
