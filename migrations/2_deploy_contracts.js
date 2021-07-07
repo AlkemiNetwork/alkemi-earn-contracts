@@ -6,7 +6,6 @@ var LiquidationChecker = artifacts.require("LiquidationChecker.sol");
 var ChainLink = artifacts.require("ChainLink.sol");
 var AlkemiWETH = artifacts.require("AlkemiWETH.sol");
 var AlkemiRateModel = artifacts.require("AlkemiRateModel.sol");
-var RewardControl = artifacts.require("RewardControl.sol");
 
 const deploymentConfig = require("./deployment-config.json");
 
@@ -51,39 +50,38 @@ module.exports = async (deployer, network, accounts) => {
 		// 	true
 		// );
 	} else if (network == "rinkeby") {
-		// const alkemiEarnVerified = await deployProxy(AlkemiEarnVerified, [], {
-		// 	deployer,
-		// 	initializer: "initializer",
-		// 	unsafeAllowCustomTypes: true,
-		// });
-		// await alkemiEarnVerified._adminFunctions(
-		// 	address[0],
-		// 	deploymentConfig.RINKEBY.PRICE_ORACLE,
-		// 	false
-		// );
-		// await alkemiEarnVerified._supportMarket(
-		// 	deploymentConfig.RINKEBY.USDC,
-		// 	deploymentConfig.RINKEBY.USDC_RATE_MODEL
-		// );
-		// await alkemiEarnVerified._changeKYCAdmin(accounts[0], true);
-		// await alkemiEarnVerified._changeCustomerKYC(accounts[0], true);
+		const alkemiEarnVerified = await deployProxy(AlkemiEarnVerified, [], {
+			deployer,
+			initializer: "initializer",
+			unsafeAllowCustomTypes: true,
+		});
+		await alkemiEarnVerified._adminFunctions(
+			address[0],
+			deploymentConfig.RINKEBY.PRICE_ORACLE,
+			false
+		);
+		await alkemiEarnVerified._supportMarket(
+			deploymentConfig.RINKEBY.USDC,
+			deploymentConfig.RINKEBY.USDC_RATE_MODEL
+		);
+		await alkemiEarnVerified._changeKYCAdmin(accounts[0], true);
+		await alkemiEarnVerified._changeCustomerKYC(accounts[0], true);
 
-		// const rewardControl = await deployProxy(
-		// 	RewardControl,
-		// 	[
-		// 		accounts[0],
-		// 		alkemiEarnVerified.address,
-		// 		deploymentConfig.RINKEBY.ALK_TOKEN,
-		// 	],
-		// 	{
-		// 		deployer,
-		// 		initializer: "initializer",
-		// 		unsafeAllowCustomTypes: true,
-		// 	}
-		// );
-		// await alkemiEarnVerified.setRewardControlAddress(rewardControl.address);
-		// await rewardControl.addMarket(deploymentConfig.RINKEBY.USDC);
-		await deployer.deploy(RewardControl);
+		const rewardControl = await deployProxy(
+			RewardControl,
+			[
+				accounts[0],
+				alkemiEarnVerified.address,
+				deploymentConfig.RINKEBY.ALK_TOKEN,
+			],
+			{
+				deployer,
+				initializer: "initializer",
+				unsafeAllowCustomTypes: true,
+			}
+		);
+		await alkemiEarnVerified.setRewardControlAddress(rewardControl.address);
+		await rewardControl.addMarket(deploymentConfig.RINKEBY.USDC);
 		// await deployer.deploy(PriceOracle, deploymentConfig.RINKEBY.POSTER);
 		// await deployer.deploy(
 		// 	PriceOracleProxy,
@@ -99,36 +97,36 @@ module.exports = async (deployer, network, accounts) => {
 		// 	deploymentConfig.RINKEBY.Liquidator,
 		// 	true
 		// );
-		// await deployer.deploy(
-		// 	AlkemiRateModel,
-		// 	"BTC Rate Model",
-		// 	100,
-		// 	200,
-		// 	250,
-		// 	8000,
-		// 	3000,
-		// 	5000
-		// );
-		// await deployer.deploy(
-		// 	AlkemiRateModel,
-		// 	"ETH Rate Model",
-		// 	100,
-		// 	400,
-		// 	250,
-		// 	8000,
-		// 	1100,
-		// 	3000
-		// );
-		// await deployer.deploy(
-		// 	AlkemiRateModel,
-		// 	"Stable Coin Rate Model",
-		// 	100,
-		// 	2000,
-		// 	100,
-		// 	8000,
-		// 	400,
-		// 	3000
-		// );
+		await deployer.deploy(
+			AlkemiRateModel,
+			"BTC Rate Model",
+			100,
+			200,
+			250,
+			8000,
+			3000,
+			5000
+		);
+		await deployer.deploy(
+			AlkemiRateModel,
+			"ETH Rate Model",
+			100,
+			400,
+			250,
+			8000,
+			1100,
+			3000
+		);
+		await deployer.deploy(
+			AlkemiRateModel,
+			"Stable Coin Rate Model",
+			100,
+			2000,
+			100,
+			8000,
+			400,
+			3000
+		);
 	} else if (network == "ropsten") {
 		// await deployer.deploy(PriceOracle, deploymentConfig.ROPSTEN.POSTER);
 		// await deployer.deploy(
