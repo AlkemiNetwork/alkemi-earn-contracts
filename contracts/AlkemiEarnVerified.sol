@@ -2458,12 +2458,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     FailureInfo.LIQUIDATE_CONTRACT_PAUSED
                 );
         }
-        if (!liquidators[msg.sender]) {
-            emitError(
-                Error.LIQUIDATOR_CHECK_FAILED,
-                FailureInfo.LIQUIDATOR_CHECK_FAILED
-            );
-        }
+        require(liquidators[msg.sender],"LIQUIDATOR_CHECK_FAILED");
         refreshAlkSupplyIndex(assetCollateral, targetAccount);
         refreshAlkSupplyIndex(assetCollateral, msg.sender);
         refreshAlkBorrowIndex(assetBorrow, targetAccount);
