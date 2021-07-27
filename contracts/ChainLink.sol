@@ -111,10 +111,10 @@ contract ChainLink {
     /**
      * Returns the latest price
      */
-    function getAssetPrice(address asset) public view returns (uint256) {
+    function getAssetPrice(address asset) public view returns (uint256,uint8) {
         // Return 1 * 10^18 for WETH, otherwise return actual price
         if (!paused && asset == wethAddress) {
-            return 1000000000000000000;
+            return (1000000000000000000,18);
         }
         // Capture the decimals in the ERC20 token
         uint8 assetDecimals = TestTokens(asset).decimals();
@@ -142,18 +142,17 @@ contract ChainLink {
                 require(timeStamp > 0, "Round not complete");
                 uint256 returnedPrice = (uint256(price) * uint256(priceUSD)) /
                     (10**8);
-                return returnedPrice;
+                return (returnedPrice,assetDecimals);
             } else {
                 if (price > 0) {
                     // Magnify the result based on decimals
-                    return (uint256(price) *
-                        (10**(18 - uint256(assetDecimals))));
+                    return (uint256(price),assetDecimals);
                 } else {
-                    return 0;
+                    return (0,assetDecimals);
                 }
             }
         } else {
-            return 0;
+            return (0,assetDecimals);
         }
     }
 
