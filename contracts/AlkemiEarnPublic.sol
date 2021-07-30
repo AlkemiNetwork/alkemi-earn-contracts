@@ -6,8 +6,9 @@ import "./SafeToken.sol";
 import "./ChainLink.sol";
 import "./AlkemiWETH.sol";
 import "./RewardControlInterface.sol";
+import "./ReentrancyGuard.sol";
 
-contract AlkemiEarnPublic is Exponential, SafeToken {
+contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
     uint256 internal initialInterestIndex;
     uint256 internal defaultOriginationFee;
     uint256 internal defaultCollateralRatio;
@@ -1308,6 +1309,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     function supply(address asset, uint256 amount)
         public
         payable
+        nonReentrant
         returns (uint256)
     {
         if (paused) {
@@ -1456,6 +1458,20 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         /////////////////////////
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
+
+        // Save market updates
+        market.blockNumber = getBlockNumber();
+        market.totalSupply = localResults.newTotalSupply;
+        market.supplyRateMantissa = localResults.newSupplyRateMantissa;
+        market.supplyIndex = localResults.newSupplyIndex;
+        market.borrowRateMantissa = localResults.newBorrowRateMantissa;
+        market.borrowIndex = localResults.newBorrowIndex;
+
+        // Save user updates
+        localResults.startingBalance = balance.principal; // save for use in `SupplyReceived` event
+        balance.principal = localResults.userSupplyUpdated;
+        balance.interestIndex = localResults.newSupplyIndex;
+
         if (asset != wethAddress) {
             // WETH is supplied to AlkemiEarnPublic contract in case of ETH automatically
             // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
@@ -1486,25 +1502,12 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             }
         }
 
-        // Save market updates
-        market.blockNumber = getBlockNumber();
-        market.totalSupply = localResults.newTotalSupply;
-        market.supplyRateMantissa = localResults.newSupplyRateMantissa;
-        market.supplyIndex = localResults.newSupplyIndex;
-        market.borrowRateMantissa = localResults.newBorrowRateMantissa;
-        market.borrowIndex = localResults.newBorrowIndex;
-
-        // Save user updates
-        localResults.startingBalance = balance.principal; // save for use in `SupplyReceived` event
-        balance.principal = localResults.userSupplyUpdated;
-        balance.interestIndex = localResults.newSupplyIndex;
-
         emit SupplyReceived(
             msg.sender,
             asset,
             amount,
             localResults.startingBalance,
-            localResults.userSupplyUpdated
+            balance.principal
         );
 
         return uint256(Error.NO_ERROR); // success
@@ -1533,6 +1536,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      */
     function withdraw(address asset, uint256 requestedAmount)
         public
+        nonReentrant
         returns (uint256)
     {
         if (paused) {
@@ -1736,6 +1740,19 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
 
+        // Save market updates
+        market.blockNumber = getBlockNumber();
+        market.totalSupply = localResults.newTotalSupply;
+        market.supplyRateMantissa = localResults.newSupplyRateMantissa;
+        market.supplyIndex = localResults.newSupplyIndex;
+        market.borrowRateMantissa = localResults.newBorrowRateMantissa;
+        market.borrowIndex = localResults.newBorrowIndex;
+
+        // Save user updates
+        localResults.startingBalance = supplyBalance.principal; // save for use in `SupplyWithdrawn` event
+        supplyBalance.principal = localResults.userSupplyUpdated;
+        supplyBalance.interestIndex = localResults.newSupplyIndex;
+
         if (asset != wethAddress) {
             // Withdrawal should happen as Ether directly
             // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
@@ -1754,25 +1771,12 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             }
         }
 
-        // Save market updates
-        market.blockNumber = getBlockNumber();
-        market.totalSupply = localResults.newTotalSupply;
-        market.supplyRateMantissa = localResults.newSupplyRateMantissa;
-        market.supplyIndex = localResults.newSupplyIndex;
-        market.borrowRateMantissa = localResults.newBorrowRateMantissa;
-        market.borrowIndex = localResults.newBorrowIndex;
-
-        // Save user updates
-        localResults.startingBalance = supplyBalance.principal; // save for use in `SupplyWithdrawn` event
-        supplyBalance.principal = localResults.userSupplyUpdated;
-        supplyBalance.interestIndex = localResults.newSupplyIndex;
-
         emit SupplyWithdrawn(
             msg.sender,
             asset,
             localResults.withdrawAmount,
             localResults.startingBalance,
-            localResults.userSupplyUpdated
+            supplyBalance.principal
         );
 
         return uint256(Error.NO_ERROR); // success
@@ -2008,6 +2012,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     function repayBorrow(address asset, uint256 amount)
         public
         payable
+        nonReentrant
         returns (uint256)
     {
         if (paused) {
@@ -2207,6 +2212,20 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         /////////////////////////
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
+
+        // Save market updates
+        market.blockNumber = getBlockNumber();
+        market.totalBorrows = localResults.newTotalBorrows;
+        market.supplyRateMantissa = localResults.newSupplyRateMantissa;
+        market.supplyIndex = localResults.newSupplyIndex;
+        market.borrowRateMantissa = localResults.newBorrowRateMantissa;
+        market.borrowIndex = localResults.newBorrowIndex;
+
+        // Save user updates
+        localResults.startingBalance = borrowBalance.principal; // save for use in `BorrowRepaid` event
+        borrowBalance.principal = localResults.userBorrowUpdated;
+        borrowBalance.interestIndex = localResults.newBorrowIndex;
+
         if (asset != wethAddress) {
             // WETH is supplied to AlkemiEarnPublic contract in case of ETH automatically
             // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
@@ -2244,24 +2263,11 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             }
         }
 
-        // Save market updates
-        market.blockNumber = getBlockNumber();
-        market.totalBorrows = localResults.newTotalBorrows;
-        market.supplyRateMantissa = localResults.newSupplyRateMantissa;
-        market.supplyIndex = localResults.newSupplyIndex;
-        market.borrowRateMantissa = localResults.newBorrowRateMantissa;
-        market.borrowIndex = localResults.newBorrowIndex;
-
-        // Save user updates
-        localResults.startingBalance = borrowBalance.principal; // save for use in `BorrowRepaid` event
-        borrowBalance.principal = localResults.userBorrowUpdated;
-        borrowBalance.interestIndex = localResults.newBorrowIndex;
-
         supplyOriginationFeeAsAdmin(
             asset,
             msg.sender,
             localResults.repayAmount,
-            localResults.newSupplyIndex
+            market.supplyIndex
         );
 
         emit BorrowRepaid(
@@ -2269,7 +2275,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             asset,
             localResults.repayAmount,
             localResults.startingBalance,
-            localResults.userBorrowUpdated
+            borrowBalance.principal
         );
 
         return uint256(Error.NO_ERROR); // success
@@ -2763,50 +2769,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
 
-        // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
-        if (assetBorrow != wethAddress) {
-            // WETH is supplied to AlkemiEarnPublic contract in case of ETH automatically
-            revertEtherToUser(msg.sender, msg.value);
-            err = doTransferIn(
-                assetBorrow,
-                localResults.liquidator,
-                localResults.closeBorrowAmount_TargetUnderwaterAsset
-            );
-            if (err != Error.NO_ERROR) {
-                // This is safe since it's our first interaction and it didn't do anything if it failed
-                return fail(err, FailureInfo.LIQUIDATE_TRANSFER_IN_FAILED);
-            }
-        } else {
-            if (msg.value == requestedAmountClose) {
-                uint256 supplyError = supplyEther(
-                    localResults.liquidator,
-                    localResults.closeBorrowAmount_TargetUnderwaterAsset
-                );
-                //Repay excess funds
-                if (localResults.reimburseAmount > 0) {
-                    revertEtherToUser(
-                        localResults.liquidator,
-                        localResults.reimburseAmount
-                    );
-                }
-                if (supplyError != 0) {
-                    revertEtherToUser(msg.sender, msg.value);
-                    return
-                        fail(
-                            Error.WETH_ADDRESS_NOT_SET_ERROR,
-                            FailureInfo.WETH_ADDRESS_NOT_SET_ERROR
-                        );
-                }
-            } else {
-                revertEtherToUser(msg.sender, msg.value);
-                return
-                    fail(
-                        Error.ETHER_AMOUNT_MISMATCH_ERROR,
-                        FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR
-                    );
-            }
-        }
-
         // Save borrow market updates
         borrowMarket.blockNumber = getBlockNumber();
         borrowMarket.totalBorrows = localResults
@@ -2854,6 +2816,50 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         .updatedSupplyBalance_LiquidatorCollateralAsset;
         supplyBalance_LiquidatorCollateralAsset.interestIndex = localResults
         .newSupplyIndex_CollateralAsset;
+
+        // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
+        if (assetBorrow != wethAddress) {
+            // WETH is supplied to AlkemiEarnPublic contract in case of ETH automatically
+            revertEtherToUser(msg.sender, msg.value);
+            err = doTransferIn(
+                assetBorrow,
+                localResults.liquidator,
+                localResults.closeBorrowAmount_TargetUnderwaterAsset
+            );
+            if (err != Error.NO_ERROR) {
+                // This is safe since it's our first interaction and it didn't do anything if it failed
+                return fail(err, FailureInfo.LIQUIDATE_TRANSFER_IN_FAILED);
+            }
+        } else {
+            if (msg.value == requestedAmountClose) {
+                uint256 supplyError = supplyEther(
+                    localResults.liquidator,
+                    localResults.closeBorrowAmount_TargetUnderwaterAsset
+                );
+                //Repay excess funds
+                if (localResults.reimburseAmount > 0) {
+                    revertEtherToUser(
+                        localResults.liquidator,
+                        localResults.reimburseAmount
+                    );
+                }
+                if (supplyError != 0) {
+                    revertEtherToUser(msg.sender, msg.value);
+                    return
+                        fail(
+                            Error.WETH_ADDRESS_NOT_SET_ERROR,
+                            FailureInfo.WETH_ADDRESS_NOT_SET_ERROR
+                        );
+                }
+            } else {
+                revertEtherToUser(msg.sender, msg.value);
+                return
+                    fail(
+                        Error.ETHER_AMOUNT_MISMATCH_ERROR,
+                        FailureInfo.ETHER_AMOUNT_MISMATCH_ERROR
+                    );
+            }
+        }
 
         supplyOriginationFeeAsAdmin(
             assetBorrow,
@@ -3078,7 +3084,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * @param amount The amount to borrow
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function borrow(address asset, uint256 amount) public returns (uint256) {
+    function borrow(address asset, uint256 amount) public nonReentrant returns (uint256) {
         if (paused) {
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
@@ -3282,21 +3288,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         // EFFECTS & INTERACTIONS
         // (No safe failures beyond this point)
 
-        if (asset != wethAddress) {
-            // Withdrawal should happen as Ether directly
-            // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
-            err = doTransferOut(asset, msg.sender, amount);
-            if (err != Error.NO_ERROR) {
-                // This is safe since it's our first interaction and it didn't do anything if it failed
-                return fail(err, FailureInfo.BORROW_TRANSFER_OUT_FAILED);
-            }
-        } else {
-            uint256 withdrawalerr = withdrawEther(msg.sender, amount); // send Ether to user
-            if (withdrawalerr != 0) {
-                return uint256(withdrawalerr); // success
-            }
-        }
-
         // Save market updates
         market.blockNumber = getBlockNumber();
         market.totalBorrows = localResults.newTotalBorrows;
@@ -3312,13 +3303,28 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
 
         originationFeeBalance[msg.sender][asset] += orgFeeBalance;
 
+        if (asset != wethAddress) {
+            // Withdrawal should happen as Ether directly
+            // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
+            err = doTransferOut(asset, msg.sender, amount);
+            if (err != Error.NO_ERROR) {
+                // This is safe since it's our first interaction and it didn't do anything if it failed
+                return fail(err, FailureInfo.BORROW_TRANSFER_OUT_FAILED);
+            }
+        } else {
+            uint256 withdrawalerr = withdrawEther(msg.sender, amount); // send Ether to user
+            if (withdrawalerr != 0) {
+                return uint256(withdrawalerr); // success
+            }
+        }
+
         emit BorrowTaken(
             msg.sender,
             asset,
             amount,
             localResults.startingBalance,
             localResults.borrowAmountWithFee,
-            localResults.userBorrowUpdated
+            borrowBalance.principal
         );
 
         return uint256(Error.NO_ERROR); // success
