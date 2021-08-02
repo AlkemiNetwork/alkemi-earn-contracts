@@ -253,6 +253,7 @@ contract AlkemiRateModel is Exponential {
         } else if (utilizationRate.mantissa > BreakPointHigh.mantissa) {
             (err, tempScaled) = mulExp(utilizationRate, ReserveHigh);
             assert(err == Error.NO_ERROR);
+            // Integer Underflow is handled in sub() function under CarefulMath
             (err, tempScaled2) = subExp(tempScaled, SpreadHigh);
             annualBorrowRateScaled = tempScaled2.mantissa;
             assert(err == Error.NO_ERROR);
