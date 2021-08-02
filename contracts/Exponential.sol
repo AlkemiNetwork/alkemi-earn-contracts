@@ -16,10 +16,6 @@ contract Exponential is ErrorReporter, CarefulMath {
         uint256 mantissa;
     }
 
-    struct ExpNegative {
-        int256 mantissa;
-    }
-
     uint256 constant mantissaOne = 10**18;
     uint256 constant mantissaOneTenth = 10**17;
 
@@ -60,19 +56,6 @@ contract Exponential is ErrorReporter, CarefulMath {
     }
 
     /**
-     * @dev Adds two exponentials, returning a new exponential.
-     */
-    function addExpNegative(Exp memory a, ExpNegative memory b)
-        internal
-        pure
-        returns (Error, Exp memory)
-    {
-        (Error error, int256 result) = addInt(a.mantissa, b.mantissa);
-
-        return (error, Exp({mantissa: uint256(result)}));
-    }
-
-    /**
      * @dev Subtracts two exponentials, returning a new exponential.
      */
     function subExp(Exp memory a, Exp memory b)
@@ -83,19 +66,6 @@ contract Exponential is ErrorReporter, CarefulMath {
         (Error error, uint256 result) = sub(a.mantissa, b.mantissa);
 
         return (error, Exp({mantissa: result}));
-    }
-
-    /**
-     * @dev Subtracts two exponentials, returning a new exponential.
-     */
-    function subExpNegative(Exp memory a, Exp memory b)
-        internal
-        pure
-        returns (Error, ExpNegative memory)
-    {
-        (Error error, int256 result) = subInt(a.mantissa, b.mantissa);
-
-        return (error, ExpNegative({mantissa: result}));
     }
 
     /**

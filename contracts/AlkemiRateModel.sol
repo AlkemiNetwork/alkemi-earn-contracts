@@ -37,7 +37,7 @@ contract AlkemiRateModel is Exponential {
     Exp internal SpreadMid;
     Exp internal BreakPointHigh;
     Exp internal ReserveHigh;
-    ExpNegative internal SpreadHigh;
+    Exp internal SpreadHigh;
 
     Exp internal MinRateActual;
     Exp internal HealthyMinURActual;
@@ -56,6 +56,10 @@ contract AlkemiRateModel is Exponential {
         uint256 MaxRate
     ) public {
         // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
+        // Checks for reasonable interest rate parameters
+        require(MinRate < MaxRate,"Min Rate should be lesser than Max Rate");
+        require(HealthyMinUR < HealthyMaxUR,"HealthyMinUR should be lesser than HealthyMaxUR");
+        require(HealthyMinRate < HealthyMaxRate,"HealthyMinRate should be lesser than HealthyMaxRate");
         owner = msg.sender;
         contractName = _contractName;
         Exp memory temp1;
@@ -88,15 +92,17 @@ contract AlkemiRateModel is Exponential {
         // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
         (err, temp1) = mulExp(ReserveMid, BreakPointLow);
         (err, SpreadMid) = subExp(HealthyMinRateActual, temp1);
+        require(SpreadMid.mantissa >= 0,"Spread Mid cannot be a negative number");
 
         // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
         (err, temp1) = subExp(MaxRateActual, HealthyMaxRateActual);
         (err, temp2) = subExp(HunderedMantissa, HealthyMaxURActual);
         (err, ReserveHigh) = divExp(temp1, temp2);
 
-        // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
+        // SpreadHigh = (ReserveHigh * BreakPointHigh) - HealthyMaxRate;
         (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
-        (err, SpreadHigh) = subExpNegative(HealthyMaxRateActual, temp2);
+        (err, SpreadHigh) = subExp(temp2,HealthyMaxRateActual);
+        require(SpreadHigh.mantissa >=0,"Spread High cannot be a negative number");
     }
 
     function changeRates(
@@ -109,6 +115,10 @@ contract AlkemiRateModel is Exponential {
         uint256 MaxRate
     ) public onlyOwner {
         // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
+        // Checks for reasonable interest rate parameters
+        require(MinRate < MaxRate,"Min Rate should be lesser than Max Rate");
+        require(HealthyMinUR < HealthyMaxUR,"HealthyMinUR should be lesser than HealthyMaxUR");
+        require(HealthyMinRate < HealthyMaxRate,"HealthyMinRate should be lesser than HealthyMaxRate");
         contractName = _contractName;
         Exp memory temp1;
         Exp memory temp2;
@@ -140,15 +150,17 @@ contract AlkemiRateModel is Exponential {
         // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
         (err, temp1) = mulExp(ReserveMid, BreakPointLow);
         (err, SpreadMid) = subExp(HealthyMinRateActual, temp1);
+        require(SpreadMid.mantissa >= 0,"Spread Mid cannot be a negative number");
 
         // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
         (err, temp1) = subExp(MaxRateActual, HealthyMaxRateActual);
         (err, temp2) = subExp(HunderedMantissa, HealthyMaxURActual);
         (err, ReserveHigh) = divExp(temp1, temp2);
 
-        // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
+        // SpreadHigh = (ReserveHigh * BreakPointHigh) - HealthyMaxRate;
         (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
-        (err, SpreadHigh) = subExpNegative(HealthyMaxRateActual, temp2);
+        (err, SpreadHigh) = subExp(temp2,HealthyMaxRateActual);
+        require(SpreadHigh.mantissa >=0,"Spread High cannot be a negative number");
     }
 
     function transferOwnership(address newOwner_) external onlyOwner {
@@ -223,7 +235,7 @@ contract AlkemiRateModel is Exponential {
          *  Borrow Rate
          *  0 < UR < 20% :      SpreadLow + UR * ReserveLow
          *  20% <= UR <= 80% :  SpreadMid + UR * ReserveMid
-         *  80% < UR :          SpreadHigh + UR * ReserveHigh
+         *  80% < UR :          UR * ReserveHigh - SpreadHigh
          */
 
         Error err;
@@ -241,7 +253,7 @@ contract AlkemiRateModel is Exponential {
         } else if (utilizationRate.mantissa > BreakPointHigh.mantissa) {
             (err, tempScaled) = mulExp(utilizationRate, ReserveHigh);
             assert(err == Error.NO_ERROR);
-            (err, tempScaled2) = addExpNegative(tempScaled, SpreadHigh);
+            (err, tempScaled2) = subExp(tempScaled, SpreadHigh);
             annualBorrowRateScaled = tempScaled2.mantissa;
             assert(err == Error.NO_ERROR);
         } else if (
