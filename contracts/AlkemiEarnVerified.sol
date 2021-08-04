@@ -60,21 +60,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
     address public admin;
 
     /**
-     * @dev Managers for this contract with limited permissions. Can
-     *      be changed by the admin.
-     */
-    mapping(address => bool) public managers;
-
-    /**
-     * @dev Account allowed to set oracle prices for this contract. Initially set
-     *      in constructor, but can be changed by the admin.
-     */
-    address public oracle;
-
-    /**
      * @dev Account allowed to fetch chainlink oracle prices for this contract. Can be changed by the admin.
      */
-    ChainLink priceOracle;
+    ChainLink public priceOracle;
 
     /**
      * @dev Container for customer balance information written to storage.
@@ -435,16 +423,11 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
     event BorrowLiquidated(
         address targetAccount,
         address assetBorrow,
-        uint256 borrowBalanceBefore,
         uint256 borrowBalanceAccumulated,
         uint256 amountRepaid,
-        uint256 borrowBalanceAfter,
         address liquidator,
         address assetCollateral,
-        uint256 collateralBalanceBefore,
-        uint256 collateralBalanceAccumulated,
-        uint256 amountSeized,
-        uint256 collateralBalanceAfter
+        uint256 amountSeized
     );
 
     /**
@@ -474,9 +457,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         uint256 oldCollateralRatioMantissa,
         uint256 newCollateralRatioMantissa,
         uint256 oldLiquidationDiscountMantissa,
-        uint256 newLiquidationDiscountMantissa,
-        uint256 NewMinimumCollateralRatioMantissa,
-        uint256 newMaximumLiquidationDiscountMantissa
+        uint256 newLiquidationDiscountMantissa
     );
 
     /**
@@ -526,43 +507,13 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
     event KYCCustomerRemoved(address KYCCustomer);
 
     /**
-     * @dev Modifier to check if the caller of the function is a manager or owner
-     */
-    modifier onlyAdminOrManager {
-        // Check caller = KYCadmin
-        require(
-            msg.sender == admin || managers[msg.sender],
-            "Only owner or manager can perform operation"
-        );
-        _;
-    }
-
-    /**
-     * @dev Function to emit fail event to frontend
-     */
-    function emitError(Error error, FailureInfo failure)
-        private
-        returns (uint256)
-    {
-        return fail(error, failure);
-    }
-
-    /**
      * @dev Modifier to check if the caller of the function is KYC verified
      */
     modifier isKYCVerifiedCustomer {
         // Check caller = KYCVerifiedCustomer
         if (!customersWithKYC[msg.sender]) {
             revertEtherToUser(msg.sender, msg.value);
-            emitError(
-                Error.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED,
-                FailureInfo.KYC_CUSTOMER_VERIFICATION_CHECK_FAILED
-            );
-        } else {
-            require(
-                customersWithKYC[msg.sender],
-                "Customer is not KYC Verified"
-            );
+            revert("KYC_CUSTOMER_VERIFICATION_CHECK_FAILED");
             _;
         }
     }
@@ -575,13 +526,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         returns (uint256)
     {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED
-                );
-        }
+        require(msg.sender == admin,"KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED");
         KYCAdmins[KYCAdmin] = newStatus;
         if (newStatus) {
             emit KYCAdminAdded(KYCAdmin);
@@ -598,12 +543,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         public
         returns (uint256)
     {
-        if (!KYCAdmins[msg.sender]) {
-            emitError(
-                Error.KYC_ADMIN_CHECK_FAILED,
-                FailureInfo.KYC_ADMIN_CHECK_FAILED
-            );
-        }
+        require(KYCAdmins[msg.sender],"KYC_ADMIN_CHECK_FAILED");
         customersWithKYC[customer] = newStatus;
         if (newStatus) {
             emit KYCCustomerAdded(customer);
@@ -640,13 +580,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         returns (uint256)
     {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED,
-                    FailureInfo.LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED
-                );
-        }
+        require(msg.sender == admin,"LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED");
         liquidators[liquidator] = newStatus;
         if (newStatus) {
             emit LiquidatorAdded(liquidator);
@@ -878,7 +812,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         view
         returns (Error, Exp memory)
     {
-        if (oracle == address(0)) {
+        if (priceOracle == address(0)) {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
 
@@ -948,13 +882,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         uint256 newCloseFactorMantissa
     ) public returns (uint256) {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.SET_PENDING_ADMIN_OWNER_CHECK
-                );
-        }
+        require(msg.sender == admin,"SET_PENDING_ADMIN_OWNER_CHECK");
 
         // save current value, if any, for inclusion in log
         address oldPendingAdmin = pendingAdmin;
@@ -967,10 +895,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         // ChainLink priceOracleTemp = ChainLink(newOracle);
         // priceOracleTemp.getAssetPrice(address(0));
 
-        address oldOracle = oracle;
-
-        // Store oracle = newOracle
-        oracle = newOracle;
+        address oldOracle = address(priceOracle);
         // Initialize the Chainlink contract in priceOracle
         priceOracle = ChainLink(newOracle);
         emit NewOracle(oldOracle, newOracle);
@@ -1000,13 +925,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
     function _acceptAdmin() public returns (uint256) {
         // Check caller = pendingAdmin
         // msg.sender can't be zero
-        if (msg.sender != pendingAdmin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.ACCEPT_ADMIN_PENDING_ADMIN_CHECK
-                );
-        }
+        require(msg.sender == pendingAdmin,"ACCEPT_ADMIN_PENDING_ADMIN_CHECK");
 
         // Save current value for inclusion in log
         address oldAdmin = admin;
@@ -1134,13 +1053,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         returns (uint256)
     {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.SUPPORT_MARKET_OWNER_CHECK
-                );
-        }
+        require(msg.sender == admin,"SUPPORT_MARKET_OWNER_CHECK");
 
         (Error err, Exp memory assetPrice) = fetchAssetPrice(asset);
         if (err != Error.NO_ERROR) {
@@ -1188,13 +1101,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
      */
     function _suspendMarket(address asset) public returns (uint256) {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.SUSPEND_MARKET_OWNER_CHECK
-                );
-        }
+        require(msg.sender == admin,"SUSPEND_MARKET_OWNER_CHECK");
 
         // If the market is not configured at all, we don't want to add any configuration for it.
         // If we find !markets[asset].isSupported then either the market is not configured at all, or it
@@ -1221,21 +1128,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
      */
     function _setRiskParameters(
         uint256 collateralRatioMantissa,
-        uint256 liquidationDiscountMantissa,
-        uint256 _minimumCollateralRatioMantissa,
-        uint256 _maximumLiquidationDiscountMantissa
+        uint256 liquidationDiscountMantissa
     ) public returns (uint256) {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.SET_RISK_PARAMETERS_OWNER_CHECK
-                );
-        }
-
-        minimumCollateralRatioMantissa = _minimumCollateralRatioMantissa;
-        maximumLiquidationDiscountMantissa = _maximumLiquidationDiscountMantissa;
+        require(msg.sender == admin,"SET_RISK_PARAMETERS_OWNER_CHECK");
         Exp memory newCollateralRatio = Exp({
             mantissa: collateralRatioMantissa
         });
@@ -1304,9 +1200,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
             oldCollateralRatio.mantissa,
             collateralRatioMantissa,
             oldLiquidationDiscount.mantissa,
-            liquidationDiscountMantissa,
-            minimumCollateralRatioMantissa,
-            maximumLiquidationDiscountMantissa
+            liquidationDiscountMantissa
         );
 
         return uint256(Error.NO_ERROR);
@@ -1323,13 +1217,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         InterestRateModel interestRateModel
     ) public returns (uint256) {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK
-                );
-        }
+        require(msg.sender == admin,"SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK");
 
         // Set the interest rate model to `modelAddress`
         markets[asset].interestRateModel = interestRateModel;
@@ -1351,13 +1239,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         returns (uint256)
     {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.UNAUTHORIZED,
-                    FailureInfo.EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK
-                );
-        }
+        require(msg.sender == admin,"EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK");
 
         // Check that amount is less than cash (from ERC-20 of self) plus borrows minus supply.
         uint256 cash = getCash(asset);
@@ -1401,6 +1283,14 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
             }
         }
 
+        (, markets[asset].supplyRateMantissa) = markets[asset]
+        .interestRateModel
+        .getSupplyRate(asset, cash - amount, markets[asset].totalSupply);
+
+        (, markets[asset].borrowRateMantissa) = markets[asset]
+        .interestRateModel
+        .getBorrowRate(asset, cash - amount, markets[asset].totalBorrows);
+
         //event EquityWithdrawn(address asset, uint equityAvailableBefore, uint amount, address owner)
         emit EquityWithdrawn(asset, equity, amount, admin);
 
@@ -1416,13 +1306,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
         returns (uint256)
     {
         // Check caller = admin
-        if (msg.sender != admin) {
-            return
-                fail(
-                    Error.SET_WETH_ADDRESS_ADMIN_CHECK_FAILED,
-                    FailureInfo.SET_WETH_ADDRESS_ADMIN_CHECK_FAILED
-                );
-        }
+        require(msg.sender == admin,"SET_WETH_ADDRESS_ADMIN_CHECK_FAILED");
         wethAddress = wethContractAddress;
         WETHContract = AlkemiWETH(wethAddress);
         emit WETHAddressSet(wethContractAddress);
@@ -2459,7 +2343,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                 );
         }
         if (!liquidators[msg.sender]) {
-            emitError(
+            return fail(
                 Error.LIQUIDATOR_CHECK_FAILED,
                 FailureInfo.LIQUIDATOR_CHECK_FAILED
             );
@@ -3030,33 +2914,17 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
             localResults.newSupplyIndex_UnderwaterAsset
         );
 
-        emitLiquidationEvent(localResults);
-
-        return uint256(Error.NO_ERROR); // success
-    }
-
-    /**
-     * @dev this function exists to avoid error `CompilerError: Stack too deep, try removing local variables.` in `liquidateBorrow`
-     */
-    function emitLiquidationEvent(LiquidateLocalVars memory localResults)
-        internal
-    {
-        // event BorrowLiquidated(address targetAccount, address assetBorrow, uint borrowBalanceBefore, uint borrowBalanceAccumulated, uint amountRepaid, uint borrowBalanceAfter,
-        // address liquidator, address assetCollateral, uint collateralBalanceBefore, uint collateralBalanceAccumulated, uint amountSeized, uint collateralBalanceAfter);
         emit BorrowLiquidated(
             localResults.targetAccount,
             localResults.assetBorrow,
-            localResults.startingBorrowBalance_TargetUnderwaterAsset,
             localResults.currentBorrowBalance_TargetUnderwaterAsset,
             localResults.closeBorrowAmount_TargetUnderwaterAsset,
-            localResults.updatedBorrowBalance_TargetUnderwaterAsset,
             localResults.liquidator,
             localResults.assetCollateral,
-            localResults.startingSupplyBalance_TargetCollateralAsset,
-            localResults.currentSupplyBalance_TargetCollateralAsset,
-            localResults.seizeSupplyAmount_TargetCollateralAsset,
-            localResults.updatedSupplyBalance_TargetCollateralAsset
+            localResults.seizeSupplyAmount_TargetCollateralAsset
         );
+
+        return uint256(Error.NO_ERROR); // success
     }
 
     /**
