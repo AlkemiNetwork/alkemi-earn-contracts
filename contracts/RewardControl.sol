@@ -4,6 +4,7 @@ import "./RewardControlStorage.sol";
 import "./RewardControlInterface.sol";
 import "./ExponentialNoError.sol";
 import "./EIP20Interface.sol";
+import "./ChainLink.sol";
 
 contract RewardControl is
     RewardControlStorage,
@@ -68,7 +69,8 @@ contract RewardControl is
     function initializer(
         address _owner,
         address _alkemiEarnVerified,
-        address _alkAddress
+        address _alkAddress,
+        ChainLink _priceOracle
     ) public {
         if (initializationDone == false) {
             initializationDone = true;
@@ -77,6 +79,7 @@ contract RewardControl is
             alkAddress = _alkAddress;
             alkRate = 4161910200000000000;
             // 8323820396000000000 divided by 2 (for lending or borrowing)
+            priceOracle = _priceOracle;
         }
     }
 
@@ -157,12 +160,12 @@ contract RewardControl is
         address currentMarket;
         for (uint256 i = 0; i < allMarkets.length; i++) {
             currentMarket = allMarkets[i];
-            uint256 currentMarketTotalSupply = getMarketTotalSupply(
+            uint256 currentMarketTotalSupply = mul_(getMarketTotalSupply(
                 currentMarket
-            );
-            uint256 currentMarketTotalBorrows = getMarketTotalBorrows(
+            ),priceOracle.getAssetPrice(currentMarket));
+            uint256 currentMarketTotalBorrows = mul_(getMarketTotalBorrows(
                 currentMarket
-            );
+            ),priceOracle.getAssetPrice(currentMarket));
             Exp memory currentMarketTotalLiquidity = Exp({
                 mantissa: add_(
                     currentMarketTotalSupply,
@@ -551,6 +554,14 @@ contract RewardControl is
      */
     function setAlkRate(uint256 _alkRate) external onlyOwner {
         alkRate = _alkRate;
+    }
+
+    /**
+     * @notice Set Price Feed contract address
+     * @param _priceOracle The new chainlink price feed address
+     */
+    function setpriceOracle(ChainLink _priceOracle) external onlyOwner {
+        priceOracle = _priceOracle;
     }
 
     /**
