@@ -171,6 +171,11 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     bool public paused;
 
     /**
+     * @dev Hard cap on the number of markets allowed
+     */
+    uint8 public MAXIMUM_NUMBER_OF_MARKETS = 16;
+
+    /**
      * The `SupplyLocalVars` struct is used internally in the `supply` function.
      *
      * To avoid solidity limits on the number of local variables we:
@@ -980,6 +985,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                     FailureInfo.SUPPORT_MARKET_OWNER_CHECK
                 );
         }
+        // Hard cap on the maximum number of markets allowed
+        require(collateralMarkets.length < uint256(MAXIMUM_NUMBER_OF_MARKETS),"Exceeding the max number of markets allowed");
 
         (Error err, Exp memory assetPrice) = fetchAssetPrice(asset);
         if (err != Error.NO_ERROR) {
