@@ -9,7 +9,8 @@ import "./Exponential.sol";
  */
 
 contract AlkemiRateModel is Exponential {
-    uint256 constant blocksPerYear = 2102400;
+    // Assuming avg. block time of 13.3 seconds; can be updated using changeBlocksPerYear() by the admin
+    uint256 constant blocksPerYear = 2371128;
 
     address public owner;
     address public newOwner;
@@ -29,6 +30,8 @@ contract AlkemiRateModel is Exponential {
     }
 
     event OwnerUpdate(address indexed owner, address indexed newOwner);
+
+    event blocksPerYearUpdated(uint256 oldBlocksPerYear, uint256 newBlocksPerYear);
 
     Exp internal SpreadLow;
     Exp internal BreakPointLow;
@@ -149,6 +152,12 @@ contract AlkemiRateModel is Exponential {
         // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
         (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
         (err, SpreadHigh) = subExpNegative(HealthyMaxRateActual, temp2);
+    }
+
+    function changeBlocksPerYear(uint256 _blocksPerYear) external onlyOwner {
+        uint256 oldBlocksPerYear = blocksPerYear;
+        blocksPerYear = _blocksPerYear;
+        emit blocksPerYearUpdated(oldBlocksPerYear, _blocksPerYear);
     }
 
     function transferOwnership(address newOwner_) external onlyOwner {
