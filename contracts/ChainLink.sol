@@ -1,7 +1,7 @@
 pragma solidity 0.4.24;
 
 import "./AggregatorV3Interface.sol";
-import "./TestTokens.sol";
+import "./EIP20Interface.sol";
 
 contract ChainLink {
     mapping(address => AggregatorV3Interface) internal priceContractMapping;
@@ -117,7 +117,7 @@ contract ChainLink {
             return 1000000000000000000;
         }
         // Capture the decimals in the ERC20 token
-        uint8 assetDecimals = TestTokens(asset).decimals();
+        uint8 assetDecimals = EIP20Interface(asset).decimals();
         if (!paused && priceContractMapping[asset] != address(0)) {
             (
                 uint80 roundID,
