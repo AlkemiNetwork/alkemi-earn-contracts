@@ -160,6 +160,7 @@ contract RewardControl is
         address currentMarket;
         for (uint256 i = 0; i < allMarkets.length; i++) {
             currentMarket = allMarkets[i];
+            // We multiply the total market supply and borrows by their ETH prices to account for token prices while allocating rewards
             uint256 currentMarketTotalSupply = mul_(getMarketTotalSupply(
                 currentMarket
             ),priceOracle.getAssetPrice(currentMarket));
