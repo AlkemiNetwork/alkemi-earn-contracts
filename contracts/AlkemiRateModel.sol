@@ -78,25 +78,37 @@ contract AlkemiRateModel is Exponential {
 
         // ReserveLow = (HealthyMinRate-SpreadLow)/BreakPointLow;
         (err, temp1) = subExp(HealthyMinRateActual, SpreadLow);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveLow) = divExp(temp1, BreakPointLow);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // ReserveMid = (HealthyMaxRate-HealthyMinRate)/(HealthyMaxUR-HealthyMinUR);
         (err, temp1) = subExp(HealthyMaxRateActual, HealthyMinRateActual);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, temp2) = subExp(HealthyMaxURActual, HealthyMinURActual);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveMid) = divExp(temp1, temp2);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
         (err, temp1) = mulExp(ReserveMid, BreakPointLow);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, SpreadMid) = subExp(HealthyMinRateActual, temp1);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
         (err, temp1) = subExp(MaxRateActual, HealthyMaxRateActual);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, temp2) = subExp(HunderedMantissa, HealthyMaxURActual);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveHigh) = divExp(temp1, temp2);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
         (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, SpreadHigh) = subExpNegative(HealthyMaxRateActual, temp2);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
     }
 
     function changeRates(
@@ -130,25 +142,37 @@ contract AlkemiRateModel is Exponential {
 
         // ReserveLow = (HealthyMinRate-SpreadLow)/BreakPointLow;
         (err, temp1) = subExp(HealthyMinRateActual, SpreadLow);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveLow) = divExp(temp1, BreakPointLow);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // ReserveMid = (HealthyMaxRate-HealthyMinRate)/(HealthyMaxUR-HealthyMinUR);
         (err, temp1) = subExp(HealthyMaxRateActual, HealthyMinRateActual);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, temp2) = subExp(HealthyMaxURActual, HealthyMinURActual);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveMid) = divExp(temp1, temp2);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
         (err, temp1) = mulExp(ReserveMid, BreakPointLow);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, SpreadMid) = subExp(HealthyMinRateActual, temp1);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
         (err, temp1) = subExp(MaxRateActual, HealthyMaxRateActual);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, temp2) = subExp(HunderedMantissa, HealthyMaxURActual);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveHigh) = divExp(temp1, temp2);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
         (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, SpreadHigh) = subExpNegative(HealthyMaxRateActual, temp2);
+        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
     }
 
     function transferOwnership(address newOwner_) external onlyOwner {
