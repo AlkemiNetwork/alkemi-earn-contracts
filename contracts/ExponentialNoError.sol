@@ -1,3 +1,4 @@
+// Cloned from https://github.com/compound-finance/compound-money-market/blob/master/contracts/Exponential.sol
 pragma solidity 0.4.24;
 
 /**
