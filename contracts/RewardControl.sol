@@ -513,6 +513,9 @@ contract RewardControl is
             allMarkets[i] = allMarkets[i + 1];
         }
         allMarkets.length--;
+        // reset the ALK speeds for the removed market and refresh ALK speeds
+        alkSpeeds[removedMarket] = 0;
+        refreshAlkSpeeds();
         emit MarketRemoved(removedMarket, allMarkets.length);
     }
 
