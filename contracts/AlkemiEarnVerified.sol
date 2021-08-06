@@ -935,7 +935,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
      * @param newPendingAdmin New pending admin
      * @param newOracle New oracle address
      * @param requestedState value to assign to `paused`
-     * @param originationFeeMantissa rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1
+     * @param originationFeeMantissa rational collateral ratio, scaled by 1e18.
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      *
      * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
@@ -1024,7 +1024,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
      * @notice returns the liquidity for given account.
      *         a positive result indicates ability to borrow, whereas
      *         a negative result indicates a shortfall which may be liquidated
-     * @dev returns account liquidity in terms of eth-wei value, scaled by 1e18
+     * @dev returns account liquidity in terms of eth-wei value, scaled by 1e18 and truncated when the value is 0 or when the last few decimals are 0
      *      note: this includes interest trued up on all balances
      * @param account the account to examine
      * @return signed integer in terms of eth-wei (negative indicates a shortfall)
@@ -1340,8 +1340,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
     }
 
     /**
-     * @notice withdraws `amount` of `asset` from equity for asset, as long as `amount` <= equity. Equity= cash - (supply + borrows)
-     * @dev withdraws `amount` of `asset` from equity  for asset, enforcing amount <= cash - (supply + borrows)
+     * @notice withdraws `amount` of `asset` from equity for asset, as long as `amount` <= equity. Equity = cash + borrows - supply
+     * @dev withdraws `amount` of `asset` from equity  for asset, enforcing amount <= cash + borrows - supply
      * @param asset asset whose equity should be withdrawn
      * @param amount amount of equity to withdraw; must not exceed equity available
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
@@ -2103,11 +2103,11 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     return (err, 0, 0);
                 }
 
-                // In the case of borrow, we multiply the borrow value by the collateral ratio
+                // We have the user's borrow balance with interest so let's multiply by the asset price to get the total value
                 (err, localResults.borrowTotalValue) = getPriceForAssetAmount(
                     localResults.assetAddress,
                     localResults.userBorrowCurrent
-                ); // ( borrowCurrent* oraclePrice * collateralRatio) = borrowTotalValueInEth
+                ); // borrowCurrent * oraclePrice = borrowValueInEth
                 if (err != Error.NO_ERROR) {
                     return (err, 0, 0);
                 }

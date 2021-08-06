@@ -12,7 +12,7 @@ contract ChainLink {
     AggregatorV3Interface public USDETHPriceFeed;
 
     /**
-     * Sets the initial assets and admin
+     * Sets the admin
      * Add assets and set Weth Address using their own functions
      */
     constructor() public {
