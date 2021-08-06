@@ -60,6 +60,18 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     address public admin;
 
     /**
+     * @dev Managers for this contract with limited permissions. Can
+     *      be changed by the admin.
+     */
+    mapping(address => bool) public managers;
+
+    /**
+     * @dev Account allowed to set oracle prices for this contract. Initially set
+     *      in constructor, but can be changed by the admin.
+     */
+    address public oracle;
+
+    /**
      * @dev Account allowed to fetch chainlink oracle prices for this contract. Can be changed by the admin.
      */
     ChainLink public priceOracle;
