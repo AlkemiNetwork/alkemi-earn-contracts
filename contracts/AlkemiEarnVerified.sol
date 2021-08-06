@@ -955,7 +955,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     FailureInfo.SET_PENDING_ADMIN_OWNER_CHECK
                 );
         }
-
+        // newPendingAdmin can be 0x00, hence not checked
+        require(newOracle != address(0),"Cannot set weth address to 0x00");
+        require(originationFeeMantissa < 10**18 && newCloseFactorMantissa < 10**18,"Invalid Origination Fee or Close Factor Mantissa");
         // save current value, if any, for inclusion in log
         address oldPendingAdmin = pendingAdmin;
         // Store pendingAdmin = newPendingAdmin
@@ -1141,6 +1143,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     FailureInfo.SUPPORT_MARKET_OWNER_CHECK
                 );
         }
+        require(interestRateModel != address(0),"Rate Model cannot be 0x00");
 
         (Error err, Exp memory assetPrice) = fetchAssetPrice(asset);
         if (err != Error.NO_ERROR) {
@@ -1233,6 +1236,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     FailureInfo.SET_RISK_PARAMETERS_OWNER_CHECK
                 );
         }
+        // Input validations
+        require(collateralRatioMantissa >= minimumCollateralRatioMantissa && liquidationDiscountMantissa <= maximumLiquidationDiscountMantissa,"Liquidation discount is more than max discount or collateral ratio is less than min ratio");
 
         minimumCollateralRatioMantissa = _minimumCollateralRatioMantissa;
         maximumLiquidationDiscountMantissa = _maximumLiquidationDiscountMantissa;
@@ -1330,6 +1335,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     FailureInfo.SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK
                 );
         }
+        require(interestRateModel != address(0),"Rate Model cannot be 0x00");
 
         // Set the interest rate model to `modelAddress`
         markets[asset].interestRateModel = interestRateModel;
@@ -1423,6 +1429,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     FailureInfo.SET_WETH_ADDRESS_ADMIN_CHECK_FAILED
                 );
         }
+        require(wethContractAddress != address(0),"Cannot set weth address to 0x00");
         wethAddress = wethContractAddress;
         WETHContract = AlkemiWETH(wethAddress);
         emit WETHAddressSet(wethContractAddress);

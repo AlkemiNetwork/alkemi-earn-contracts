@@ -70,6 +70,7 @@ contract RewardControl is
         address _alkemiEarnVerified,
         address _alkAddress
     ) public {
+        require(_owner != address(0) && _alkemiEarnVerified != address(0) && _alkAddress != address(0),"Inputs cannot be 0x00");
         if (initializationDone == false) {
             initializationDone = true;
             owner = _owner;
