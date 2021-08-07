@@ -54,7 +54,7 @@ contract SafeToken is ErrorReporter {
                 result := not(0) // set result to true
             }
             case 32 {
-                // This is a complaint ERC-20
+                // This is a compliant ERC-20
                 returndatacopy(0, 0, 32)
                 result := mload(0) // Set `result = returndata` of external call
             }

@@ -37,7 +37,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             collateralRatio = Exp({mantissa: defaultCollateralRatio});
             originationFee = Exp({mantissa: defaultOriginationFee});
             liquidationDiscount = Exp({mantissa: defaultLiquidationDiscount});
-            // oracle must be configured via _setOracle
+            // oracle must be configured via _adminFunctions
         }
     }
 
@@ -81,7 +81,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *
      *      struct Balance {
      *        principal = customer total balance with accrued interest after applying the customer's most recent balance-changing action
-     *        interestIndex = the total interestIndex as calculated after applying the customer's most recent balance-changing action
+     *        interestIndex = the accrued interestIndex as calculated after the customer's most recent balance-changing action
      *      }
      */
     struct Balance {
@@ -105,6 +105,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      struct Market {
      *         isSupported = Whether this market is supported or not (not to be confused with the list of collateral assets)
      *         blockNumber = when the other values in this struct were calculated
+     *         interestRateModel = Interest Rate model used for the asset
      *         totalSupply = total amount of this asset supplied (in asset wei)
      *         supplyRateMantissa = the per-block interest rate for supplies of asset as of blockNumber, scaled by 10e18
      *         supplyIndex = the interest index for supplies of asset as of blockNumber; initialized in _supportMarket
@@ -546,8 +547,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     }
 
     /**
-     * @dev Calculates a new supply index based on the prevailing interest rates applied over time
-     *      This is defined as `we multiply the most recent supply index by (1 + blocks times rate)`
+     * @dev Calculates a new interest index based on the prevailing interest rates applied over time
+     *      This is defined as `we multiply the most recent supply/borrow index by (1 + blocks times rate)`
      */
     function calculateInterestIndex(
         uint256 startingInterestIndex,
