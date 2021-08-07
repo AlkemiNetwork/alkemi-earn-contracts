@@ -10,6 +10,8 @@ contract ChainLink {
     bool public paused = false;
     address public wethAddress;
     AggregatorV3Interface public USDETHPriceFeed;
+    uint256 constant expScale = 10**18;
+    uint8 constant eighteen = 18;
 
     /**
      * Sets the initial assets and admin
@@ -114,7 +116,7 @@ contract ChainLink {
     function getAssetPrice(address asset) public view returns (uint256,uint8) {
         // Return 1 * 10^18 for WETH, otherwise return actual price
         if (!paused && asset == wethAddress) {
-            return (1000000000000000000,18);
+            return (expScale,eighteen);
         }
         // Capture the decimals in the ERC20 token
         uint8 assetDecimals = TestTokens(asset).decimals();
