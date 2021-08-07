@@ -548,6 +548,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     /**
      * @dev Calculates a new supply index based on the prevailing interest rates applied over time
      *      This is defined as `we multiply the most recent supply index by (1 + blocks times rate)`
+     * @return Return value is expressed in 1e18 scale
      */
     function calculateInterestIndex(
         uint256 startingInterestIndex,
@@ -598,8 +599,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * @dev Calculates a new balance based on a previous balance and a pair of interest indices
      *      This is defined as: `The user's last balance checkpoint is multiplied by the currentSupplyIndex
      *      value and divided by the user's checkpoint index value`
-     *
-     *      TODO: Is there a way to handle this that is less likely to overflow?
+     * @return Return value is expressed in 1e18 scale
      */
     function calculateBalance(
         uint256 startingBalance,
@@ -624,6 +624,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
 
     /**
      * @dev Gets the price for the amount specified of the given asset.
+     * @return Return value is expressed in a magnified scale per token decimals
      */
     function getPriceForAssetAmount(address asset, uint256 assetAmount)
         internal
@@ -646,6 +647,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * @dev Gets the price for the amount specified of the given asset multiplied by the current
      *      collateral ratio (i.e., assetAmountWei * collateralRatio * oraclePrice = totalValueInEth).
      *      We will group this as `(oraclePrice * collateralRatio) * assetAmountWei`
+     * @return Return value is expressed in a magnified scale per token decimals
      */
     function getPriceForAssetAmountMulCollatRatio(
         address asset,
@@ -676,8 +678,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     /**
      * @dev Calculates the origination fee added to a given borrowAmount
      *      This is simply `(1 + originationFee) * borrowAmount`
-     *
-     *      TODO: Track at what magnitude this fee rounds down to zero?
+     * @return Return value is expressed in 1e18 scale
      */
     function calculateBorrowAmountWithFee(uint256 borrowAmount)
         internal
@@ -711,6 +712,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     /**
      * @dev fetches the price of asset from the PriceOracle and converts it to Exp
      * @param asset asset whose price should be fetched
+     * @return Return value is expressed in a magnified scale per token decimals
      */
     function fetchAssetPrice(address asset)
         internal
@@ -745,6 +747,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * @dev Gets the amount of the specified asset given the specified Eth value
      *      ethValue / oraclePrice = assetAmountWei
      *      If there's no oraclePrice, this returns (Error.DIVISION_BY_ZERO, 0)
+     * @return Return value is expressed in a magnified scale per token decimals
      */
     function getAssetAmountForValue(address asset, Exp ethValue)
         internal
@@ -776,8 +779,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * @param requestedState value to assign to `paused`
      * @param originationFeeMantissa rational collateral ratio, scaled by 1e18. The de-scaled value must be >= 1.1
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
-     *
-     * TODO: Should we add a second arg to verify, like a checksum of `newAdmin` address?
      */
     function _adminFunctions(
         address newPendingAdmin,
@@ -1783,6 +1784,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      any accumulated interest thus far but does NOT actually update anything in
      *      storage, it simply calculates the account liquidity and shortfall with liquidity being
      *      returned as the first Exp, ie (Error, accountLiquidity, accountShortfall).
+     * @return Return values are expressed in 1e18 scale
      */
     function calculateAccountLiquidity(address userAddress)
         internal
@@ -1844,9 +1846,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * @dev Gets ETH values of accumulated supply and borrow balances
      * @param userAddress account for which to sum values
      * @return (error code, sum ETH value of supplies scaled by 10e18, sum ETH value of borrows scaled by 10e18)
-     * TODO: Possibly should add a Min(500, collateralMarkets.length) for extra safety
-     * TODO: To help save gas we could think about using the current Market.interestIndex
-     *       accumulate interest rather than calculating it
      */
     function calculateAccountValuesInternal(address userAddress)
         internal
@@ -2895,6 +2894,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * @dev This should ONLY be called if market is supported. It returns shortfall / [Oracle price for the borrow * (collateralRatio - liquidationDiscount - 1)]
      *      If the market isn't supported, we support liquidation of asset regardless of shortfall because we want borrows of the unsupported asset to be closed.
      *      Note that if collateralRatio = liquidationDiscount + 1, then the denominator will be zero and the function will fail with DIVISION_BY_ZERO.
+     * @return Return values are expressed in 1e18 scale
      */
     function calculateDiscountedRepayToEvenAmount(
         address targetAccount,
@@ -2964,6 +2964,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
 
     /**
      * @dev discountedBorrowDenominatedCollateral = [supplyCurrent / (1 + liquidationDiscount)] * (Oracle price for the collateral / Oracle price for the borrow)
+     * @return Return values are expressed in 1e18 scale
      */
     function calculateDiscountedBorrowDenominatedCollateral(
         Exp memory underwaterAssetPrice,
@@ -3015,6 +3016,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
 
     /**
      * @dev returns closeBorrowAmount_TargetUnderwaterAsset * (1+liquidationDiscount) * priceBorrow/priceCollateral
+     * @return Return values are expressed in 1e18 scale
      */
     function calculateAmountSeize(
         Exp memory underwaterAssetPrice,
@@ -3324,6 +3326,13 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         return uint256(Error.NO_ERROR); // success
     }
 
+    /**
+     * @notice supply `amount` of `asset` (which must be supported) to `admin` in the protocol
+     * @dev add amount of supported asset to admin's account
+     * @param asset The market asset to supply
+     * @param amount The amount to supply
+     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
+     */
     function supplyOriginationFeeAsAdmin(
         address asset,
         address user,
@@ -3431,6 +3440,11 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         rewardControl.refreshAlkBorrowIndex(market, borrower);
     }
 
+    /**
+     * @notice Get supply and borrows for a market
+     * @param asset The market asset to find balances of
+     * @return updated supply and borrows
+     */
     function getMarketBalances(address asset)
         public
         view
