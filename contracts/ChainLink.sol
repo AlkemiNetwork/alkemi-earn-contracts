@@ -1,7 +1,7 @@
 pragma solidity 0.4.24;
 
 import "./AggregatorV3Interface.sol";
-import "./TestTokens.sol";
+import "./EIP20Interface.sol";
 
 contract ChainLink {
     mapping(address => AggregatorV3Interface) internal priceContractMapping;
@@ -10,6 +10,7 @@ contract ChainLink {
     bool public paused = false;
     address public wethAddress;
     AggregatorV3Interface public USDETHPriceFeed;
+    int256 constant tenPowerEight = 10**8;
 
     /**
      * Sets the initial assets and admin
@@ -33,10 +34,10 @@ contract ChainLink {
     /**
      * Event declarations for all the operations of this contract
      */
-    event assetAdded(address assetAddress, address priceFeedContract);
-    event assetRemoved(address assetAddress);
-    event adminChanged(address oldAdmin, address newAdmin);
-    event wethAddressSet(address wethAddress);
+    event assetAdded(address indexed assetAddress, address indexed priceFeedContract);
+    event assetRemoved(address indexed assetAddress);
+    event adminChanged(address indexed oldAdmin, address indexed newAdmin);
+    event wethAddressSet(address indexed wethAddress);
     event USDETHPriceFeedSet(address USDETHPriceFeed);
     event contractPausedOrUnpaused(bool currentStatus);
 
@@ -117,7 +118,7 @@ contract ChainLink {
             return 1000000000000000000;
         }
         // Capture the decimals in the ERC20 token
-        uint8 assetDecimals = TestTokens(asset).decimals();
+        uint8 assetDecimals = EIP20Interface(asset).decimals();
         if (!paused && priceContractMapping[asset] != address(0)) {
             (
                 uint80 roundID,
@@ -141,7 +142,7 @@ contract ChainLink {
                 // If the round is not complete yet, timestamp is 0
                 require(timeStamp > 0, "Round not complete");
                 uint256 returnedPrice = (uint256(price) * uint256(priceUSD)) /
-                    (10**8);
+                    uint256(tenPowerEight);
                 return returnedPrice;
             } else {
                 if (price > 0) {

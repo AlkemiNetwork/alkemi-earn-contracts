@@ -335,15 +335,15 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     /**
      * @dev Event emitted on successful addition of Weth Address
      */
-    event WETHAddressSet(address wethAddress);
+    event WETHAddressSet(address indexed wethAddress);
 
     /**
      * @dev emitted when a supply is received
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
     event SupplyReceived(
-        address account,
-        address asset,
+        address indexed account,
+        address indexed asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -354,8 +354,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
     event SupplyOrgFeeAsAdmin(
-        address account,
-        address asset,
+        address indexed account,
+        address indexed asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -365,8 +365,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: startingBalance - amount - startingBalance = interest accumulated since last change
      */
     event SupplyWithdrawn(
-        address account,
-        address asset,
+        address indexed account,
+        address indexed asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -377,8 +377,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: newBalance - borrowAmountWithFee - startingBalance = interest accumulated since last change
      */
     event BorrowTaken(
-        address account,
-        address asset,
+        address indexed account,
+        address indexed asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 borrowAmountWithFee,
@@ -390,8 +390,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
     event BorrowRepaid(
-        address account,
-        address asset,
+        address indexed account,
+        address indexed asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -411,15 +411,16 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      collateralBalanceAccumulated = collateralBalanceBefore + accumulated interest as of immediately prior to the liquidation
      *      amountSeized = amount of collateral seized by liquidator
      *      collateralBalanceAfter = new stored collateral balance (should equal collateralBalanceAccumulated - amountSeized)
+     *      assetBorrow and assetCollateral are not indexed as indexed addresses in an event is limited to 3
      */
     event BorrowLiquidated(
-        address targetAccount,
+        address indexed targetAccount,
         address assetBorrow,
         uint256 borrowBalanceBefore,
         uint256 borrowBalanceAccumulated,
         uint256 amountRepaid,
         uint256 borrowBalanceAfter,
-        address liquidator,
+        address indexed liquidator,
         address assetCollateral,
         uint256 collateralBalanceBefore,
         uint256 collateralBalanceAccumulated,
@@ -430,22 +431,22 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     /**
      * @dev emitted when pendingAdmin is changed
      */
-    event NewPendingAdmin(address oldPendingAdmin, address newPendingAdmin);
+    event NewPendingAdmin(address indexed oldPendingAdmin, address indexed newPendingAdmin);
 
     /**
      * @dev emitted when pendingAdmin is accepted, which means admin is updated
      */
-    event NewAdmin(address oldAdmin, address newAdmin);
+    event NewAdmin(address indexed oldAdmin, address indexed newAdmin);
 
     /**
      * @dev newOracle - address of new oracle
      */
-    event NewOracle(address oldOracle, address newOracle);
+    event NewOracle(address indexed oldOracle, address indexed newOracle);
 
     /**
      * @dev emitted when new market is supported by admin
      */
-    event SupportedMarket(address asset, address interestRateModel);
+    event SupportedMarket(address indexed asset, address indexed interestRateModel);
 
     /**
      * @dev emitted when risk parameters are changed by admin
@@ -470,23 +471,23 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     /**
      * @dev emitted when market has new interest rate model set
      */
-    event SetMarketInterestRateModel(address asset, address interestRateModel);
+    event SetMarketInterestRateModel(address indexed asset, address indexed interestRateModel);
 
     /**
      * @dev emitted when admin withdraws equity
      * Note that `equityAvailableBefore` indicates equity before `amount` was removed.
      */
     event EquityWithdrawn(
-        address asset,
+        address indexed asset,
         uint256 equityAvailableBefore,
         uint256 amount,
-        address owner
+        address indexed owner
     );
 
     /**
      * @dev emitted when a supported market is suspended by admin
      */
-    event SuspendedMarket(address asset);
+    event SuspendedMarket(address indexed asset);
 
     /**
      * @dev emitted when admin either pauses or resumes the contract; newState is the resulting state
@@ -1745,13 +1746,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                 return fail(err, FailureInfo.WITHDRAW_TRANSFER_OUT_FAILED);
             }
         } else {
-            uint256 withdrawalerr = withdrawEther(
+            withdrawEther(
                 msg.sender,
                 localResults.withdrawAmount
             ); // send Ether to user
-            if (withdrawalerr != 0) {
-                return uint256(withdrawalerr); // failure
-            }
         }
 
         // Save market updates
@@ -2766,7 +2764,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
         if (assetBorrow != wethAddress) {
             // WETH is supplied to AlkemiEarnPublic contract in case of ETH automatically
-            revertEtherToUser(msg.sender, msg.value);
+            revertEtherToUser(localResults.liquidator, msg.value);
             err = doTransferIn(
                 assetBorrow,
                 localResults.liquidator,
@@ -2790,7 +2788,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                     );
                 }
                 if (supplyError != 0) {
-                    revertEtherToUser(msg.sender, msg.value);
+                    revertEtherToUser(localResults.liquidator, msg.value);
                     return
                         fail(
                             Error.WETH_ADDRESS_NOT_SET_ERROR,
@@ -2798,7 +2796,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                         );
                 }
             } else {
-                revertEtherToUser(msg.sender, msg.value);
+                revertEtherToUser(localResults.liquidator, msg.value);
                 return
                     fail(
                         Error.ETHER_AMOUNT_MISMATCH_ERROR,

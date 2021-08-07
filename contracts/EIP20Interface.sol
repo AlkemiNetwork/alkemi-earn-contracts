@@ -14,6 +14,8 @@ contract EIP20Interface {
     */
     // total amount of tokens
     uint256 public totalSupply;
+    // token decimals
+    uint8 public decimals; // maximum is 18 decimals
 
     /**
      * @param _owner The address from which the balance will be retrieved
