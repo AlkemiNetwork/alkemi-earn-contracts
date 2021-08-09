@@ -41,7 +41,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, _tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000],
+				[accounts[1], accounts[0], false, 1000000000000000,0],
 				{ from: root }
 			);
 			assert.noError(errorCode0);
@@ -65,7 +65,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, _tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000],
+				[accounts[1], accounts[0], false, 1000000000000000,0],
 				{ from: root }
 			);
 			assert.noError(errorCode0);
@@ -73,7 +73,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode1, _tx1, _error1] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[addressZero, accounts[0], false, 1000000000000000],
+				[addressZero, accounts[0], false, 1000000000000000,0],
 				{ from: root }
 			);
 			assert.noError(errorCode1);
@@ -99,7 +99,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode, _tx, _error] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000],
+				[accounts[1], accounts[0], false, 1000000000000000,0],
 				{ from: accounts[1] }
 			);
 
@@ -116,7 +116,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [_errorCode, tx, _error] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000],
+				[accounts[1], accounts[0], false, 1000000000000000,0],
 				{ from: root }
 			);
 
@@ -139,7 +139,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, _tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000],
+				[accounts[1], accounts[0], false, 1000000000000000,0],
 				{ from: root }
 			);
 			assert.noError(errorCode0);
@@ -177,7 +177,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, _tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000],
+				[accounts[1], accounts[0], false, 1000000000000000,0],
 				{ from: root }
 			);
 			assert.noError(errorCode0);
@@ -244,7 +244,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, _tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[root, priceOracle._address, false, 1000000000000000],
+				[root, priceOracle._address, false, 1000000000000000,0],
 				{ from: root }
 			);
 
@@ -266,7 +266,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode, _tx, _error] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[root, priceOracle._address, false, 1000000000000000],
+				[root, priceOracle._address, false, 1000000000000000,0],
 				{ from: accounts[1] }
 			);
 
@@ -284,7 +284,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [_errorCode, tx, _error] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[root, priceOracle._address, false, 1000000000000000],
+				[root, priceOracle._address, false, 1000000000000000,0],
 				{ from: root }
 			);
 
@@ -556,7 +556,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			});
 			const priceOracle = await PriceOracle.new().send({ from: root });
 			await alkemiEarnVerified.methods
-				._adminFunctions(root, priceOracle._address, false, 1000000000000000)
+				._adminFunctions(root, priceOracle._address, false, 1000000000000000,0)
 				.send({ from: root });
 			const OMG = await EIP20.new(
 				(10 ** 18).toString(),
@@ -587,7 +587,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			});
 			const priceOracle = await PriceOracle.new().send({ from: root });
 			await alkemiEarnVerified.methods
-				._adminFunctions(root, priceOracle._address, false, 1000000000000000)
+				._adminFunctions(root, priceOracle._address, false, 1000000000000000,0)
 				.send({ from: root });
 			const OMG = await EIP20.new(
 				(10 ** 18).toString(),
@@ -634,7 +634,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode, _tx, _error] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[0], accounts[0], true, 1000000000000000],
+				[accounts[0], accounts[0], true, 1000000000000000,0],
 				{ from: accounts[0], gas: 1000000 }
 			);
 
@@ -659,7 +659,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[0], accounts[0], true, 1000000000000000],
+				[accounts[0], accounts[0], true, 1000000000000000,0],
 				{ from: root, gas: 1000000 }
 			);
 			assert.noError(errorCode0);
@@ -672,7 +672,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode1, tx1, _error1] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[0], accounts[0], false, 1000000000000000],
+				[accounts[0], accounts[0], false, 1000000000000000,0],
 				{ from: root, gas: 1000000 }
 			);
 			assert.noError(errorCode1);
@@ -690,7 +690,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode, tx, _error] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[0], accounts[0], false, 1000000000000000],
+				[accounts[0], accounts[0], false, 1000000000000000,0],
 				{ from: root, gas: 1000000 }
 			);
 			assert.noError(errorCode);

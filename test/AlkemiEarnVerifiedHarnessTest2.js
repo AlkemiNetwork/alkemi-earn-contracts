@@ -528,7 +528,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 			});
 
 			await alkemiEarnVerifiedHarness.methods
-				._adminFunctions(root, root, true, 1000000000000000)
+				._adminFunctions(root, root, true, 1000000000000000,0)
 				.send({ from: root });
 
 			const result = await alkemiEarnVerifiedHarness.methods
@@ -720,7 +720,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			// Set origination fee to 1000%
 			await alkemiEarnVerifiedHarness.methods
-				._adminFunctions(root, root, false, getExpMantissa(10).toString(10))
+				._adminFunctions(root, root, false, getExpMantissa(10).toString(10),0)
 				.send({ from: root });
 
 			// Borrow max uint, which will overflow with origination fee
@@ -824,7 +824,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			// Set origination fee to 0%
 			await alkemiEarnVerifiedHarness.methods
-				._adminFunctions(root, root, false, getExpMantissa(0))
+				._adminFunctions(root, root, false, getExpMantissa(0),0)
 				.send({ from: root });
 
 			// Set price of OMG to 10:1
@@ -880,7 +880,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			// Set origination fee to 0%
 			await alkemiEarnVerifiedHarness.methods
-				._adminFunctions(root, root, false, getExpMantissa(0))
+				._adminFunctions(root, root, false, getExpMantissa(0),0)
 				.send({ from: root });
 
 			// Set price of OMG to 1:1
@@ -954,7 +954,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			// Set origination fee to 0%
 			await alkemiEarnVerifiedHarness.methods
-				._adminFunctions(root, root, false, getExpMantissa(0))
+				._adminFunctions(root, root, false, getExpMantissa(0),0)
 				.send({ from: root });
 
 			// Set price of OMG to 1:1
@@ -1030,7 +1030,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			// Set origination fee to 0%
 			await alkemiEarnVerifiedHarness.methods
-				._adminFunctions(root, root, false, getExpMantissa(0))
+				._adminFunctions(root, root, false, getExpMantissa(0),0)
 				.send({ from: root });
 
 			// Set price of OMG to 1:1
