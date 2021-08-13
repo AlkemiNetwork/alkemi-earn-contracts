@@ -145,6 +145,27 @@ contract RewardControl is
     }
 
     /**
+     * @notice Refresh market liquidity
+     * @return total liquidity after refresh market
+     */
+    function refreshMarketLiquidity() internal view returns (Exp, Exp[]) {
+      Exp memory totalLiquidity = Exp({mantissa: 0});
+      Exp[] memory marketTotalLiquidity = new Exp[](allMarkets.length);
+      for (uint256 i = 0; i < allMarkets.length; i++) {
+          Exp memory currentMarketTotalLiquidity = Exp({
+              mantissa: add_(
+                  getMarketTotalSupply(allMarkets[i]),
+                  getMarketTotalBorrows(allMarkets[i])
+              )
+          });
+          marketTotalLiquidity[i] = currentMarketTotalLiquidity;
+          totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
+      }
+
+      return (totalLiquidity, marketTotalLiquidity);
+    }
+
+    /**
      * Private functions
      */
 
@@ -152,34 +173,13 @@ contract RewardControl is
      * @notice Recalculate and update ALK speeds for all markets
      */
     function refreshAlkSpeeds() internal {
-        Exp memory totalLiquidity = Exp({mantissa: 0});
-        Exp[] memory marketTotalLiquidity = new Exp[](allMarkets.length);
-        address currentMarket;
+        (Exp memory totalLiquidity, Exp[] memory marketTotalLiquidity) = refreshMarketLiquidity();
         for (uint256 i = 0; i < allMarkets.length; i++) {
-            currentMarket = allMarkets[i];
-            uint256 currentMarketTotalSupply = getMarketTotalSupply(
-                currentMarket
-            );
-            uint256 currentMarketTotalBorrows = getMarketTotalBorrows(
-                currentMarket
-            );
-            Exp memory currentMarketTotalLiquidity = Exp({
-                mantissa: add_(
-                    currentMarketTotalSupply,
-                    currentMarketTotalBorrows
-                )
-            });
-            marketTotalLiquidity[i] = currentMarketTotalLiquidity;
-            totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
-        }
-
-        for (uint256 j = 0; j < allMarkets.length; j++) {
-            currentMarket = allMarkets[j];
             uint256 newSpeed = totalLiquidity.mantissa > 0
-                ? mul_(alkRate, div_(marketTotalLiquidity[j], totalLiquidity))
+                ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity))
                 : 0;
-            alkSpeeds[currentMarket] = newSpeed;
-            emit AlkSpeedUpdated(currentMarket, newSpeed);
+            alkSpeeds[allMarkets[i]] = newSpeed;
+            emit AlkSpeedUpdated(allMarkets[i], newSpeed);
         }
     }
 
@@ -558,21 +558,9 @@ contract RewardControl is
      * @param user the supplier/borrower
      */
     function getAlkRewards(address user) external view returns (uint) {
-        // Refresh ALK speeds
-        Exp memory totalLiquidity = Exp({mantissa: 0});
-        Exp[] memory marketTotalLiquidity = new Exp[](allMarkets.length);
+        (Exp memory totalLiquidity, Exp[] memory marketTotalLiquidity) = refreshMarketLiquidity();
         uint256 alkRewards = alkAccrued[user];
         for (uint256 i = 0; i < allMarkets.length; i++) {
-            Exp memory currentMarketTotalLiquidity = Exp({
-                mantissa: add_(
-                    getMarketTotalSupply(allMarkets[i]),
-                    getMarketTotalBorrows(allMarkets[i])
-                )
-            });
-            marketTotalLiquidity[i] = currentMarketTotalLiquidity;
-            totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
-        }
-        for (i = 0; i < allMarkets.length; i++) {
             alkRewards = add_(alkRewards,add_(getSupplyAlkRewards(totalLiquidity,marketTotalLiquidity,user,i),getBorrowAlkRewards(totalLiquidity,marketTotalLiquidity,user,i)));
         }
         return alkRewards;
