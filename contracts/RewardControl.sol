@@ -69,8 +69,7 @@ contract RewardControl is
     function initializer(
         address _owner,
         address _alkemiEarnVerified,
-        address _alkAddress,
-        ChainLink _priceOracle
+        address _alkAddress
     ) public {
         if (initializationDone == false) {
             initializationDone = true;
@@ -79,7 +78,6 @@ contract RewardControl is
             alkAddress = _alkAddress;
             alkRate = 4161910200000000000;
             // 8323820396000000000 divided by 2 (for lending or borrowing)
-            priceOracle = _priceOracle;
         }
     }
 
@@ -163,10 +161,10 @@ contract RewardControl is
             // We multiply the total market supply and borrows by their ETH prices to account for token prices while allocating rewards
             uint256 currentMarketTotalSupply = mul_(getMarketTotalSupply(
                 currentMarket
-            ),priceOracle.getAssetPrice(currentMarket));
+            ),alkemiEarnVerified.assetPrices(currentMarket));
             uint256 currentMarketTotalBorrows = mul_(getMarketTotalBorrows(
                 currentMarket
-            ),priceOracle.getAssetPrice(currentMarket));
+            ),alkemiEarnVerified.assetPrices(currentMarket));
             Exp memory currentMarketTotalLiquidity = Exp({
                 mantissa: add_(
                     currentMarketTotalSupply,
@@ -555,14 +553,6 @@ contract RewardControl is
      */
     function setAlkRate(uint256 _alkRate) external onlyOwner {
         alkRate = _alkRate;
-    }
-
-    /**
-     * @notice Set Price Feed contract address
-     * @param _priceOracle The new chainlink price feed address
-     */
-    function setpriceOracle(ChainLink _priceOracle) external onlyOwner {
-        priceOracle = _priceOracle;
     }
 
     /**

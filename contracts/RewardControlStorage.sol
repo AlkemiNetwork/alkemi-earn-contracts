@@ -1,7 +1,6 @@
 pragma solidity 0.4.24;
 
 import "./AlkemiEarnVerified.sol";
-import "./ChainLink.sol";
 
 contract RewardControlStorage {
     struct MarketState {
@@ -52,7 +51,4 @@ contract RewardControlStorage {
 
     // @notice The ALK token address
     address public alkAddress;
-
-    // @notice ChainLink price feed
-    ChainLink public priceOracle;
 }
