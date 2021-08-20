@@ -4,7 +4,6 @@ import "./RewardControlStorage.sol";
 import "./RewardControlInterface.sol";
 import "./ExponentialNoError.sol";
 import "./EIP20Interface.sol";
-import "./ChainLink.sol";
 
 contract RewardControl is
     RewardControlStorage,
