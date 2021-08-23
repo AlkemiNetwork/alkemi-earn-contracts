@@ -713,7 +713,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         if (priceOracle == address(0)) {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
-        if (priceOracle.paused) {
+        if (priceOracle.paused()) {
             return (Error.MISSING_ASSET_PRICE, Exp({mantissa: 0}));
         }
         (uint256 priceMantissa, uint8 assetDecimals) = priceOracle.getAssetPrice(asset);
@@ -1152,11 +1152,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         require(msg.sender == admin,"EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK");
 
         // Check that amount is less than cash (from ERC-20 of self) plus borrows minus supply.
-        uint256 cash = getCash(asset);
         // Get supply and borrows with interest accrued till the latest block
         (uint256 supplyWithInterest, uint256 borrowWithInterest) = getMarketBalances(asset);
         (Error err0, uint256 equity) = addThenSub(
-            cash,
+            getCash(asset),
             borrowWithInterest,
             supplyWithInterest
         );
@@ -1195,16 +1194,13 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             }
         }
 
-        (, uint256 updatedCash) = sub(cash,amount);
-
         (, markets[asset].supplyRateMantissa) = markets[asset]
         .interestRateModel
-        .getSupplyRate(asset, updatedCash, markets[asset].totalSupply);
+        .getSupplyRate(asset, getCash(asset) - amount, markets[asset].totalSupply);
 
         (, markets[asset].borrowRateMantissa) = markets[asset]
         .interestRateModel
-        .getBorrowRate(asset, updatedCash, markets[asset].totalBorrows);
-
+        .getBorrowRate(asset, getCash(asset) - amount, markets[asset].totalBorrows);
         //event EquityWithdrawn(address asset, uint equityAvailableBefore, uint amount, address owner)
         emit EquityWithdrawn(asset, equity, amount, admin);
 

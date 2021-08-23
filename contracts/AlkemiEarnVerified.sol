@@ -834,7 +834,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
         
-        if (priceOracle.paused) {
+        if (priceOracle.paused()) {
             return (Error.MISSING_ASSET_PRICE, Exp({mantissa: 0}));
         }
 
@@ -1162,8 +1162,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         // Input validations
         require(collateralRatioMantissa >= minimumCollateralRatioMantissa && liquidationDiscountMantissa <= maximumLiquidationDiscountMantissa,"Liquidation discount is more than max discount or collateral ratio is less than min ratio");
 
-        minimumCollateralRatioMantissa = _minimumCollateralRatioMantissa;
-        maximumLiquidationDiscountMantissa = _maximumLiquidationDiscountMantissa;
         Exp memory newCollateralRatio = Exp({
             mantissa: collateralRatioMantissa
         });
@@ -1279,7 +1277,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         // Get supply and borrows with interest accrued till the latest block
         (uint256 supplyWithInterest, uint256 borrowWithInterest) = getMarketBalances(asset);
         (Error err0, uint256 equity) = addThenSub(
-            cash,
+            getCash(asset),
             borrowWithInterest,
             supplyWithInterest
         );
@@ -2906,7 +2904,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         } else {
             if (msg.value == requestedAmountClose) {
                 uint256 supplyError = supplyEther(
-                    localResults.liquidator,
                     localResults.closeBorrowAmount_TargetUnderwaterAsset
                 );
                 //Repay excess funds
