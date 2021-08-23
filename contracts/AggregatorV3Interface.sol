@@ -1,4 +1,4 @@
-pragma solidity >=0.4.24;
+pragma solidity 0.4.24;
 
 interface AggregatorV3Interface {
     function decimals() external view returns (uint8);

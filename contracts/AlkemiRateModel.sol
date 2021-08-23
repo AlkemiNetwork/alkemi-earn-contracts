@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 import "./Exponential.sol";
 
@@ -9,7 +9,8 @@ import "./Exponential.sol";
  */
 
 contract AlkemiRateModel is Exponential {
-    uint256 constant blocksPerYear = 2102400;
+    // Assuming avg. block time of 13.3 seconds; can be updated using changeBlocksPerYear() by the admin
+    uint256 constant blocksPerYear = 2371128;
 
     address public owner;
     address public newOwner;
@@ -30,6 +31,8 @@ contract AlkemiRateModel is Exponential {
 
     event OwnerUpdate(address indexed owner, address indexed newOwner);
 
+    event blocksPerYearUpdated(uint256 oldBlocksPerYear, uint256 newBlocksPerYear);
+
     Exp internal SpreadLow;
     Exp internal BreakPointLow;
     Exp internal ReserveLow;
@@ -37,7 +40,7 @@ contract AlkemiRateModel is Exponential {
     Exp internal SpreadMid;
     Exp internal BreakPointHigh;
     Exp internal ReserveHigh;
-    ExpNegative internal SpreadHigh;
+    Exp internal SpreadHigh;
 
     Exp internal MinRateActual;
     Exp internal HealthyMinURActual;
@@ -56,14 +59,18 @@ contract AlkemiRateModel is Exponential {
         uint256 MaxRate
     ) public {
         // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
+        // Checks for reasonable interest rate parameters
+        require(MinRate < MaxRate,"Min Rate should be lesser than Max Rate");
+        require(HealthyMinUR < HealthyMaxUR,"HealthyMinUR should be lesser than HealthyMaxUR");
+        require(HealthyMinRate < HealthyMaxRate,"HealthyMinRate should be lesser than HealthyMaxRate");
         owner = msg.sender;
         contractName = _contractName;
         Exp memory temp1;
         Exp memory temp2;
-        Exp memory HunderedMantissa;
+        Exp memory HundredMantissa;
         Error err;
 
-        (err, HunderedMantissa) = getExp(100, 1);
+        (err, HundredMantissa) = getExp(100, 1);
 
         (err, MinRateActual) = getExp(MinRate, 100);
         (err, HealthyMinURActual) = getExp(HealthyMinUR, 100);
@@ -95,6 +102,7 @@ contract AlkemiRateModel is Exponential {
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, SpreadMid) = subExp(HealthyMinRateActual, temp1);
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(SpreadMid.mantissa >= 0,"Spread Mid cannot be a negative number");
 
         // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
         (err, temp1) = subExp(MaxRateActual, HealthyMaxRateActual);
@@ -104,10 +112,11 @@ contract AlkemiRateModel is Exponential {
         (err, ReserveHigh) = divExp(temp1, temp2);
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
-        // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
+        // SpreadHigh = (ReserveHigh * BreakPointHigh) - HealthyMaxRate;
         (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, SpreadHigh) = subExpNegative(HealthyMaxRateActual, temp2);
+        (err, SpreadHigh) = subExp(temp2,HealthyMaxRateActual);
+        require(SpreadHigh.mantissa >=0,"Spread High cannot be a negative number");
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
     }
 
@@ -121,13 +130,17 @@ contract AlkemiRateModel is Exponential {
         uint256 MaxRate
     ) public onlyOwner {
         // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
+        // Checks for reasonable interest rate parameters
+        require(MinRate < MaxRate,"Min Rate should be lesser than Max Rate");
+        require(HealthyMinUR < HealthyMaxUR,"HealthyMinUR should be lesser than HealthyMaxUR");
+        require(HealthyMinRate < HealthyMaxRate,"HealthyMinRate should be lesser than HealthyMaxRate");
         contractName = _contractName;
         Exp memory temp1;
         Exp memory temp2;
-        Exp memory HunderedMantissa;
+        Exp memory HundredMantissa;
         Error err;
 
-        (err, HunderedMantissa) = getExp(100, 1);
+        (err, HundredMantissa) = getExp(100, 1);
 
         (err, MinRateActual) = getExp(MinRate, 100);
         (err, HealthyMinURActual) = getExp(HealthyMinUR, 100);
@@ -159,7 +172,7 @@ contract AlkemiRateModel is Exponential {
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, SpreadMid) = subExp(HealthyMinRateActual, temp1);
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-
+        require(SpreadMid.mantissa >= 0,"Spread Mid cannot be a negative number");
         // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
         (err, temp1) = subExp(MaxRateActual, HealthyMaxRateActual);
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
@@ -168,11 +181,18 @@ contract AlkemiRateModel is Exponential {
         (err, ReserveHigh) = divExp(temp1, temp2);
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
-        // SpreadHigh = HealthyMaxRate - (ReserveHigh * BreakPointHigh);
+        // SpreadHigh = (ReserveHigh * BreakPointHigh) - HealthyMaxRate;
         (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, SpreadHigh) = subExpNegative(HealthyMaxRateActual, temp2);
+        (err, SpreadHigh) = subExp(temp2,HealthyMaxRateActual);
+        require(SpreadHigh.mantissa >=0,"Spread High cannot be a negative number");
         assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+    }
+
+    function changeBlocksPerYear(uint256 _blocksPerYear) external onlyOwner {
+        uint256 oldBlocksPerYear = blocksPerYear;
+        blocksPerYear = _blocksPerYear;
+        emit blocksPerYearUpdated(oldBlocksPerYear, _blocksPerYear);
     }
 
     function transferOwnership(address newOwner_) external onlyOwner {
@@ -191,7 +211,7 @@ contract AlkemiRateModel is Exponential {
     }
 
     /*
-     * @dev Calculates the utilization rate (borrows / (cash + borrows)) as an Exp
+     * @dev Calculates the utilization rate (borrows / (cash + borrows)) as an Exp in 1e18 scale
      */
     function getUtilizationRate(uint256 cash, uint256 borrows)
         internal
@@ -247,7 +267,7 @@ contract AlkemiRateModel is Exponential {
          *  Borrow Rate
          *  0 < UR < 20% :      SpreadLow + UR * ReserveLow
          *  20% <= UR <= 80% :  SpreadMid + UR * ReserveMid
-         *  80% < UR :          SpreadHigh + UR * ReserveHigh
+         *  80% < UR :          UR * ReserveHigh - SpreadHigh
          */
 
         Error err;
@@ -265,7 +285,8 @@ contract AlkemiRateModel is Exponential {
         } else if (utilizationRate.mantissa > BreakPointHigh.mantissa) {
             (err, tempScaled) = mulExp(utilizationRate, ReserveHigh);
             assert(err == Error.NO_ERROR);
-            (err, tempScaled2) = addExpNegative(tempScaled, SpreadHigh);
+            // Integer Underflow is handled in sub() function under CarefulMath
+            (err, tempScaled2) = subExp(tempScaled, SpreadHigh);
             annualBorrowRateScaled = tempScaled2.mantissa;
             assert(err == Error.NO_ERROR);
         } else if (
@@ -282,7 +303,7 @@ contract AlkemiRateModel is Exponential {
         return (
             IRError.NO_ERROR,
             utilizationRate,
-            Exp({mantissa: annualBorrowRateScaled / 100})
+            Exp({mantissa: annualBorrowRateScaled})
         );
     }
 
@@ -327,28 +348,30 @@ contract AlkemiRateModel is Exponential {
         assert(err1 == Error.NO_ERROR);
 
         // Next multiply this product times the borrow rate
-        (err1, temp1) = mulExp(utilizationRate0, annualBorrowRate);
+        // Borrow rate should be divided by 1e2 to get product at 1e18 scale
+        (err1, temp1) = mulExp(utilizationRate0, Exp({mantissa: annualBorrowRate.mantissa / 100}));
         // If the product of the mantissas for mulExp are both less than 2^256,
-        // then this operation will never fail. TODO: Verify.
+        // then this operation will never fail.
         // We know that borrow rate is in the interval [0, 2.25e17] from above.
         // We know that utilizationRate1 is in the interval [0, 9e21] from directly above.
         // As such, the multiplication is in the interval of [0, 2.025e39]. This is strictly
         // less than 2^256 (which is about 10e77).
         assert(err1 == Error.NO_ERROR);
 
-        (err1, temp1) = mulExp(temp1, oneMinusSpreadBasisPoints);
+        // oneMinusSpreadBasisPoints i.e.,(1 - SpreadLow) should be divided by 1e2 to get product at 1e18 scale
+        (err1, temp1) = mulExp(temp1, Exp({mantissa: oneMinusSpreadBasisPoints.mantissa / 100}));
         assert(err1 == Error.NO_ERROR);
 
         // And then divide down by the spread's denominator (basis points divisor)
         // as well as by blocks per year.
         (Error err4, Exp memory supplyRate) = divScalar(
             temp1,
-            10000 * blocksPerYear
+            blocksPerYear
         ); // basis points * blocks per year
         // divScalar only fails when divisor is zero. This is clearly not the case.
         assert(err4 == Error.NO_ERROR);
 
-        return (uint256(IRError.NO_ERROR), supplyRate.mantissa);
+        return (uint256(IRError.NO_ERROR), supplyRate.mantissa / 100);
     }
 
     /**
@@ -385,6 +408,6 @@ contract AlkemiRateModel is Exponential {
         assert(err1 == Error.NO_ERROR);
 
         // Note: mantissa is the rate scaled 1e18, which matches the expected result
-        return (uint256(IRError.NO_ERROR), borrowRate.mantissa);
+        return (uint256(IRError.NO_ERROR), borrowRate.mantissa / 100);
     }
 }

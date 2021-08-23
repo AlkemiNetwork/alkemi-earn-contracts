@@ -1235,9 +1235,9 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         let speed = await rewardControl.methods.alkSpeeds(market).call();
         let alkSupplierIndex = await rewardControl.methods.alkSupplierIndex(market, supplier).call();
         let alkAccrued = await rewardControl.methods.alkAccrued(supplier).call();
-        console.log(`${label}: actual speed = ${speed}`);
-        console.log(`${label}: ALK supplier index = ${alkSupplierIndex}`);
-        console.log(`${label}: ALK accrued  = ${alkAccrued}`);
+        // console.log(`${label}: actual speed = ${speed}`);
+        // console.log(`${label}: ALK supplier index = ${alkSupplierIndex}`);
+        // console.log(`${label}: ALK accrued  = ${alkAccrued}`);
         assert.equal(speed.toString(), expectedAlkSpeed, label);
         assert.equal(alkSupplierIndex.toString(), expectedSupplierIndex, label);
         assert.equal(alkAccrued.toString(), expectedAlkAccrued, label);
@@ -1247,9 +1247,9 @@ contract('RewardControl interface test', function ([root, ...accounts]) {
         let speed = await rewardControl.methods.alkSpeeds(market).call();
         let alkBorrowerIndex = await rewardControl.methods.alkBorrowerIndex(market, borrower).call();
         let alkAccrued = await rewardControl.methods.alkAccrued(borrower).call();
-        console.log(`${label}: actual speed = ${speed}`);
-        console.log(`${label}: ALK borrower index = ${alkBorrowerIndex}`);
-        console.log(`${label}: ALK accrued  = ${alkAccrued}`);
+        // console.log(`${label}: actual speed = ${speed}`);
+        // console.log(`${label}: ALK borrower index = ${alkBorrowerIndex}`);
+        // console.log(`${label}: ALK accrued  = ${alkAccrued}`);
         assert.equal(speed.toString(), expectedAlkSpeed, label);
         assert.equal(alkBorrowerIndex.toString(), expectedBorrowerIndex, label);
         assert.equal(alkAccrued.toString(), expectedAlkAccrued, label);
