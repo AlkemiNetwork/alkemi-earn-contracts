@@ -494,6 +494,7 @@ contract RewardControl is
      */
     function addMarket(address market) external onlyOwner {
         require(!allMarketsIndex[market], "Market already exists");
+        require(allMarkets.length < uint256(MAXIMUM_NUMBER_OF_MARKETS),"Exceeding the max number of markets allowed");
         allMarketsIndex[market] = true;
         allMarkets.push(market);
         emit MarketAdded(market, allMarkets.length);
