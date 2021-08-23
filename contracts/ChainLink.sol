@@ -10,7 +10,7 @@ contract ChainLink {
     address public wethAddress;
 
     /**
-     * Sets the initial assets and admin
+     * Sets the admin
      * Add assets and set Weth Address using their own functions
      */
     constructor() public {

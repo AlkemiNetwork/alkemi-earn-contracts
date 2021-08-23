@@ -75,7 +75,7 @@ contract RewardControl is
             owner = _owner;
             alkemiEarnVerified = AlkemiEarnVerified(_alkemiEarnVerified);
             alkAddress = _alkAddress;
-            alkRate = 4161910200000000000;
+            alkRate = 4161910198000000000;
             // 8323820396000000000 divided by 2 (for lending or borrowing)
         }
     }
