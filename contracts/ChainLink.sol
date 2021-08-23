@@ -107,6 +107,10 @@ contract ChainLink {
             ) = priceContractMapping[asset].latestRoundData();
             // If the round is not complete yet, timestamp is 0
             require(timeStamp > 0, "Round not complete");
+            // If the price data was not refreshed for the past 2 days, prices are considered stale
+            require(timeStamp > (now - 2 days),"Stale data");
+            // If answeredInRound is less than roundID, prices are considered stale
+            require(answeredInRound >= roundID,"Stale Data");
             if (price > 0) {
                 // Magnify the result based on decimals
                 return (uint256(price) *
