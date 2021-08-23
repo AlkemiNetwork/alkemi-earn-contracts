@@ -318,8 +318,8 @@ async function assertFailure(world, message) {
 		);
 	} else if (world.lastError.success) {
 		// Add some global debug logs so we can trace down the trx
-		console.log(["Debug Log, last transaction", world.lastTx]);
-		console.log(["Debug Log, last logs", world.lastTx.logs]);
+		// console.log(["Debug Log, last transaction", world.lastTx]);
+		// console.log(["Debug Log, last logs", world.lastTx.logs]);
 
 		fail(
 			`Expected failure with "${message}", got success (${world.lastTx.tx} - ${world.lastResult})`
@@ -349,12 +349,12 @@ async function assertSuccess(world) {
 	} else if (world.lastError.success) {
 		return world;
 	} else if (world.lastError.thrownError) {
-		console.log(["Debug Log, actions: ", world.actions]);
+		// console.log(["Debug Log, actions: ", world.actions]);
 		fail(
 			`Expected successful contract execution, got thrown error: ${world.lastError.thrownError}`
 		);
 	} else {
-		console.log(["Debug Log, actions: ", world.actions]);
+		// console.log(["Debug Log, actions: ", world.actions]);
 		fail(
 			`Expected successful contract execution, got error: ${printError(
 				world.lastError

@@ -34,7 +34,7 @@ contract("Scenarios", function (accounts) {
 
                 finalWorld = await processEvents(world, events);
 
-                console.log(["Final world", finalWorld, finalWorld.actions]);
+                // console.log(["Final world", finalWorld, finalWorld.actions]);
             });
         } else {
             it.skip("scenario: " + name, async () => {
