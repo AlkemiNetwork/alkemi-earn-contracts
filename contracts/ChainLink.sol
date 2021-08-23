@@ -1,11 +1,10 @@
 pragma solidity 0.4.24;
 
 import "./AggregatorV3Interface.sol";
-import "./TestTokens.sol";
+import "./EIP20Interface.sol";
 
 contract ChainLink {
     mapping(address => AggregatorV3Interface) internal priceContractMapping;
-    mapping(address => bool) public assetsWithPriceFeedBasedOnUSD;
     address public admin;
     bool public paused = false;
     address public wethAddress;
@@ -14,7 +13,7 @@ contract ChainLink {
     uint8 constant eighteen = 18;
 
     /**
-     * Sets the initial assets and admin
+     * Sets the admin
      * Add assets and set Weth Address using their own functions
      */
     constructor() public {
@@ -39,7 +38,6 @@ contract ChainLink {
     event assetRemoved(address assetAddress);
     event adminChanged(address oldAdmin, address newAdmin);
     event wethAddressSet(address wethAddress);
-    event USDETHPriceFeedSet(address USDETHPriceFeed);
     event contractPausedOrUnpaused(bool currentStatus);
 
     /**
@@ -47,18 +45,11 @@ contract ChainLink {
      */
     function addAsset(
         address assetAddress,
-        address priceFeedContract,
-        bool _assetWithPriceFeedBasedOnUSD
+        address priceFeedContract
     ) public onlyAdmin {
-        if (_assetWithPriceFeedBasedOnUSD) {
-            require(USDETHPriceFeed != address(0), "USDETHPriceFeed not set");
-        }
         priceContractMapping[assetAddress] = AggregatorV3Interface(
             priceFeedContract
         );
-        assetsWithPriceFeedBasedOnUSD[
-            assetAddress
-        ] = _assetWithPriceFeedBasedOnUSD;
         emit assetAdded(assetAddress, priceFeedContract);
     }
 
@@ -87,17 +78,6 @@ contract ChainLink {
     }
 
     /**
-     * Allows admin to set the weth address
-     */
-    function setUSDETHPriceFeedAddress(AggregatorV3Interface _USDETHPriceFeed)
-        public
-        onlyAdmin
-    {
-        USDETHPriceFeed = _USDETHPriceFeed;
-        emit USDETHPriceFeedSet(_USDETHPriceFeed);
-    }
-
-    /**
      * Allows admin to pause and unpause the contract
      */
     function togglePause() public onlyAdmin {
@@ -111,7 +91,7 @@ contract ChainLink {
     }
 
     /**
-     * Returns the latest price
+     * Returns the latest price scaled to 1e18 scale
      */
     function getAssetPrice(address asset) public view returns (uint256,uint8) {
         // Return 1 * 10^18 for WETH, otherwise return actual price
@@ -119,7 +99,7 @@ contract ChainLink {
             return (expScale,eighteen);
         }
         // Capture the decimals in the ERC20 token
-        uint8 assetDecimals = TestTokens(asset).decimals();
+        uint8 assetDecimals = EIP20Interface(asset).decimals();
         if (!paused && priceContractMapping[asset] != address(0)) {
             (
                 uint80 roundID,
@@ -130,28 +110,15 @@ contract ChainLink {
             ) = priceContractMapping[asset].latestRoundData();
             // If the round is not complete yet, timestamp is 0
             require(timeStamp > 0, "Round not complete");
-            // Calculate USD/ETH price for contracts using USD based price feed
-            if (assetsWithPriceFeedBasedOnUSD[asset]) {
-                int256 priceUSD;
-                (
-                    roundID,
-                    priceUSD,
-                    startedAt,
-                    timeStamp,
-                    answeredInRound
-                ) = USDETHPriceFeed.latestRoundData();
-                // If the round is not complete yet, timestamp is 0
-                require(timeStamp > 0, "Round not complete");
-                uint256 returnedPrice = (uint256(price) * uint256(priceUSD)) /
-                    (10**8);
-                return (returnedPrice,assetDecimals);
+            // If the price data was not refreshed for the past 2 days, prices are considered stale
+            require(timeStamp > (now - 2 days),"Stale data");
+            // If answeredInRound is less than roundID, prices are considered stale
+            require(answeredInRound >= roundID,"Stale Data");
+            if (price > 0) {
+                // Magnify the result based on decimals
+                return (uint256(price),assetDecimals);
             } else {
-                if (price > 0) {
-                    // Magnify the result based on decimals
-                    return (uint256(price),assetDecimals);
-                } else {
-                    return (0,assetDecimals);
-                }
+                return (0,assetDecimals);
             }
         } else {
             return (0,assetDecimals);

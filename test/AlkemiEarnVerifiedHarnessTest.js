@@ -434,7 +434,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 			const newRatio = getExpMantissa(3.5);
 
 			const result = await alkemiEarnVerified.methods
-				._adminFunctions(accounts[1], accounts[1], false, newRatio.toString(10))
+				._adminFunctions(accounts[1], accounts[1], false, newRatio.toString(10),0)
 				.send({ from: accounts[1] });
 
 			assert.hasFailure(
@@ -457,7 +457,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 			const [errorCode, tx, _error] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[root, root, false, newRatio.toString(10)],
+				[root, root, false, newRatio.toString(10),0],
 				{ from: root }
 			);
 			assert.noError(errorCode);

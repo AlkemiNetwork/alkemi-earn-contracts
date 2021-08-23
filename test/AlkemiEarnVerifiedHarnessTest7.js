@@ -510,7 +510,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 			} = await setupValidLiquidation();
 
 			await alkemiEarnVerifiedHarness.methods
-				._adminFunctions(root, root, true, 1000000000000000)
+				._adminFunctions(root, root, true, 1000000000000000,0)
 				.send({ from: root });
 
 			const liquidateResult = await alkemiEarnVerifiedHarness.methods

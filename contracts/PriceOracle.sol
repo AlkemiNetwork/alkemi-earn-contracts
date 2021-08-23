@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 import "./Exponential.sol";
 
@@ -308,8 +308,6 @@ contract PriceOracle is Exponential {
      * @dev Admin function to begin change of anchor admin. The newPendingAnchorAdmin must call `_acceptAnchorAdmin` to finalize the transfer.
      * @param newPendingAnchorAdmin New pending anchor admin.
      * @return uint 0=success, otherwise a failure
-     *
-     * TODO: Should we add a second arg to verify, like a checksum of `newAnchorAdmin` address?
      */
     function _setPendingAnchorAdmin(address newPendingAnchorAdmin)
         public
@@ -373,8 +371,6 @@ contract PriceOracle is Exponential {
      * @dev Admin function to change of poster.
      * @param newPoster New poster.
      * @return uint 0=success, otherwise a failure
-     *
-     * TODO: Should we add a second arg to verify, like a checksum of `newAnchorAdmin` address?
      */
     function _setPoster(address newPoster) public returns (uint256) {
         assert(poster != newPoster);

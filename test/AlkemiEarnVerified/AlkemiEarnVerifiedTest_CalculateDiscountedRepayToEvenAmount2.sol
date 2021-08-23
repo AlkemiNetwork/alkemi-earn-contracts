@@ -50,7 +50,8 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is
 
         (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
             userAddress,
-            assetPrices[assetBorrow]
+            assetPrices[assetBorrow],
+            assetBorrow
         );
         assertZero(result, "default value");
 
@@ -101,7 +102,8 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is
 
         (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
             userAddress,
-            assetPrices[assetBorrow]
+            assetPrices[assetBorrow],
+            assetBorrow
         );
         assertZero(result, "default value");
 
@@ -137,7 +139,8 @@ contract AlkemiEarnVerifiedTest_CalculateDiscountedRepayToEvenAmount2 is
 
         (Error err, uint256 result) = calculateDiscountedRepayToEvenAmount(
             userAddress,
-            assetPrices[assetBorrow]
+            assetPrices[assetBorrow],
+            assetBorrow
         );
         assertZero(result, "default value");
 
