@@ -88,7 +88,7 @@ contract ChainLink {
     }
 
     /**
-     * Returns the latest price
+     * Returns the latest price scaled to 1e18 scale
      */
     function getAssetPrice(address asset) public view returns (uint256) {
         // Return 1 * 10^18 for WETH, otherwise return actual price

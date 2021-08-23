@@ -167,7 +167,7 @@ contract AlkemiRateModel is Exponential {
     }
 
     /*
-     * @dev Calculates the utilization rate (borrows / (cash + borrows)) as an Exp
+     * @dev Calculates the utilization rate (borrows / (cash + borrows)) as an Exp in 1e18 scale
      */
     function getUtilizationRate(uint256 cash, uint256 borrows)
         internal
@@ -305,7 +305,7 @@ contract AlkemiRateModel is Exponential {
         // Next multiply this product times the borrow rate
         (err1, temp1) = mulExp(utilizationRate0, annualBorrowRate);
         // If the product of the mantissas for mulExp are both less than 2^256,
-        // then this operation will never fail. TODO: Verify.
+        // then this operation will never fail.
         // We know that borrow rate is in the interval [0, 2.25e17] from above.
         // We know that utilizationRate1 is in the interval [0, 9e21] from directly above.
         // As such, the multiplication is in the interval of [0, 2.025e39]. This is strictly

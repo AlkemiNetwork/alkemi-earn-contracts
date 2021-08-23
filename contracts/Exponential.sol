@@ -4,12 +4,10 @@ import "./ErrorReporter.sol";
 import "./CarefulMath.sol";
 
 contract Exponential is ErrorReporter, CarefulMath {
-    // TODO: We may wish to put the result of 10**18 here instead of the expression.
     // Per https://solidity.readthedocs.io/en/latest/contracts.html#constant-state-variables
     // the optimizer MAY replace the expression 10**18 with its calculated value.
     uint256 constant expScale = 10**18;
 
-    // See TODO on expScale
     uint256 constant halfExpScale = expScale / 2;
 
     struct Exp {
@@ -218,7 +216,7 @@ contract Exponential is ErrorReporter, CarefulMath {
         pure
         returns (bool)
     {
-        return left.mantissa < right.mantissa; //TODO: Add some simple tests and this in another PR yo.
+        return left.mantissa < right.mantissa;
     }
 
     /**
