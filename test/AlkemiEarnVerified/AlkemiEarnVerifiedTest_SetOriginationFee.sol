@@ -35,7 +35,7 @@ contract AlkemiEarnVerifiedTest_SetOriginationFee is AlkemiEarnVerifiedTest {
 
         assertError(
             Error.UNAUTHORIZED,
-            Error(_adminFunctions(admin,admin,false,newFee.mantissa)),
+            Error(_adminFunctions(admin,admin,false,newFee.mantissa,0)),
             "should require admin rights"
         );
 
@@ -56,7 +56,7 @@ contract AlkemiEarnVerifiedTest_SetOriginationFee is AlkemiEarnVerifiedTest {
             "setup failed; choose a different newFee"
         );
 
-        assertNoError(Error(_adminFunctions(admin,admin,false,newFee.mantissa)));
+        assertNoError(Error(_adminFunctions(admin,admin,false,newFee.mantissa,0)));
 
         Assert.equal(
             originationFee.mantissa,
@@ -78,7 +78,7 @@ contract AlkemiEarnVerifiedTest_SetOriginationFee is AlkemiEarnVerifiedTest {
             "setup failed; choose a different newFee"
         );
 
-        assertNoError(Error(_adminFunctions(admin,admin,false,newFee.mantissa)));
+        assertNoError(Error(_adminFunctions(admin,admin,false,newFee.mantissa,0)));
 
         Assert.equal(
             originationFee.mantissa,
