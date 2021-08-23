@@ -4,7 +4,7 @@ contract TestTokens {
     //Variables
     string public name;
     string public symbol; // Usually is 3 or 4 letters long
-    uint8 public decimals; // maximum is 18 decimals
+    uint8 public decimals;
     uint256 public supply;
 
     mapping(address => uint256) public balances;

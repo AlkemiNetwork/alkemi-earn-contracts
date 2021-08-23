@@ -1,4 +1,6 @@
-pragma solidity ^0.4.24;
+// Cloned from https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol
+// and added custom functions related to Alkemi
+pragma solidity 0.4.24;
 
 import "./ErrorReporter.sol";
 
@@ -48,17 +50,6 @@ contract CarefulMath is ErrorReporter {
     }
 
     /**
-     * @dev Subtracts two numbers, returns an error on overflow (i.e. if subtrahend is greater than minuend).
-     */
-    function subInt(uint256 a, uint256 b)
-        internal
-        pure
-        returns (Error, int256)
-    {
-        return (Error.NO_ERROR, int256(a - b));
-    }
-
-    /**
      * @dev Adds two numbers, returns an error on overflow.
      */
     function add(uint256 a, uint256 b) internal pure returns (Error, uint256) {
@@ -69,14 +60,6 @@ contract CarefulMath is ErrorReporter {
         } else {
             return (Error.INTEGER_OVERFLOW, 0);
         }
-    }
-
-    /**
-     * @dev Adds two numbers, returns an error on overflow.
-     */
-    function addInt(uint256 a, int256 b) internal pure returns (Error, int256) {
-        int256 c = int256(a) + b;
-        return (Error.NO_ERROR, c);
     }
 
     /**

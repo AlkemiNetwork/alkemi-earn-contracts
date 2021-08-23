@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 import "./EIP20Interface.sol";
 import "./PriceOracleProxy.sol";
@@ -42,7 +42,7 @@ contract LiquidationChecker {
     }
 
     function oracleTouched() internal view returns (bool) {
-        PriceOracleProxy oracle = PriceOracleProxy(alkemiEarnVerified.oracle());
+        PriceOracleProxy oracle = PriceOracleProxy(address(alkemiEarnVerified.priceOracle()));
 
         bool sameOrigin = oracle.mostRecentCaller() == tx.origin;
         bool sameBlock = oracle.mostRecentBlock() == block.number;
