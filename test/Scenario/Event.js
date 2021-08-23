@@ -467,6 +467,7 @@ async function setOriginationFee(world, fee) {
 			getUser(world, "root"),
 			false,
 			getExpMantissa(fee),
+			0,
 		],
 		{ from: getUser(world, "root") }
 	);
@@ -507,7 +508,7 @@ async function setPaused(world, newState) {
 	let [value, tx, error] = await readAndExecContract(
 		world.alkemiEarnVerified,
 		"_adminFunctions",
-		[accounts[0], accounts[0], newState, 1000000000000000],
+		[accounts[0], accounts[0], newState, 1000000000000000, 0],
 		{ from: getUser(world, "root") }
 	);
 
@@ -518,9 +519,9 @@ async function setPaused(world, newState) {
 
 async function inspect(world, string) {
 	if (string !== undefined) {
-		console.log(["Inspect", string, world]);
+		// console.log(["Inspect", string, world]);
 	} else {
-		console.log(["Inspect", world]);
+		// console.log(["Inspect", world]);
 	}
 
 	return world;

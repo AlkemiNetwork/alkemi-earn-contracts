@@ -1,5 +1,5 @@
 // Cloned from https://github.com/gnosis/canonical-weth/blob/master/contracts/WETH9.sol
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 contract AlkemiWETH {
     string public name = "Wrapped Ether";

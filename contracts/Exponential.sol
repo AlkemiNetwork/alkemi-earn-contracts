@@ -1,24 +1,18 @@
 // Cloned from https://github.com/compound-finance/compound-money-market/blob/master/contracts/Exponential.sol
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 import "./ErrorReporter.sol";
 import "./CarefulMath.sol";
 
 contract Exponential is ErrorReporter, CarefulMath {
-    // TODO: We may wish to put the result of 10**18 here instead of the expression.
     // Per https://solidity.readthedocs.io/en/latest/contracts.html#constant-state-variables
     // the optimizer MAY replace the expression 10**18 with its calculated value.
     uint256 constant expScale = 10**18;
 
-    // See TODO on expScale
     uint256 constant halfExpScale = expScale / 2;
 
     struct Exp {
         uint256 mantissa;
-    }
-
-    struct ExpNegative {
-        int256 mantissa;
     }
 
     uint256 constant mantissaOne = 10**18;
@@ -61,19 +55,6 @@ contract Exponential is ErrorReporter, CarefulMath {
     }
 
     /**
-     * @dev Adds two exponentials, returning a new exponential.
-     */
-    function addExpNegative(Exp memory a, ExpNegative memory b)
-        internal
-        pure
-        returns (Error, Exp memory)
-    {
-        (Error error, int256 result) = addInt(a.mantissa, b.mantissa);
-
-        return (error, Exp({mantissa: uint256(result)}));
-    }
-
-    /**
      * @dev Subtracts two exponentials, returning a new exponential.
      */
     function subExp(Exp memory a, Exp memory b)
@@ -84,19 +65,6 @@ contract Exponential is ErrorReporter, CarefulMath {
         (Error error, uint256 result) = sub(a.mantissa, b.mantissa);
 
         return (error, Exp({mantissa: result}));
-    }
-
-    /**
-     * @dev Subtracts two exponentials, returning a new exponential.
-     */
-    function subExpNegative(Exp memory a, Exp memory b)
-        internal
-        pure
-        returns (Error, ExpNegative memory)
-    {
-        (Error error, int256 result) = subInt(a.mantissa, b.mantissa);
-
-        return (error, ExpNegative({mantissa: result}));
     }
 
     /**
@@ -219,7 +187,7 @@ contract Exponential is ErrorReporter, CarefulMath {
         pure
         returns (bool)
     {
-        return left.mantissa < right.mantissa; //TODO: Add some simple tests and this in another PR yo.
+        return left.mantissa < right.mantissa;
     }
 
     /**

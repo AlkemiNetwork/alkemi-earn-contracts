@@ -1,6 +1,6 @@
 // Cloned from https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol
 // and added custom functions related to Alkemi
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 // From https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/Math.sol
 // Subject to the MIT license.

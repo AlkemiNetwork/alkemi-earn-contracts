@@ -1,6 +1,6 @@
 // Abstract contract for the full ERC 20 Token standard
 // https://github.com/ethereum/EIPs/issues/20
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 contract EIP20Interface {
     /* This is a slight change to the ERC20 base standard.
@@ -14,6 +14,8 @@ contract EIP20Interface {
     */
     // total amount of tokens
     uint256 public totalSupply;
+    // token decimals
+    uint8 public decimals; // maximum is 18 decimals
 
     /**
      * @param _owner The address from which the balance will be retrieved
