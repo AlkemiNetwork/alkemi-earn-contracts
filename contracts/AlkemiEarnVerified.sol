@@ -907,7 +907,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     ) public returns (uint256) {
         // Check caller = admin
         require(msg.sender == admin,"SET_PENDING_ADMIN_OWNER_CHECK");
-
+        // newPendingAdmin can be 0x00, hence not checked
+        require(newOracle != address(0),"Cannot set weth address to 0x00");
+        require(originationFeeMantissa < 10**18 && newCloseFactorMantissa < 10**18,"Invalid Origination Fee or Close Factor Mantissa");
         // save current value, if any, for inclusion in log
         address oldPendingAdmin = pendingAdmin;
         // Store pendingAdmin = newPendingAdmin
@@ -1078,6 +1080,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     {
         // Check caller = admin
         require(msg.sender == admin,"SUPPORT_MARKET_OWNER_CHECK");
+        require(interestRateModel != address(0),"Rate Model cannot be 0x00");
         // Hard cap on the maximum number of markets allowed
         require(collateralMarkets.length < uint256(MAXIMUM_NUMBER_OF_MARKETS),"Exceeding the max number of markets allowed");
 
@@ -1158,6 +1161,11 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     ) public returns (uint256) {
         // Check caller = admin
         require(msg.sender == admin,"SET_RISK_PARAMETERS_OWNER_CHECK");
+        // Input validations
+        require(collateralRatioMantissa >= minimumCollateralRatioMantissa && liquidationDiscountMantissa <= maximumLiquidationDiscountMantissa,"Liquidation discount is more than max discount or collateral ratio is less than min ratio");
+
+        minimumCollateralRatioMantissa = _minimumCollateralRatioMantissa;
+        maximumLiquidationDiscountMantissa = _maximumLiquidationDiscountMantissa;
         Exp memory newCollateralRatio = Exp({
             mantissa: collateralRatioMantissa
         });
@@ -1244,6 +1252,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     ) public returns (uint256) {
         // Check caller = admin
         require(msg.sender == admin,"SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK");
+        require(interestRateModel != address(0),"Rate Model cannot be 0x00");
 
         // Set the interest rate model to `modelAddress`
         markets[asset].interestRateModel = interestRateModel;
@@ -1335,6 +1344,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     {
         // Check caller = admin
         require(msg.sender == admin,"SET_WETH_ADDRESS_ADMIN_CHECK_FAILED");
+        require(wethContractAddress != address(0),"Cannot set weth address to 0x00");
         wethAddress = wethContractAddress;
         WETHContract = AlkemiWETH(wethAddress);
         emit WETHAddressSet(wethContractAddress);

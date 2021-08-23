@@ -12,6 +12,7 @@ contract Liquidator is ErrorReporter, SafeToken {
     AlkemiEarnVerified public alkemiEarnVerified;
 
     constructor(address alkemiEarnVerified_) public {
+        require(alkemiEarnVerified_ != address(0),"alkemiEarnVerified_ cannot be 0x00");
         alkemiEarnVerified = AlkemiEarnVerified(alkemiEarnVerified_);
     }
 

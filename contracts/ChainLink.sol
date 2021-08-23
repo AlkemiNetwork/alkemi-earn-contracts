@@ -47,6 +47,7 @@ contract ChainLink {
         address assetAddress,
         address priceFeedContract
     ) public onlyAdmin {
+        require(assetAddress != address(0) && priceFeedContract != address(0),"Asset or Price Feed address cannot be 0x00");
         priceContractMapping[assetAddress] = AggregatorV3Interface(
             priceFeedContract
         );
@@ -57,6 +58,7 @@ contract ChainLink {
      * Allows admin to remove an existing asset from price tracking
      */
     function removeAsset(address assetAddress) public onlyAdmin {
+        require(assetAddress != address(0),"Asset or Price Feed address cannot be 0x00");
         priceContractMapping[assetAddress] = AggregatorV3Interface(address(0));
         emit assetRemoved(assetAddress);
     }
@@ -65,6 +67,7 @@ contract ChainLink {
      * Allows admin to change the admin of the contract
      */
     function changeAdmin(address newAdmin) public onlyAdmin {
+        require(newAdmin != address(0),"Asset or Price Feed address cannot be 0x00");
         emit adminChanged(admin, newAdmin);
         admin = newAdmin;
     }
@@ -73,6 +76,7 @@ contract ChainLink {
      * Allows admin to set the weth address
      */
     function setWethAddress(address _wethAddress) public onlyAdmin {
+        require(_wethAddress != address(0),"WETH address cannot be 0x00");
         wethAddress = _wethAddress;
         emit wethAddressSet(_wethAddress);
     }
