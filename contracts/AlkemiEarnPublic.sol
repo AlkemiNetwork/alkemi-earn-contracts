@@ -728,13 +728,13 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         if (oracle == address(0)) {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
-
         if (priceOracle.paused) {
             return (Error.MISSING_ASSET_PRICE, Exp({mantissa: 0}));
         }
-
-        uint256 priceMantissa = priceOracle.getAssetPrice(asset);
-
+        (uint256 priceMantissa, uint8 assetDecimals) = priceOracle.getAssetPrice(asset);
+        (Error err, uint256 magnification) = sub(18,uint256(assetDecimals));
+        (err, priceMantissa) = mul(priceMantissa,10 ** magnification);
+        
         return (Error.NO_ERROR, Exp({mantissa: priceMantissa}));
     }
 

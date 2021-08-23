@@ -8,6 +8,9 @@ contract ChainLink {
     address public admin;
     bool public paused = false;
     address public wethAddress;
+    AggregatorV3Interface public USDETHPriceFeed;
+    uint256 constant expScale = 10**18;
+    uint8 constant eighteen = 18;
 
     /**
      * Sets the admin
@@ -90,10 +93,10 @@ contract ChainLink {
     /**
      * Returns the latest price scaled to 1e18 scale
      */
-    function getAssetPrice(address asset) public view returns (uint256) {
+    function getAssetPrice(address asset) public view returns (uint256,uint8) {
         // Return 1 * 10^18 for WETH, otherwise return actual price
         if (!paused && asset == wethAddress) {
-            return 1000000000000000000;
+            return (expScale,eighteen);
         }
         // Capture the decimals in the ERC20 token
         uint8 assetDecimals = EIP20Interface(asset).decimals();
@@ -113,13 +116,12 @@ contract ChainLink {
             require(answeredInRound >= roundID,"Stale Data");
             if (price > 0) {
                 // Magnify the result based on decimals
-                return (uint256(price) *
-                    (10**(18 - uint256(assetDecimals))));
+                return (uint256(price),assetDecimals);
             } else {
-                return 0;
+                return (0,assetDecimals);
             }
         } else {
-            return 0;
+            return (0,assetDecimals);
         }
     }
 
