@@ -1,3 +1,5 @@
+// Cloned from https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol
+// and added custom functions related to Alkemi
 pragma solidity 0.4.24;
 
 import "./ErrorReporter.sol";
