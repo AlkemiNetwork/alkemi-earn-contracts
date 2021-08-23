@@ -724,6 +724,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
 
+        if (priceOracle.paused) {
+            return (Error.MISSING_ASSET_PRICE, Exp({mantissa: 0}));
+        }
+
         uint256 priceMantissa = priceOracle.getAssetPrice(asset);
 
         return (Error.NO_ERROR, Exp({mantissa: priceMantissa}));

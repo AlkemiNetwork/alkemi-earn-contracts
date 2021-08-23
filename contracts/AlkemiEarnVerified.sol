@@ -879,6 +879,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         if (oracle == address(0)) {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
+        
+        if (priceOracle.paused) {
+            return (Error.MISSING_ASSET_PRICE, Exp({mantissa: 0}));
+        }
 
         uint256 priceMantissa = priceOracle.getAssetPrice(asset);
 
