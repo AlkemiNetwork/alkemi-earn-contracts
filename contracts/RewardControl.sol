@@ -157,12 +157,13 @@ contract RewardControl is
         address currentMarket;
         for (uint256 i = 0; i < allMarkets.length; i++) {
             currentMarket = allMarkets[i];
-            uint256 currentMarketTotalSupply = getMarketTotalSupply(
+            // We multiply the total market supply and borrows by their ETH prices to account for token prices while allocating rewards
+            uint256 currentMarketTotalSupply = mul_(getMarketTotalSupply(
                 currentMarket
-            );
-            uint256 currentMarketTotalBorrows = getMarketTotalBorrows(
+            ),alkemiEarnVerified.assetPrices(currentMarket));
+            uint256 currentMarketTotalBorrows = mul_(getMarketTotalBorrows(
                 currentMarket
-            );
+            ),alkemiEarnVerified.assetPrices(currentMarket));
             Exp memory currentMarketTotalLiquidity = Exp({
                 mantissa: add_(
                     currentMarketTotalSupply,
