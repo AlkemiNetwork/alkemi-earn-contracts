@@ -1362,10 +1362,12 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
 
         // Check that amount is less than cash (from ERC-20 of self) plus borrows minus supply.
         uint256 cash = getCash(asset);
+        // Get supply and borrows with interest accrued till the latest block
+        (uint256 supplyWithInterest, uint256 borrowWithInterest) = getMarketBalances(asset);
         (Error err0, uint256 equity) = addThenSub(
             cash,
-            markets[asset].totalBorrows,
-            markets[asset].totalSupply
+            borrowWithInterest,
+            supplyWithInterest
         );
         if (err0 != Error.NO_ERROR) {
             return fail(err0, FailureInfo.EQUITY_WITHDRAWAL_CALCULATE_EQUITY);
