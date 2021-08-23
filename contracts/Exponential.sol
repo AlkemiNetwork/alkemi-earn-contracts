@@ -176,7 +176,7 @@ contract Exponential is ErrorReporter, CarefulMath {
      */
     function truncate(Exp memory exp) internal pure returns (uint256) {
         // Note: We are not using careful math here as we're performing a division that cannot fail
-        return exp.mantissa / 10**18;
+        return exp.mantissa / expScale;
     }
 
     /**

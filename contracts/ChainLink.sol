@@ -34,10 +34,10 @@ contract ChainLink {
     /**
      * Event declarations for all the operations of this contract
      */
-    event assetAdded(address assetAddress, address priceFeedContract);
-    event assetRemoved(address assetAddress);
-    event adminChanged(address oldAdmin, address newAdmin);
-    event wethAddressSet(address wethAddress);
+    event assetAdded(address indexed assetAddress, address indexed priceFeedContract);
+    event assetRemoved(address indexed assetAddress);
+    event adminChanged(address indexed oldAdmin, address indexed newAdmin);
+    event wethAddressSet(address indexed wethAddress);
     event contractPausedOrUnpaused(bool currentStatus);
 
     /**

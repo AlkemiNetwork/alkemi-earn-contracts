@@ -1,6 +1,6 @@
 pragma solidity 0.4.24;
 
-import "./Exponential.sol";
+import "../Exponential.sol";
 
 contract ExchangeRateModel {
     function scale() external view returns (uint256);

@@ -17,6 +17,8 @@ contract AlkemiRateModel is Exponential {
 
     string public contractName;
 
+    uint8 private hundred = 100;
+
     modifier onlyOwner() {
         require(msg.sender == owner, "non-owner");
         _;
@@ -64,60 +66,7 @@ contract AlkemiRateModel is Exponential {
         require(HealthyMinUR < HealthyMaxUR,"HealthyMinUR should be lesser than HealthyMaxUR");
         require(HealthyMinRate < HealthyMaxRate,"HealthyMinRate should be lesser than HealthyMaxRate");
         owner = msg.sender;
-        contractName = _contractName;
-        Exp memory temp1;
-        Exp memory temp2;
-        Exp memory HundredMantissa;
-        Error err;
-
-        (err, HundredMantissa) = getExp(100, 1);
-
-        (err, MinRateActual) = getExp(MinRate, 100);
-        (err, HealthyMinURActual) = getExp(HealthyMinUR, 100);
-        (err, HealthyMinRateActual) = getExp(HealthyMinRate, 100);
-        (err, MaxRateActual) = getExp(MaxRate, 100);
-        (err, HealthyMaxURActual) = getExp(HealthyMaxUR, 100);
-        (err, HealthyMaxRateActual) = getExp(HealthyMaxRate, 100);
-
-        SpreadLow = MinRateActual;
-        BreakPointLow = HealthyMinURActual;
-        BreakPointHigh = HealthyMaxURActual;
-
-        // ReserveLow = (HealthyMinRate-SpreadLow)/BreakPointLow;
-        (err, temp1) = subExp(HealthyMinRateActual, SpreadLow);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, ReserveLow) = divExp(temp1, BreakPointLow);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-
-        // ReserveMid = (HealthyMaxRate-HealthyMinRate)/(HealthyMaxUR-HealthyMinUR);
-        (err, temp1) = subExp(HealthyMaxRateActual, HealthyMinRateActual);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, temp2) = subExp(HealthyMaxURActual, HealthyMinURActual);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, ReserveMid) = divExp(temp1, temp2);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-
-        // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
-        (err, temp1) = mulExp(ReserveMid, BreakPointLow);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, SpreadMid) = subExp(HealthyMinRateActual, temp1);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        require(SpreadMid.mantissa >= 0,"Spread Mid cannot be a negative number");
-
-        // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
-        (err, temp1) = subExp(MaxRateActual, HealthyMaxRateActual);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, temp2) = subExp(HunderedMantissa, HealthyMaxURActual);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, ReserveHigh) = divExp(temp1, temp2);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-
-        // SpreadHigh = (ReserveHigh * BreakPointHigh) - HealthyMaxRate;
-        (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, SpreadHigh) = subExp(temp2,HealthyMaxRateActual);
-        require(SpreadHigh.mantissa >=0,"Spread High cannot be a negative number");
-        assert(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        changeRates(_contractName,MinRate,HealthyMinUR,HealthyMinRate,HealthyMaxUR,HealthyMaxRate,MaxRate);
     }
 
     function changeRates(
@@ -140,14 +89,14 @@ contract AlkemiRateModel is Exponential {
         Exp memory HundredMantissa;
         Error err;
 
-        (err, HundredMantissa) = getExp(100, 1);
+        (err, HunderedMantissa) = getExp(hundred, 1);
 
-        (err, MinRateActual) = getExp(MinRate, 100);
-        (err, HealthyMinURActual) = getExp(HealthyMinUR, 100);
-        (err, HealthyMinRateActual) = getExp(HealthyMinRate, 100);
-        (err, MaxRateActual) = getExp(MaxRate, 100);
-        (err, HealthyMaxURActual) = getExp(HealthyMaxUR, 100);
-        (err, HealthyMaxRateActual) = getExp(HealthyMaxRate, 100);
+        (err, MinRateActual) = getExp(MinRate, hundred);
+        (err, HealthyMinURActual) = getExp(HealthyMinUR, hundred);
+        (err, HealthyMinRateActual) = getExp(HealthyMinRate, hundred);
+        (err, MaxRateActual) = getExp(MaxRate, hundred);
+        (err, HealthyMaxURActual) = getExp(HealthyMaxUR, hundred);
+        (err, HealthyMaxRateActual) = getExp(HealthyMaxRate, hundred);
 
         SpreadLow = MinRateActual;
         BreakPointLow = HealthyMinURActual;
@@ -215,7 +164,7 @@ contract AlkemiRateModel is Exponential {
      */
     function getUtilizationRate(uint256 cash, uint256 borrows)
         internal
-        pure
+        view
         returns (IRError, Exp memory)
     {
         if (borrows == 0) {
@@ -238,7 +187,7 @@ contract AlkemiRateModel is Exponential {
         if (err1 != Error.NO_ERROR) {
             return (IRError.FAILED_TO_GET_EXP, Exp({mantissa: 0}));
         }
-        (err1, utilizationRate) = mulScalar(utilizationRate, 100);
+        (err1, utilizationRate) = mulScalar(utilizationRate, hundred);
 
         return (IRError.NO_ERROR, utilizationRate);
     }
@@ -338,7 +287,7 @@ contract AlkemiRateModel is Exponential {
         Exp memory temp1;
         Error err1;
         Exp memory oneMinusSpreadBasisPoints;
-        (err1, temp1) = getExp(100, 1);
+        (err1, temp1) = getExp(hundred, 1);
         assert(err1 == Error.NO_ERROR);
         (err1, oneMinusSpreadBasisPoints) = subExp(temp1, SpreadLow);
 

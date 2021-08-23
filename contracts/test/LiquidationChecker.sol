@@ -1,8 +1,8 @@
 pragma solidity 0.4.24;
 
-import "./EIP20Interface.sol";
+import "../EIP20Interface.sol";
 import "./PriceOracleProxy.sol";
-import "./AlkemiEarnVerified.sol";
+import "../AlkemiEarnVerified.sol";
 
 contract LiquidationChecker {
     AlkemiEarnVerified public alkemiEarnVerified;

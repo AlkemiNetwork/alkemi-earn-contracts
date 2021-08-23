@@ -1,11 +1,11 @@
 pragma solidity 0.4.24;
 
-import "./EIP20Interface.sol";
-import "./EIP20NonStandardInterface.sol";
-import "./ErrorReporter.sol";
-import "./InterestRateModel.sol";
-import "./SafeToken.sol";
-import "./AlkemiEarnVerified.sol";
+import "../EIP20Interface.sol";
+import "../EIP20NonStandardInterface.sol";
+import "../ErrorReporter.sol";
+import "../InterestRateModel.sol";
+import "../SafeToken.sol";
+import "../AlkemiEarnVerified.sol";
 import "./LiquidationChecker.sol";
 
 contract Liquidator is ErrorReporter, SafeToken {
