@@ -599,12 +599,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         public
         returns (uint256)
     {
-        if (!KYCAdmins[msg.sender]) {
-            emitError(
-                Error.KYC_ADMIN_CHECK_FAILED,
-                FailureInfo.KYC_ADMIN_CHECK_FAILED
-            );
-        }
+        require(KYCAdmins[msg.sender],"KYC_ADMIN_CHECK_FAILED");
         customersWithKYC[customer] = newStatus;
         if (newStatus) {
             emit KYCCustomerAdded(customer);
