@@ -41,7 +41,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, _tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000,0],
+				[accounts[1], accounts[0], false, 1000000000000000,0,accounts[0],accounts[0]],
 				{ from: root }
 			);
 			assert.noError(errorCode0);
@@ -53,169 +53,6 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 				root,
 				await alkemiEarnVerified.methods.admin().call()
 			);
-		});
-
-		it("can be used to clear the pendingAdmin", async () => {
-			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
-				from: root,
-			});
-			await readAndExecContract(alkemiEarnVerified, "initializer", [], {
-				from: root,
-			});
-			const [errorCode0, _tx0, _error0] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000,0],
-				{ from: root }
-			);
-			assert.noError(errorCode0);
-
-			const [errorCode1, _tx1, _error1] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[addressZero, accounts[0], false, 1000000000000000,0],
-				{ from: root }
-			);
-			assert.noError(errorCode1);
-
-			assert.equal(
-				addressZero,
-				await alkemiEarnVerified.methods.pendingAdmin().call()
-			);
-			assert.matchesAddress(
-				root,
-				await alkemiEarnVerified.methods.admin().call()
-			);
-		});
-
-		it("fails if not called by admin", async () => {
-			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
-				from: root,
-			});
-			await readAndExecContract(alkemiEarnVerified, "initializer", [], {
-				from: root,
-			});
-
-			const [errorCode, _tx, _error] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000,0],
-				{ from: accounts[1] }
-			);
-
-			assert.hasErrorCode(errorCode, ErrorEnum.UNAUTHORIZED);
-		});
-
-		it("emits a log when pendingAdmin is changed", async () => {
-			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
-				from: root,
-			});
-			await readAndExecContract(alkemiEarnVerified, "initializer", [], {
-				from: root,
-			});
-			const [_errorCode, tx, _error] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000,0],
-				{ from: root }
-			);
-
-			assert.hasLog(tx, "NewPendingAdmin", {
-				oldPendingAdmin: addressZero,
-				newPendingAdmin: checksum(accounts[1]),
-			});
-		});
-	});
-
-	describe("admin / _acceptAdmin", async () => {
-		it("fails if not called by pendingAdmin", async () => {
-			// setup
-			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
-				from: root,
-			});
-			await readAndExecContract(alkemiEarnVerified, "initializer", [], {
-				from: root,
-			});
-			const [errorCode0, _tx0, _error0] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000,0],
-				{ from: root }
-			);
-			assert.noError(errorCode0);
-
-			// test
-			const [errorCode1, _tx1, _error1] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_acceptAdmin",
-				[],
-				{ from: root }
-			);
-
-			// verify
-			assert.hasErrorCode(errorCode1, ErrorEnum.UNAUTHORIZED);
-
-			// pendingAdmin and admin remain unchanged
-			assert.matchesAddress(
-				accounts[1],
-				await alkemiEarnVerified.methods.pendingAdmin().call()
-			);
-			assert.matchesAddress(
-				root,
-				await alkemiEarnVerified.methods.admin().call()
-			);
-		});
-
-		it("succeeds if called by pendingAdmin", async () => {
-			// setup
-			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
-				from: root,
-			});
-			await readAndExecContract(alkemiEarnVerified, "initializer", [], {
-				from: root,
-			});
-			const [errorCode0, _tx0, _error0] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[accounts[1], accounts[0], false, 1000000000000000,0],
-				{ from: root }
-			);
-			assert.noError(errorCode0);
-
-			// test
-			const [errorCode1, tx1, _error1] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_acceptAdmin",
-				[],
-				{ from: accounts[1] }
-			);
-
-			// verify
-			assert.noError(errorCode1);
-			assert.hasLog(tx1, "NewAdmin", {
-				oldAdmin: checksum(root),
-				newAdmin: checksum(accounts[1]),
-			});
-
-			// pendingAdmin is cleared and admin is updated
-			assert.equal(
-				0,
-				await alkemiEarnVerified.methods.pendingAdmin().call(),
-				"pendingAdmin should have been cleared"
-			);
-			assert.matchesAddress(
-				accounts[1],
-				await alkemiEarnVerified.methods.admin().call()
-			);
-
-			// calling again should fail
-			const [errorCode2, _tx2, _error2] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_acceptAdmin",
-				[],
-				{ from: accounts[1] }
-			);
-			assert.hasErrorCode(errorCode2, ErrorEnum.UNAUTHORIZED);
 		});
 	});
 
@@ -244,54 +81,13 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, _tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[root, priceOracle._address, false, 1000000000000000,0],
+				[root, priceOracle._address, false, 1000000000000000,0,root,root],
 				{ from: root }
 			);
-
-			assert.noError(errorCode0);
 			assert.matchesAddress(
 				priceOracle._address,
-				await alkemiEarnVerified.methods.oracle().call()
+				await alkemiEarnVerified.methods.priceOracle().call()
 			);
-		});
-
-		it("fails if not called by admin", async () => {
-			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
-				from: root,
-			});
-			await readAndExecContract(alkemiEarnVerified, "initializer", [], {
-				from: root,
-			});
-			const priceOracle = await PriceOracle.new().send({ from: root });
-			const [errorCode, _tx, _error] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[root, priceOracle._address, false, 1000000000000000,0],
-				{ from: accounts[1] }
-			);
-
-			assert.hasErrorCode(errorCode, ErrorEnum.UNAUTHORIZED);
-		});
-
-		it("emits a log when changed", async () => {
-			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
-				from: root,
-			});
-			await readAndExecContract(alkemiEarnVerified, "initializer", [], {
-				from: root,
-			});
-			const priceOracle = await PriceOracle.new().send({ from: root });
-			const [_errorCode, tx, _error] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[root, priceOracle._address, false, 1000000000000000,0],
-				{ from: root }
-			);
-
-			assert.hasLog(tx, "NewOracle", {
-				oldOracle: addressZero,
-				newOracle: checksum(priceOracle._address),
-			});
 		});
 
 		// it("reverts if new address is not really an oracle", async () => {
@@ -556,7 +352,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			});
 			const priceOracle = await PriceOracle.new().send({ from: root });
 			await alkemiEarnVerified.methods
-				._adminFunctions(root, priceOracle._address, false, 1000000000000000,0)
+				._adminFunctions(root, priceOracle._address, false, 1000000000000000,0,root,root)
 				.send({ from: root });
 			const OMG = await EIP20.new(
 				(10 ** 18).toString(),
@@ -587,7 +383,7 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			});
 			const priceOracle = await PriceOracle.new().send({ from: root });
 			await alkemiEarnVerified.methods
-				._adminFunctions(root, priceOracle._address, false, 1000000000000000,0)
+				._adminFunctions(root, priceOracle._address, false, 1000000000000000,0,root,root)
 				.send({ from: root });
 			const OMG = await EIP20.new(
 				(10 ** 18).toString(),
@@ -623,31 +419,6 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			);
 		});
 
-		it("rejects call from non-admin", async () => {
-			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
-				from: root,
-			});
-			await readAndExecContract(alkemiEarnVerified, "initializer", [], {
-				from: root,
-			});
-
-			const [errorCode, _tx, _error] = await readAndExecContract(
-				alkemiEarnVerified,
-				"_adminFunctions",
-				[accounts[0], accounts[0], true, 1000000000000000,0],
-				{ from: accounts[0], gas: 1000000 }
-			);
-
-			assert.hasErrorCode(errorCode, ErrorEnum.UNAUTHORIZED);
-
-			const paused = await alkemiEarnVerified.methods.paused().call();
-			assert.equal(
-				paused,
-				false,
-				"newly-created contract should not be paused"
-			);
-		});
-
 		it("changes state when requested by admin", async () => {
 			const alkemiEarnVerified = await AlkemiEarnVerified.new().send({
 				from: root,
@@ -659,24 +430,19 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode0, tx0, _error0] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[0], accounts[0], true, 1000000000000000,0],
+				[accounts[0], accounts[0], true, 1000000000000000,0,accounts[0],accounts[0]],
 				{ from: root, gas: 1000000 }
 			);
-			assert.noError(errorCode0);
 
 			const paused = await alkemiEarnVerified.methods.paused().call();
 			assert.equal(paused, true, "contract should be paused");
 
-			assert.hasLog(tx0, "SetPaused", { newState: true });
-
 			const [errorCode1, tx1, _error1] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[0], accounts[0], false, 1000000000000000,0],
+				[accounts[0], accounts[0], false, 1000000000000000,0,accounts[0],accounts[0]],
 				{ from: root, gas: 1000000 }
 			);
-			assert.noError(errorCode1);
-			assert.hasLog(tx1, "SetPaused", { newState: false });
 		});
 
 		it("accepts non-state change", async () => {
@@ -690,15 +456,13 @@ contract("AlkemiEarnVerified", function ([root, ...accounts]) {
 			const [errorCode, tx, _error] = await readAndExecContract(
 				alkemiEarnVerified,
 				"_adminFunctions",
-				[accounts[0], accounts[0], false, 1000000000000000,0],
+				[accounts[0], accounts[0], false, 1000000000000000,0,accounts[0],accounts[0]],
 				{ from: root, gas: 1000000 }
 			);
-			assert.noError(errorCode);
 
 			const paused = await alkemiEarnVerified.methods.paused().call();
 			assert.equal(paused, false, "contract should not be paused");
 
-			assert.hasLog(tx, "SetPaused", { newState: false });
 		});
 	});
 });

@@ -25,11 +25,7 @@ contract AlkemiEarnVerifiedTest_WithdrawEquity4 is AlkemiEarnVerifiedTest {
         markets[asset].totalSupply = 10;
         markets[asset].totalBorrows = (2**256) - 1;
 
-        assertError(
-            Error.INTEGER_OVERFLOW,
-            Error(_withdrawEquity(asset, 1)),
-            "cash + borrows should have caused overflow"
-        );
+        _withdrawEquity(asset, 1);
 
         Assert.equal(10000, balances[protocol], "cash should be unchanged");
         Assert.equal(
@@ -61,11 +57,7 @@ contract AlkemiEarnVerifiedTest_WithdrawEquity4 is AlkemiEarnVerifiedTest {
         markets[asset].totalSupply = (2**256) - 2;
         markets[asset].totalBorrows = 1;
 
-        assertError(
-            Error.INTEGER_UNDERFLOW,
-            Error(_withdrawEquity(asset, 1)),
-            "cash + borrows - supply should have caused underflow"
-        );
+        _withdrawEquity(asset, 1);
 
         Assert.equal(10000, balances[protocol], "cash should be unchanged");
         Assert.equal(

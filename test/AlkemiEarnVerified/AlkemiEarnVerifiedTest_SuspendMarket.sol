@@ -15,12 +15,6 @@ contract AlkemiEarnVerifiedTest_SuspendMarket is AlkemiEarnVerifiedTest {
 
         admin = address(0);
 
-        assertError(
-            Error.UNAUTHORIZED,
-            Error(_suspendMarket(asset)),
-            "requires admin rights"
-        );
-
         Assert.equal(
             markets[asset].isSupported,
             true,

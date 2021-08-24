@@ -455,7 +455,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev Function for use by the admin of the contract to add or remove KYC Admins
      */
     function _changeKYCAdmin(address KYCAdmin, bool newStatus)
-        external
+        public
     {
         // Check caller = admin
         require(msg.sender == admin,"KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED");
@@ -467,7 +467,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev Function for use by the KYC admins to add or remove KYC Customers
      */
     function _changeCustomerKYC(address customer, bool newStatus)
-        external
+        public
     {
         require(KYCAdmins[msg.sender],"KYC_ADMIN_CHECK_FAILED");
         customersWithKYC[customer] = newStatus;
@@ -482,7 +482,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev Function for use by the admin of the contract to add or remove Liquidators
      */
     function _changeLiquidator(address liquidator, bool newStatus)
-        external
+        public
     {
         // Check caller = admin
         require(msg.sender == admin,"LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED");
@@ -759,7 +759,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         uint256 newCloseFactorMantissa,
         address wethContractAddress,
         address _rewardControl
-    ) external returns (uint256) {
+    ) public returns (uint256) {
         // Check caller = admin
         require(msg.sender == admin,"SET_PENDING_ADMIN_OWNER_CHECK");
         // newPendingAdmin can be 0x00, hence not checked
@@ -805,7 +805,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev Admin function for pending admin to accept role and update admin
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function _acceptAdmin() external {
+    function _acceptAdmin() public {
         // Check caller = pendingAdmin
         // msg.sender can't be zero
         require(msg.sender == pendingAdmin,"ACCEPT_ADMIN_PENDING_ADMIN_CHECK");
@@ -925,7 +925,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function _supportMarket(address asset, InterestRateModel interestRateModel)
-        external
+        public
         returns (uint256)
     {
         // Check caller = admin
@@ -975,7 +975,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @param asset Asset to suspend
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function _suspendMarket(address asset) external returns (uint256) {
+    function _suspendMarket(address asset) public returns (uint256) {
         // Check caller = admin
         require(msg.sender == admin,"SUSPEND_MARKET_OWNER_CHECK");
 
@@ -1003,7 +1003,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     function _setRiskParameters(
         uint256 collateralRatioMantissa,
         uint256 liquidationDiscountMantissa
-    ) external returns (uint256) {
+    ) public returns (uint256) {
         // Check caller = admin
         require(msg.sender == admin,"SET_RISK_PARAMETERS_OWNER_CHECK");
         // Input validations
@@ -1081,7 +1081,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     function _setMarketInterestRateModel(
         address asset,
         InterestRateModel interestRateModel
-    ) external returns (uint256) {
+    ) public returns (uint256) {
         // Check caller = admin
         require(msg.sender == admin,"SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK");
         require(interestRateModel != address(0),"Rate Model cannot be 0x00");
@@ -1100,7 +1100,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function _withdrawEquity(address asset, uint256 amount)
-        external
+        public
         returns (uint256)
     {
         // Check caller = admin
@@ -1197,7 +1197,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function supply(address asset, uint256 amount)
-        external
+        public
         payable
         nonReentrant
         returns (uint256)
@@ -1426,7 +1426,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function withdraw(address asset, uint256 requestedAmount)
-        external
+        public
         nonReentrant
         returns (uint256)
     {
@@ -1898,7 +1898,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function repayBorrow(address asset, uint256 amount)
-        external
+        public
         payable
         nonReentrant
         returns (uint256)
@@ -2180,7 +2180,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         address assetBorrow,
         address assetCollateral,
         uint256 requestedAmountClose
-    ) external payable returns (uint256) {
+    ) public payable returns (uint256) {
         if (paused) {
             return
                 fail(
@@ -2957,7 +2957,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function borrow(address asset, uint256 amount)
-        external
+        public
         nonReentrant
         returns (uint256)
     {

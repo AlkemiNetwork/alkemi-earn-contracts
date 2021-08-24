@@ -1425,7 +1425,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			// Set origination fee to 0%
 			await alkemiEarnVerifiedHarness.methods
-				._adminFunctions(root, root, false, getExpMantissa(0),0)
+				._adminFunctions(root, root, false, getExpMantissa(0),0,root,root)
 				.send({ from: root });
 
 			// Set price of OMG to 1:1

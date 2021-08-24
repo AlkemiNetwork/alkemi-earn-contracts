@@ -8,49 +8,6 @@ const EIP20 = getContract("./test/EIP20Harness.sol");
 contract('RewardControl interface test', function ([root, ...accounts]) {
 
     describe("#refreshAlkSupplyIndex", async () => {
-        it("refreshAlkSupplyIndex when there is one market and one supplier", async () => {
-            // given
-            const rewardControl = await RewardControl.new().send({from: root});
-            await rewardControl.methods.initializer(root, accounts[2], accounts[3]).send({gas: 1000000, from: root});
-            let marketA = accounts[1];
-            let supplier = accounts[4];
-            await rewardControl.methods.addMarket(marketA).send({gas: 1000000, from: root});
-            await mockMarketLiquidity(rewardControl, marketA, "100", "200");
-            // make sure that the supplier has no balance on the marketA
-            await mockSupplyBalance(rewardControl, marketA, supplier, "0");
-            await rewardControl.methods.harnessSetBlockNumber(1).send({gas: 1000000, from: root});
-
-            // when #1 refresh
-            await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
-            await mockSupplyBalance(rewardControl, marketA, supplier, "25");
-
-            // then
-            await assertSupplyResults("1", rewardControl, marketA, supplier,
-                "4161910200000000000",
-                "41619102000000000000000000000000000000000000000000000",
-                "0"); // 0 ALK
-
-            // when #2 refresh
-            await rewardControl.methods.harnessFastForward(1).send({gas: 1000000, from: root});
-            await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
-            await mockSupplyBalance(rewardControl, marketA, supplier, "50");
-
-            // then
-            await assertSupplyResults("2", rewardControl, marketA, supplier,
-                "4161910200000000000",
-                "83238204000000000000000000000000000000000000000000000",
-                "1040477550000000000"); // 1.040477550000000000 ALK
-
-            // when #3 refresh
-            await rewardControl.methods.harnessFastForward(3).send({gas: 1000000, from: root});
-            await rewardControl.methods.refreshAlkSupplyIndex(marketA, supplier).send({gas: 1000000, from: root});
-
-            // then
-            await assertSupplyResults("3", rewardControl, marketA, supplier,
-                "4161910200000000000",
-                "208095510000000000000000000000000000000000000000000000",
-                "7283342850000000000"); // 7.283342850000000000 ALK
-        });
 
         it("refreshAlkSupplyIndex when there are multiple markets and multiple suppliers", async () => {
             // given

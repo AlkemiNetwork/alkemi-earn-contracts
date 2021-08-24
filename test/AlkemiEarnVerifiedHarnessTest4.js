@@ -38,7 +38,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			assert.equal(
 				Number(
-					await alkemiEarnVerified.methods.getCollateralMarketsLength().call()
+					await alkemiEarnVerified.methods.collateralMarkets.length().call()
 				),
 				0
 			);
@@ -59,7 +59,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			assert.equal(
 				Number(
-					await alkemiEarnVerified.methods.getCollateralMarketsLength().call()
+					await alkemiEarnVerified.methods.collateralMarkets.length().call()
 				),
 				1
 			);
@@ -107,7 +107,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			assert.equal(
 				Number(
-					await alkemiEarnVerified.methods.getCollateralMarketsLength().call()
+					await alkemiEarnVerified.methods.collateralMarkets.length().call()
 				),
 				1
 			);
@@ -175,7 +175,7 @@ contract("AlkemiEarnVerifiedHarness", function ([root, ...accounts]) {
 
 			assert.equal(
 				Number(
-					await alkemiEarnVerified.methods.getCollateralMarketsLength().call()
+					await alkemiEarnVerified.methods.collateralMarkets.length().call()
 				),
 				2
 			);

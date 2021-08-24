@@ -23,7 +23,7 @@ contract AlkemiEarnVerifiedTest_WithdrawEquity2 is AlkemiEarnVerifiedTest {
 
         // equity = 10000 - (2000 + 1000) = 7000
         // we attempt to withdraw all 7000, which should be allowed
-        assertNoError(Error(_withdrawEquity(asset, 7000)));
+        _withdrawEquity(asset, 7000);
 
         Assert.equal(
             3000,
