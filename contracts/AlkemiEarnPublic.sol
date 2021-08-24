@@ -14,9 +14,9 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
     uint256 internal defaultCollateralRatio;
     uint256 internal defaultLiquidationDiscount;
 
-    uint256 internal minimumCollateralRatioMantissa;
-    uint256 internal maximumLiquidationDiscountMantissa;
-    bool public initializationDone; // To make sure initializer is called only once
+    uint256 public minimumCollateralRatioMantissa;
+    uint256 public maximumLiquidationDiscountMantissa;
+    bool private initializationDone; // To make sure initializer is called only once
 
     /**
      * @notice `AlkemiEarnPublic` is the core contract
@@ -340,11 +340,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
     uint256 public closeFactorMantissa;
 
     /**
-     * @dev Event emitted on successful addition of Weth Address
-     */
-    event WETHAddressSet(address indexed wethAddress);
-
-    /**
      * @dev emitted when a supply is received
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
@@ -503,14 +498,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         } else {
             return b;
         }
-    }
-
-    /**
-     * @dev Function to simply retrieve block number
-     *      This exists mainly for inheriting test contracts to stub this result.
-     */
-    function getBlockNumber() internal view returns (uint256) {
-        return block.number;
     }
 
     /**
@@ -890,7 +877,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.supplyIndex,
             market.supplyRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         require(err == Error.NO_ERROR);
 
@@ -929,7 +916,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.borrowIndex,
             market.borrowRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         require(err == Error.NO_ERROR);
 
@@ -1220,7 +1207,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         require(wethContractAddress != address(0),"Cannot set weth address to 0x00");
         wethAddress = wethContractAddress;
         WETHContract = AlkemiWETH(wethAddress);
-        emit WETHAddressSet(wethContractAddress);
         return uint256(Error.NO_ERROR);
     }
 
@@ -1306,7 +1292,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.supplyIndex,
             market.supplyRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             revertEtherToUser(msg.sender, msg.value);
@@ -1387,7 +1373,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.borrowIndex,
             market.borrowRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             revertEtherToUser(msg.sender, msg.value);
@@ -1415,7 +1401,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         // (No safe failures beyond this point)
 
         // Save market updates
-        market.blockNumber = getBlockNumber();
+        market.blockNumber = block.number;
         market.totalSupply = localResults.newTotalSupply;
         market.supplyRateMantissa = localResults.newSupplyRateMantissa;
         market.supplyIndex = localResults.newSupplyIndex;
@@ -1530,7 +1516,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.supplyIndex,
             market.supplyRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             return
@@ -1670,7 +1656,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.borrowIndex,
             market.borrowRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             return
@@ -1696,7 +1682,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         // (No safe failures beyond this point)
 
         // Save market updates
-        market.blockNumber = getBlockNumber();
+        market.blockNumber = block.number;
         market.totalSupply = localResults.newTotalSupply;
         market.supplyRateMantissa = localResults.newSupplyRateMantissa;
         market.supplyIndex = localResults.newSupplyIndex;
@@ -1840,7 +1826,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     currentMarket.supplyIndex,
                     currentMarket.supplyRateMantissa,
                     currentMarket.blockNumber,
-                    getBlockNumber()
+                    block.number
                 );
                 if (err != Error.NO_ERROR) {
                     return (err, 0, 0);
@@ -1880,7 +1866,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     currentMarket.borrowIndex,
                     currentMarket.borrowRateMantissa,
                     currentMarket.blockNumber,
-                    getBlockNumber()
+                    block.number
                 );
                 if (err != Error.NO_ERROR) {
                     return (err, 0, 0);
@@ -1985,7 +1971,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.borrowIndex,
             market.borrowRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             revertEtherToUser(msg.sender, msg.value);
@@ -2116,7 +2102,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.supplyIndex,
             market.supplyRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             revertEtherToUser(msg.sender, msg.value);
@@ -2164,7 +2150,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         // (No safe failures beyond this point)
 
         // Save market updates
-        market.blockNumber = getBlockNumber();
+        market.blockNumber = block.number;
         market.totalBorrows = localResults.newTotalBorrows;
         market.supplyRateMantissa = localResults.newSupplyRateMantissa;
         market.supplyIndex = localResults.newSupplyIndex;
@@ -2298,7 +2284,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             borrowMarket.borrowIndex,
             borrowMarket.borrowRateMantissa,
             borrowMarket.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             return
@@ -2334,7 +2320,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             collateralMarket.supplyIndex,
             collateralMarket.supplyRateMantissa,
             collateralMarket.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             return
@@ -2625,7 +2611,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             borrowMarket.supplyIndex,
             borrowMarket.supplyRateMantissa,
             borrowMarket.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             return
@@ -2682,7 +2668,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             collateralMarket.borrowIndex,
             collateralMarket.borrowRateMantissa,
             collateralMarket.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             return
@@ -2720,7 +2706,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         // (No safe failures beyond this point)
 
         // Save borrow market updates
-        borrowMarket.blockNumber = getBlockNumber();
+        borrowMarket.blockNumber = block.number;
         borrowMarket.totalBorrows = localResults
         .newTotalBorrows_ProtocolUnderwaterAsset;
         // borrowMarket.totalSupply does not need to be updated
@@ -2733,7 +2719,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
 
         // Save collateral market updates
         // We didn't calculate new rates for collateralMarket (because neither cash nor borrows changed), just new indexes and total supply.
-        collateralMarket.blockNumber = getBlockNumber();
+        collateralMarket.blockNumber = block.number;
         collateralMarket.totalSupply = localResults
         .newTotalSupply_ProtocolCollateralAsset;
         collateralMarket.supplyIndex = localResults
@@ -3048,7 +3034,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.borrowIndex,
             market.borrowRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             return
@@ -3181,7 +3167,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.supplyIndex,
             market.supplyRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         if (err != Error.NO_ERROR) {
             return
@@ -3226,7 +3212,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         // (No safe failures beyond this point)
 
         // Save market updates
-        market.blockNumber = getBlockNumber();
+        market.blockNumber = block.number;
         market.totalBorrows = localResults.newTotalBorrows;
         market.supplyRateMantissa = localResults.newSupplyRateMantissa;
         market.supplyIndex = localResults.newSupplyIndex;
@@ -3404,7 +3390,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.supplyIndex,
             market.supplyRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         require(err == Error.NO_ERROR);
 
@@ -3421,7 +3407,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.borrowIndex,
             market.borrowRateMantissa,
             market.blockNumber,
-            getBlockNumber()
+            block.number
         );
         require(err == Error.NO_ERROR);
 
