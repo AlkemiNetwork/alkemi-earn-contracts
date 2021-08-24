@@ -749,6 +749,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @param newOracle New oracle address
      * @param requestedState value to assign to `paused`
      * @param originationFeeMantissa rational collateral ratio, scaled by 1e18.
+     * @param newCloseFactorMantissa new Close Factor, scaled by 1e18
+     * @param wethContractAddress WETH Contract Address
+     * @param _rewardControl Reward Control Address
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function _adminFunctions(
@@ -803,7 +806,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     /**
      * @notice Accepts transfer of admin rights. msg.sender must be pendingAdmin
      * @dev Admin function for pending admin to accept role and update admin
-     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
     function _acceptAdmin() public {
         // Check caller = pendingAdmin
