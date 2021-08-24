@@ -6,7 +6,7 @@ const BigNumber = require("bignumber.js");
 
 const { assert } = require("./Utils");
 
-const blocksPerYear = 2102400;
+const blocksPerYear = 2371128;
 
 function utilizationRate(cash, borrows) {
 	if (borrows.eq(0)) {

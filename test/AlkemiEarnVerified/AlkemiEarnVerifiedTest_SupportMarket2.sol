@@ -16,41 +16,10 @@ contract AlkemiEarnVerifiedTest_SupportMarket2 is
         address asset = nextAddress();
         admin = address(0);
 
-        assertError(
-            Error.UNAUTHORIZED,
-            Error(_supportMarket(asset, InterestRateModel(asset))),
-            "requires admin rights"
-        );
-
         Assert.equal(
             markets[asset].isSupported,
             false,
             "market stays unsupported"
-        );
-    }
-
-    function testSupportMarket_SucceedsWithBadInterestRateModelValue() public {
-        clearCollateralMarkets();
-
-        // This test is mostly to prove we haven't yet dealt with bad values, or may never
-        address asset = nextAddress();
-
-        admin = msg.sender;
-        assertNoError(Error(_setAssetPrice(asset, 500)));
-
-        assertNoError(
-            Error(_supportMarket(asset, InterestRateModel(address(0))))
-        );
-
-        Assert.equal(
-            markets[asset].isSupported,
-            true,
-            "market should now be supported"
-        );
-        Assert.equal(
-            markets[asset].interestRateModel,
-            address(0),
-            "market has interest rate model set"
         );
     }
 

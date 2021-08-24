@@ -62,20 +62,12 @@ contract AlkemiEarnVerifiedTest_SetRiskParameters4 is AlkemiEarnVerifiedTest {
             oldDiscount.mantissa,
             "setup failed; choose a different newDiscount"
         );
-
-            uint256 _minimumCollateralRatioMantissa
-         = minimumCollateralRatioMantissa;
-
-            uint256 _maximumLiquidationDiscountMantissa
-         = maximumLiquidationDiscountMantissa;
         assertError(
             Error.NO_ERROR,
             Error(
                 _setRiskParameters(
                     newRatio.mantissa,
-                    newDiscount.mantissa,
-                    _minimumCollateralRatioMantissa,
-                    _maximumLiquidationDiscountMantissa
+                    newDiscount.mantissa
                 )
             ),
             "operation not should have succeeded"

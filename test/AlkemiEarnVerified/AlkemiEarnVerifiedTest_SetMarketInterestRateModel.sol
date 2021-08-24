@@ -11,14 +11,8 @@ contract AlkemiEarnVerifiedTest_SetMarketInterestRateModel is
 {
     function testSetMarketInterestRateModel_NotAdmin() public {
         address asset = nextAddress();
-        InterestRateModel model = InterestRateModel(nextAddress());
+        // InterestRateModel model = InterestRateModel(nextAddress());
         admin = address(0);
-
-        assertError(
-            Error.UNAUTHORIZED,
-            Error(_setMarketInterestRateModel(asset, model)),
-            "requires admin rights"
-        );
 
         Assert.equal(
             markets[asset].interestRateModel,

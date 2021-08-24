@@ -23,7 +23,7 @@ contract AlkemiEarnVerifiedTest_WithdrawEquity3 is AlkemiEarnVerifiedTest {
 
         // equity = 10000 - (2000 + 1000) = 7000
         // we attempt to withdraw 2500, which should be allowed
-        assertNoError(Error(_withdrawEquity(asset, 2500)));
+        _withdrawEquity(asset, 2500);
 
         Assert.equal(
             7500,
@@ -60,7 +60,7 @@ contract AlkemiEarnVerifiedTest_WithdrawEquity3 is AlkemiEarnVerifiedTest {
         markets[asset].totalBorrows = 1000;
 
         // we attempt to withdraw 0, which should be allowed
-        assertNoError(Error(_withdrawEquity(asset, 0)));
+        _withdrawEquity(asset, 0);
 
         Assert.equal(10000, balances[protocol], "cash should be unchanged");
         Assert.equal(

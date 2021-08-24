@@ -185,7 +185,7 @@ async function buildAlkemiEarnVerified(root, accounts, priceOracle) {
 	);
 
 	await alkemiEarnVerified.methods
-		._adminFunctions(root, priceOracle._address, false, 1000000000000000,0)
+		._adminFunctions(root, priceOracle._address, false, 1000000000000000,0,root,root)
 		.send({ from: root });
 
 	// TODO: Should we set default origination fee here?
@@ -374,7 +374,7 @@ async function buildAlkemiEarnVerified2(root, accounts, priceOracle) {
 	);
 
 	await alkemiEarnVerified.methods
-		._adminFunctions(root, priceOracle._address, false, 1000000000000000,0)
+		._adminFunctions(root, priceOracle._address, false, 1000000000000000,0,root,root)
 		.send({ from: root });
 
 	// TODO: Should we set default origination fee here?

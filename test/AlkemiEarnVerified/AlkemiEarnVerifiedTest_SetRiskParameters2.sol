@@ -40,19 +40,11 @@ contract AlkemiEarnVerifiedTest_SetRiskParameters2 is AlkemiEarnVerifiedTest {
             "setup failed; choose a different newDiscount"
         );
 
-            uint256 _minimumCollateralRatioMantissa
-         = minimumCollateralRatioMantissa;
-
-            uint256 _maximumLiquidationDiscountMantissa
-         = maximumLiquidationDiscountMantissa;
-
         assertNoError(
             Error(
                 _setRiskParameters(
                     newRatio.mantissa,
-                    newDiscount.mantissa,
-                    _minimumCollateralRatioMantissa,
-                    _maximumLiquidationDiscountMantissa
+                    newDiscount.mantissa
                 )
             )
         );
@@ -66,56 +58,6 @@ contract AlkemiEarnVerifiedTest_SetRiskParameters2 is AlkemiEarnVerifiedTest {
             liquidationDiscount.mantissa,
             newDiscount.mantissa,
             "liquidation discount should have been updated"
-        );
-    }
-
-    function testSetRiskParameters_CollateralRatioUnderMinFails() public {
-        admin = msg.sender;
-        initializer();
-        Exp memory oldRatio = collateralRatio;
-        Exp memory newRatio = getExpFromRational(1099999, 1000000);
-        // Make sure newRatio is different so our validation of the non-update is legitimate
-        Assert.notEqual(
-            newRatio.mantissa,
-            collateralRatio.mantissa,
-            "setup failed; choose a different newRatio"
-        );
-
-        Exp memory oldDiscount = liquidationDiscount;
-        Exp memory newDiscount = getExpFromRational(6, 100);
-        Assert.notEqual(
-            newDiscount.mantissa,
-            oldDiscount.mantissa,
-            "setup failed; choose a different newDiscount"
-        );
-
-            uint256 _minimumCollateralRatioMantissa
-         = minimumCollateralRatioMantissa;
-
-            uint256 _maximumLiquidationDiscountMantissa
-         = maximumLiquidationDiscountMantissa;
-        assertError(
-            Error.INVALID_COLLATERAL_RATIO,
-            Error(
-                _setRiskParameters(
-                    newRatio.mantissa,
-                    newDiscount.mantissa,
-                    _minimumCollateralRatioMantissa,
-                    _maximumLiquidationDiscountMantissa
-                )
-            ),
-            "operation not should have succeeded"
-        );
-
-        Assert.equal(
-            collateralRatio.mantissa,
-            oldRatio.mantissa,
-            "collateral ratio should retain previous value"
-        );
-        Assert.equal(
-            liquidationDiscount.mantissa,
-            oldDiscount.mantissa,
-            "liquidation discount should retain previous value"
         );
     }
 }

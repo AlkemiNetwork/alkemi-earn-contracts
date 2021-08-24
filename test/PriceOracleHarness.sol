@@ -11,8 +11,8 @@ contract PriceOracleHarness is ChainLink {
      * @param asset Asset to get the price of
      * @return the price scaled by 10**18, or zero if the price is not available
      */
-    function getAssetPrice(address asset) public view returns (uint256) {
-        return prices[asset];
+    function getAssetPrice(address asset) public view returns (uint256, uint8) {
+        return (prices[asset], 18);
     }
 
     function harnessSetAssetPrice(address asset, uint256 assetPriceMantissa)

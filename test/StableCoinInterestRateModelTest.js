@@ -5,7 +5,7 @@ const StableCoinInterestRateModel = getContract("./AlkemiRateModel.sol");
 const BigNumber = require("bignumber.js");
 const { assert } = require("./Utils");
 
-const blocksPerYear = 2102400;
+const blocksPerYear = 2371128;
 
 function utilizationRate(cash, borrows) {
 	if (borrows.eq(0)) {
@@ -70,16 +70,14 @@ contract("StableCoinInterestRateModel", ([root, ...accounts]) => {
 		].forEach(([cash, borrows, absolute]) => {
 			it(`calculates correct supply value for ${cash}/${borrows}`, async () => {
 				const expected = calculateSupplyRate(cash, borrows);
-				const {
-					0: errorCode,
-					1: value,
-				} = await stableCoinInterestRateModel.methods
-					.getSupplyRate(
-						"0x0000000000000000000000000000000000000000",
-						new BigNumber(cash).toString(),
-						new BigNumber(borrows).toString()
-					)
-					.call();
+				const { 0: errorCode, 1: value } =
+					await stableCoinInterestRateModel.methods
+						.getSupplyRate(
+							"0x0000000000000000000000000000000000000000",
+							new BigNumber(cash).toString(),
+							new BigNumber(borrows).toString()
+						)
+						.call();
 
 				assert.equal(0, Number(errorCode), "should return success");
 
@@ -92,16 +90,14 @@ contract("StableCoinInterestRateModel", ([root, ...accounts]) => {
 
 			it(`calculates correct borrow value for ${cash}/${borrows}`, async () => {
 				const expected = calculateBorrowRate(cash, borrows);
-				const {
-					0: errorCode,
-					1: value,
-				} = await stableCoinInterestRateModel.methods
-					.getBorrowRate(
-						"0x0000000000000000000000000000000000000000",
-						new BigNumber(cash).toString(),
-						new BigNumber(borrows).toString()
-					)
-					.call();
+				const { 0: errorCode, 1: value } =
+					await stableCoinInterestRateModel.methods
+						.getBorrowRate(
+							"0x0000000000000000000000000000000000000000",
+							new BigNumber(cash).toString(),
+							new BigNumber(borrows).toString()
+						)
+						.call();
 
 				assert.equal(0, Number(errorCode), "should return success");
 				assert.withinPercentage(expected, Number(value) / 1e18, 1e-1);

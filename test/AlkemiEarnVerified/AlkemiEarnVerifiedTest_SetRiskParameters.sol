@@ -41,26 +41,6 @@ contract AlkemiEarnVerifiedTest_SetRiskParameters is AlkemiEarnVerifiedTest {
             "setup failed; choose a different newDiscount"
         );
 
-
-            uint256 _minimumCollateralRatioMantissa
-         = minimumCollateralRatioMantissa;
-
-            uint256 _maximumLiquidationDiscountMantissa
-         = maximumLiquidationDiscountMantissa;
-
-        assertError(
-            Error.UNAUTHORIZED,
-            Error(
-                _setRiskParameters(
-                    newRatio.mantissa,
-                    newDiscount.mantissa,
-                    _minimumCollateralRatioMantissa,
-                    _maximumLiquidationDiscountMantissa
-                )
-            ),
-            "should require admin rights"
-        );
-
         Assert.equal(
             collateralRatio.mantissa,
             oldRatio.mantissa,
@@ -91,19 +71,11 @@ contract AlkemiEarnVerifiedTest_SetRiskParameters is AlkemiEarnVerifiedTest {
             oldDiscount.mantissa,
             "setup failed; choose a different newDiscount"
         );
-
-            uint256 _minimumCollateralRatioMantissa
-         = minimumCollateralRatioMantissa;
-
-            uint256 _maximumLiquidationDiscountMantissa
-         = maximumLiquidationDiscountMantissa;
         assertNoError(
             Error(
                 _setRiskParameters(
                     newRatio.mantissa,
-                    newDiscount.mantissa,
-                    _minimumCollateralRatioMantissa,
-                    _maximumLiquidationDiscountMantissa
+                    newDiscount.mantissa
                 )
             )
         );

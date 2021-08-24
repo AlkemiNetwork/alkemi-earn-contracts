@@ -22,7 +22,7 @@ contract AlkemiEarnVerifiedTest_AddCollateralMarket is AlkemiEarnVerifiedTest {
 
         addCollateralMarket(addr1);
         Assert.equal(
-            getCollateralMarketsLength(),
+            collateralMarkets.length,
             1,
             "should have first market"
         );
@@ -34,7 +34,7 @@ contract AlkemiEarnVerifiedTest_AddCollateralMarket is AlkemiEarnVerifiedTest {
 
         addCollateralMarket(addr1);
         Assert.equal(
-            getCollateralMarketsLength(),
+            collateralMarkets.length,
             1,
             "should still have first market"
         );
@@ -46,7 +46,7 @@ contract AlkemiEarnVerifiedTest_AddCollateralMarket is AlkemiEarnVerifiedTest {
 
         addCollateralMarket(addr2);
         Assert.equal(
-            getCollateralMarketsLength(),
+            collateralMarkets.length,
             2,
             "should have first two markets"
         );
