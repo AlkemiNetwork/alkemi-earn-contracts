@@ -15,7 +15,7 @@ contract RewardControl is
      */
 
     /// @notice Emitted when a new ALK speed is calculated for a market
-    event AlkSpeedUpdated(address indexed market, uint256 newSpeed);
+    event AlkSpeedUpdated(address indexed market, uint256 newSpeed, bool isVerified);
 
     /// @notice Emitted when ALK is distributed to a supplier
     event DistributedSupplierAlk(
@@ -23,7 +23,8 @@ contract RewardControl is
         address indexed supplier,
         uint256 supplierDelta,
         uint256 supplierAccruedAlk,
-        uint256 supplyIndexMantissa
+        uint256 supplyIndexMantissa,
+        bool isVerified
     );
 
     /// @notice Emitted when ALK is distributed to a borrower
@@ -32,23 +33,26 @@ contract RewardControl is
         address indexed borrower,
         uint256 borrowerDelta,
         uint256 borrowerAccruedAlk,
-        uint256 borrowIndexMantissa
+        uint256 borrowIndexMantissa,
+        bool isVerified
     );
 
     /// @notice Emitted when ALK is transferred to a participant
     event TransferredAlk(
         address indexed participant,
-        uint256 participantAccrued
+        uint256 participantAccrued,
+        address market,
+        bool isVerified
     );
 
     /// @notice Emitted when the owner of the contract is updated
     event OwnerUpdate(address indexed owner, address indexed newOwner);
 
     /// @notice Emitted when a market is added
-    event MarketAdded(address indexed market, uint256 numberOfMarkets);
+    event MarketAdded(address indexed market, uint256 numberOfMarkets, bool isVerified);
 
     /// @notice Emitted when a market is removed
-    event MarketRemoved(address indexed market, uint256 numberOfMarkets);
+    event MarketRemoved(address indexed market, uint256 numberOfMarkets, bool isVerified);
 
     /**
      * Constants
@@ -68,15 +72,16 @@ contract RewardControl is
     function initializer(
         address _owner,
         address _alkemiEarnVerified,
+        address _alkemiEarnPublic,
         address _alkAddress
     ) public {
-        require(_owner != address(0) && _alkemiEarnVerified != address(0) && _alkAddress != address(0),"Inputs cannot be 0x00");
         if (initializationDone == false) {
             initializationDone = true;
             owner = _owner;
             alkemiEarnVerified = AlkemiEarnVerified(_alkemiEarnVerified);
+            alkemiEarnPublic = AlkemiEarnPublic(_alkemiEarnPublic);
             alkAddress = _alkAddress;
-            alkRate = 4161910198000000000;
+            alkRate = 8323820396000000000;
             // 8323820396000000000 divided by 2 (for lending or borrowing)
         }
     }
@@ -101,28 +106,30 @@ contract RewardControl is
      * @notice Refresh ALK supply index for the specified market and supplier
      * @param market The market whose supply index to update
      * @param supplier The address of the supplier to distribute ALK to
+     * @param isVerified Specifies if the market is from verified or public protocol
      */
-    function refreshAlkSupplyIndex(address market, address supplier) external {
-        if (!allMarketsIndex[market]) {
+    function refreshAlkSupplyIndex(address market, address supplier, bool isVerified) external {
+        if (!allMarketsIndex[isVerified][market]) {
             return;
         }
         refreshAlkSpeeds();
-        updateAlkSupplyIndex(market);
-        distributeSupplierAlk(market, supplier);
+        updateAlkSupplyIndex(market, isVerified);
+        distributeSupplierAlk(market, supplier, isVerified);
     }
 
     /**
      * @notice Refresh ALK borrow index for the specified market and borrower
      * @param market The market whose borrow index to update
      * @param borrower The address of the borrower to distribute ALK to
+     * @param isVerified Specifies if the market is from verified or public protocol
      */
-    function refreshAlkBorrowIndex(address market, address borrower) external {
-        if (!allMarketsIndex[market]) {
+    function refreshAlkBorrowIndex(address market, address borrower, bool isVerified) external {
+        if (!allMarketsIndex[isVerified][market]) {
             return;
         }
         refreshAlkSpeeds();
-        updateAlkBorrowIndex(market);
-        distributeBorrowerAlk(market, borrower);
+        updateAlkBorrowIndex(market, isVerified);
+        distributeBorrowerAlk(market, borrower, isVerified);
     }
 
     /**
@@ -130,19 +137,21 @@ contract RewardControl is
      * @param holder The address to claim ALK for
      */
     function claimAlk(address holder) external {
-        claimAlk(holder, allMarkets);
+        claimAlk(holder, allMarkets[true], true);
+        claimAlk(holder, allMarkets[false], false);
     }
 
     /**
      * @notice Claim all the ALK accrued by holder by refreshing the indexes on the specified market only
      * @param holder The address to claim ALK for
      * @param market The address of the market to refresh the indexes for
+     * @param isVerified Specifies if the market is from verified or public protocol
      */
-    function claimAlk(address holder, address market) external {
-        require(allMarketsIndex[market], "Market does not exist");
+    function claimAlk(address holder, address market, bool isVerified) external {
+        require(allMarketsIndex[isVerified][market], "Market does not exist");
         address[] memory markets = new address[](1);
         markets[0] = market;
-        claimAlk(holder, markets);
+        claimAlk(holder, markets, isVerified);
     }
 
     /**
@@ -154,17 +163,18 @@ contract RewardControl is
      */
     function refreshMarketLiquidity() internal view returns (Exp[] memory, Exp memory) {
         Exp memory totalLiquidity = Exp({mantissa: 0});
-        Exp[] memory marketTotalLiquidity = new Exp[](allMarkets.length);
+        Exp[] memory marketTotalLiquidity = new Exp[](add_(allMarkets[true].length, allMarkets[false].length));
         address currentMarket;
-        for (uint8 i = 0; i < allMarkets.length; i++) {
-            currentMarket = allMarkets[i];
-            // We multiply the total market supply and borrows by their ETH prices to account for token prices while allocating rewards
-            uint256 currentMarketTotalSupply = mul_(getMarketTotalSupply(
-                currentMarket
-            ),alkemiEarnVerified.assetPrices(currentMarket));
-            uint256 currentMarketTotalBorrows = mul_(getMarketTotalBorrows(
-                currentMarket
-            ),alkemiEarnVerified.assetPrices(currentMarket));
+        for (uint256 i = 0; i < allMarkets[true].length; i++) {
+            currentMarket = allMarkets[true][i];
+            uint256 currentMarketTotalSupply = getMarketTotalSupply(
+                currentMarket,
+                true
+            );
+            uint256 currentMarketTotalBorrows = getMarketTotalBorrows(
+                currentMarket,
+                true
+            );
             Exp memory currentMarketTotalLiquidity = Exp({
                 mantissa: add_(
                     currentMarketTotalSupply,
@@ -172,6 +182,26 @@ contract RewardControl is
                 )
             });
             marketTotalLiquidity[i] = currentMarketTotalLiquidity;
+            totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
+        }
+
+        for (uint256 j = 0; j < allMarkets[false].length; j++) {
+            currentMarket = allMarkets[false][j];
+            currentMarketTotalSupply = getMarketTotalSupply(
+                currentMarket,
+                false
+            );
+            currentMarketTotalBorrows = getMarketTotalBorrows(
+                currentMarket,
+                false
+            );
+            currentMarketTotalLiquidity = Exp({
+                mantissa: add_(
+                    currentMarketTotalSupply,
+                    currentMarketTotalBorrows
+                )
+            });
+            marketTotalLiquidity[allMarkets[false].length + j] = currentMarketTotalLiquidity;
             totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
         }
         return (marketTotalLiquidity,totalLiquidity);
@@ -184,27 +214,37 @@ contract RewardControl is
         address currentMarket;
         (Exp[] memory marketTotalLiquidity, Exp memory totalLiquidity) = refreshMarketLiquidity();
 
-        for (uint256 j = 0; j < allMarkets.length; j++) {
-            currentMarket = allMarkets[j];
+        for (uint256 i = 0; i < allMarkets[true].length; i++) {
+            currentMarket = allMarkets[true][i];
             uint256 newSpeed = totalLiquidity.mantissa > 0
-                ? mul_(alkRate, div_(marketTotalLiquidity[j], totalLiquidity))
+                ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity))
                 : 0;
-            alkSpeeds[currentMarket] = newSpeed;
-            emit AlkSpeedUpdated(currentMarket, newSpeed);
+            alkSpeeds[true][currentMarket] = newSpeed;
+            emit AlkSpeedUpdated(currentMarket, newSpeed, true);
+        }
+
+        for (uint256 j = 0; j < allMarkets[false].length; j++) {
+            currentMarket = allMarkets[false][j];
+            newSpeed = totalLiquidity.mantissa > 0
+                ? mul_(alkRate, div_(marketTotalLiquidity[allMarkets[true].length + j], totalLiquidity))
+                : 0;
+            alkSpeeds[false][currentMarket] = newSpeed;
+            emit AlkSpeedUpdated(currentMarket, newSpeed, false);
         }
     }
 
     /**
      * @notice Accrue ALK to the market by updating the supply index
      * @param market The market whose supply index to update
+     * @param isVerified Verified / Public protocol
      */
-    function updateAlkSupplyIndex(address market) internal {
-        MarketState storage supplyState = alkSupplyState[market];
-        uint256 marketSpeed = alkSpeeds[market];
+    function updateAlkSupplyIndex(address market, bool isVerified) internal {
+        MarketState storage supplyState = alkSupplyState[isVerified][market];
+        uint256 marketSpeed = alkSpeeds[isVerified][market];
         uint256 blockNumber = getBlockNumber();
         uint256 deltaBlocks = sub_(blockNumber, uint256(supplyState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
-            uint256 marketTotalSupply = getMarketTotalSupply(market);
+            uint256 marketTotalSupply = getMarketTotalSupply(market, isVerified);
             uint256 supplyAlkAccrued = mul_(deltaBlocks, marketSpeed);
             Double memory ratio = marketTotalSupply > 0
                 ? fraction(supplyAlkAccrued, marketTotalSupply)
@@ -213,7 +253,7 @@ contract RewardControl is
                 Double({mantissa: supplyState.index}),
                 ratio
             );
-            alkSupplyState[market] = MarketState({
+            alkSupplyState[isVerified][market] = MarketState({
                 index: safe224(index.mantissa, "new index exceeds 224 bits"),
                 block: safe32(blockNumber, "block number exceeds 32 bits")
             });
@@ -228,14 +268,15 @@ contract RewardControl is
     /**
      * @notice Accrue ALK to the market by updating the borrow index
      * @param market The market whose borrow index to update
+     * @param isVerified Verified / Public protocol
      */
-    function updateAlkBorrowIndex(address market) internal {
-        MarketState storage borrowState = alkBorrowState[market];
-        uint256 marketSpeed = alkSpeeds[market];
+    function updateAlkBorrowIndex(address market, bool isVerified) internal {
+        MarketState storage borrowState = alkBorrowState[isVerified][market];
+        uint256 marketSpeed = alkSpeeds[isVerified][market];
         uint256 blockNumber = getBlockNumber();
         uint256 deltaBlocks = sub_(blockNumber, uint256(borrowState.block));
         if (deltaBlocks > 0 && marketSpeed > 0) {
-            uint256 marketTotalBorrows = getMarketTotalBorrows(market);
+            uint256 marketTotalBorrows = getMarketTotalBorrows(market, isVerified);
             uint256 borrowAlkAccrued = mul_(deltaBlocks, marketSpeed);
             Double memory ratio = marketTotalBorrows > 0
                 ? fraction(borrowAlkAccrued, marketTotalBorrows)
@@ -244,7 +285,7 @@ contract RewardControl is
                 Double({mantissa: borrowState.index}),
                 ratio
             );
-            alkBorrowState[market] = MarketState({
+            alkBorrowState[isVerified][market] = MarketState({
                 index: safe224(index.mantissa, "new index exceeds 224 bits"),
                 block: safe32(blockNumber, "block number exceeds 32 bits")
             });
@@ -260,18 +301,19 @@ contract RewardControl is
      * @notice Calculate ALK accrued by a supplier and add it on top of alkAccrued[supplier]
      * @param market The market in which the supplier is interacting
      * @param supplier The address of the supplier to distribute ALK to
+     * @param isVerified Verified / Public protocol
      */
-    function distributeSupplierAlk(address market, address supplier) internal {
-        MarketState storage supplyState = alkSupplyState[market];
+    function distributeSupplierAlk(address market, address supplier, bool isVerified) internal {
+        MarketState storage supplyState = alkSupplyState[isVerified][market];
         Double memory supplyIndex = Double({mantissa: supplyState.index});
         Double memory supplierIndex = Double({
-            mantissa: alkSupplierIndex[market][supplier]
+            mantissa: alkSupplierIndex[isVerified][market][supplier]
         });
-        alkSupplierIndex[market][supplier] = supplyIndex.mantissa;
+        alkSupplierIndex[isVerified][market][supplier] = supplyIndex.mantissa;
 
         if (supplierIndex.mantissa > 0) {
             Double memory deltaIndex = sub_(supplyIndex, supplierIndex);
-            uint256 supplierBalance = getSupplyBalance(market, supplier);
+            uint256 supplierBalance = getSupplyBalance(market, supplier, isVerified);
             uint256 supplierDelta = mul_(supplierBalance, deltaIndex);
             alkAccrued[supplier] = add_(alkAccrued[supplier], supplierDelta);
             emit DistributedSupplierAlk(
@@ -279,7 +321,8 @@ contract RewardControl is
                 supplier,
                 supplierDelta,
                 alkAccrued[supplier],
-                supplyIndex.mantissa
+                supplyIndex.mantissa,
+                isVerified
             );
         }
     }
@@ -288,18 +331,19 @@ contract RewardControl is
      * @notice Calculate ALK accrued by a borrower and add it on top of alkAccrued[borrower]
      * @param market The market in which the borrower is interacting
      * @param borrower The address of the borrower to distribute ALK to
+     * @param isVerified Verified / Public protocol
      */
-    function distributeBorrowerAlk(address market, address borrower) internal {
-        MarketState storage borrowState = alkBorrowState[market];
+    function distributeBorrowerAlk(address market, address borrower, bool isVerified) internal {
+        MarketState storage borrowState = alkBorrowState[isVerified][market];
         Double memory borrowIndex = Double({mantissa: borrowState.index});
         Double memory borrowerIndex = Double({
-            mantissa: alkBorrowerIndex[market][borrower]
+            mantissa: alkBorrowerIndex[isVerified][market][borrower]
         });
-        alkBorrowerIndex[market][borrower] = borrowIndex.mantissa;
+        alkBorrowerIndex[isVerified][market][borrower] = borrowIndex.mantissa;
 
         if (borrowerIndex.mantissa > 0) {
             Double memory deltaIndex = sub_(borrowIndex, borrowerIndex);
-            uint256 borrowerBalance = getBorrowBalance(market, borrower);
+            uint256 borrowerBalance = getBorrowBalance(market, borrower, isVerified);
             uint256 borrowerDelta = mul_(borrowerBalance, deltaIndex);
             alkAccrued[borrower] = add_(alkAccrued[borrower], borrowerDelta);
             emit DistributedBorrowerAlk(
@@ -307,7 +351,8 @@ contract RewardControl is
                 borrower,
                 borrowerDelta,
                 alkAccrued[borrower],
-                borrowIndex.mantissa
+                borrowIndex.mantissa,
+                isVerified
             );
         }
     }
@@ -316,18 +361,19 @@ contract RewardControl is
      * @notice Claim all the ALK accrued by holder in the specified markets
      * @param holder The address to claim ALK for
      * @param markets The list of markets to claim ALK in
+     * @param isVerified Verified / Public protocol
      */
-    function claimAlk(address holder, address[] memory markets) internal {
+    function claimAlk(address holder, address[] memory markets, bool isVerified) internal {
         for (uint256 i = 0; i < markets.length; i++) {
             address market = markets[i];
 
-            updateAlkSupplyIndex(market);
-            distributeSupplierAlk(market, holder);
+            updateAlkSupplyIndex(market, isVerified);
+            distributeSupplierAlk(market, holder, isVerified);
 
-            updateAlkBorrowIndex(market);
-            distributeBorrowerAlk(market, holder);
+            updateAlkBorrowIndex(market, isVerified);
+            distributeBorrowerAlk(market, holder, isVerified);
 
-            alkAccrued[holder] = transferAlk(holder, alkAccrued[holder]);
+            alkAccrued[holder] = transferAlk(holder, alkAccrued[holder], market, isVerified);
         }
     }
 
@@ -336,9 +382,11 @@ contract RewardControl is
      * @dev Note: If there is not enough ALK, we do not perform the transfer all.
      * @param participant The address of the participant to transfer ALK to
      * @param participantAccrued The amount of ALK to (possibly) transfer
+     * @param market Market for which ALK is transferred
+     * @param isVerified Verified / Public Protocol
      * @return The amount of ALK which was NOT transferred to the participant
      */
-    function transferAlk(address participant, uint256 participantAccrued)
+    function transferAlk(address participant, uint256 participantAccrued, address market, bool isVerified)
         internal
         returns (uint256)
     {
@@ -347,7 +395,7 @@ contract RewardControl is
             uint256 alkRemaining = alk.balanceOf(address(this));
             if (participantAccrued <= alkRemaining) {
                 alk.transfer(participant, participantAccrued);
-                emit TransferredAlk(participant, participantAccrued);
+                emit TransferredAlk(participant, participantAccrued, market, isVerified);
                 return 0;
             }
         }
@@ -384,19 +432,20 @@ contract RewardControl is
     }
 
     /**
-     * @notice Get the address of the underlying AlkemiEarnVerified contract
-     * @return The address of the underlying AlkemiEarnVerified contract
+     * @notice Get the address of the underlying AlkemiEarnVerified and AlkemiEarnPublic contract
+     * @return The address of the underlying AlkemiEarnVerified and AlkemiEarnPublic contract
      */
-    function getAlkemiEarnVerifiedAddress() public view returns (address) {
-        return address(alkemiEarnVerified);
+    function getAlkemiEarnAddress() public view returns (address, address) {
+        return (address(alkemiEarnVerified), address(alkemiEarnPublic));
     }
 
     /**
      * @notice Get market statistics from the AlkemiEarnVerified contract
      * @param market The address of the market
+     * @param isVerified Verified / Public protocol
      * @return Market statistics for the given market
      */
-    function getMarketStats(address market)
+    function getMarketStats(address market, bool isVerified)
         public
         view
         returns (
@@ -410,37 +459,43 @@ contract RewardControl is
             uint256 borrowRateMantissa,
             uint256 borrowIndex
         )
-    {
-        return (alkemiEarnVerified.markets(market));
+    {   
+        if(isVerified){
+            return (alkemiEarnVerified.markets(market));
+        } else {
+            return (alkemiEarnPublic.markets(market));
+        }
     }
 
     /**
-     * @notice Get market total supply from the AlkemiEarnVerified contract
+     * @notice Get market total supply from the AlkemiEarnVerified / AlkemiEarnPublic contract
      * @param market The address of the market
+     * @param isVerified Verified / Public protocol
      * @return Market total supply for the given market
      */
-    function getMarketTotalSupply(address market)
+    function getMarketTotalSupply(address market, bool isVerified)
         public
         view
         returns (uint256)
     {
         uint256 totalSupply;
-        (, , , totalSupply, , , , , ) = getMarketStats(market);
+        (, , , totalSupply, , , , , ) = getMarketStats(market, isVerified);
         return totalSupply;
     }
 
     /**
      * @notice Get market total borrows from the AlkemiEarnVerified contract
      * @param market The address of the market
+     * @param isVerified Verified / Public protocol
      * @return Market total borrows for the given market
      */
-    function getMarketTotalBorrows(address market)
+    function getMarketTotalBorrows(address market, bool isVerified)
         public
         view
         returns (uint256)
     {
         uint256 totalBorrows;
-        (, , , , , , totalBorrows, , ) = getMarketStats(market);
+        (, , , , , , totalBorrows, , ) = getMarketStats(market, isVerified);
         return totalBorrows;
     }
 
@@ -448,28 +503,38 @@ contract RewardControl is
      * @notice Get supply balance of the specified market and supplier
      * @param market The address of the market
      * @param supplier The address of the supplier
+     * @param isVerified Verified / Public protocol
      * @return Supply balance of the specified market and supplier
      */
-    function getSupplyBalance(address market, address supplier)
+    function getSupplyBalance(address market, address supplier, bool isVerified)
         public
         view
         returns (uint256)
     {
-        return alkemiEarnVerified.getSupplyBalance(supplier, market);
+        if(isVerified){
+            return alkemiEarnVerified.getSupplyBalance(supplier, market);
+        } else {
+            return alkemiEarnPublic.getSupplyBalance(supplier, market);
+        }
     }
 
     /**
      * @notice Get borrow balance of the specified market and borrower
      * @param market The address of the market
      * @param borrower The address of the borrower
+     * @param isVerified Verified / Public protocol
      * @return Borrow balance of the specified market and borrower
      */
-    function getBorrowBalance(address market, address borrower)
+    function getBorrowBalance(address market, address borrower, bool isVerified)
         public
         view
         returns (uint256)
     {
-        return alkemiEarnVerified.getBorrowBalance(borrower, market);
+        if(isVerified){
+            return alkemiEarnVerified.getBorrowBalance(borrower, market);
+        } else {
+            return alkemiEarnPublic.getBorrowBalance(borrower, market);
+        }
     }
 
     /**
@@ -501,34 +566,32 @@ contract RewardControl is
     /**
      * @notice Add new market to the reward program
      * @param market The address of the new market to be added to the reward program
+     * @param isVerified Verified / Public protocol
      */
-    function addMarket(address market) external onlyOwner {
-        require(!allMarketsIndex[market], "Market already exists");
-        require(allMarkets.length < uint256(MAXIMUM_NUMBER_OF_MARKETS),"Exceeding the max number of markets allowed");
-        allMarketsIndex[market] = true;
-        allMarkets.push(market);
-        emit MarketAdded(market, allMarkets.length);
+    function addMarket(address market, bool isVerified) external onlyOwner {
+        require(!allMarketsIndex[isVerified][market], "Market already exists");
+        allMarketsIndex[isVerified][market] = true;
+        allMarkets[isVerified].push(market);
+        emit MarketAdded(market, add_(allMarkets[isVerified].length, allMarkets[!isVerified].length), isVerified);
     }
 
     /**
      * @notice Remove a market from the reward program based on array index
      * @param id The index of the `allMarkets` array to be removed
+     * @param isVerified Verified / Public protocol
      */
-    function removeMarket(uint256 id) external onlyOwner {
-        if (id >= allMarkets.length) {
+    function removeMarket(uint256 id, bool isVerified) external onlyOwner {
+        if (id >= allMarkets[isVerified].length) {
             return;
         }
-        allMarketsIndex[allMarkets[id]] = false;
-        address removedMarket = allMarkets[id];
+        allMarketsIndex[isVerified][allMarkets[isVerified][id]] = false;
+        address removedMarket = allMarkets[isVerified][id];
 
-        for (uint256 i = id; i < allMarkets.length - 1; i++) {
-            allMarkets[i] = allMarkets[i + 1];
+        for (uint256 i = id; i < allMarkets[isVerified].length - 1; i++) {
+            allMarkets[isVerified][i] = allMarkets[isVerified][i + 1];
         }
-        allMarkets.length--;
-        // reset the ALK speeds for the removed market and refresh ALK speeds
-        alkSpeeds[removedMarket] = 0;
-        refreshAlkSpeeds();
-        emit MarketRemoved(removedMarket, allMarkets.length);
+        allMarkets[isVerified].length--;
+        emit MarketRemoved(removedMarket, add_(allMarkets[isVerified].length, allMarkets[!isVerified].length), isVerified);
     }
 
     /**
@@ -561,6 +624,25 @@ contract RewardControl is
     }
 
     /**
+     * @notice Set AlkemiEarnPublic contract address
+     * @param _alkemiEarnPublic The AlkemiEarnVerified contract address
+     */
+    function setAlkemiEarnPublicAddress(address _alkemiEarnPublic)
+        external
+        onlyOwner
+    {
+        require(
+            address(alkemiEarnPublic) != _alkemiEarnPublic,
+            "The same AlkemiEarnPublic address"
+        );
+        require(
+            _alkemiEarnPublic != address(0),
+            "AlkemiEarnPublic address cannot be empty"
+        );
+        alkemiEarnPublic = AlkemiEarnPublic(_alkemiEarnPublic);
+    }
+
+    /**
      * @notice Set ALK rate
      * @param _alkRate The ALK rate
      */
@@ -576,22 +658,34 @@ contract RewardControl is
         // Refresh ALK speeds
         uint256 alkRewards = alkAccrued[user];
         (Exp[] memory marketTotalLiquidity, Exp memory totalLiquidity) = refreshMarketLiquidity();
-        for (uint8 i = 0; i < allMarkets.length; i++) {
-            alkRewards = add_(alkRewards,add_(getSupplyAlkRewards(totalLiquidity,marketTotalLiquidity,user,i),getBorrowAlkRewards(totalLiquidity,marketTotalLiquidity,user,i)));
+        for (uint256 i = 0; i < allMarkets[true].length; i++) {
+            alkRewards = add_(alkRewards,add_(getSupplyAlkRewards(totalLiquidity,marketTotalLiquidity,user,i,i,true),getBorrowAlkRewards(totalLiquidity,marketTotalLiquidity,user,i,i,true)));
+        }
+        for (uint256 j = 0; j < allMarkets[false].length; j++) {
+            alkRewards = add_(alkRewards,add_(getSupplyAlkRewards(totalLiquidity,marketTotalLiquidity,user,allMarkets[true].length + j,j,false),getBorrowAlkRewards(totalLiquidity,marketTotalLiquidity,user,allMarkets[true].length + j,j,false)));
         }
         return alkRewards;
     }
 
-    function getSupplyAlkRewards(Exp memory totalLiquidity,Exp[] memory marketTotalLiquidity,address user,uint i) internal view returns(uint256) {
+    /**
+     * @notice Get latest Supply ALK rewards
+     * @param totalLiquidity Total Liquidity of all markets
+     * @param marketTotalLiquidity Array of individual market liquidity
+     * @param user the supplier
+     * @param i index of the market in marketTotalLiquidity array
+     * @param j index of the market in the verified/public allMarkets array
+     * @param isVerified Verified / Public protocol
+     */
+    function getSupplyAlkRewards(Exp memory totalLiquidity, Exp[] memory marketTotalLiquidity, address user, uint i, uint j, bool isVerified) internal view returns(uint256) {
             uint256 newSpeed = totalLiquidity.mantissa > 0
                 ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity))
                 : 0;
-            MarketState memory supplyState = alkSupplyState[allMarkets[i]];
+            MarketState memory supplyState = alkSupplyState[isVerified][allMarkets[isVerified][j]];
             if (sub_(getBlockNumber(), uint256(supplyState.block)) > 0 && newSpeed > 0) {
                 Double memory index = add_(
                     Double({mantissa: supplyState.index}),
-                    (getMarketTotalSupply(allMarkets[i]) > 0
-                    ? fraction(mul_(sub_(getBlockNumber(), uint256(supplyState.block)), newSpeed), getMarketTotalSupply(allMarkets[i]))
+                    (getMarketTotalSupply(allMarkets[isVerified][j], isVerified) > 0
+                    ? fraction(mul_(sub_(getBlockNumber(), uint256(supplyState.block)), newSpeed), getMarketTotalSupply(allMarkets[isVerified][j], isVerified))
                     : Double({mantissa: 0}))
                 );
                 supplyState = MarketState({
@@ -605,24 +699,43 @@ contract RewardControl is
                 );
             }
 
-            if (Double({
-                mantissa: alkSupplierIndex[allMarkets[i]][user]
+            if (isVerified && Double({
+                mantissa: alkSupplierIndex[isVerified][allMarkets[isVerified][j]][user]
             }).mantissa > 0) {
-                return mul_(alkemiEarnVerified.getSupplyBalance(user, allMarkets[i]), sub_(Double({mantissa: supplyState.index}), Double({
-                mantissa: alkSupplierIndex[allMarkets[i]][user]
+                return mul_(alkemiEarnVerified.getSupplyBalance(user, allMarkets[isVerified][j]), sub_(Double({mantissa: supplyState.index}), Double({
+                mantissa: alkSupplierIndex[isVerified][allMarkets[isVerified][j]][user]
             })));
             }
+            if (!isVerified && Double({
+                mantissa: alkSupplierIndex[isVerified][allMarkets[isVerified][j]][user]
+            }).mantissa > 0) {
+                return mul_(alkemiEarnPublic.getSupplyBalance(user, allMarkets[isVerified][j]), sub_(Double({mantissa: supplyState.index}), Double({
+                mantissa: alkSupplierIndex[isVerified][allMarkets[isVerified][j]][user]
+            })));
+            } else {
+                return 0;
+            }
     }
-    function getBorrowAlkRewards(Exp memory totalLiquidity,Exp[] memory marketTotalLiquidity,address user,uint i) internal view returns(uint256) {
+
+    /**
+     * @notice Get latest Borrow ALK rewards
+     * @param totalLiquidity Total Liquidity of all markets
+     * @param marketTotalLiquidity Array of individual market liquidity
+     * @param user the borrower
+     * @param i index of the market in marketTotalLiquidity array
+     * @param j index of the market in the verified/public allMarkets array
+     * @param isVerified Verified / Public protocol
+     */
+    function getBorrowAlkRewards(Exp memory totalLiquidity, Exp[] memory marketTotalLiquidity, address user, uint i, uint j, bool isVerified) internal view returns(uint256) {
             uint256 newSpeed = totalLiquidity.mantissa > 0
                 ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity))
                 : 0;
-            MarketState memory borrowState = alkBorrowState[allMarkets[i]];
+            MarketState memory borrowState = alkBorrowState[isVerified][allMarkets[isVerified][j]];
             if (sub_(getBlockNumber(), uint256(borrowState.block)) > 0 && newSpeed > 0) {
                 Double memory index = add_(
                     Double({mantissa: borrowState.index}),
-                    (getMarketTotalBorrows(allMarkets[i]) > 0
-                    ? fraction(mul_(sub_(getBlockNumber(), uint256(borrowState.block)), newSpeed), getMarketTotalBorrows(allMarkets[i]))
+                    (getMarketTotalBorrows(allMarkets[isVerified][j], isVerified) > 0
+                    ? fraction(mul_(sub_(getBlockNumber(), uint256(borrowState.block)), newSpeed), getMarketTotalBorrows(allMarkets[isVerified][j], isVerified))
                     : Double({mantissa: 0}))
                 );
                 borrowState = MarketState({
@@ -637,11 +750,20 @@ contract RewardControl is
             }
 
             if (Double({
-                mantissa: alkBorrowerIndex[allMarkets[i]][user]
-            }).mantissa > 0) {
-                return mul_(alkemiEarnVerified.getBorrowBalance(user, allMarkets[i]), sub_(Double({mantissa: borrowState.index}), Double({
-                mantissa: alkBorrowerIndex[allMarkets[i]][user]
+                mantissa: alkBorrowerIndex[isVerified][allMarkets[isVerified][j]][user]
+            }).mantissa > 0 && isVerified) {
+                return mul_(alkemiEarnVerified.getBorrowBalance(user, allMarkets[isVerified][j]), sub_(Double({mantissa: borrowState.index}), Double({
+                mantissa: alkBorrowerIndex[isVerified][allMarkets[isVerified][j]][user]
             })));
+            }
+            if (Double({
+                mantissa: alkBorrowerIndex[isVerified][allMarkets[isVerified][j]][user]
+            }).mantissa > 0 && !isVerified) {
+                return mul_(alkemiEarnPublic.getBorrowBalance(user, allMarkets[isVerified][j]), sub_(Double({mantissa: borrowState.index}), Double({
+                mantissa: alkBorrowerIndex[isVerified][allMarkets[isVerified][j]][user]
+            })));
+            } else {
+                return 0;
             }
     }
 }

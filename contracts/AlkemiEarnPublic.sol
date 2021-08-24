@@ -1259,7 +1259,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                 fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
 
-        refreshAlkSupplyIndex(asset, msg.sender);
+        refreshAlkSupplyIndex(asset, msg.sender, false);
 
         Market storage market = markets[asset];
         Balance storage balance = supplyBalances[msg.sender][asset];
@@ -1488,7 +1488,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                 );
         }
 
-        refreshAlkSupplyIndex(asset, msg.sender);
+        refreshAlkSupplyIndex(asset, msg.sender, false);
 
         Market storage market = markets[asset];
         Balance storage supplyBalance = supplyBalances[msg.sender][asset];
@@ -1959,7 +1959,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     FailureInfo.REPAY_BORROW_CONTRACT_PAUSED
                 );
         }
-        refreshAlkBorrowIndex(asset, msg.sender);
+        refreshAlkBorrowIndex(asset, msg.sender, false);
         PayBorrowLocalVars memory localResults;
         Market storage market = markets[asset];
         Balance storage borrowBalance = borrowBalances[msg.sender][asset];
@@ -2238,9 +2238,9 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     FailureInfo.LIQUIDATE_CONTRACT_PAUSED
                 );
         }
-        refreshAlkSupplyIndex(assetCollateral, targetAccount);
-        refreshAlkSupplyIndex(assetCollateral, msg.sender);
-        refreshAlkBorrowIndex(assetBorrow, targetAccount);
+        refreshAlkSupplyIndex(assetCollateral, targetAccount, false);
+        refreshAlkSupplyIndex(assetCollateral, msg.sender, false);
+        refreshAlkBorrowIndex(assetBorrow, targetAccount, false);
         LiquidateLocalVars memory localResults;
         // Copy these addresses into the struct for use with `emitLiquidationEvent`
         // We'll use localResults.liquidator inside this function for clarity vs using msg.sender.
@@ -3012,7 +3012,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
         }
-        refreshAlkBorrowIndex(asset, msg.sender);
+        refreshAlkBorrowIndex(asset, msg.sender, false);
         BorrowLocalVars memory localResults;
         Market storage market = markets[asset];
         Balance storage borrowBalance = borrowBalances[msg.sender][asset];
@@ -3266,7 +3266,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         uint256 amount,
         uint256 newSupplyIndex
     ) private {
-        refreshAlkSupplyIndex(asset, admin);
+        refreshAlkSupplyIndex(asset, admin, false);
         uint256 originationFeeRepaid = 0;
         if (originationFeeBalance[user][asset] != 0) {
             if (amount < originationFeeBalance[user][asset]) {
@@ -3347,24 +3347,26 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
      * @notice Trigger the underlying Reward Control contract to accrue ALK supply rewards for the supplier on the specified market
      * @param market The address of the market to accrue rewards
      * @param supplier The address of the supplier to accrue rewards
+     * @param isVerified Verified / Public protocol
      */
-    function refreshAlkSupplyIndex(address market, address supplier) internal {
+    function refreshAlkSupplyIndex(address market, address supplier, bool isVerified) internal {
         if (address(rewardControl) == address(0)) {
             return;
         }
-        rewardControl.refreshAlkSupplyIndex(market, supplier);
+        rewardControl.refreshAlkSupplyIndex(market, supplier, isVerified);
     }
 
     /**
      * @notice Trigger the underlying Reward Control contract to accrue ALK borrow rewards for the borrower on the specified market
      * @param market The address of the market to accrue rewards
      * @param borrower The address of the borrower to accrue rewards
+     * @param isVerified Verified / Public protocol
      */
-    function refreshAlkBorrowIndex(address market, address borrower) internal {
+    function refreshAlkBorrowIndex(address market, address borrower, bool isVerified) internal {
         if (address(rewardControl) == address(0)) {
             return;
         }
-        rewardControl.refreshAlkBorrowIndex(market, borrower);
+        rewardControl.refreshAlkBorrowIndex(market, borrower, isVerified);
     }
 
     /**
