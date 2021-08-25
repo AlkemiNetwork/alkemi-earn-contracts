@@ -82,8 +82,11 @@ contract RewardControl is
             alkemiEarnVerified = AlkemiEarnVerified(_alkemiEarnVerified);
             alkemiEarnPublic = AlkemiEarnPublic(_alkemiEarnPublic);
             alkAddress = _alkAddress;
-            alkRate = 8323820396000000000;
-            // 8323820396000000000 divided by 2 (for lending or borrowing)
+            // Total Liquidity rewards for 4 years = 70,000,000
+            // Liquidity per year = 70,000,000/4 = 17,500,000
+            // Divided by blocksPerYear (assuming 13.3 seconds avg. block time) = 17,500,000/2,371,128 = 7.380453522542860000
+            // 7380453522542860000 (Tokens scaled by token decimals of 18) divided by 2 (half for lending and half for borrowing)
+            alkRate = 3690226761271430000;
         }
     }
 
