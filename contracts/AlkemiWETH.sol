@@ -1,4 +1,4 @@
-// Cloned from https://github.com/gnosis/canonical-weth/blob/master/contracts/WETH9.sol
+// Cloned from https://github.com/gnosis/canonical-weth/blob/master/contracts/WETH9.sol -> Commit id: 0dd1ea3
 pragma solidity 0.4.24;
 
 contract AlkemiWETH {

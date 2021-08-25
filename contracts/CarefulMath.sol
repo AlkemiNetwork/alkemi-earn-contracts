@@ -1,4 +1,4 @@
-// Cloned from https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol
+// Cloned from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol -> Commit id: 24a0bc2
 // and added custom functions related to Alkemi
 pragma solidity 0.4.24;
 
@@ -7,7 +7,7 @@ import "./ErrorReporter.sol";
 /**
  * @title Careful Math
  * @notice Derived from OpenZeppelin's SafeMath library
- *         https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/math/SafeMath.sol
+ *         https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol
  */
 contract CarefulMath is ErrorReporter {
     /**
