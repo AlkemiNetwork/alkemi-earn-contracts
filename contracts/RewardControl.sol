@@ -202,7 +202,7 @@ contract RewardControl is
                     currentMarketTotalBorrows
                 )
             });
-            marketTotalLiquidity[allMarkets[false].length + j] = currentMarketTotalLiquidity;
+            marketTotalLiquidity[allMarkets[true].length + j] = currentMarketTotalLiquidity;
             totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
         }
         return (marketTotalLiquidity,totalLiquidity);
@@ -593,6 +593,9 @@ contract RewardControl is
             allMarkets[isVerified][i] = allMarkets[isVerified][i + 1];
         }
         allMarkets[isVerified].length--;
+        // reset the ALK speeds for the removed market and refresh ALK speeds
+        alkSpeeds[removedMarket] = 0;
+        refreshAlkSpeeds();
         emit MarketRemoved(removedMarket, add_(allMarkets[isVerified].length, allMarkets[!isVerified].length), isVerified);
     }
 
