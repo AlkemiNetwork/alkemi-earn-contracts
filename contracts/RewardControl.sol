@@ -168,14 +168,14 @@ contract RewardControl is
         address currentMarket;
         for (uint256 i = 0; i < allMarkets[true].length; i++) {
             currentMarket = allMarkets[true][i];
-            uint256 currentMarketTotalSupply = getMarketTotalSupply(
+            uint256 currentMarketTotalSupply = mul_(getMarketTotalSupply(
                 currentMarket,
                 true
-            );
-            uint256 currentMarketTotalBorrows = getMarketTotalBorrows(
+            ),alkemiEarnVerified.assetPrices(currentMarket));
+            uint256 currentMarketTotalBorrows = mul_(getMarketTotalBorrows(
                 currentMarket,
                 true
-            );
+            ),alkemiEarnVerified.assetPrices(currentMarket));
             Exp memory currentMarketTotalLiquidity = Exp({
                 mantissa: add_(
                     currentMarketTotalSupply,
@@ -188,14 +188,14 @@ contract RewardControl is
 
         for (uint256 j = 0; j < allMarkets[false].length; j++) {
             currentMarket = allMarkets[false][j];
-            currentMarketTotalSupply = getMarketTotalSupply(
+            currentMarketTotalSupply = mul_(getMarketTotalSupply(
                 currentMarket,
                 false
-            );
-            currentMarketTotalBorrows = getMarketTotalBorrows(
+            ),alkemiEarnVerified.assetPrices(currentMarket));
+            currentMarketTotalBorrows = mul_(getMarketTotalBorrows(
                 currentMarket,
                 false
-            );
+            ),alkemiEarnVerified.assetPrices(currentMarket));
             currentMarketTotalLiquidity = Exp({
                 mantissa: add_(
                     currentMarketTotalSupply,
