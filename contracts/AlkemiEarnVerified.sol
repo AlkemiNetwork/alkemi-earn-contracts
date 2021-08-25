@@ -695,7 +695,13 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
 
         (uint256 priceMantissa, uint8 assetDecimals) = priceOracle.getAssetPrice(asset);
         (Error err, uint256 magnification) = sub(18,uint256(assetDecimals));
+        if (err != Error.NO_ERROR){
+            return (err, Exp({mantissa: 0}));
+        }
         (err, priceMantissa) = mul(priceMantissa,10 ** magnification);
+        if (err != Error.NO_ERROR){
+            return (err, Exp({mantissa: 0}));
+        }
         return (Error.NO_ERROR, Exp({mantissa: priceMantissa}));
     }
 
@@ -2830,6 +2836,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             Exp({mantissa: closeFactorMantissa}),
             borrowBalance
         );
+        if (err != Error.NO_ERROR) {
+            return (err, 0);
+        }
 
         (err, rawResult) = divExp(maxClose, discountedPrice_UnderwaterAsset);
         // It's theoretically possible an asset could have such a low price that it truncates to zero when discounted.
@@ -3241,11 +3250,13 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 balance.interestIndex,
                 newSupplyIndex
             );
+            require(err == Error.NO_ERROR);
 
             (err, localResults.userSupplyUpdated) = add(
                 localResults.userSupplyCurrent,
                 originationFeeRepaid
             );
+            require(err == Error.NO_ERROR);
 
             // We calculate the protocol's totalSupply by subtracting the user's prior checkpointed balance, adding user's updated supply
             (err, localResults.newTotalSupply) = addThenSub(
@@ -3253,6 +3264,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 localResults.userSupplyUpdated,
                 balance.principal
             );
+            require(err == Error.NO_ERROR);
 
             // Save market updates
             markets[asset].totalSupply = localResults.newTotalSupply;
