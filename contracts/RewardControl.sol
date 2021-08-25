@@ -169,6 +169,7 @@ contract RewardControl is
         Exp memory totalLiquidity = Exp({mantissa: 0});
         Exp[] memory marketTotalLiquidity = new Exp[](add_(allMarkets[true].length, allMarkets[false].length));
         address currentMarket;
+        uint256 verifiedMarketsLength = allMarkets[true].length;
         for (uint256 i = 0; i < allMarkets[true].length; i++) {
             currentMarket = allMarkets[true][i];
             uint256 currentMarketTotalSupply = mul_(getMarketTotalSupply(
@@ -205,7 +206,7 @@ contract RewardControl is
                     currentMarketTotalBorrows
                 )
             });
-            marketTotalLiquidity[allMarkets[true].length + j] = currentMarketTotalLiquidity;
+            marketTotalLiquidity[verifiedMarketsLength + j] = currentMarketTotalLiquidity;
             totalLiquidity = add_(totalLiquidity, currentMarketTotalLiquidity);
         }
         return (marketTotalLiquidity,totalLiquidity);
@@ -217,10 +218,11 @@ contract RewardControl is
     function refreshAlkSpeeds() internal {
         address currentMarket;
         (Exp[] memory marketTotalLiquidity, Exp memory totalLiquidity) = refreshMarketLiquidity();
-
+        uint256 newSpeed;
+        uint256 verifiedMarketsLength = allMarkets[true].length;
         for (uint256 i = 0; i < allMarkets[true].length; i++) {
             currentMarket = allMarkets[true][i];
-            uint256 newSpeed = totalLiquidity.mantissa > 0
+            newSpeed = totalLiquidity.mantissa > 0
                 ? mul_(alkRate, div_(marketTotalLiquidity[i], totalLiquidity))
                 : 0;
             alkSpeeds[true][currentMarket] = newSpeed;
@@ -230,7 +232,7 @@ contract RewardControl is
         for (uint256 j = 0; j < allMarkets[false].length; j++) {
             currentMarket = allMarkets[false][j];
             newSpeed = totalLiquidity.mantissa > 0
-                ? mul_(alkRate, div_(marketTotalLiquidity[allMarkets[true].length + j], totalLiquidity))
+                ? mul_(alkRate, div_(marketTotalLiquidity[verifiedMarketsLength + j], totalLiquidity))
                 : 0;
             alkSpeeds[false][currentMarket] = newSpeed;
             emit AlkSpeedUpdated(currentMarket, newSpeed, false);
@@ -666,11 +668,53 @@ contract RewardControl is
         // Refresh ALK speeds
         uint256 alkRewards = alkAccrued[user];
         (Exp[] memory marketTotalLiquidity, Exp memory totalLiquidity) = refreshMarketLiquidity();
+        uint256 verifiedMarketsLength = allMarkets[true].length;
         for (uint256 i = 0; i < allMarkets[true].length; i++) {
-            alkRewards = add_(alkRewards,add_(getSupplyAlkRewards(totalLiquidity,marketTotalLiquidity,user,i,i,true),getBorrowAlkRewards(totalLiquidity,marketTotalLiquidity,user,i,i,true)));
+            alkRewards = add_(
+                alkRewards,
+                add_(
+                    getSupplyAlkRewards(
+                        totalLiquidity,
+                        marketTotalLiquidity,
+                        user,
+                        i,
+                        i,
+                        true
+                    ),
+                    getBorrowAlkRewards(
+                        totalLiquidity,
+                        marketTotalLiquidity,
+                        user,
+                        i,
+                        i,
+                        true
+                    )   
+                )
+            );
         }
         for (uint256 j = 0; j < allMarkets[false].length; j++) {
-            alkRewards = add_(alkRewards,add_(getSupplyAlkRewards(totalLiquidity,marketTotalLiquidity,user,allMarkets[true].length + j,j,false),getBorrowAlkRewards(totalLiquidity,marketTotalLiquidity,user,allMarkets[true].length + j,j,false)));
+            uint256 index = verifiedMarketsLength + j;
+            alkRewards = add_(
+                alkRewards,
+                add_(
+                    getSupplyAlkRewards(
+                        totalLiquidity,
+                        marketTotalLiquidity,
+                        user,
+                        index,
+                        j,
+                        false
+                    ),
+                    getBorrowAlkRewards(
+                        totalLiquidity,
+                        marketTotalLiquidity,
+                        user,
+                        index,
+                        j,
+                        false
+                    )
+                )
+            );
         }
         return alkRewards;
     }

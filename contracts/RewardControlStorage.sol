@@ -11,7 +11,9 @@ contract RewardControlStorage {
         uint32 block;
     }
 
-    // @notice A list of all markets in the reward program
+    // @notice A list of all markets in the reward program mapped to respective verified/public protocols
+    // @notice true => address[] represents Verified Protocol markets
+    // @notice false => address[] represents Public Protocol markets
     mapping(bool => address[]) public allMarkets;
 
     // @notice The index for checking whether a market is already in the reward program
