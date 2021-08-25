@@ -63,6 +63,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     /**
      * @dev Managers for this contract with limited permissions. Can
      *      be changed by the admin.
+     * Though unused, the below variable cannot be deleted as it will hinder upgradeability
+     * Will be cleared during the next compiler version upgrade
      */
     mapping(address => bool) public managers;
 
@@ -1156,9 +1158,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             }
         } else {
             uint256 withdrawalerr = withdrawEther(admin, amount); // send Ether to user
-            if (withdrawalerr != 0) {
-                return uint256(withdrawalerr); // success
-            }
         }
 
         (, markets[asset].supplyRateMantissa) = markets[asset]
@@ -1667,9 +1666,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 msg.sender,
                 localResults.withdrawAmount
             ); // send Ether to user
-            if (withdrawalerr != 0) {
-                return uint256(withdrawalerr); // failure
-            }
         }
 
         emit SupplyWithdrawn(
@@ -1700,8 +1696,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         )
     {
         Error err;
-        uint256 sumSupplyValuesMantissa;
-        uint256 sumBorrowValuesMantissa;
+        Exp memory sumSupplyValuesMantissa;
+        Exp memory sumBorrowValuesMantissa;
         (
             err,
             sumSupplyValuesMantissa,
@@ -1714,13 +1710,13 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         Exp memory result;
 
         Exp memory sumSupplyValuesFinal = Exp({
-            mantissa: sumSupplyValuesMantissa
+            mantissa: sumSupplyValuesMantissa.mantissa
         });
         Exp memory sumBorrowValuesFinal; // need to apply collateral ratio
 
         (err, sumBorrowValuesFinal) = mulExp(
             collateralRatio,
-            Exp({mantissa: sumBorrowValuesMantissa})
+            Exp({mantissa: sumBorrowValuesMantissa.mantissa})
         );
         if (err != Error.NO_ERROR) {
             return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
@@ -1756,8 +1752,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         view
         returns (
             Error,
-            uint256,
-            uint256
+            Exp memory,
+            Exp memory
         )
     {
         /** By definition, all collateralMarkets are those that contribute to the user's
@@ -1792,7 +1788,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     block.number
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 (err, localResults.userSupplyCurrent) = calculateBalance(
@@ -1801,7 +1797,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     localResults.newSupplyIndex
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 // We have the user's supply balance with interest so let's multiply by the asset price to get the total value
@@ -1810,7 +1806,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     localResults.userSupplyCurrent
                 ); // supplyCurrent * oraclePrice = supplyValueInEth
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 // Add this to our running sum of supplies
@@ -1819,7 +1815,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     localResults.sumSupplies
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
             }
 
@@ -1832,7 +1828,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     block.number
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 (err, localResults.userBorrowCurrent) = calculateBalance(
@@ -1841,7 +1837,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     localResults.newBorrowIndex
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 // We have the user's borrow balance with interest so let's multiply by the asset price to get the total value
@@ -1850,7 +1846,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     localResults.userBorrowCurrent
                 ); // borrowCurrent * oraclePrice = borrowValueInEth
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 // Add this to our running sum of borrows
@@ -1859,15 +1855,15 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     localResults.sumBorrows
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
             }
         }
 
         return (
             Error.NO_ERROR,
-            localResults.sumSupplies.mantissa,
-            localResults.sumBorrows.mantissa
+            localResults.sumSupplies,
+            localResults.sumBorrows
         );
     }
 
@@ -1892,14 +1888,14 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     {
         (
             Error err,
-            uint256 supplyValue,
-            uint256 borrowValue
+            Exp memory supplyValue,
+            Exp memory borrowValue
         ) = calculateAccountValuesInternal(userAddress);
         if (err != Error.NO_ERROR) {
             return (uint256(err), 0, 0);
         }
 
-        return (0, supplyValue, borrowValue);
+        return (0, supplyValue.mantissa, borrowValue.mantissa);
     }
 
     /**
@@ -3203,9 +3199,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             }
         } else {
             uint256 withdrawalerr = withdrawEther(msg.sender, amount); // send Ether to user
-            if (withdrawalerr != 0) {
-                return uint256(withdrawalerr); // success
-            }
         }
 
         emit BorrowTaken(

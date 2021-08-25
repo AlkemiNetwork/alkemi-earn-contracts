@@ -16,6 +16,8 @@ contract Exponential is ErrorReporter, CarefulMath {
     }
 
     uint256 constant mantissaOne = 10**18;
+    // Though unused, the below variable cannot be deleted as it will hinder upgradeability
+    // Will be cleared during the next compiler version upgrade
     uint256 constant mantissaOneTenth = 10**17;
 
     /**
