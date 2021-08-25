@@ -13,7 +13,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     uint256 internal defaultOriginationFee;
     uint256 internal defaultCollateralRatio;
     uint256 internal defaultLiquidationDiscount;
-
+    // minimumCollateralRatioMantissa and maximumLiquidationDiscountMantissa cannot be declared as constants due to upgradeability
+    // Values cannot be assigned directly as OpenZeppelin upgrades do not support the same
+    // Values can only be assigned using initializer() below
+    // However, there is no way to change the below values using any functions and hence they act as constants
     uint256 public minimumCollateralRatioMantissa;
     uint256 public maximumLiquidationDiscountMantissa;
     bool private initializationDone; // To make sure initializer is called only once
