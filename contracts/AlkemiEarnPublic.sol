@@ -13,7 +13,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
     uint256 internal defaultOriginationFee;
     uint256 internal defaultCollateralRatio;
     uint256 internal defaultLiquidationDiscount;
-
+    // minimumCollateralRatioMantissa and maximumLiquidationDiscountMantissa cannot be declared as constants due to upgradeability
+    // Values cannot be assigned directly as OpenZeppelin upgrades do not support the same
+    // Values can only be assigned using initializer() below
+    // However, there is no way to change the below values using any functions and hence they act as constants
     uint256 public minimumCollateralRatioMantissa;
     uint256 public maximumLiquidationDiscountMantissa;
     bool private initializationDone; // To make sure initializer is called only once
@@ -63,6 +66,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
     /**
      * @dev Managers for this contract with limited permissions. Can
      *      be changed by the admin.
+     * Though unused, the below variable cannot be deleted as it will hinder upgradeability
+     * Will be cleared during the next compiler version upgrade
      */
     mapping(address => bool) public managers;
 
@@ -82,7 +87,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
      *
      *      struct Balance {
      *        principal = customer total balance with accrued interest after applying the customer's most recent balance-changing action
-     *        interestIndex = the accrued interestIndex as calculated after the customer's most recent balance-changing action
+     *        interestIndex = Checkpoint for interest calculation after the customer's most recent balance-changing action
      *      }
      */
     struct Balance {
@@ -106,7 +111,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
      *      struct Market {
      *         isSupported = Whether this market is supported or not (not to be confused with the list of collateral assets)
      *         blockNumber = when the other values in this struct were calculated
-     *         interestRateModel = Interest Rate model used for the asset
+     *         interestRateModel = Interest Rate model, which calculates supply interest rate and borrow interest rate based on Utilization, used for the asset
      *         totalSupply = total amount of this asset supplied (in asset wei)
      *         supplyRateMantissa = the per-block interest rate for supplies of asset as of blockNumber, scaled by 10e18
      *         supplyIndex = the interest index for supplies of asset as of blockNumber; initialized in _supportMarket
@@ -1182,9 +1187,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             }
         } else {
             uint256 withdrawalerr = withdrawEther(admin, amount); // send Ether to user
-            if (withdrawalerr != 0) {
-                return uint256(withdrawalerr); // success
-            }
         }
 
         (, markets[asset].supplyRateMantissa) = markets[asset]
@@ -1743,8 +1745,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         )
     {
         Error err;
-        uint256 sumSupplyValuesMantissa;
-        uint256 sumBorrowValuesMantissa;
+        Exp memory sumSupplyValuesMantissa;
+        Exp memory sumBorrowValuesMantissa;
         (
             err,
             sumSupplyValuesMantissa,
@@ -1757,13 +1759,13 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         Exp memory result;
 
         Exp memory sumSupplyValuesFinal = Exp({
-            mantissa: sumSupplyValuesMantissa
+            mantissa: sumSupplyValuesMantissa.mantissa
         });
         Exp memory sumBorrowValuesFinal; // need to apply collateral ratio
 
         (err, sumBorrowValuesFinal) = mulExp(
             collateralRatio,
-            Exp({mantissa: sumBorrowValuesMantissa})
+            Exp({mantissa: sumBorrowValuesMantissa.mantissa})
         );
         if (err != Error.NO_ERROR) {
             return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
@@ -1799,8 +1801,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         view
         returns (
             Error,
-            uint256,
-            uint256
+            Exp memory,
+            Exp memory
         )
     {
         /** By definition, all collateralMarkets are those that contribute to the user's
@@ -1835,7 +1837,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     block.number
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 (err, localResults.userSupplyCurrent) = calculateBalance(
@@ -1844,7 +1846,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     localResults.newSupplyIndex
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 // We have the user's supply balance with interest so let's multiply by the asset price to get the total value
@@ -1853,7 +1855,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     localResults.userSupplyCurrent
                 ); // supplyCurrent * oraclePrice = supplyValueInEth
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 // Add this to our running sum of supplies
@@ -1862,7 +1864,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     localResults.sumSupplies
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
             }
 
@@ -1875,7 +1877,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     block.number
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 (err, localResults.userBorrowCurrent) = calculateBalance(
@@ -1884,7 +1886,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     localResults.newBorrowIndex
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 // We have the user's borrow balance with interest so let's multiply by the asset price to get the total value
@@ -1893,7 +1895,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     localResults.userBorrowCurrent
                 ); // borrowCurrent * oraclePrice = borrowValueInEth
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
 
                 // Add this to our running sum of borrows
@@ -1902,15 +1904,15 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     localResults.sumBorrows
                 );
                 if (err != Error.NO_ERROR) {
-                    return (err, 0, 0);
+                    return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
                 }
             }
         }
 
         return (
             Error.NO_ERROR,
-            localResults.sumSupplies.mantissa,
-            localResults.sumBorrows.mantissa
+            localResults.sumSupplies,
+            localResults.sumBorrows
         );
     }
 
@@ -1935,14 +1937,14 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
     {
         (
             Error err,
-            uint256 supplyValue,
-            uint256 borrowValue
+            Exp memory supplyValue,
+            Exp memory borrowValue
         ) = calculateAccountValuesInternal(userAddress);
         if (err != Error.NO_ERROR) {
             return (uint256(err), 0, 0);
         }
 
-        return (0, supplyValue, borrowValue);
+        return (0, supplyValue.mantissa, borrowValue.mantissa);
     }
 
     /**
@@ -3245,9 +3247,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             }
         } else {
             uint256 withdrawalerr = withdrawEther(msg.sender, amount); // send Ether to user
-            if (withdrawalerr != 0) {
-                return uint256(withdrawalerr); // success
-            }
         }
 
         emit BorrowTaken(
