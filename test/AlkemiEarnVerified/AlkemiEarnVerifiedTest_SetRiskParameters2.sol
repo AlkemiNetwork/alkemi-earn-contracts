@@ -41,12 +41,7 @@ contract AlkemiEarnVerifiedTest_SetRiskParameters2 is AlkemiEarnVerifiedTest {
         );
 
         assertNoError(
-            Error(
-                _setRiskParameters(
-                    newRatio.mantissa,
-                    newDiscount.mantissa
-                )
-            )
+            Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa))
         );
 
         Assert.equal(

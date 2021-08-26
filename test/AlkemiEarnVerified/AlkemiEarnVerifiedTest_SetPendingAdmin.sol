@@ -13,7 +13,19 @@ contract AlkemiEarnVerifiedTest_SetPendingAdmin is AlkemiEarnVerifiedTest {
 
         admin = msg.sender;
 
-        assertNoError(Error(_adminFunctions(addr1,addr1,false,1000000000000000,0,addr1,addr1)));
+        assertNoError(
+            Error(
+                _adminFunctions(
+                    addr1,
+                    addr1,
+                    false,
+                    1000000000000000,
+                    0,
+                    addr1,
+                    addr1
+                )
+            )
+        );
         Assert.equal(pendingAdmin, addr1, "should be addr1");
     }
 }

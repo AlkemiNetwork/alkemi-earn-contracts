@@ -34,7 +34,10 @@ contract ChainLink {
     /**
      * Event declarations for all the operations of this contract
      */
-    event assetAdded(address indexed assetAddress, address indexed priceFeedContract);
+    event assetAdded(
+        address indexed assetAddress,
+        address indexed priceFeedContract
+    );
     event assetRemoved(address indexed assetAddress);
     event adminChanged(address indexed oldAdmin, address indexed newAdmin);
     event wethAddressSet(address indexed wethAddress);
@@ -43,11 +46,14 @@ contract ChainLink {
     /**
      * Allows admin to add a new asset for price tracking
      */
-    function addAsset(
-        address assetAddress,
-        address priceFeedContract
-    ) public onlyAdmin {
-        require(assetAddress != address(0) && priceFeedContract != address(0),"Asset or Price Feed address cannot be 0x00");
+    function addAsset(address assetAddress, address priceFeedContract)
+        public
+        onlyAdmin
+    {
+        require(
+            assetAddress != address(0) && priceFeedContract != address(0),
+            "Asset or Price Feed address cannot be 0x00"
+        );
         priceContractMapping[assetAddress] = AggregatorV3Interface(
             priceFeedContract
         );
@@ -58,7 +64,10 @@ contract ChainLink {
      * Allows admin to remove an existing asset from price tracking
      */
     function removeAsset(address assetAddress) public onlyAdmin {
-        require(assetAddress != address(0),"Asset or Price Feed address cannot be 0x00");
+        require(
+            assetAddress != address(0),
+            "Asset or Price Feed address cannot be 0x00"
+        );
         priceContractMapping[assetAddress] = AggregatorV3Interface(address(0));
         emit assetRemoved(assetAddress);
     }
@@ -67,7 +76,10 @@ contract ChainLink {
      * Allows admin to change the admin of the contract
      */
     function changeAdmin(address newAdmin) public onlyAdmin {
-        require(newAdmin != address(0),"Asset or Price Feed address cannot be 0x00");
+        require(
+            newAdmin != address(0),
+            "Asset or Price Feed address cannot be 0x00"
+        );
         emit adminChanged(admin, newAdmin);
         admin = newAdmin;
     }
@@ -76,7 +88,7 @@ contract ChainLink {
      * Allows admin to set the weth address
      */
     function setWethAddress(address _wethAddress) public onlyAdmin {
-        require(_wethAddress != address(0),"WETH address cannot be 0x00");
+        require(_wethAddress != address(0), "WETH address cannot be 0x00");
         wethAddress = _wethAddress;
         emit wethAddressSet(_wethAddress);
     }
@@ -97,10 +109,10 @@ contract ChainLink {
     /**
      * Returns the latest price scaled to 1e18 scale
      */
-    function getAssetPrice(address asset) public view returns (uint256,uint8) {
+    function getAssetPrice(address asset) public view returns (uint256, uint8) {
         // Return 1 * 10^18 for WETH, otherwise return actual price
         if (!paused && asset == wethAddress) {
-            return (expScale,eighteen);
+            return (expScale, eighteen);
         }
         // Capture the decimals in the ERC20 token
         uint8 assetDecimals = EIP20Interface(asset).decimals();
@@ -113,17 +125,17 @@ contract ChainLink {
                 uint80 answeredInRound
             ) = priceContractMapping[asset].latestRoundData();
             // If the price data was not refreshed for the past 1 hour, prices are considered stale
-            require(timeStamp > (now - 1 hours),"Stale data");
+            require(timeStamp > (now - 1 hours), "Stale data");
             // If answeredInRound is less than roundID, prices are considered stale
-            require(answeredInRound >= roundID,"Stale Data");
+            require(answeredInRound >= roundID, "Stale Data");
             if (price > 0) {
                 // Magnify the result based on decimals
-                return (uint256(price),assetDecimals);
+                return (uint256(price), assetDecimals);
             } else {
-                return (0,assetDecimals);
+                return (0, assetDecimals);
             }
         } else {
-            return (0,assetDecimals);
+            return (0, assetDecimals);
         }
     }
 

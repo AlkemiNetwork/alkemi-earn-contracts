@@ -11,8 +11,8 @@ contract AlkemiEarnVerifiedTest_RepayBorrow is AlkemiEarnVerifiedTest {
         address token = address(this); // must be this
         address protocol = address(this); // must be this
         initializer();
-        _changeKYCAdmin(msg.sender,true);
-        _changeCustomerKYC(msg.sender,true);
+        _changeKYCAdmin(msg.sender, true);
+        _changeCustomerKYC(msg.sender, true);
 
         // Set a borrow balance for the user
         markets[token].borrowIndex = 1;

@@ -40,12 +40,7 @@ contract AlkemiEarnVerifiedTest_SetRiskParameters3 is AlkemiEarnVerifiedTest {
             "setup failed; choose a different newDiscount"
         );
         assertNoError(
-            Error(
-                _setRiskParameters(
-                    newRatio.mantissa,
-                    newDiscount.mantissa
-                )
-            )
+            Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa))
         );
 
         Assert.equal(
