@@ -788,10 +788,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         // priceOracleTemp.getAssetPrice(address(0));
         // Initialize the Chainlink contract in priceOracle
         priceOracle = ChainLink(newOracle);
-        // emit NewOracle(oldOracle, newOracle);
 
         paused = requestedState;
-        // emit SetPaused(requestedState);
 
         originationFee = Exp({mantissa: originationFeeMantissa});
 
@@ -1220,7 +1218,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
 
         require(customersWithKYC[msg.sender],"KYC_CUSTOMER_VERIFICATION_CHECK_FAILED");
 
-        refreshAlkIndex(asset, msg.sender, true);
+        refreshAlkIndex(asset, msg.sender, true, true);
 
         Market storage market = markets[asset];
         Balance storage balance = supplyBalances[msg.sender][asset];
@@ -1448,7 +1446,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 );
         }
 
-        refreshAlkIndex(asset, msg.sender, true);
+        refreshAlkIndex(asset, msg.sender, true, true);
 
         Market storage market = markets[asset];
         Balance storage supplyBalance = supplyBalances[msg.sender][asset];
@@ -1918,7 +1916,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     FailureInfo.REPAY_BORROW_CONTRACT_PAUSED
                 );
         }
-        refreshAlkIndex(asset, msg.sender, false);
+        refreshAlkIndex(asset, msg.sender, false, true);
         PayBorrowLocalVars memory localResults;
         Market storage market = markets[asset];
         Balance storage borrowBalance = borrowBalances[msg.sender][asset];
@@ -2196,9 +2194,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 );
         }
         require(liquidators[msg.sender],"LIQUIDATOR_CHECK_FAILED");
-        refreshAlkIndex(assetCollateral, targetAccount, true);
-        refreshAlkIndex(assetCollateral, msg.sender, true);
-        refreshAlkIndex(assetBorrow, targetAccount, false);
+        refreshAlkIndex(assetCollateral, targetAccount, true, true);
+        refreshAlkIndex(assetCollateral, msg.sender, true, true);
+        refreshAlkIndex(assetBorrow, targetAccount, false, true);
         LiquidateLocalVars memory localResults;
         // Copy these addresses into the struct for use with `emitLiquidationEvent`
         // We'll use localResults.liquidator inside this function for clarity vs using msg.sender.
@@ -2976,7 +2974,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
         }
         require(customersWithKYC[msg.sender],"KYC_CUSTOMER_VERIFICATION_CHECK_FAILED");
-        refreshAlkIndex(asset, msg.sender, false);
+        refreshAlkIndex(asset, msg.sender, false, true);
         BorrowLocalVars memory localResults;
         Market storage market = markets[asset];
         Balance storage borrowBalance = borrowBalances[msg.sender][asset];
@@ -3226,7 +3224,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         uint256 amount,
         uint256 newSupplyIndex
     ) private {
-        refreshAlkIndex(asset, admin, true);
+        refreshAlkIndex(asset, admin, true, true);
         uint256 originationFeeRepaid = 0;
         if (originationFeeBalance[user][asset] != 0) {
             if (amount < originationFeeBalance[user][asset]) {
@@ -3285,15 +3283,16 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @param market The address of the market to accrue rewards
      * @param user The address of the supplier/borrower to accrue rewards
      * @param isSupply Specifies if Supply or Borrow Index need to be updated
+     * @param isVerified Verified / Public protocol
      */
-    function refreshAlkIndex(address market, address user, bool isSupply) internal {
+    function refreshAlkIndex(address market, address user, bool isSupply, bool isVerified) internal {
         if (address(rewardControl) == address(0)) {
             return;
         }
         if (isSupply) {
-            rewardControl.refreshAlkSupplyIndex(market, user);
+            rewardControl.refreshAlkSupplyIndex(market, user, isVerified);
         } else {
-            rewardControl.refreshAlkBorrowIndex(market, user);
+            rewardControl.refreshAlkBorrowIndex(market, user, isVerified);
         }
     }
 
