@@ -11,8 +11,8 @@ contract AlkemiEarnVerifiedTest_Supply is AlkemiEarnVerifiedTest {
         address token = address(this); // must be this
         address protocol = address(this); // must be this
         initializer();
-        _changeKYCAdmin(msg.sender,true);
-        _changeCustomerKYC(msg.sender,true);
+        _changeKYCAdmin(msg.sender, true);
+        _changeCustomerKYC(msg.sender, true);
 
         uint256 err = supply(token, 10);
         Assert.equal(

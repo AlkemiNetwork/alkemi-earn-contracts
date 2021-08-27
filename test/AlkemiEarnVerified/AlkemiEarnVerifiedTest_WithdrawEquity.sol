@@ -9,8 +9,8 @@ import "./AlkemiEarnVerifiedTest.sol";
 contract AlkemiEarnVerifiedTest_WithdrawEquity is AlkemiEarnVerifiedTest {
     function testWithdrawEquity_NotAdmin() public {
         initializer();
-        _changeKYCAdmin(msg.sender,true);
-        _changeCustomerKYC(msg.sender,true);
+        _changeKYCAdmin(msg.sender, true);
+        _changeCustomerKYC(msg.sender, true);
         address asset = address(this);
         balances[asset] = 10000;
 

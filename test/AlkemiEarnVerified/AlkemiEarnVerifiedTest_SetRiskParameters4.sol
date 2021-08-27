@@ -64,12 +64,7 @@ contract AlkemiEarnVerifiedTest_SetRiskParameters4 is AlkemiEarnVerifiedTest {
         );
         assertError(
             Error.NO_ERROR,
-            Error(
-                _setRiskParameters(
-                    newRatio.mantissa,
-                    newDiscount.mantissa
-                )
-            ),
+            Error(_setRiskParameters(newRatio.mantissa, newDiscount.mantissa)),
             "operation not should have succeeded"
         );
 

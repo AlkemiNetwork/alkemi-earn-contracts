@@ -9,8 +9,8 @@ import "./AlkemiEarnVerifiedTest.sol";
 contract AlkemiEarnVerifiedTest_Withdraw is AlkemiEarnVerifiedTest {
     function testBasicValidations() public {
         initializer();
-        _changeKYCAdmin(msg.sender,true);
-        _changeCustomerKYC(msg.sender,true);
+        _changeKYCAdmin(msg.sender, true);
+        _changeCustomerKYC(msg.sender, true);
         address token = address(this);
 
         uint256 err = withdraw(token, 10);

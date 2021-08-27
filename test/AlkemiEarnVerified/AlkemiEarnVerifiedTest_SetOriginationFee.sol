@@ -53,7 +53,19 @@ contract AlkemiEarnVerifiedTest_SetOriginationFee is AlkemiEarnVerifiedTest {
             "setup failed; choose a different newFee"
         );
 
-        assertNoError(Error(_adminFunctions(admin,admin,false,newFee.mantissa,0,admin,admin)));
+        assertNoError(
+            Error(
+                _adminFunctions(
+                    admin,
+                    admin,
+                    false,
+                    newFee.mantissa,
+                    0,
+                    admin,
+                    admin
+                )
+            )
+        );
 
         Assert.equal(
             originationFee.mantissa,

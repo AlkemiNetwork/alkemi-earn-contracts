@@ -33,7 +33,10 @@ contract AlkemiRateModel is Exponential {
 
     event OwnerUpdate(address indexed owner, address indexed newOwner);
 
-    event blocksPerYearUpdated(uint256 oldBlocksPerYear, uint256 newBlocksPerYear);
+    event blocksPerYearUpdated(
+        uint256 oldBlocksPerYear,
+        uint256 newBlocksPerYear
+    );
 
     Exp internal SpreadLow;
     Exp internal BreakPointLow;
@@ -62,11 +65,25 @@ contract AlkemiRateModel is Exponential {
     ) public {
         // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250
         // Checks for reasonable interest rate parameters
-        require(MinRate < MaxRate,"Min Rate should be lesser than Max Rate");
-        require(HealthyMinUR < HealthyMaxUR,"HealthyMinUR should be lesser than HealthyMaxUR");
-        require(HealthyMinRate < HealthyMaxRate,"HealthyMinRate should be lesser than HealthyMaxRate");
+        require(MinRate < MaxRate, "Min Rate should be lesser than Max Rate");
+        require(
+            HealthyMinUR < HealthyMaxUR,
+            "HealthyMinUR should be lesser than HealthyMaxUR"
+        );
+        require(
+            HealthyMinRate < HealthyMaxRate,
+            "HealthyMinRate should be lesser than HealthyMaxRate"
+        );
         owner = msg.sender;
-        changeRates(_contractName,MinRate,HealthyMinUR,HealthyMinRate,HealthyMaxUR,HealthyMaxRate,MaxRate);
+        changeRates(
+            _contractName,
+            MinRate,
+            HealthyMinUR,
+            HealthyMinRate,
+            HealthyMaxUR,
+            HealthyMaxRate,
+            MaxRate
+        );
     }
 
     function changeRates(
@@ -80,9 +97,15 @@ contract AlkemiRateModel is Exponential {
     ) public onlyOwner {
         // Remember to enter percentage times 100. ex., if it is 2.50%, enter 250 as solidity does not recognize floating point numbers
         // Checks for reasonable interest rate parameters
-        require(MinRate < MaxRate,"Min Rate should be lesser than Max Rate");
-        require(HealthyMinUR < HealthyMaxUR,"HealthyMinUR should be lesser than HealthyMaxUR");
-        require(HealthyMinRate < HealthyMaxRate,"HealthyMinRate should be lesser than HealthyMaxRate");
+        require(MinRate < MaxRate, "Min Rate should be lesser than Max Rate");
+        require(
+            HealthyMinUR < HealthyMaxUR,
+            "HealthyMinUR should be lesser than HealthyMaxUR"
+        );
+        require(
+            HealthyMinRate < HealthyMaxRate,
+            "HealthyMinRate should be lesser than HealthyMaxRate"
+        );
         contractName = _contractName;
         Exp memory temp1;
         Exp memory temp2;
@@ -90,24 +113,24 @@ contract AlkemiRateModel is Exponential {
         Error err;
 
         (err, HundredMantissa) = getExp(hundred, 1);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // Rates are divided by 1e2 to scale down inputs to actual values
         // Inputs are expressed in percentage times 1e2, so we need to scale it down again by 1e2
         // Resulting values like MinRateActual etc., are represented in 1e20 scale
         // The return values for getSupplyRate() and getBorrowRate() functions are divided by 1e2 at the end to bring it down to 1e18 scale
         (err, MinRateActual) = getExp(MinRate, hundred);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, HealthyMinURActual) = getExp(HealthyMinUR, hundred);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, HealthyMinRateActual) = getExp(HealthyMinRate, hundred);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, MaxRateActual) = getExp(MaxRate, hundred);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, HealthyMaxURActual) = getExp(HealthyMaxUR, hundred);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, HealthyMaxRateActual) = getExp(HealthyMaxRate, hundred);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         SpreadLow = MinRateActual;
         BreakPointLow = HealthyMinURActual;
@@ -115,38 +138,44 @@ contract AlkemiRateModel is Exponential {
 
         // ReserveLow = (HealthyMinRate-SpreadLow)/BreakPointLow;
         (err, temp1) = subExp(HealthyMinRateActual, SpreadLow);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveLow) = divExp(temp1, BreakPointLow);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // ReserveMid = (HealthyMaxRate-HealthyMinRate)/(HealthyMaxUR-HealthyMinUR);
         (err, temp1) = subExp(HealthyMaxRateActual, HealthyMinRateActual);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, temp2) = subExp(HealthyMaxURActual, HealthyMinURActual);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveMid) = divExp(temp1, temp2);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // SpreadMid = HealthyMinRate - (ReserveMid * BreakPointLow);
         (err, temp1) = mulExp(ReserveMid, BreakPointLow);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, SpreadMid) = subExp(HealthyMinRateActual, temp1);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        require(SpreadMid.mantissa >= 0,"Spread Mid cannot be a negative number");
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(
+            SpreadMid.mantissa >= 0,
+            "Spread Mid cannot be a negative number"
+        );
         // ReserveHigh = (MaxRate - HealthyMaxRate) / (100 - HealthyMaxUR);
         (err, temp1) = subExp(MaxRateActual, HealthyMaxRateActual);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, temp2) = subExp(HundredMantissa, HealthyMaxURActual);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
         (err, ReserveHigh) = divExp(temp1, temp2);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
 
         // SpreadHigh = (ReserveHigh * BreakPointHigh) - HealthyMaxRate;
         (err, temp2) = mulExp(ReserveHigh, BreakPointHigh);
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
-        (err, SpreadHigh) = subExp(temp2,HealthyMaxRateActual);
-        require(SpreadHigh.mantissa >=0,"Spread High cannot be a negative number");
-        require(err == Error.NO_ERROR,"Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
+        (err, SpreadHigh) = subExp(temp2, HealthyMaxRateActual);
+        require(
+            SpreadHigh.mantissa >= 0,
+            "Spread High cannot be a negative number"
+        );
+        require(err == Error.NO_ERROR, "Integer Underflow / Overflow"); // To check for Integer overflow and underflow errors from Exponential.sol
     }
 
     function changeBlocksPerYear(uint256 _blocksPerYear) external onlyOwner {
@@ -313,7 +342,10 @@ contract AlkemiRateModel is Exponential {
 
         // Next multiply this product times the borrow rate
         // Borrow rate should be divided by 1e2 to get product at 1e18 scale
-        (err1, temp1) = mulExp(utilizationRate0, Exp({mantissa: annualBorrowRate.mantissa / hundred}));
+        (err1, temp1) = mulExp(
+            utilizationRate0,
+            Exp({mantissa: annualBorrowRate.mantissa / hundred})
+        );
         // If the product of the mantissas for mulExp are both less than 2^256,
         // then this operation will never fail.
         // We know that borrow rate is in the interval [0, 2.25e17] from above.
@@ -323,15 +355,15 @@ contract AlkemiRateModel is Exponential {
         require(err1 == Error.NO_ERROR);
 
         // oneMinusSpreadBasisPoints i.e.,(1 - SpreadLow) should be divided by 1e2 to get product at 1e18 scale
-        (err1, temp1) = mulExp(temp1, Exp({mantissa: oneMinusSpreadBasisPoints.mantissa / hundred}));
+        (err1, temp1) = mulExp(
+            temp1,
+            Exp({mantissa: oneMinusSpreadBasisPoints.mantissa / hundred})
+        );
         require(err1 == Error.NO_ERROR);
 
         // And then divide down by the spread's denominator (basis points divisor)
         // as well as by blocks per year.
-        (Error err4, Exp memory supplyRate) = divScalar(
-            temp1,
-            blocksPerYear
-        ); // basis points * blocks per year
+        (Error err4, Exp memory supplyRate) = divScalar(temp1, blocksPerYear); // basis points * blocks per year
         // divScalar only fails when divisor is zero. This is clearly not the case.
         require(err4 == Error.NO_ERROR);
 

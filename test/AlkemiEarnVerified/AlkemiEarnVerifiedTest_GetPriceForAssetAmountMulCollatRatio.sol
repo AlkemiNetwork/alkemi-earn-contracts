@@ -65,10 +65,10 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is
     function testGetPriceForAssetAmountMulCollatRatio_Zero() public {
         address addr1 = nextAddress();
 
-        (
-            ,
-            Exp memory assetValue
-        ) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
+        (, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(
+            addr1,
+            10**18
+        );
         // assertError(Error.MISSING_ASSET_PRICE, err, "missing asset price");
         assertZero(assetValue.mantissa, "default value");
     }

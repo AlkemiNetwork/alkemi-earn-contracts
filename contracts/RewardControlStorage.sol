@@ -37,11 +37,13 @@ contract RewardControlStorage {
 
     // @notice The snapshot of ALK index for each market for each supplier as of the last time they accrued ALK
     // @notice verified/public => market => supplier => supplierIndex
-    mapping(bool => mapping(address => mapping(address => uint256))) public alkSupplierIndex;
+    mapping(bool => mapping(address => mapping(address => uint256)))
+        public alkSupplierIndex;
 
     // @notice The snapshot of ALK index for each market for each borrower as of the last time they accrued ALK
     // @notice verified/public => market => borrower => borrowerIndex
-    mapping(bool => mapping(address => mapping(address => uint256))) public alkBorrowerIndex;
+    mapping(bool => mapping(address => mapping(address => uint256)))
+        public alkBorrowerIndex;
 
     // @notice The ALK accrued but not yet transferred to each participant
     mapping(address => uint256) public alkAccrued;

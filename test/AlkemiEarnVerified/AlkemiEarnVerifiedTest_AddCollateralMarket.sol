@@ -21,11 +21,7 @@ contract AlkemiEarnVerifiedTest_AddCollateralMarket is AlkemiEarnVerifiedTest {
         Assert.equal(empty, collateralMarkets, "should have no markets");
 
         addCollateralMarket(addr1);
-        Assert.equal(
-            collateralMarkets.length,
-            1,
-            "should have first market"
-        );
+        Assert.equal(collateralMarkets.length, 1, "should have first market");
         Assert.equal(
             single,
             collateralMarkets,

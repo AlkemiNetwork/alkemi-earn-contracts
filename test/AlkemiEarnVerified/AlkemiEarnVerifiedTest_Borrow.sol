@@ -10,8 +10,8 @@ contract AlkemiEarnVerifiedTest_Borrow is AlkemiEarnVerifiedTest {
     function testBorrow_MarketSupported() public {
         address token = address(this); // must be this
         initializer();
-        _changeKYCAdmin(msg.sender,true);
-        _changeCustomerKYC(msg.sender,true);
+        _changeKYCAdmin(msg.sender, true);
+        _changeCustomerKYC(msg.sender, true);
 
         uint256 err = borrow(token, 10);
         Assert.equal(

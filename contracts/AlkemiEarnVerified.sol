@@ -459,11 +459,12 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     /**
      * @dev Function for use by the admin of the contract to add or remove KYC Admins
      */
-    function _changeKYCAdmin(address KYCAdmin, bool newStatus)
-        public
-    {
+    function _changeKYCAdmin(address KYCAdmin, bool newStatus) public {
         // Check caller = admin
-        require(msg.sender == admin,"KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED");
+        require(
+            msg.sender == admin,
+            "KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED"
+        );
         KYCAdmins[KYCAdmin] = newStatus;
         emit KYCAdminChanged(KYCAdmin, newStatus);
     }
@@ -471,10 +472,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     /**
      * @dev Function for use by the KYC admins to add or remove KYC Customers
      */
-    function _changeCustomerKYC(address customer, bool newStatus)
-        public
-    {
-        require(KYCAdmins[msg.sender],"KYC_ADMIN_CHECK_FAILED");
+    function _changeCustomerKYC(address customer, bool newStatus) public {
+        require(KYCAdmins[msg.sender], "KYC_ADMIN_CHECK_FAILED");
         customersWithKYC[customer] = newStatus;
         emit KYCCustomerChanged(customer, newStatus);
     }
@@ -486,11 +485,12 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     /**
      * @dev Function for use by the admin of the contract to add or remove Liquidators
      */
-    function _changeLiquidator(address liquidator, bool newStatus)
-        public
-    {
+    function _changeLiquidator(address liquidator, bool newStatus) public {
         // Check caller = admin
-        require(msg.sender == admin,"LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED");
+        require(
+            msg.sender == admin,
+            "LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED"
+        );
         liquidators[liquidator] = newStatus;
         emit LiquidatorChanged(liquidator, newStatus);
     }
@@ -693,18 +693,19 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         if (priceOracle == address(0)) {
             return (Error.ZERO_ORACLE_ADDRESS, Exp({mantissa: 0}));
         }
-        
+
         if (priceOracle.paused()) {
             return (Error.MISSING_ASSET_PRICE, Exp({mantissa: 0}));
         }
 
-        (uint256 priceMantissa, uint8 assetDecimals) = priceOracle.getAssetPrice(asset);
-        (Error err, uint256 magnification) = sub(18,uint256(assetDecimals));
-        if (err != Error.NO_ERROR){
+        (uint256 priceMantissa, uint8 assetDecimals) = priceOracle
+        .getAssetPrice(asset);
+        (Error err, uint256 magnification) = sub(18, uint256(assetDecimals));
+        if (err != Error.NO_ERROR) {
             return (err, Exp({mantissa: 0}));
         }
-        (err, priceMantissa) = mul(priceMantissa,10 ** magnification);
-        if (err != Error.NO_ERROR){
+        (err, priceMantissa) = mul(priceMantissa, 10**magnification);
+        if (err != Error.NO_ERROR) {
             return (err, Exp({mantissa: 0}));
         }
         return (Error.NO_ERROR, Exp({mantissa: priceMantissa}));
@@ -775,10 +776,13 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         address _rewardControl
     ) public returns (uint256) {
         // Check caller = admin
-        require(msg.sender == admin,"SET_PENDING_ADMIN_OWNER_CHECK");
+        require(msg.sender == admin, "SET_PENDING_ADMIN_OWNER_CHECK");
         // newPendingAdmin can be 0x00, hence not checked
-        require(newOracle != address(0),"Cannot set weth address to 0x00");
-        require(originationFeeMantissa < 10**18 && newCloseFactorMantissa < 10**18,"Invalid Origination Fee or Close Factor Mantissa");
+        require(newOracle != address(0), "Cannot set weth address to 0x00");
+        require(
+            originationFeeMantissa < 10**18 && newCloseFactorMantissa < 10**18,
+            "Invalid Origination Fee or Close Factor Mantissa"
+        );
         // Store pendingAdmin = newPendingAdmin
         pendingAdmin = newPendingAdmin;
 
@@ -795,7 +799,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
 
         closeFactorMantissa = newCloseFactorMantissa;
 
-        require(wethContractAddress != address(0),"Cannot set weth address to 0x00");
+        require(
+            wethContractAddress != address(0),
+            "Cannot set weth address to 0x00"
+        );
         wethAddress = wethContractAddress;
         WETHContract = AlkemiWETH(wethAddress);
 
@@ -819,7 +826,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     function _acceptAdmin() public {
         // Check caller = pendingAdmin
         // msg.sender can't be zero
-        require(msg.sender == pendingAdmin,"ACCEPT_ADMIN_PENDING_ADMIN_CHECK");
+        require(msg.sender == pendingAdmin, "ACCEPT_ADMIN_PENDING_ADMIN_CHECK");
         // Store admin = pendingAdmin
         admin = pendingAdmin;
         // Clear the pending value
@@ -940,9 +947,13 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         returns (uint256)
     {
         // Check caller = admin
-        require(msg.sender == admin,"SUPPORT_MARKET_OWNER_CHECK");
+        require(msg.sender == admin, "SUPPORT_MARKET_OWNER_CHECK");
         // Hard cap on the maximum number of markets allowed
-        require(interestRateModel != address(0) && collateralMarkets.length < uint256(MAXIMUM_NUMBER_OF_MARKETS),"INPUT_VALIDATION_FAILED");
+        require(
+            interestRateModel != address(0) &&
+                collateralMarkets.length < uint256(MAXIMUM_NUMBER_OF_MARKETS),
+            "INPUT_VALIDATION_FAILED"
+        );
 
         (Error err, Exp memory assetPrice) = fetchAssetPrice(asset);
         if (err != Error.NO_ERROR) {
@@ -988,7 +999,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      */
     function _suspendMarket(address asset) public returns (uint256) {
         // Check caller = admin
-        require(msg.sender == admin,"SUSPEND_MARKET_OWNER_CHECK");
+        require(msg.sender == admin, "SUSPEND_MARKET_OWNER_CHECK");
 
         // If the market is not configured at all, we don't want to add any configuration for it.
         // If we find !markets[asset].isSupported then either the market is not configured at all, or it
@@ -1016,9 +1027,14 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         uint256 liquidationDiscountMantissa
     ) public returns (uint256) {
         // Check caller = admin
-        require(msg.sender == admin,"SET_RISK_PARAMETERS_OWNER_CHECK");
+        require(msg.sender == admin, "SET_RISK_PARAMETERS_OWNER_CHECK");
         // Input validations
-        require(collateralRatioMantissa >= minimumCollateralRatioMantissa && liquidationDiscountMantissa <= maximumLiquidationDiscountMantissa,"Liquidation discount is more than max discount or collateral ratio is less than min ratio");
+        require(
+            collateralRatioMantissa >= minimumCollateralRatioMantissa &&
+                liquidationDiscountMantissa <=
+                maximumLiquidationDiscountMantissa,
+            "Liquidation discount is more than max discount or collateral ratio is less than min ratio"
+        );
 
         Exp memory newCollateralRatio = Exp({
             mantissa: collateralRatioMantissa
@@ -1094,8 +1110,11 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         InterestRateModel interestRateModel
     ) public returns (uint256) {
         // Check caller = admin
-        require(msg.sender == admin,"SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK");
-        require(interestRateModel != address(0),"Rate Model cannot be 0x00");
+        require(
+            msg.sender == admin,
+            "SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK"
+        );
+        require(interestRateModel != address(0), "Rate Model cannot be 0x00");
 
         // Set the interest rate model to `modelAddress`
         markets[asset].interestRateModel = interestRateModel;
@@ -1115,12 +1134,15 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         returns (uint256)
     {
         // Check caller = admin
-        require(msg.sender == admin,"EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK");
+        require(msg.sender == admin, "EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK");
 
         // Check that amount is less than cash (from ERC-20 of self) plus borrows minus supply.
         uint256 cash = getCash(asset);
         // Get supply and borrows with interest accrued till the latest block
-        (uint256 supplyWithInterest, uint256 borrowWithInterest) = getMarketBalances(asset);
+        (
+            uint256 supplyWithInterest,
+            uint256 borrowWithInterest
+        ) = getMarketBalances(asset);
         (Error err0, uint256 equity) = addThenSub(
             getCash(asset),
             borrowWithInterest,
@@ -1177,11 +1199,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @return errors if any
      * @param etherAmount Amount of ether to be converted to WETH
      */
-    function supplyEther(uint256 etherAmount)
-        internal
-        returns (uint256)
-    {
-        require(wethAddress != address(0),"WETH_ADDRESS_NOT_SET_ERROR");
+    function supplyEther(uint256 etherAmount) internal returns (uint256) {
+        require(wethAddress != address(0), "WETH_ADDRESS_NOT_SET_ERROR");
         WETHContract.deposit.value(etherAmount)();
         return uint256(Error.NO_ERROR);
     }
@@ -1216,7 +1235,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
 
-        require(customersWithKYC[msg.sender],"KYC_CUSTOMER_VERIFICATION_CHECK_FAILED");
+        require(
+            customersWithKYC[msg.sender],
+            "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED"
+        );
 
         refreshAlkIndex(asset, msg.sender, true, true);
 
@@ -1370,7 +1392,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         localResults.startingBalance = balance.principal; // save for use in `SupplyReceived` event
         balance.principal = localResults.userSupplyUpdated;
         balance.interestIndex = localResults.newSupplyIndex;
-        
+
         if (asset != wethAddress) {
             // WETH is supplied to AlkemiEarnVerified contract in case of ETH automatically
             // We ERC-20 transfer the asset into the protocol (note: pre-conditions already checked above)
@@ -2129,9 +2151,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             }
         } else {
             if (msg.value == amount) {
-                uint256 supplyError = supplyEther(
-                    localResults.repayAmount
-                );
+                uint256 supplyError = supplyEther(localResults.repayAmount);
                 //Repay excess funds
                 if (reimburseAmount > 0) {
                     revertEtherToUser(msg.sender, reimburseAmount);
@@ -2193,7 +2213,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                     FailureInfo.LIQUIDATE_CONTRACT_PAUSED
                 );
         }
-        require(liquidators[msg.sender],"LIQUIDATOR_CHECK_FAILED");
+        require(liquidators[msg.sender], "LIQUIDATOR_CHECK_FAILED");
         refreshAlkIndex(assetCollateral, targetAccount, true, true);
         refreshAlkIndex(assetCollateral, msg.sender, true, true);
         refreshAlkIndex(assetBorrow, targetAccount, false, true);
@@ -2973,7 +2993,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
         }
-        require(customersWithKYC[msg.sender],"KYC_CUSTOMER_VERIFICATION_CHECK_FAILED");
+        require(
+            customersWithKYC[msg.sender],
+            "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED"
+        );
         refreshAlkIndex(asset, msg.sender, false, true);
         BorrowLocalVars memory localResults;
         Market storage market = markets[asset];
@@ -3285,7 +3308,12 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @param isSupply Specifies if Supply or Borrow Index need to be updated
      * @param isVerified Verified / Public protocol
      */
-    function refreshAlkIndex(address market, address user, bool isSupply, bool isVerified) internal {
+    function refreshAlkIndex(
+        address market,
+        address user,
+        bool isSupply,
+        bool isVerified
+    ) internal {
         if (address(rewardControl) == address(0)) {
             return;
         }
