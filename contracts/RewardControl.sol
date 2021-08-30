@@ -691,7 +691,7 @@ contract RewardControl is
         }
         allMarkets[isVerified].length--;
         // reset the ALK speeds for the removed market and refresh ALK speeds
-        alkSpeeds[removedMarket] = 0;
+        alkSpeeds[isVerified][removedMarket] = 0;
         refreshAlkSpeeds();
         emit MarketRemoved(
             removedMarket,
