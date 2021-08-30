@@ -5,10 +5,10 @@ import "../contracts/RewardControl.sol";
 contract RewardControlHarness is RewardControl {
     uint256 blockNumber;
     
-    mapping(address => uint256) mockedMarketTotalSupply;
-    mapping(address => uint256) mockedMarketTotalBorrows;
-    mapping(address => mapping(address => uint256)) mockedSupplyBalance;
-    mapping(address => mapping(address => uint256)) mockedBorrowBalance;
+    mapping(bool => mapping(address => uint256)) mockedMarketTotalSupply;
+    mapping(bool => mapping(address => uint256)) mockedMarketTotalBorrows;
+    mapping(bool => mapping(address => mapping(address => uint256))) mockedSupplyBalance;
+    mapping(bool => mapping(address => mapping(address => uint256))) mockedBorrowBalance;
 
     function harnessRefreshAlkSpeeds() public {
         refreshAlkSpeeds();
@@ -71,29 +71,29 @@ contract RewardControlHarness is RewardControl {
     function harnessSetMarketTotalSupply(address market, uint256 totalSupply)
         public
     {
-        mockedMarketTotalSupply[market] = totalSupply;
+        mockedMarketTotalSupply[true][market] = totalSupply;
     }
 
     function harnessSetMarketTotalBorrows(address market, uint256 totalBorrows)
         public
     {
-        mockedMarketTotalBorrows[market] = totalBorrows;
+        mockedMarketTotalBorrows[true][market] = totalBorrows;
     }
 
-    function getMarketTotalSupply(address market)
+    function getMarketTotalSupply(address market, bool isVerified)
         public
         view
         returns (uint256)
     {
-        return mockedMarketTotalSupply[market];
+        return mockedMarketTotalSupply[isVerified][market];
     }
 
-    function getMarketTotalBorrows(address market)
+    function getMarketTotalBorrows(address market, bool isVerified)
         public
         view
         returns (uint256)
     {
-        return mockedMarketTotalBorrows[market];
+        return mockedMarketTotalBorrows[isVerified][market];
     }
 
     function harnessSetSupplyBalance(
@@ -101,7 +101,7 @@ contract RewardControlHarness is RewardControl {
         address supplier,
         uint256 supplyBalance
     ) public {
-        mockedSupplyBalance[market][supplier] = supplyBalance;
+        mockedSupplyBalance[true][market][supplier] = supplyBalance;
     }
 
     function harnessSetBorrowBalance(
@@ -109,7 +109,7 @@ contract RewardControlHarness is RewardControl {
         address borrower,
         uint256 borrowBalance
     ) public {
-        mockedBorrowBalance[market][borrower] = borrowBalance;
+        mockedBorrowBalance[true][market][borrower] = borrowBalance;
     }
 
     function getSupplyBalance(address market, address supplier)
@@ -117,7 +117,7 @@ contract RewardControlHarness is RewardControl {
         view
         returns (uint256)
     {
-        return mockedSupplyBalance[market][supplier];
+        return mockedSupplyBalance[true][market][supplier];
     }
 
     function getBorrowBalance(address market, address borrower)
@@ -125,7 +125,7 @@ contract RewardControlHarness is RewardControl {
         view
         returns (uint256)
     {
-        return mockedBorrowBalance[market][borrower];
+        return mockedBorrowBalance[true][market][borrower];
     }
 
     function harnessSetAlkSupplierIndex(

@@ -13,6 +13,7 @@ npm-debug.log
 .env
 .DS_Store
 .mnemonic
+.infuraKey
 
 # misc
 .DS_Store

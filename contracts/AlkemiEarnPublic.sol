@@ -1213,7 +1213,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                     );
             }
         } else {
-            uint256 withdrawalerr = withdrawEther(admin, amount); // send Ether to user
+            withdrawEther(admin, amount); // send Ether to user
         }
 
         (, markets[asset].supplyRateMantissa) = markets[asset]
@@ -3285,7 +3285,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                 return fail(err, FailureInfo.BORROW_TRANSFER_OUT_FAILED);
             }
         } else {
-            uint256 withdrawalerr = withdrawEther(msg.sender, amount); // send Ether to user
+            withdrawEther(msg.sender, amount); // send Ether to user
         }
 
         emit BorrowTaken(

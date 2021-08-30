@@ -26,7 +26,7 @@
 	"scripts": {
 		"ganache": "ganache-cli --port 8545 --allowUnlimitedContractSize",
 		"ganache-ci": "ganache-cli --port 8545 --allowUnlimitedContractSize > /dev/null &",
-		"compile": "truffle compile --all && node ./scripts/create_ABI_files.js",
+		"compile": "truffle compile --all && cd scripts && node create_ABI_files.js && cd ..",
 		"deploy": "truffle deploy",
 		"migrate:development": "truffle migrate --network development",
 		"migrate:rinkeby": "truffle migrate --network rinkeby",
