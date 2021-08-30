@@ -4,6 +4,7 @@ import "../contracts/RewardControl.sol";
 
 contract RewardControlHarness is RewardControl {
     uint256 blockNumber;
+    
     mapping(address => uint256) mockedMarketTotalSupply;
     mapping(address => uint256) mockedMarketTotalBorrows;
     mapping(address => mapping(address => uint256)) mockedSupplyBalance;
@@ -13,24 +14,24 @@ contract RewardControlHarness is RewardControl {
         refreshAlkSpeeds();
     }
 
-    function harnessUpdateAlkSupplyIndex(address market) public {
-        updateAlkSupplyIndex(market);
+    function harnessUpdateAlkSupplyIndex(address market, bool isVerified) public {
+        updateAlkSupplyIndex(market,isVerified);
     }
 
-    function harnessUpdateAlkBorrowIndex(address market) public {
-        updateAlkBorrowIndex(market);
+    function harnessUpdateAlkBorrowIndex(address market, bool isVerified) public {
+        updateAlkBorrowIndex(market,isVerified);
     }
 
-    function harnessDistributeSupplierAlk(address market, address supplier)
+    function harnessDistributeSupplierAlk(address market, address supplier, bool isVerified)
         public
     {
-        distributeSupplierAlk(market, supplier);
+        distributeSupplierAlk(market, supplier,isVerified);
     }
 
-    function harnessDistributeBorrowerAlk(address market, address borrower)
+    function harnessDistributeBorrowerAlk(address market, address borrower, bool isVerified)
         public
     {
-        distributeBorrowerAlk(market, borrower);
+        distributeBorrowerAlk(market, borrower,isVerified);
     }
 
     function getBlockNumber() public view returns (uint256) {
@@ -45,24 +46,26 @@ contract RewardControlHarness is RewardControl {
         blockNumber += blocks;
     }
 
-    function harnessSetAlkSpeed(address market, uint256 speed) public {
-        alkSpeeds[market] = speed;
+    function harnessSetAlkSpeed(address market, uint256 speed, bool isVerified) public {
+        alkSpeeds[isVerified][market] = speed;
     }
 
     function harnessSetAlkSupplyState(
         address market,
         uint224 _index,
-        uint32 _block
+        uint32 _block,
+        bool isVerified
     ) public {
-        alkSupplyState[market] = MarketState({index: _index, block: _block});
+        alkSupplyState[isVerified][market] = MarketState({index: _index, block: _block});
     }
 
     function harnessSetAlkBorrowState(
         address market,
         uint224 _index,
-        uint32 _block
+        uint32 _block,
+        bool isVerified
     ) public {
-        alkBorrowState[market] = MarketState({index: _index, block: _block});
+        alkBorrowState[isVerified][market] = MarketState({index: _index, block: _block});
     }
 
     function harnessSetMarketTotalSupply(address market, uint256 totalSupply)
@@ -128,27 +131,29 @@ contract RewardControlHarness is RewardControl {
     function harnessSetAlkSupplierIndex(
         address market,
         address supplier,
-        uint256 index
+        uint256 index,
+        bool isVerified
     ) public {
-        alkSupplierIndex[market][supplier] = index;
+        alkSupplierIndex[isVerified][market][supplier] = index;
     }
 
     function harnessSetAlkBorrowerIndex(
         address market,
         address borrower,
-        uint256 index
+        uint256 index,
+        bool isVerified
     ) public {
-        alkBorrowerIndex[market][borrower] = index;
+        alkBorrowerIndex[isVerified][market][borrower] = index;
     }
 
-    function harnessTransferAlk(address participant, uint256 participantAccrued)
+    function harnessTransferAlk(address participant, uint256 participantAccrued, address market, bool isVerified)
         public
         returns (uint256)
     {
-        transferAlk(participant, participantAccrued);
+        transferAlk(participant, participantAccrued, market, isVerified);
     }
 
-    function harnessGetNumberOfMarkets() public view returns (uint256) {
-        return allMarkets.length;
+    function harnessGetNumberOfMarkets(bool isVerified) public view returns (uint256) {
+        return allMarkets[isVerified].length;
     }
 }

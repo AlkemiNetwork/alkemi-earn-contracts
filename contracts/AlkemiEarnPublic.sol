@@ -538,8 +538,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
     }
 
     /**
-     * @dev Calculates a new supply index based on the prevailing interest rates applied over time
-     *      This is defined as `we multiply the most recent supply index by (1 + blocks times rate)`
+     * @dev Calculates a new supply/borrow index based on the prevailing interest rates applied over time
+     *      This is defined as `we multiply the most recent supply/borrow index by (1 + blocks times rate)`
      * @return Return value is expressed in 1e18 scale
      */
     function calculateInterestIndex(
