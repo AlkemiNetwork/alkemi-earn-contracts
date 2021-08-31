@@ -11,7 +11,7 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmount is
         oracle = address(0);
         address asset = nextAddress();
 
-        (Error err, Exp memory result) = getPriceForAssetAmount(asset, 90);
+        (Error err, Exp memory result) = getPriceForAssetAmount(asset, 90, false);
         assertError(
             Error.ZERO_ORACLE_ADDRESS,
             err,
