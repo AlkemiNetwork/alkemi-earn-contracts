@@ -21,7 +21,7 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is
         (
             Error err2,
             Exp memory assetValue
-        ) = getPriceForAssetAmountMulCollatRatio(addr1, 1 ether);
+        ) = getPriceForAssetAmount(addr1, 1 ether, true);
         assertNoError(err2);
         Assert.equal(62.5 ether, truncate(assetValue), "1 ether * 50:1 * 2:1");
     }
@@ -37,7 +37,7 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is
         (
             Error err2,
             Exp memory assetValue
-        ) = getPriceForAssetAmountMulCollatRatio(addr1, 1 ether);
+        ) = getPriceForAssetAmount(addr1, 1 ether, true);
         assertNoError(err2);
         Assert.equal(0.25 ether, truncate(assetValue), "1 ether * 1:5 * 2:1");
     }
@@ -53,7 +53,7 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is
         (
             Error err2,
             Exp memory assetValue
-        ) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
+        ) = getPriceForAssetAmount(addr1, 10**18, true);
         assertError(
             Error.INTEGER_OVERFLOW,
             err2,
@@ -65,9 +65,10 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is
     function testGetPriceForAssetAmountMulCollatRatio_Zero() public {
         address addr1 = nextAddress();
 
-        (, Exp memory assetValue) = getPriceForAssetAmountMulCollatRatio(
+        (, Exp memory assetValue) = getPriceForAssetAmount(
             addr1,
-            10**18
+            10**18,
+            true
         );
         // assertError(Error.MISSING_ASSET_PRICE, err, "missing asset price");
         assertZero(assetValue.mantissa, "default value");
@@ -82,7 +83,7 @@ contract AlkemiEarnVerifiedTest_GetPriceForAssetAmountMulCollatRatio is
         (
             Error err,
             Exp memory assetValue
-        ) = getPriceForAssetAmountMulCollatRatio(addr1, 10**18);
+        ) = getPriceForAssetAmount(addr1, 10**18, true);
         assertError(
             Error.ZERO_ORACLE_ADDRESS,
             err,

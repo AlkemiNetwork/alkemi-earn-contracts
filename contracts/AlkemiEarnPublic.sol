@@ -226,10 +226,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         uint256 newSupplyRateMantissa;
         uint256 newBorrowIndex;
         uint256 newBorrowRateMantissa;
+        uint256 withdrawCapacity;
         Exp accountLiquidity;
         Exp accountShortfall;
         Exp ethValueOfWithdrawal;
-        uint256 withdrawCapacity;
     }
 
     // The `AccountValueLocalVars` struct is used internally in the `CalculateAccountValuesInternal` function.
@@ -238,10 +238,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         uint256 collateralMarketsLength;
         uint256 newSupplyIndex;
         uint256 userSupplyCurrent;
-        Exp supplyTotalValue;
-        Exp sumSupplies;
         uint256 newBorrowIndex;
         uint256 userBorrowCurrent;
+        Exp supplyTotalValue;
+        Exp sumSupplies;
         Exp borrowTotalValue;
         Exp sumBorrows;
     }
@@ -323,9 +323,9 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         uint256 maxCloseableBorrowAmount_TargetUnderwaterAsset;
         uint256 closeBorrowAmount_TargetUnderwaterAsset;
         uint256 seizeSupplyAmount_TargetCollateralAsset;
+        uint256 reimburseAmount;
         Exp collateralPrice;
         Exp underwaterAssetPrice;
-        uint256 reimburseAmount;
     }
 
     /**
@@ -431,22 +431,9 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
     );
 
     /**
-     * @dev emitted when pendingAdmin is changed
-     */
-    event NewPendingAdmin(
-        address indexed oldPendingAdmin,
-        address indexed newPendingAdmin
-    );
-
-    /**
      * @dev emitted when pendingAdmin is accepted, which means admin is updated
      */
     event NewAdmin(address indexed oldAdmin, address indexed newAdmin);
-
-    /**
-     * @dev newOracle - address of new oracle
-     */
-    event NewOracle(address indexed oldOracle, address indexed newOracle);
 
     /**
      * @dev emitted when new market is supported by admin
@@ -492,16 +479,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         uint256 amount,
         address indexed owner
     );
-
-    /**
-     * @dev emitted when a supported market is suspended by admin
-     */
-    event SuspendedMarket(address indexed asset);
-
-    /**
-     * @dev emitted when admin either pauses or resumes the contract; newState is the resulting state
-     */
-    event SetPaused(bool newState);
 
     /**
      * @dev Simple function to calculate min between two numbers.
@@ -798,24 +775,19 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             originationFeeMantissa < 10**18 && newCloseFactorMantissa < 10**18,
             "Invalid Origination Fee or Close Factor Mantissa"
         );
-        // save current value, if any, for inclusion in log
-        address oldPendingAdmin = pendingAdmin;
+
         // Store pendingAdmin = newPendingAdmin
         pendingAdmin = newPendingAdmin;
-        emit NewPendingAdmin(oldPendingAdmin, newPendingAdmin);
 
         // Verify contract at newOracle address supports assetPrices call.
         // This will revert if it doesn't.
         // ChainLink priceOracleTemp = ChainLink(newOracle);
         // priceOracleTemp.getAssetPrice(address(0));
 
-        address oldOracle = address(priceOracle);
         // Initialize the Chainlink contract in priceOracle
         priceOracle = ChainLink(newOracle);
-        emit NewOracle(oldOracle, newOracle);
 
         paused = requestedState;
-        emit SetPaused(requestedState);
 
         // Save current value so we can emit it in log.
         Exp memory oldOriginationFee = originationFee;
@@ -868,7 +840,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             Exp memory accountLiquidity,
             Exp memory accountShortfall
         ) = calculateAccountLiquidity(account);
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         if (isZeroExp(accountLiquidity)) {
             return -1 * int256(truncate(accountShortfall));
@@ -903,7 +875,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.blockNumber,
             block.number
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Use newSupplyIndex and stored principal to calculate the accumulated balance
         (err, userSupplyCurrent) = calculateBalance(
@@ -911,7 +883,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             supplyBalance.interestIndex,
             newSupplyIndex
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         return userSupplyCurrent;
     }
@@ -942,7 +914,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.blockNumber,
             block.number
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Use newBorrowIndex and stored principal to calculate the accumulated balance
         (err, userBorrowCurrent) = calculateBalance(
@@ -950,7 +922,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             borrowBalance.interestIndex,
             newBorrowIndex
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         return userBorrowCurrent;
     }
@@ -1033,8 +1005,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
 
         // If we get here, we know market is configured and is supported, so set isSupported to false
         markets[asset].isSupported = false;
-
-        emit SuspendedMarket(asset);
 
         return uint256(Error.NO_ERROR);
     }
@@ -3333,13 +3303,13 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                 balance.interestIndex,
                 newSupplyIndex
             );
-            require(err == Error.NO_ERROR);
+            revertIfError(err);
 
             (err, localResults.userSupplyUpdated) = add(
                 localResults.userSupplyCurrent,
                 originationFeeRepaid
             );
-            require(err == Error.NO_ERROR);
+            revertIfError(err);
 
             // We calculate the protocol's totalSupply by subtracting the user's prior checkpointed balance, adding user's updated supply
             (err, localResults.newTotalSupply) = addThenSub(
@@ -3347,7 +3317,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
                 localResults.userSupplyUpdated,
                 balance.principal
             );
-            require(err == Error.NO_ERROR);
+            revertIfError(err);
 
             // Save market updates
             markets[asset].totalSupply = localResults.newTotalSupply;
@@ -3452,7 +3422,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.blockNumber,
             block.number
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Use newSupplyIndex and stored principal to calculate the accumulated balance
         (err, marketSupplyCurrent) = calculateBalance(
@@ -3460,7 +3430,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.supplyIndex,
             newSupplyIndex
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Calculate the newBorrowIndex, needed to calculate market's borrowCurrent
         (err, newBorrowIndex) = calculateInterestIndex(
@@ -3469,7 +3439,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.blockNumber,
             block.number
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Use newBorrowIndex and stored principal to calculate the accumulated balance
         (err, marketBorrowCurrent) = calculateBalance(
@@ -3477,8 +3447,18 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             market.borrowIndex,
             newBorrowIndex
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         return (marketSupplyCurrent, marketBorrowCurrent);
+    }
+
+    /**
+     * @dev Function to revert in case of an internal exception
+     */
+    function revertIfError(Error err) internal pure {
+        require(
+            err == Error.NO_ERROR,
+            "Function revert due to internal exception"
+        );
     }
 }

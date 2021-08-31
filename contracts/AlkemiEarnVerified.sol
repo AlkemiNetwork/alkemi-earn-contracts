@@ -75,6 +75,24 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     address public oracle;
 
     /**
+     * @dev Modifier to check if the caller is the admin of the contract
+     */
+    modifier onlyOwner() {
+        require(msg.sender == admin, "Owner check failed");
+        _;
+    }
+
+    /**
+     * @dev Modifier to check if the caller is KYC verified
+     */
+    modifier onlyCustomerWithKYC() {
+        require(
+            customersWithKYC[msg.sender],
+            "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED"
+        );
+        _;
+    }
+    /**
      * @dev Account allowed to fetch chainlink oracle prices for this contract. Can be changed by the admin.
      */
     ChainLink public priceOracle;
@@ -237,10 +255,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         uint256 newSupplyRateMantissa;
         uint256 newBorrowIndex;
         uint256 newBorrowRateMantissa;
+        uint256 withdrawCapacity;
         Exp accountLiquidity;
         Exp accountShortfall;
         Exp ethValueOfWithdrawal;
-        uint256 withdrawCapacity;
     }
 
     // The `AccountValueLocalVars` struct is used internally in the `CalculateAccountValuesInternal` function.
@@ -249,12 +267,12 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         uint256 collateralMarketsLength;
         uint256 newSupplyIndex;
         uint256 userSupplyCurrent;
-        Exp supplyTotalValue;
-        Exp sumSupplies;
         uint256 newBorrowIndex;
         uint256 userBorrowCurrent;
         Exp borrowTotalValue;
         Exp sumBorrows;
+        Exp supplyTotalValue;
+        Exp sumSupplies;
     }
 
     // The `PayBorrowLocalVars` struct is used internally in the `repayBorrow` function.
@@ -334,9 +352,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         uint256 maxCloseableBorrowAmount_TargetUnderwaterAsset;
         uint256 closeBorrowAmount_TargetUnderwaterAsset;
         uint256 seizeSupplyAmount_TargetCollateralAsset;
+        uint256 reimburseAmount;
         Exp collateralPrice;
         Exp underwaterAssetPrice;
-        uint256 reimburseAmount;
     }
 
     /**
@@ -459,12 +477,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     /**
      * @dev Function for use by the admin of the contract to add or remove KYC Admins
      */
-    function _changeKYCAdmin(address KYCAdmin, bool newStatus) public {
-        // Check caller = admin
-        require(
-            msg.sender == admin,
-            "KYC_ADMIN_ADD_OR_DELETE_ADMIN_CHECK_FAILED"
-        );
+    function _changeKYCAdmin(address KYCAdmin, bool newStatus)
+        public
+        onlyOwner
+    {
         KYCAdmins[KYCAdmin] = newStatus;
         emit KYCAdminChanged(KYCAdmin, newStatus);
     }
@@ -485,12 +501,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     /**
      * @dev Function for use by the admin of the contract to add or remove Liquidators
      */
-    function _changeLiquidator(address liquidator, bool newStatus) public {
-        // Check caller = admin
-        require(
-            msg.sender == admin,
-            "LIQUIDATOR_ADD_OR_DELETE_ADMIN_CHECK_FAILED"
-        );
+    function _changeLiquidator(address liquidator, bool newStatus)
+        public
+        onlyOwner
+    {
         liquidators[liquidator] = newStatus;
         emit LiquidatorChanged(liquidator, newStatus);
     }
@@ -601,49 +615,29 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev Gets the price for the amount specified of the given asset.
      * @return Return value is expressed in a magnified scale per token decimals
      */
-    function getPriceForAssetAmount(address asset, uint256 assetAmount)
-        internal
-        view
-        returns (Error, Exp memory)
-    {
+    function getPriceForAssetAmount(
+        address asset,
+        uint256 assetAmount,
+        bool mulCollatRatio
+    ) internal view returns (Error, Exp memory) {
         (Error err, Exp memory assetPrice) = fetchAssetPrice(asset);
         if (err != Error.NO_ERROR) {
             return (err, Exp({mantissa: 0}));
         }
-
         if (isZeroExp(assetPrice)) {
             return (Error.MISSING_ASSET_PRICE, Exp({mantissa: 0}));
         }
-
+        if (mulCollatRatio) {
+            Exp memory scaledPrice;
+            // Now, multiply the assetValue by the collateral ratio
+            (err, scaledPrice) = mulExp(collateralRatio, assetPrice);
+            if (err != Error.NO_ERROR) {
+                return (err, Exp({mantissa: 0}));
+            }
+            // Get the price for the given asset amount
+            return mulScalar(scaledPrice, assetAmount);
+        }
         return mulScalar(assetPrice, assetAmount); // assetAmountWei * oraclePrice = assetValueInEth
-    }
-
-    /**
-     * @dev Gets the price for the amount specified of the given asset multiplied by the current
-     *      collateral ratio (i.e., assetAmountWei * collateralRatio * oraclePrice = totalValueInEth).
-     *      We will group this as `(oraclePrice * collateralRatio) * assetAmountWei`
-     * @return Return value is expressed in a magnified scale per token decimals
-     */
-    function getPriceForAssetAmountMulCollatRatio(
-        address asset,
-        uint256 assetAmount
-    ) internal view returns (Error, Exp memory) {
-        Error err;
-        Exp memory assetPrice;
-        Exp memory scaledPrice;
-        (err, assetPrice) = fetchAssetPrice(asset);
-        if (err != Error.NO_ERROR) {
-            return (err, Exp({mantissa: 0}));
-        }
-
-        // Now, multiply the assetValue by the collateral ratio
-        (err, scaledPrice) = mulExp(collateralRatio, assetPrice);
-        if (err != Error.NO_ERROR) {
-            return (err, Exp({mantissa: 0}));
-        }
-
-        // Get the price for the given asset amount
-        return mulScalar(scaledPrice, assetAmount);
     }
 
     /**
@@ -774,9 +768,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         uint256 newCloseFactorMantissa,
         address wethContractAddress,
         address _rewardControl
-    ) public returns (uint256) {
-        // Check caller = admin
-        require(msg.sender == admin, "SET_PENDING_ADMIN_OWNER_CHECK");
+    ) public onlyOwner returns (uint256) {
         // newPendingAdmin can be 0x00, hence not checked
         require(newOracle != address(0), "Cannot set weth address to 0x00");
         require(
@@ -848,7 +840,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             Exp memory accountLiquidity,
             Exp memory accountShortfall
         ) = calculateAccountLiquidity(account);
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         if (isZeroExp(accountLiquidity)) {
             return -1 * int256(truncate(accountShortfall));
@@ -883,7 +875,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             market.blockNumber,
             block.number
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Use newSupplyIndex and stored principal to calculate the accumulated balance
         (err, userSupplyCurrent) = calculateBalance(
@@ -891,7 +883,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             supplyBalance.interestIndex,
             newSupplyIndex
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         return userSupplyCurrent;
     }
@@ -922,7 +914,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             market.blockNumber,
             block.number
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Use newBorrowIndex and stored principal to calculate the accumulated balance
         (err, userBorrowCurrent) = calculateBalance(
@@ -930,7 +922,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             borrowBalance.interestIndex,
             newBorrowIndex
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         return userBorrowCurrent;
     }
@@ -944,10 +936,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      */
     function _supportMarket(address asset, InterestRateModel interestRateModel)
         public
+        onlyOwner
         returns (uint256)
     {
-        // Check caller = admin
-        require(msg.sender == admin, "SUPPORT_MARKET_OWNER_CHECK");
         // Hard cap on the maximum number of markets allowed
         require(
             interestRateModel != address(0) &&
@@ -997,10 +988,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @param asset Asset to suspend
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function _suspendMarket(address asset) public returns (uint256) {
-        // Check caller = admin
-        require(msg.sender == admin, "SUSPEND_MARKET_OWNER_CHECK");
-
+    function _suspendMarket(address asset) public onlyOwner returns (uint256) {
         // If the market is not configured at all, we don't want to add any configuration for it.
         // If we find !markets[asset].isSupported then either the market is not configured at all, or it
         // has already been marked as unsupported. We can just return without doing anything.
@@ -1025,9 +1013,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     function _setRiskParameters(
         uint256 collateralRatioMantissa,
         uint256 liquidationDiscountMantissa
-    ) public returns (uint256) {
-        // Check caller = admin
-        require(msg.sender == admin, "SET_RISK_PARAMETERS_OWNER_CHECK");
+    ) public onlyOwner returns (uint256) {
         // Input validations
         require(
             collateralRatioMantissa >= minimumCollateralRatioMantissa &&
@@ -1077,7 +1063,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             newLiquidationDiscount,
             Exp({mantissa: mantissaOne})
         );
-        require(err == Error.NO_ERROR); // We already validated that newLiquidationDiscount does not approach overflow size
+        revertIfError(err); // We already validated that newLiquidationDiscount does not approach overflow size
 
         if (
             lessThanOrEqualExp(
@@ -1108,12 +1094,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     function _setMarketInterestRateModel(
         address asset,
         InterestRateModel interestRateModel
-    ) public returns (uint256) {
-        // Check caller = admin
-        require(
-            msg.sender == admin,
-            "SET_MARKET_INTEREST_RATE_MODEL_OWNER_CHECK"
-        );
+    ) public onlyOwner returns (uint256) {
         require(interestRateModel != address(0), "Rate Model cannot be 0x00");
 
         // Set the interest rate model to `modelAddress`
@@ -1131,11 +1112,9 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      */
     function _withdrawEquity(address asset, uint256 amount)
         public
+        onlyOwner
         returns (uint256)
     {
-        // Check caller = admin
-        require(msg.sender == admin, "EQUITY_WITHDRAWAL_MODEL_OWNER_CHECK");
-
         // Check that amount is less than cash (from ERC-20 of self) plus borrows minus supply.
         uint256 cash = getCash(asset);
         // Get supply and borrows with interest accrued till the latest block
@@ -1227,6 +1206,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         public
         payable
         nonReentrant
+        onlyCustomerWithKYC
         returns (uint256)
     {
         if (paused) {
@@ -1234,11 +1214,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
-
-        require(
-            customersWithKYC[msg.sender],
-            "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED"
-        );
 
         refreshAlkIndex(asset, msg.sender, true, true);
 
@@ -1582,7 +1557,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         // Equivalently, we calculate the eth value of the withdrawal amount and compare it directly to the accountLiquidity in Eth
         (err, localResults.ethValueOfWithdrawal) = getPriceForAssetAmount(
             asset,
-            localResults.withdrawAmount
+            localResults.withdrawAmount,
+            false
         ); // amount * oraclePrice = ethValueOfWithdrawal
         if (err != Error.NO_ERROR) {
             return
@@ -1682,10 +1658,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 return fail(err, FailureInfo.WITHDRAW_TRANSFER_OUT_FAILED);
             }
         } else {
-            withdrawEther(
-                msg.sender,
-                localResults.withdrawAmount
-            ); // send Ether to user
+            withdrawEther(msg.sender, localResults.withdrawAmount); // send Ether to user
         }
 
         emit SupplyWithdrawn(
@@ -1747,13 +1720,13 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         if (lessThanExp(sumSupplyValuesFinal, sumBorrowValuesFinal)) {
             // accountShortfall = borrows - supplies
             (err, result) = subExp(sumBorrowValuesFinal, sumSupplyValuesFinal);
-            require(err == Error.NO_ERROR); // Note: we have checked that sumBorrows is greater than sumSupplies directly above, therefore `subExp` cannot fail.
+            revertIfError(err); // Note: we have checked that sumBorrows is greater than sumSupplies directly above, therefore `subExp` cannot fail.
 
             return (Error.NO_ERROR, Exp({mantissa: 0}), result);
         } else {
             // accountLiquidity = supplies - borrows
             (err, result) = subExp(sumSupplyValuesFinal, sumBorrowValuesFinal);
-            require(err == Error.NO_ERROR); // Note: we have checked that sumSupplies is greater than sumBorrows directly above, therefore `subExp` cannot fail.
+            revertIfError(err); // Note: we have checked that sumSupplies is greater than sumBorrows directly above, therefore `subExp` cannot fail.
 
             return (Error.NO_ERROR, result, Exp({mantissa: 0}));
         }
@@ -1823,7 +1796,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 // We have the user's supply balance with interest so let's multiply by the asset price to get the total value
                 (err, localResults.supplyTotalValue) = getPriceForAssetAmount(
                     localResults.assetAddress,
-                    localResults.userSupplyCurrent
+                    localResults.userSupplyCurrent,
+                    false
                 ); // supplyCurrent * oraclePrice = supplyValueInEth
                 if (err != Error.NO_ERROR) {
                     return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
@@ -1863,7 +1837,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 // We have the user's borrow balance with interest so let's multiply by the asset price to get the total value
                 (err, localResults.borrowTotalValue) = getPriceForAssetAmount(
                     localResults.assetAddress,
-                    localResults.userBorrowCurrent
+                    localResults.userBorrowCurrent,
+                    false
                 ); // borrowCurrent * oraclePrice = borrowValueInEth
                 if (err != Error.NO_ERROR) {
                     return (err, Exp({mantissa: 0}), Exp({mantissa: 0}));
@@ -2250,7 +2225,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
 
         (err, localResults.underwaterAssetPrice) = fetchAssetPrice(assetBorrow);
         // If the price oracle is not set, then we would have failed on the first call to fetchAssetPrice
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // We calculate newBorrowIndex_UnderwaterAsset and then use it to help calculate currentBorrowBalance_TargetUnderwaterAsset
         (
@@ -2539,7 +2514,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             localResults.closeBorrowAmount_TargetUnderwaterAsset
         );
         // We have ensured above that localResults.closeBorrowAmount_TargetUnderwaterAsset <= localResults.currentBorrowBalance_TargetUnderwaterAsset, so the sub can't underflow
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // We calculate the protocol's totalBorrow for assetBorrow by subtracting the user's prior checkpointed balance, adding user's updated borrow
         // Note that, even though the liquidator is paying some of the borrow, if the borrow has accumulated a lot of interest since the last
@@ -2663,7 +2638,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         // The sub won't underflow because because seizeSupplyAmount_TargetCollateralAsset <= target user's collateral balance
         // maxCloseableBorrowAmount_TargetUnderwaterAsset is limited by the discounted borrow denominated collateral. That limits closeBorrowAmount_TargetUnderwaterAsset
         // which in turn limits seizeSupplyAmount_TargetCollateralAsset.
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // We checkpoint the liquidating user's assetCollateral supply balance, supplyCurrent + seizeSupplyAmount_TargetCollateralAsset at the updated index
         (
@@ -2675,7 +2650,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         );
         // We can't overflow here because if this would overflow, then we would have already overflowed above and failed
         // with LIQUIDATE_NEW_TOTAL_SUPPLY_BALANCE_CALCULATION_FAILED_LIQUIDATOR_COLLATERAL_ASSET
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         /////////////////////////
         // EFFECTS & INTERACTIONS
@@ -2844,7 +2819,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         // discountedCollateralRatioMinusOne < collateralRatio
         // so if underwaterAssetPrice * collateralRatio did not overflow then
         // underwaterAssetPrice * discountedCollateralRatioMinusOne can't overflow either
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         /* The liquidator may not repay more than what is allowed by the closeFactor */
         uint256 borrowBalance = getBorrowBalance(targetAccount, assetBorrow);
@@ -2952,7 +2927,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             liquidationDiscount
         );
         // liquidation discount will be enforced < 1, so 1 + liquidationDiscount can't overflow.
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         (err, priceUnderwaterAssetTimesLiquidationMultiplier) = mulExp(
             underwaterAssetPrice,
@@ -2987,16 +2962,14 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
     function borrow(address asset, uint256 amount)
         public
         nonReentrant
+        onlyCustomerWithKYC
         returns (uint256)
     {
         if (paused) {
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.BORROW_CONTRACT_PAUSED);
         }
-        require(
-            customersWithKYC[msg.sender],
-            "KYC_CUSTOMER_VERIFICATION_CHECK_FAILED"
-        );
+
         refreshAlkIndex(asset, msg.sender, false, true);
         BorrowLocalVars memory localResults;
         Market storage market = markets[asset];
@@ -3111,9 +3084,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         (
             err,
             localResults.ethValueOfBorrowAmountWithFee
-        ) = getPriceForAssetAmountMulCollatRatio(
+        ) = getPriceForAssetAmount(
             asset,
-            localResults.borrowAmountWithFee
+            localResults.borrowAmountWithFee,
+            true
         );
         if (err != Error.NO_ERROR) {
             return
@@ -3267,13 +3241,13 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 balance.interestIndex,
                 newSupplyIndex
             );
-            require(err == Error.NO_ERROR);
+            revertIfError(err);
 
             (err, localResults.userSupplyUpdated) = add(
                 localResults.userSupplyCurrent,
                 originationFeeRepaid
             );
-            require(err == Error.NO_ERROR);
+            revertIfError(err);
 
             // We calculate the protocol's totalSupply by subtracting the user's prior checkpointed balance, adding user's updated supply
             (err, localResults.newTotalSupply) = addThenSub(
@@ -3281,7 +3255,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
                 localResults.userSupplyUpdated,
                 balance.principal
             );
-            require(err == Error.NO_ERROR);
+            revertIfError(err);
 
             // Save market updates
             markets[asset].totalSupply = localResults.newTotalSupply;
@@ -3349,7 +3323,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             market.blockNumber,
             block.number
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Use newSupplyIndex and stored principal to calculate the accumulated balance
         (err, marketSupplyCurrent) = calculateBalance(
@@ -3357,7 +3331,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             market.supplyIndex,
             newSupplyIndex
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Calculate the newBorrowIndex, needed to calculate market's borrowCurrent
         (err, newBorrowIndex) = calculateInterestIndex(
@@ -3366,7 +3340,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             market.blockNumber,
             block.number
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         // Use newBorrowIndex and stored principal to calculate the accumulated balance
         (err, marketBorrowCurrent) = calculateBalance(
@@ -3374,8 +3348,18 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
             market.borrowIndex,
             newBorrowIndex
         );
-        require(err == Error.NO_ERROR);
+        revertIfError(err);
 
         return (marketSupplyCurrent, marketBorrowCurrent);
+    }
+
+    /**
+     * @dev Function to revert in case of an internal exception
+     */
+    function revertIfError(Error err) internal pure {
+        require(
+            err == Error.NO_ERROR,
+            "Function revert due to internal exception"
+        );
     }
 }
