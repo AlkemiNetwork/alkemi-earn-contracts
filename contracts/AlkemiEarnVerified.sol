@@ -6,9 +6,8 @@ import "./SafeToken.sol";
 import "./ChainLink.sol";
 import "./AlkemiWETH.sol";
 import "./RewardControlInterface.sol";
-import "./ReentrancyGuard.sol";
 
-contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
+contract AlkemiEarnVerified is Exponential, SafeToken {
     uint256 internal initialInterestIndex;
     uint256 internal defaultOriginationFee;
     uint256 internal defaultCollateralRatio;
@@ -72,7 +71,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev Account allowed to set oracle prices for this contract. Initially set
      *      in constructor, but can be changed by the admin.
      */
-    address public oracle;
+    address private oracle;
 
     /**
      * @dev Modifier to check if the caller is the admin of the contract
@@ -151,7 +150,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev wethAddress to hold the WETH token contract address
      * set using setWethAddress function
      */
-    address public wethAddress;
+    address private wethAddress;
 
     /**
      * @dev Initiates the contract for supply and withdraw Ether and conversion to WETH
@@ -205,11 +204,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev Mapping to identify the list of customers with Liquidator roles
      */
     mapping(address => bool) public liquidators;
-
-    /**
-     * @dev Hard cap on the number of markets allowed
-     */
-    uint8 public MAXIMUM_NUMBER_OF_MARKETS = 16;
 
     /**
      * The `SupplyLocalVars` struct is used internally in the `supply` function.
@@ -361,7 +355,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      * @dev 2-level map: customerAddress -> assetAddress -> originationFeeBalance for borrows
      */
     mapping(address => mapping(address => uint256))
-        private originationFeeBalance;
+        public originationFeeBalance;
 
     /**
      * @dev Reward Control Contract address
@@ -373,6 +367,25 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      */
     uint256 public closeFactorMantissa;
 
+    /// @dev _guardCounter and nonReentrant modifier extracted from Open Zeppelin's reEntrancyGuard
+    /// @dev counter to allow mutex lock with only one SSTORE operation
+    uint256 public _guardCounter;
+
+    /**
+     * @dev Prevents a contract from calling itself, directly or indirectly.
+     * If you mark a function `nonReentrant`, you should also
+     * mark it `external`. Calling one `nonReentrant` function from
+     * another is not supported. Instead, you can implement a
+     * `private` function doing the actual work, and an `external`
+     * wrapper marked as `nonReentrant`.
+     */
+    modifier nonReentrant() {
+        _guardCounter += 1;
+        uint256 localCounter = _guardCounter;
+        _;
+        require(localCounter == _guardCounter);
+    }
+
     /**
      * @dev Events to notify the frontend of all the functions below
      */
@@ -383,8 +396,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
     event SupplyReceived(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -395,8 +408,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      *      Note: startingBalance - amount - startingBalance = interest accumulated since last change
      */
     event SupplyWithdrawn(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -407,8 +420,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      *      Note: newBalance - borrowAmountWithFee - startingBalance = interest accumulated since last change
      */
     event BorrowTaken(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 borrowAmountWithFee,
@@ -420,8 +433,8 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
     event BorrowRepaid(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -798,14 +811,6 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         wethAddress = wethContractAddress;
         WETHContract = AlkemiWETH(wethAddress);
 
-        require(
-            address(rewardControl) != _rewardControl,
-            "The same Reward Control address"
-        );
-        require(
-            _rewardControl != address(0),
-            "RewardControl address cannot be empty"
-        );
         rewardControl = RewardControlInterface(_rewardControl);
 
         return uint256(Error.NO_ERROR);
@@ -942,7 +947,7 @@ contract AlkemiEarnVerified is Exponential, SafeToken, ReentrancyGuard {
         // Hard cap on the maximum number of markets allowed
         require(
             interestRateModel != address(0) &&
-                collateralMarkets.length < uint256(MAXIMUM_NUMBER_OF_MARKETS),
+                collateralMarkets.length < 16, // 16 = MAXIMUM_NUMBER_OF_MARKETS_ALLOWED
             "INPUT_VALIDATION_FAILED"
         );
 

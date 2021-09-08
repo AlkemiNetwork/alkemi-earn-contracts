@@ -7,7 +7,8 @@ contract ChainLink {
     mapping(address => AggregatorV3Interface) internal priceContractMapping;
     address public admin;
     bool public paused = false;
-    address public wethAddress;
+    address public wethAddressVerified;
+    address public wethAddressPublic;
     AggregatorV3Interface public USDETHPriceFeed;
     uint256 constant expScale = 10**18;
     uint8 constant eighteen = 18;
@@ -40,7 +41,8 @@ contract ChainLink {
     );
     event assetRemoved(address indexed assetAddress);
     event adminChanged(address indexed oldAdmin, address indexed newAdmin);
-    event wethAddressSet(address indexed wethAddress);
+    event verifiedWethAddressSet(address indexed wethAddressVerified);
+    event publicWethAddressSet(address indexed wethAddressPublic);
     event contractPausedOrUnpaused(bool currentStatus);
 
     /**
@@ -85,12 +87,21 @@ contract ChainLink {
     }
 
     /**
-     * Allows admin to set the weth address
+     * Allows admin to set the weth address for verified protocol
      */
-    function setWethAddress(address _wethAddress) public onlyAdmin {
-        require(_wethAddress != address(0), "WETH address cannot be 0x00");
-        wethAddress = _wethAddress;
-        emit wethAddressSet(_wethAddress);
+    function setWethAddressVerified(address _wethAddressVerified) public onlyAdmin {
+        require(_wethAddressVerified != address(0), "WETH address cannot be 0x00");
+        wethAddressVerified = _wethAddressVerified;
+        emit verifiedWethAddressSet(_wethAddressVerified);
+    }
+
+    /**
+     * Allows admin to set the weth address for public protocol
+     */
+    function setWethAddressPublic(address _wethAddressPublic) public onlyAdmin {
+        require(_wethAddressPublic != address(0), "WETH address cannot be 0x00");
+        wethAddressPublic = _wethAddressPublic;
+        emit publicWethAddressSet(_wethAddressPublic);
     }
 
     /**
@@ -111,8 +122,10 @@ contract ChainLink {
      */
     function getAssetPrice(address asset) public view returns (uint256, uint8) {
         // Return 1 * 10^18 for WETH, otherwise return actual price
-        if (!paused && asset == wethAddress) {
-            return (expScale, eighteen);
+        if (!paused) {
+            if ( asset == wethAddressVerified || asset == wethAddressPublic ){
+                return (expScale, eighteen);
+            }
         }
         // Capture the decimals in the ERC20 token
         uint8 assetDecimals = EIP20Interface(asset).decimals();
@@ -125,8 +138,8 @@ contract ChainLink {
                 uint80 answeredInRound
             ) = priceContractMapping[asset].latestRoundData();
             startedAt; // To avoid compiler warnings for unused local variable
-            // If the price data was not refreshed for the past 1 hour, prices are considered stale
-            require(timeStamp > (now - 1 hours), "Stale data");
+            // If the price data was not refreshed for the past 5 hours, prices are considered stale
+            require(timeStamp > (now - 5 hours), "Stale data");
             // If answeredInRound is less than roundID, prices are considered stale
             require(answeredInRound >= roundID, "Stale Data");
             if (price > 0) {

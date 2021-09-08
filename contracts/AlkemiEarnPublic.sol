@@ -6,9 +6,8 @@ import "./SafeToken.sol";
 import "./ChainLink.sol";
 import "./AlkemiWETH.sol";
 import "./RewardControlInterface.sol";
-import "./ReentrancyGuard.sol";
 
-contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
+contract AlkemiEarnPublic is Exponential, SafeToken {
     uint256 internal initialInterestIndex;
     uint256 internal defaultOriginationFee;
     uint256 internal defaultCollateralRatio;
@@ -41,6 +40,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
             collateralRatio = Exp({mantissa: defaultCollateralRatio});
             originationFee = Exp({mantissa: defaultOriginationFee});
             liquidationDiscount = Exp({mantissa: defaultLiquidationDiscount});
+            _guardCounter = 1;
             // oracle must be configured via _adminFunctions
         }
     }
@@ -75,7 +75,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
      * @dev Account allowed to set oracle prices for this contract. Initially set
      *      in constructor, but can be changed by the admin.
      */
-    address public oracle;
+    address private oracle;
 
     /**
      * @dev Account allowed to fetch chainlink oracle prices for this contract. Can be changed by the admin.
@@ -136,7 +136,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
      * @dev wethAddress to hold the WETH token contract address
      * set using setWethAddress function
      */
-    address public wethAddress;
+    address private wethAddress;
 
     /**
      * @dev Initiates the contract for supply and withdraw Ether and conversion to WETH
@@ -176,11 +176,6 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
      *
      */
     bool public paused;
-
-    /**
-     * @dev Hard cap on the number of markets allowed
-     */
-    uint8 public MAXIMUM_NUMBER_OF_MARKETS = 16;
 
     /**
      * The `SupplyLocalVars` struct is used internally in the `supply` function.
@@ -343,6 +338,25 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
      * @notice Multiplier used to calculate the maximum repayAmount when liquidating a borrow
      */
     uint256 public closeFactorMantissa;
+
+    /// @dev _guardCounter and nonReentrant modifier extracted from Open Zeppelin's reEntrancyGuard
+    /// @dev counter to allow mutex lock with only one SSTORE operation
+    uint256 public _guardCounter;
+
+    /**
+     * @dev Prevents a contract from calling itself, directly or indirectly.
+     * If you mark a function `nonReentrant`, you should also
+     * mark it `external`. Calling one `nonReentrant` function from
+     * another is not supported. Instead, you can implement a
+     * `private` function doing the actual work, and an `external`
+     * wrapper marked as `nonReentrant`.
+     */
+    modifier nonReentrant() {
+        _guardCounter += 1;
+        uint256 localCounter = _guardCounter;
+        _;
+        require(localCounter == _guardCounter);
+    }
 
     /**
      * @dev emitted when a supply is received
@@ -943,7 +957,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken, ReentrancyGuard {
         require(interestRateModel != address(0), "Rate Model cannot be 0x00");
         // Hard cap on the maximum number of markets allowed
         require(
-            collateralMarkets.length < uint256(MAXIMUM_NUMBER_OF_MARKETS),
+            collateralMarkets.length < 16, // 16 = MAXIMUM_NUMBER_OF_MARKETS_ALLOWED
             "Exceeding the max number of markets allowed"
         );
 

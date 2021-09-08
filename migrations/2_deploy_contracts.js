@@ -99,8 +99,9 @@ module.exports = async (deployer, network, accounts) => {
 		// 	PriceOracleProxy,
 		// 	deploymentConfig.RINKEBY.PriceOracle
 		// );
-		await deployer.deploy(AlkemiEarnVerified);
-		// await deployer.deploy(AlkemiEarnPublic);
+		// await deployer.deploy(AlkemiEarnVerified);
+		// await deployer.deploy(RewardControl);
+		await deployer.deploy(AlkemiEarnPublic);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.ALKEMI_EARN_VERIFIED);
@@ -183,6 +184,7 @@ module.exports = async (deployer, network, accounts) => {
 		// await deployer.deploy(AlkemiEarnVerified);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiEarnVerified);
+		// await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.ALKEMI_EARN_VERIFIED);
 		// await deployer.deploy(
 		// 	LiquidationChecker,
@@ -190,36 +192,36 @@ module.exports = async (deployer, network, accounts) => {
 		// 	deploymentConfig.RINKEBY.Liquidator,
 		// 	true
 		// );
-		await deployer.deploy(
-			AlkemiRateModel,
-			"BTC Rate Model",
-			100,
-			200,
-			250,
-			8000,
-			3000,
-			5000
-		);
-		await deployer.deploy(
-			AlkemiRateModel,
-			"ETH Rate Model",
-			100,
-			400,
-			250,
-			8000,
-			1100,
-			3000
-		);
-		await deployer.deploy(
-			AlkemiRateModel,
-			"Stable Coin Rate Model",
-			100,
-			2000,
-			100,
-			8000,
-			400,
-			3000
-		);
+		// await deployer.deploy(
+		// 	AlkemiRateModel,
+		// 	"BTC Rate Model",
+		// 	100,
+		// 	200,
+		// 	250,
+		// 	8000,
+		// 	3000,
+		// 	5000
+		// );
+		// await deployer.deploy(
+		// 	AlkemiRateModel,
+		// 	"ETH Rate Model",
+		// 	100,
+		// 	400,
+		// 	250,
+		// 	8000,
+		// 	1100,
+		// 	3000
+		// );
+		// await deployer.deploy(
+		// 	AlkemiRateModel,
+		// 	"Stable Coin Rate Model",
+		// 	100,
+		// 	2000,
+		// 	100,
+		// 	8000,
+		// 	400,
+		// 	3000
+		// );
 	} else {
 		// await deployer.deploy(PriceOracle, deploymentConfig.MAINNET.POSTER);
 		// await deployer.deploy(PriceOracleProxy, PriceOracle.address);

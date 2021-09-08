@@ -105,6 +105,7 @@ contract RewardControl is
             // Divided by blocksPerYear (assuming 13.3 seconds avg. block time) = 17,500,000/2,371,128 = 7.380453522542860000
             // 7380453522542860000 (Tokens scaled by token decimals of 18) divided by 2 (half for lending and half for borrowing)
             alkRate = 3690226761271430000;
+            MAXIMUM_NUMBER_OF_MARKETS = 16;
         }
     }
 

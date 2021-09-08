@@ -53,6 +53,7 @@ module.exports = {
 					`https://rinkeby.infura.io/v3/${infuraKey}`
 				),
 			network_id: 4,
+			gasPrice: 100000000000,
 			skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
 		},
 		kovan: {
@@ -80,10 +81,10 @@ module.exports = {
 					mnemonic,
 					`https://mainnet.infura.io/v3/${infuraKey}`
 				),
-			gasPrice: 25000000000,
+			gasPrice: 126000000000,
 			timeoutBlocks: 4000,
 			network_id: 1,
-			skipDryRun: false, // Skip dry run before migrations? (default: false for public nets )
+			skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
 		},
 	},
 
