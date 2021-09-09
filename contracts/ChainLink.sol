@@ -138,8 +138,9 @@ contract ChainLink {
                 uint80 answeredInRound
             ) = priceContractMapping[asset].latestRoundData();
             startedAt; // To avoid compiler warnings for unused local variable
-            // If the price data was not refreshed for the past 5 hours, prices are considered stale
-            require(timeStamp > (now - 5 hours), "Stale data");
+            // If the price data was not refreshed for the past 1 day, prices are considered stale
+            // This threshold is the maximum Chainlink uses to update the price feeds
+            require(timeStamp > (now - 86500 seconds), "Stale data");
             // If answeredInRound is less than roundID, prices are considered stale
             require(answeredInRound >= roundID, "Stale Data");
             if (price > 0) {

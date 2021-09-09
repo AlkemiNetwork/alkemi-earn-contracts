@@ -254,7 +254,7 @@ contract RewardControl is
     /**
      * @notice Recalculate and update ALK speeds for all markets
      */
-    function refreshAlkSpeeds() internal {
+    function refreshAlkSpeeds() public {
         address currentMarket;
         (
             Exp[] memory marketTotalLiquidity,
@@ -292,7 +292,7 @@ contract RewardControl is
      * @param market The market whose supply index to update
      * @param isVerified Verified / Public protocol
      */
-    function updateAlkSupplyIndex(address market, bool isVerified) internal {
+    function updateAlkSupplyIndex(address market, bool isVerified) public {
         MarketState storage supplyState = alkSupplyState[isVerified][market];
         uint256 marketSpeed = alkSpeeds[isVerified][market];
         uint256 blockNumber = getBlockNumber();
@@ -327,7 +327,7 @@ contract RewardControl is
      * @param market The market whose borrow index to update
      * @param isVerified Verified / Public protocol
      */
-    function updateAlkBorrowIndex(address market, bool isVerified) internal {
+    function updateAlkBorrowIndex(address market, bool isVerified) public {
         MarketState storage borrowState = alkBorrowState[isVerified][market];
         uint256 marketSpeed = alkSpeeds[isVerified][market];
         uint256 blockNumber = getBlockNumber();
@@ -367,7 +367,7 @@ contract RewardControl is
         address market,
         address supplier,
         bool isVerified
-    ) internal {
+    ) public {
         MarketState storage supplyState = alkSupplyState[isVerified][market];
         Double memory supplyIndex = Double({mantissa: supplyState.index});
         Double memory supplierIndex = Double({
@@ -405,7 +405,7 @@ contract RewardControl is
         address market,
         address borrower,
         bool isVerified
-    ) internal {
+    ) public {
         MarketState storage borrowState = alkBorrowState[isVerified][market];
         Double memory borrowIndex = Double({mantissa: borrowState.index});
         Double memory borrowerIndex = Double({

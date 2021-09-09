@@ -363,8 +363,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
     event SupplyReceived(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -375,8 +375,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
     event SupplyOrgFeeAsAdmin(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -386,8 +386,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: startingBalance - amount - startingBalance = interest accumulated since last change
      */
     event SupplyWithdrawn(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -398,8 +398,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: newBalance - borrowAmountWithFee - startingBalance = interest accumulated since last change
      */
     event BorrowTaken(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 borrowAmountWithFee,
@@ -411,8 +411,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      Note: newBalance - amount - startingBalance = interest accumulated since last change
      */
     event BorrowRepaid(
-        address indexed account,
-        address indexed asset,
+        address account,
+        address asset,
         uint256 amount,
         uint256 startingBalance,
         uint256 newBalance
@@ -435,11 +435,11 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      *      assetBorrow and assetCollateral are not indexed as indexed addresses in an event is limited to 3
      */
     event BorrowLiquidated(
-        address indexed targetAccount,
+        address targetAccount,
         address assetBorrow,
         uint256 borrowBalanceAccumulated,
         uint256 amountRepaid,
-        address indexed liquidator,
+        address liquidator,
         address assetCollateral,
         uint256 amountSeized
     );
@@ -447,14 +447,14 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
     /**
      * @dev emitted when pendingAdmin is accepted, which means admin is updated
      */
-    event NewAdmin(address indexed oldAdmin, address indexed newAdmin);
+    event NewAdmin(address oldAdmin, address newAdmin);
 
     /**
      * @dev emitted when new market is supported by admin
      */
     event SupportedMarket(
-        address indexed asset,
-        address indexed interestRateModel
+        address asset,
+        address interestRateModel
     );
 
     /**
@@ -479,8 +479,8 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * @dev emitted when market has new interest rate model set
      */
     event SetMarketInterestRateModel(
-        address indexed asset,
-        address indexed interestRateModel
+        address asset,
+        address interestRateModel
     );
 
     /**
@@ -488,10 +488,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      * Note that `equityAvailableBefore` indicates equity before `amount` was removed.
      */
     event EquityWithdrawn(
-        address indexed asset,
+        address asset,
         uint256 equityAvailableBefore,
         uint256 amount,
-        address indexed owner
+        address owner
     );
 
     /**

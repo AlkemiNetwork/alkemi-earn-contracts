@@ -8,6 +8,7 @@ var ChainLink = artifacts.require("ChainLink.sol");
 var AlkemiWETH = artifacts.require("AlkemiWETH.sol");
 var AlkemiRateModel = artifacts.require("AlkemiRateModel.sol");
 var RewardControl = artifacts.require("RewardControl.sol");
+var RewardInitializer = artifacts.require("RewardInitiation.sol");
 
 const { deployProxy } = require("@openzeppelin/truffle-upgrades");
 
@@ -102,6 +103,7 @@ module.exports = async (deployer, network, accounts) => {
 		// await deployer.deploy(AlkemiEarnVerified);
 		// await deployer.deploy(RewardControl);
 		await deployer.deploy(AlkemiEarnPublic);
+		// await deployer.deploy(RewardInitializer);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.ALKEMI_EARN_VERIFIED);
@@ -184,6 +186,9 @@ module.exports = async (deployer, network, accounts) => {
 		// await deployer.deploy(AlkemiEarnVerified);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiEarnVerified);
+		// await deployer.deploy(RewardControl);
+		// await deployer.deploy(RewardInitializer);
+		await deployer.deploy(AlkemiEarnPublic);
 		// await deployer.deploy(AlkemiWETH);
 		// await deployer.deploy(Liquidator, deploymentConfig.RINKEBY.ALKEMI_EARN_VERIFIED);
 		// await deployer.deploy(
