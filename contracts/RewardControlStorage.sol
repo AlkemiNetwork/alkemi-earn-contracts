@@ -67,5 +67,5 @@ contract RewardControlStorage {
     address public alkAddress;
 
     // Hard cap on the maximum number of markets
-    uint8 public MAXIMUM_NUMBER_OF_MARKETS = 16;
+    uint8 public MAXIMUM_NUMBER_OF_MARKETS;
 }
