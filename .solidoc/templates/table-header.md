@@ -1,2 +1,4 @@
-| Name        | Type           | Description  |
-| ------------- |------------- | -----|
+# table-header
+
+\| Name \| Type \| Description \| \| ------------- \|------------- \| -----\|
+

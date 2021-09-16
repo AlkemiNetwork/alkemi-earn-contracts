@@ -1,63 +1,12 @@
 ---
 layout: default
-title: {{ContractName}}
+title:
+  '[object Object]': null
 ---
 
-# {{ContractTitle}}
+# contract
 
-{{ContractPath}}
+## 
 
-{{ContractInheritancePath}}
-{{ContractImplementations}}
+### Functions
 
-
-
-**{{ContractName}}**
-
-
-{{ContractDescription}}
-
-
-{{ConstructorHeading}}
-
-
-{{ConstructorDescription}}
-
-
-{{ConstructorCode}}
-
-
-{{ConstructorArgumentsHeading}}
-
-
-{{Enumerators}}
-
-
-{{Structs}}
-
-
-{{Members}}
-
-{{Events}}
-
-{{TableHeader}}
-{{ConstructorArguments}}
-
-
-
-
-{{ModifierTitle}}
-
-
-{{ModifierList}}
-
-
-{{AllModifiers}}
-
-
-## Functions
-
-{{FunctionList}}
-
-
-{{AllFunctions}}

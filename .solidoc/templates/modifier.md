@@ -1,10 +1,2 @@
-{{ModifierNameHeading}}
+# modifier
 
-{{ModifierDescription}}
-
-{{ModifierCode}}
-
-{{ModifierArgumentsHeading}}
-
-{{TableHeader}}
-{{ModifierArguments}}
