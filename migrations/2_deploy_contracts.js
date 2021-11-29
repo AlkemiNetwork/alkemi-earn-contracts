@@ -100,9 +100,9 @@ module.exports = async (deployer, network, accounts) => {
 		// 	PriceOracleProxy,
 		// 	deploymentConfig.RINKEBY.PriceOracle
 		// );
-		// await deployer.deploy(AlkemiEarnVerified);
+		await deployer.deploy(AlkemiEarnVerified);
 		// await deployer.deploy(RewardControl);
-		await deployer.deploy(AlkemiEarnPublic);
+		// await deployer.deploy(AlkemiEarnPublic);
 		// await deployer.deploy(RewardInitializer);
 		// await deployer.deploy(ChainLink);
 		// await deployer.deploy(AlkemiWETH);
