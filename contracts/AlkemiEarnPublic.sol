@@ -449,44 +449,36 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
      */
     event NewAdmin(address oldAdmin, address newAdmin);
 
-    /**
-     * @dev emitted when new market is supported by admin
-     */
-    event SupportedMarket(
-        address asset,
-        address interestRateModel
-    );
+    // /**
+    //  * @dev emitted when risk parameters are changed by admin
+    //  */
+    // event NewRiskParameters(
+    //     uint256 oldCollateralRatioMantissa,
+    //     uint256 newCollateralRatioMantissa,
+    //     uint256 oldLiquidationDiscountMantissa,
+    //     uint256 newLiquidationDiscountMantissa
+    // );
 
-    /**
-     * @dev emitted when risk parameters are changed by admin
-     */
-    event NewRiskParameters(
-        uint256 oldCollateralRatioMantissa,
-        uint256 newCollateralRatioMantissa,
-        uint256 oldLiquidationDiscountMantissa,
-        uint256 newLiquidationDiscountMantissa
-    );
+    // /**
+    //  * @dev emitted when origination fee is changed by admin
+    //  */
+    // event NewOriginationFee(
+    //     uint256 oldOriginationFeeMantissa,
+    //     uint256 newOriginationFeeMantissa
+    // );
 
-    /**
-     * @dev emitted when origination fee is changed by admin
-     */
-    event NewOriginationFee(
-        uint256 oldOriginationFeeMantissa,
-        uint256 newOriginationFeeMantissa
-    );
+    // /**
+    //  * @dev emitted when market has new interest rate model set
+    //  */
+    // event SetMarketInterestRateModel(
+    //     address asset,
+    //     address interestRateModel
+    // );
 
-    /**
-     * @dev emitted when market has new interest rate model set
-     */
-    event SetMarketInterestRateModel(
-        address asset,
-        address interestRateModel
-    );
-
-    /**
-     * @dev emitted when admin withdraws equity
-     * Note that `equityAvailableBefore` indicates equity before `amount` was removed.
-     */
+    // /**
+    //  * @dev emitted when admin withdraws equity
+    //  * Note that `equityAvailableBefore` indicates equity before `amount` was removed.
+    //  */
     event EquityWithdrawn(
         address asset,
         uint256 equityAvailableBefore,
@@ -807,10 +799,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         Exp memory oldOriginationFee = originationFee;
 
         originationFee = Exp({mantissa: originationFeeMantissa});
-        emit NewOriginationFee(
-            oldOriginationFee.mantissa,
-            originationFeeMantissa
-        );
+        // emit NewOriginationFee(
+        //     oldOriginationFee.mantissa,
+        //     originationFeeMantissa
+        // );
 
         closeFactorMantissa = newCloseFactorMantissa;
 
@@ -992,7 +984,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             markets[asset].borrowIndex = initialInterestIndex;
         }
 
-        emit SupportedMarket(asset, interestRateModel);
+        // emit SupportedMarket(asset, interestRateModel);
 
         return uint256(Error.NO_ERROR);
     }
@@ -1108,12 +1100,12 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         collateralRatio = newCollateralRatio;
         liquidationDiscount = newLiquidationDiscount;
 
-        emit NewRiskParameters(
-            oldCollateralRatio.mantissa,
-            collateralRatioMantissa,
-            oldLiquidationDiscount.mantissa,
-            liquidationDiscountMantissa
-        );
+        // emit NewRiskParameters(
+        //     oldCollateralRatio.mantissa,
+        //     collateralRatioMantissa,
+        //     oldLiquidationDiscount.mantissa,
+        //     liquidationDiscountMantissa
+        // );
 
         return uint256(Error.NO_ERROR);
     }
@@ -1138,7 +1130,7 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
         // Set the interest rate model to `modelAddress`
         markets[asset].interestRateModel = interestRateModel;
 
-        emit SetMarketInterestRateModel(asset, interestRateModel);
+        // emit SetMarketInterestRateModel(asset, interestRateModel);
 
         return uint256(Error.NO_ERROR);
     }
@@ -1287,6 +1279,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
             revertEtherToUser(msg.sender, msg.value);
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
+        }
+        if(asset == wethAddress && amount != msg.value) {
+            revertEtherToUser(msg.sender, msg.value);
+            revert("ETHER_AMOUNT_MISMATCH_ERROR");
         }
 
         refreshAlkSupplyIndex(asset, msg.sender, false);
@@ -1986,6 +1982,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                     FailureInfo.REPAY_BORROW_CONTRACT_PAUSED
                 );
         }
+        if(asset == wethAddress && amount != msg.value) {
+            revertEtherToUser(msg.sender, msg.value);
+            revert("ETHER_AMOUNT_MISMATCH_ERROR");
+        }
         refreshAlkBorrowIndex(asset, msg.sender, false);
         PayBorrowLocalVars memory localResults;
         Market storage market = markets[asset];
@@ -2264,6 +2264,10 @@ contract AlkemiEarnPublic is Exponential, SafeToken {
                     Error.CONTRACT_PAUSED,
                     FailureInfo.LIQUIDATE_CONTRACT_PAUSED
                 );
+        }
+        if(assetBorrow == wethAddress && requestedAmountClose != msg.value) {
+            revertEtherToUser(msg.sender, msg.value);
+            revert("ETHER_AMOUNT_MISMATCH_ERROR");
         }
         refreshAlkSupplyIndex(assetCollateral, targetAccount, false);
         refreshAlkSupplyIndex(assetCollateral, msg.sender, false);

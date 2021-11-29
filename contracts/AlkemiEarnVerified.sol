@@ -1219,6 +1219,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
             return
                 fail(Error.CONTRACT_PAUSED, FailureInfo.SUPPLY_CONTRACT_PAUSED);
         }
+        if(asset == wethAddress && amount != msg.value) {
+            revertEtherToUser(msg.sender, msg.value);
+            revert("ETHER_AMOUNT_MISMATCH_ERROR");
+        }
 
         refreshAlkIndex(asset, msg.sender, true, true);
 
@@ -1918,6 +1922,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     FailureInfo.REPAY_BORROW_CONTRACT_PAUSED
                 );
         }
+        if(asset == wethAddress && amount != msg.value) {
+            revertEtherToUser(msg.sender, msg.value);
+            revert("ETHER_AMOUNT_MISMATCH_ERROR");
+        }
         refreshAlkIndex(asset, msg.sender, false, true);
         PayBorrowLocalVars memory localResults;
         Market storage market = markets[asset];
@@ -2192,6 +2200,10 @@ contract AlkemiEarnVerified is Exponential, SafeToken {
                     Error.CONTRACT_PAUSED,
                     FailureInfo.LIQUIDATE_CONTRACT_PAUSED
                 );
+        }
+        if(assetBorrow == wethAddress && requestedAmountClose != msg.value) {
+            revertEtherToUser(msg.sender, msg.value);
+            revert("ETHER_AMOUNT_MISMATCH_ERROR");
         }
         require(liquidators[msg.sender], "LIQUIDATOR_CHECK_FAILED");
         refreshAlkIndex(assetCollateral, targetAccount, true, true);
